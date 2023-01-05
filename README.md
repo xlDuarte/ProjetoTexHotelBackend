@@ -106,5 +106,6 @@ https://www.canva.com/design/DAFNeIFNOlA/AWn9doq6dVS-whvxdW6B8A/view?utm_content
 ## Dúvidas e Sugestões pelo EMAIL
 [![Gmail Badge](https://img.shields.io/badge/-SAChotelcasanapraia@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:SAChotelcasanapraia@gmail.com)](mailto:SAChotelcasanapraia@gmail.com)
 
+
 ## Licença
 [MIT License ](https://choosealicense.com/licenses/mit/)
