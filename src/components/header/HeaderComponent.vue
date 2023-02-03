@@ -33,9 +33,18 @@
         </div>
       </div>
       <div id="inicio" class="navigation">
-        <div><router-link to="/">Home</router-link></div>
-        <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
-        <div><router-link to="/Reservas">Reservas</router-link></div>
+        <div class="pub" v-show="visivel">
+          <div><router-link to="/">Home</router-link></div>
+          <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
+          <div><router-link to="/Reservas">Reservas</router-link></div>
+        </div>
+        <div class="adm =" v-show="invisivel">
+          <div><router-link to="/HomeAdm">Home</router-link></div>
+          <div><router-link to="/AcomodacoesAdm">Acomodações</router-link></div>
+          <div><router-link to="/ReservasAdm">Reservas</router-link></div>
+          <div><router-link to="/ReservasAdm">Consumo</router-link></div>
+          <div><router-link to="/ReservasAdm">Avaliações</router-link></div>
+        </div>
       </div>
       <div class="campologin">
         <form action="campologin" method="post">
@@ -61,14 +70,18 @@
         </form>
       </div>
       <div class="logedin hide">
-        <p id="user"></p>
-        <input
-          class="button btnExit"
-          v-on:click="logOut"
-          id="btnExit"
-          type="button"
-          value="Sair"
-        />
+        <div>
+          <p id="user"></p>
+          <div>
+            <input
+              class="button btnExit"
+              v-on:click="logOut"
+              id="btnExit"
+              type="button"
+              value="Sair"
+            />
+          </div>
+        </div>
       </div>
     </header>
   </nav>
@@ -91,6 +104,8 @@ export default {
       loged: localStorage.getItem("loged"),
       logedin: localStorage.getItem("loginStatus"),
       btnExit: document.getElementById("btnExit"),
+      visivel: true,
+      invisivel: false
     };
   },
   methods: {
@@ -111,6 +126,7 @@ export default {
           document.getElementById(
             "user"
           ).innerText = `Olá ${localStorage.getItem("loged")}`;
+          location.reload();
         } else if (
           login.match(this.regexLoginAdm) &&
           pswd.match(this.regexPswd)
@@ -118,11 +134,17 @@ export default {
           let logedOn = 1;
           localStorage.setItem("loged", login);
           localStorage.setItem("loginStatus", logedOn);
+          document.getElementById(
+            "user"
+          ).innerText = `Olá ${localStorage.getItem("loged")}`;
           // this.logedin = localStorage.getItem("logedin");
           this.logedin = localStorage.getItem("loginStatus");
-          alert("Logado com sucesso!");
+          alert("Logado com sucesso como administrador!");
+          this.$router.push("HomeAdm")
           this.showHide(".logedin", "remove");
           this.showHide(".campologin", "add");
+          this.invisivel = true,
+          this.visivel = false
         } else {
           alert("Usuario ou senha incorretos");
         }
@@ -135,15 +157,19 @@ export default {
       document.querySelector(obj).classList[action]("hide");
     },
 
+
     logOut() {
       let logedOut = 0;
       this.showHide(".campologin", "remove");
       this.showHide(".logedin", "add");
+      this.invisivel = false,
+      this.visivel = true
       localStorage.setItem("loginStatus", logedOut);
       localStorage.removeItem("loged");
       document.getElementById("login").value = "";
       document.getElementById("password").value = "";
       this.logedin = localStorage.getItem("logedOut");
+      this.$router.push("/")
     },
 
     loginCheck() {
@@ -246,7 +272,7 @@ header {
 .button {
   background: transparent;
   color: black;
-  padding: 0.4em;
+  padding: 10px;
   border-radius: 50px;
   cursor: pointer;
   overflow: hidden;
@@ -257,7 +283,7 @@ header {
   background: #112434;
   color: #fff;
   border-radius: 50px;
-  padding: 0.4em;
+  padding: 10px;
 }
 
 .links {
@@ -277,9 +303,15 @@ header {
 }
 
 .navigation div {
-  width: 120px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 20px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
+
+
 
 .navigation div a {
   text-decoration: none;
