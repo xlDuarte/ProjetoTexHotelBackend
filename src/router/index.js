@@ -26,9 +26,14 @@ const routes = [
     component: () => import("../views/ContatoView.vue"),
   },
   {
-    path:"/HomeAdm",
+    path: "/HomeAdm",
     name: "homeAdm",
     component: () => import("../views/HomeAdmView.vue"),
+  },
+  {
+    path: "/ServicosAdm",
+    name: "servicos",
+    component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
   },
 ];
 
