@@ -28,12 +28,17 @@ const routes = [
   {
     path: "/HomeAdm",
     name: "homeAdm",
-    component: () => import("../views/HomeAdmView.vue"),
+    component: () => import("../../adm/src/views/HomeAdmView.vue"),
   },
   {
-    path: "/Admin/Relatorio-de-Consumo",
+    path: "/RelatorioConsumoAdm",
     name: "relatorio",
-    component: () => import("../views/RelatorioView.vue"),
+    component: () => import("../../adm/src/views/reservas/RelatorioView.vue"),
+  },
+  {
+    path: "/ServicosAdm",
+    name: "servicosAdm",
+    component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
   },
 ];
 

@@ -43,7 +43,7 @@
           <div><router-link to="/AcomodacoesAdm">Acomodações</router-link></div>
           <div><router-link to="/ReservasAdm">Reservas</router-link></div>
           <div><router-link to="/ServicosAdm">Serviços</router-link></div>          
-          <div><router-link to="/ReservasAdm">Consumo</router-link></div>
+          <div><router-link to="/RelatorioConsumoAdm">Consumo</router-link></div>
           <div><router-link to="/ReservasAdm">Avaliações</router-link></div>
         </div>
       </div>
