@@ -37,11 +37,6 @@ const routes = [
   },
   {
     path: "/ServicosAdm",
-    name: "servicosAdm",
-    component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
-  },
-  {
-    path: "/ServicosAdm",
     name: "servicos",
     component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
   },

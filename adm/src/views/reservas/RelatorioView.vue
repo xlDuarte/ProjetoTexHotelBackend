@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import RelatorioConsumo from '../../components/relatorioConsumo/RelatorioConsumo.vue';
+import RelatorioConsumo from '@/../adm/src/components/relatorioConsumo/RelatorioConsumo.vue';
 
 export default {
   name: 'RelatorioView',
