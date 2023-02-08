@@ -15,25 +15,33 @@ export class Servicos {
   constructor(id) {
     !id ? (this.id = 0) : (this.id = id);
   }
-  salvar(inputNome, inputLabel, inputDescricao, inputVlrDiaria) {
+  salvar(inputNome, inputLabel, inputDescricao, inputVlrDiaria, novoServico) {
     this.nome = inputNome;
     this.label = inputLabel;
     this.descricao = inputDescricao;
     this.vlrDiaria = inputVlrDiaria;
-    console.log(
-      "Instanciei classe servico. Dados: ",
-      this.nome,
-      this.label,
-      this.descricao,
-      this.vlrDiaria
-    );
+    this.novoServico = novoServico;
+    // console.log(
+    //   "Instanciei classe servico. Dados: ",
+    //   this.nome,
+    //   this.label,
+    //   this.descricao,
+    //   this.vlrDiaria
+    // );
     this.lerServico();
     this.validacao = this.validarCampos(
       inputNome,
       inputDescricao,
       inputVlrDiaria
     );
-    console.log("Validação - retorno", this.validacao);
+    console.log(
+      "Controle de validação e edição:",
+      `Validação:${this.validacao} - Edição:${this.novoServico}`
+    );
+    if (this.validacao !== true) {
+      alert("Informações do serviço não estão ok! Verificar!");
+      return false;
+    }
     // verifica ultimo id para inicializar id a partir do mesmo
     if (localStorage.getItem("servicoAdm")) {
       this.local = JSON.parse(localStorage.getItem("servicoAdm"));
@@ -81,6 +89,21 @@ export class Servicos {
     return servico;
   }
 
+  excluirServico(idArray) {
+    console.log("Vou exluir o servico id:", idArray);
+    let arrayStorage,
+      newStorage = [];
+    if (localStorage.getItem("servicoAdm")) {
+      arrayStorage = JSON.parse(localStorage.getItem("servicoAdm"));
+    }
+    newStorage = arrayStorage.splice(idArray, 1);
+    console.log("Novo Array Storage", newStorage);
+    // atualiza localStorage...
+    localStorage.setItem("servicoAdm", JSON.stringify(arrayStorage));
+
+    return true;
+  }
+
   validarCampos(inputNome, inputDescricao, inputValor) {
     console.log("to validando");
     return inputNome.length < 1 ||
@@ -91,20 +114,18 @@ export class Servicos {
   }
 
   listaServicos(div) {
-    // `this` points to the component instance
-    console.log(
-      "listaServicos",
-      localStorage.getItem("servico").length > 0 ? "Yes" : "No"
-    );
-
-    // limpa lista anterior
-    const divBox = document.getElementsByClassName(div);
-    while (divBox.length > 0) {
-      console.log("limpando...", div);
-      divBox[0].remove();
+    // define conteudo do array de servicos...
+    let servicos = [];
+    if (localStorage.getItem("servicoAdm")) {
+      console.log(
+        "listaServicos",
+        div,
+        localStorage.getItem("servicoAdm").length
+      );
+      servicos = JSON.parse(localStorage.getItem("servicoAdm"));
     }
-    // inclui a nova lista...
 
-    return localStorage.getItem("servico").length > 0 ? "Yes" : "No";
+    console.log;
+    return servicos;
   }
 }
