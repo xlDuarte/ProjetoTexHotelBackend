@@ -35,6 +35,11 @@ const routes = [
     name: "relatorio",
     component: () => import("../views/RelatorioView.vue"),
   },
+  {
+    path: "/ServicosAdm",
+    name: "servicos",
+    component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
+  },
 ];
 
 const router = createRouter({
