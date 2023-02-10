@@ -2,6 +2,7 @@
 import express from "express";
 
 // import das funcs do controller
+//import Usuarios
 import {
   showUsuario,
   showUsuarioById,
@@ -9,6 +10,7 @@ import {
   deleteUsuario,
   updateUsuario,
 } from "../controller/usuarios.js";
+//import Serviços
 import {
   showServico,
   showServicoById,
@@ -16,6 +18,11 @@ import {
   deleteServico,
   updateServico,
 } from "../controller/servicos.js";
+//import Acomodações
+
+//import Consumo
+
+//import Reservas
 
 // init express router
 const router = express.Router();
