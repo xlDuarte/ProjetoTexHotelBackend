@@ -40,6 +40,17 @@ const routes = [
     name: "servicos",
     component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
   },
+  {
+    path: "/Usuarios",
+    name: "usuarios",
+    component: () => import("../../adm/src/views/usuarios/UsuariosView.vue"),
+  },
+  {
+    path: "/edit/:id",
+    name: "editUsuarios",
+    component: () => import("../../adm/src/views/usuarios/EditUsuario.vue"),
+  },
+  
 ];
 
 const router = createRouter({

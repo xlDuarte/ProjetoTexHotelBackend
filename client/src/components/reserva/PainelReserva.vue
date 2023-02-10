@@ -1,46 +1,48 @@
 <template>
-  <ModalServicos />
-  <ModalResumo />
-  <ModalMinhasReservas />
-  <div class="secResumo">
-    <div><h3>Resumo da reserva</h3></div>
-    <div class="flex">
-      <div class="form">
-        <form action="">
-          <h4>Apartamento:</h4>
-          <p id="tipoAcomodacao">tipoApto</p>
-          <br />
-          <h4>Checkin:</h4>
-          <p id="dtCheckin">dtCheckin</p>
-          <br />
-          <h4>Checkout:</h4>
-          <p id="dtCheckout">dtCheckout</p>
-          <br />
-          <h4>Pessoas</h4>
-          <p id="qtHospedes">qtHospedes</p>
-          <br />
-          <button type="button" class="button" id="btnServicos">
-            Adicionar serviços
-          </button>
-          <br />
-          <button
-            type="button"
-            class="button"
-            id="btnMinhasReservas"
-            ref="btnMinhasReservas"
-          >
-            Minhas Reservas
-          </button>
-          <br />
-          <button
-            type="button"
-            class="button"
-            id="btnResumoReserva"
-            ref="btnResumoReserva"
-          >
-            Confirmar
-          </button>
-        </form>
+  <div>
+    <ModalServicos />
+    <ModalResumo />
+    <ModalMinhasReservas />
+    <div class="secResumo">
+      <div><h3>Resumo da reserva</h3></div>
+      <div class="flex">
+        <div class="form">
+          <form action="">
+            <h4>Apartamento:</h4>
+            <p id="tipoAcomodacao">tipoApto</p>
+            <br />
+            <h4>Checkin:</h4>
+            <p id="dtCheckin">dtCheckin</p>
+            <br />
+            <h4>Checkout:</h4>
+            <p id="dtCheckout">dtCheckout</p>
+            <br />
+            <h4>Pessoas</h4>
+            <p id="qtHospedes">qtHospedes</p>
+            <br />
+            <button type="button" class="button" id="btnServicos">
+              Adicionar serviços
+            </button>
+            <br />
+            <button
+              type="button"
+              class="button"
+              id="btnMinhasReservas"
+              ref="btnMinhasReservas"
+            >
+              Minhas Reservas
+            </button>
+            <br />
+            <button
+              type="button"
+              class="button"
+              id="btnResumoReserva"
+              ref="btnResumoReserva"
+            >
+              Confirmar
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </div>

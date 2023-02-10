@@ -1,20 +1,22 @@
 <template>
-  <div>
-    <h2>RESERVAS</h2>
-    <p>Forneça a data de entrada, saída e quantidade de pessoas.</p>
-    <p id="msgAlerta"></p>
-  </div>
-  <div class="flex minhaReserva" id="formDadosReserva">
+  <div>    
     <div>
-      <label for="dtEntrada">Entrada</label>
-      <input type="date" id="dtEntrada" name="dtEntrada" v-model="dtEntrada" />
-      <label for="dtSaida">Saida</label>
-      <input type="date" id="dtSaida" name="dtSaida" v-model="dtSaida" />
-      <label for="qtPessoas">Quantidade Pessoas</label>
-      <input type="number" id="qtPessoas" name="qtPessoas" value="1" />
-      <button type="button" class="button" id="btnResumo">
-        Fechar reserva!
-      </button>
+      <h2>RESERVAS</h2>
+      <p>Forneça a data de entrada, saída e quantidade de pessoas.</p>
+      <p id="msgAlerta"></p>
+    </div>
+    <div class="flex minhaReserva" id="formDadosReserva">
+      <div>
+        <label for="dtEntrada">Entrada</label>
+        <input type="date" id="dtEntrada" name="dtEntrada" v-model="dtEntrada" />
+        <label for="dtSaida">Saida</label>
+        <input type="date" id="dtSaida" name="dtSaida" v-model="dtSaida" />
+        <label for="qtPessoas">Quantidade Pessoas</label>
+        <input type="number" id="qtPessoas" name="qtPessoas" value="1" />
+        <button type="button" class="button" id="btnResumo">
+          Fechar reserva!
+        </button>
+      </div>
     </div>
   </div>
 </template>

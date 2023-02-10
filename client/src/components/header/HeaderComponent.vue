@@ -1,91 +1,94 @@
 <!-- Header -->
 <template>
-  <ModalSenha/>
-  <nav>
-    <header>
-      <div class="navigation-drop">
-        <input class="dropbtn" type="checkbox" id="Menu" />
-        <label class="navigation-drop-btn" for="Menu">Menu</label>
-        <div class="navigation-drop-content">
-          <ul>
-            <li><a href="" class="active">Home</a></li>
-            <li><a href="">Acomodações</a></li>
-            <li><a href="">Reservas</a></li>
-            <div class="campologindrop">
-              <form action="campologin" method="post">
-                <label for="login"><strong>USUARIO</strong></label>
-                <input class="box1" type="email" name="login" id="logindrop" />
-                <label for="password"><strong>SENHA</strong></label>
-                <input
-                  class="box1"
-                  type="password"
-                  name="password"
-                  id="passworddrop"
-                />
-                <div><input class="button" type="submit" value="OK" /></div>
+  <div>
 
-                <br />
-                <router-link to="/Cadastro">Cadastre-se!</router-link>
-                <a class="links" href="">Esqueceu sua senha?</a>
-              </form>
-            </div>
-          </ul>
-        </div>
-      </div>
-      <div id="inicio" class="navigation">
-        <div class="pub" v-show="visivel">
-          <div><router-link to="/">Home</router-link></div>
-          <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
-          <div><router-link to="/Reservas">Reservas</router-link></div>
-        </div>
-        <div class="adm =" v-show="invisivel">
-          <div><router-link to="/HomeAdm">Home</router-link></div>
-          <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
-          <div><router-link to="/ReservasAdm">Reservas</router-link></div>
-          <div><router-link to="/ServicosAdm">Serviços</router-link></div>          
-          <div><router-link to="/RelatorioConsumoAdm">Consumo</router-link></div>
-          <div><router-link to="/AvaliacaoAdm">Avaliações</router-link></div>
-        </div>
-      </div>
-      <div class="campologin">
-        <form action="campologin" method="post">
-          <label for="login"><strong>USUARIO</strong></label>
-          <input class="box1 login" type="email" name="login" id="login" />
-          <label for="password"><strong>SENHA</strong></label>
-          <input
-            class="box1 pswd"
-            type="password"
-            name="password"
-            id="password"
-          />
-          <input
-            class="button btnLogin"
-            v-on:click="validate"
-            type="button"
-            value="OK"
-            id="btnLogin"
-          />
-          <br />          
-            <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
-            <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>          
-        </form>
-      </div>
-      <div class="logedin hide">
-        <div>
-          <p id="user"></p>
-          <div>
-            <input
-              class="button btnExit"
-              v-on:click="logOut"
-              id="btnExit"
-              type="button"
-              value="Sair"
-            />
+    <ModalSenha/>
+    <nav>
+      <header>
+        <div class="navigation-drop">
+          <input class="dropbtn" type="checkbox" id="Menu" />
+          <label class="navigation-drop-btn" for="Menu">Menu</label>
+          <div class="navigation-drop-content">
+            <ul>
+              <li><a href="" class="active">Home</a></li>
+              <li><a href="">Acomodações</a></li>
+              <li><a href="">Reservas</a></li>
+              <div class="campologindrop">
+                <form action="campologin" method="post">
+                  <label for="login"><strong>USUARIO</strong></label>
+                  <input class="box1" type="email" name="login" id="logindrop" />
+                  <label for="password"><strong>SENHA</strong></label>
+                  <input
+                    class="box1"
+                    type="password"
+                    name="password"
+                    id="passworddrop"
+                  />
+                  <div><input class="button" type="submit" value="OK" /></div>
+  
+                  <br />
+                  <router-link to="/Cadastro">Cadastre-se!</router-link>
+                  <a class="links" href="">Esqueceu sua senha?</a>
+                </form>
+              </div>
+            </ul>
           </div>
         </div>
-      </div>
-    </header>
-  </nav>
+        <div id="inicio" class="navigation">
+          <div class="pub" v-show="visivel">
+            <div><router-link to="/">Home</router-link></div>
+            <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
+            <div><router-link to="/Reservas">Reservas</router-link></div>
+          </div>
+          <div class="adm =" v-show="invisivel">
+            <div><router-link to="/HomeAdm">Home</router-link></div>
+            <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
+            <div><router-link to="/ReservasAdm">Reservas</router-link></div>
+            <div><router-link to="/ServicosAdm">Serviços</router-link></div>          
+            <div><router-link to="/RelatorioConsumoAdm">Consumo</router-link></div>
+            <div><router-link to="/Usuarios">Usuarios</router-link></div>
+          </div>
+        </div>
+        <div class="campologin">
+          <form action="campologin" method="post">
+            <label for="login"><strong>USUARIO</strong></label>
+            <input class="box1 login" type="email" name="login" id="login" />
+            <label for="password"><strong>SENHA</strong></label>
+            <input
+              class="box1 pswd"
+              type="password"
+              name="password"
+              id="password"
+            />
+            <input
+              class="button btnLogin"
+              v-on:click="validate"
+              type="button"
+              value="OK"
+              id="btnLogin"
+            />
+            <br />          
+              <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
+              <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>          
+          </form>
+        </div>
+        <div class="logedin hide">
+          <div>
+            <p id="user"></p>
+            <div>
+              <input
+                class="button btnExit"
+                v-on:click="logOut"
+                id="btnExit"
+                type="button"
+                value="Sair"
+              />
+            </div>
+          </div>
+        </div>
+      </header>
+    </nav>
+  </div>
 </template>
 
 <script>
@@ -132,7 +135,7 @@ export default {
           login.match(this.regexLoginAdm) &&
           pswd.match(this.regexPswd)
         ) {
-          let logedOn = 1;
+          let logedOn = 2;
           localStorage.setItem("loged", login);
           localStorage.setItem("loginStatus", logedOn);
           document.getElementById(
@@ -175,27 +178,24 @@ export default {
 
     loginCheck() {
       //  if (this.logedin == 1) {
-      if (localStorage.getItem("loginStatus") === 1) {
+      if (localStorage.getItem("loginStatus") == 1) {
         this.showHide(".campologin", "add");
         this.showHide(".logedin", "remove");
         console.log("ok");
-        document.getElementById("user").innerText = `Olá ${localStorage.getItem(
-          "loged"
-        )}`;
+        document.getElementById("user").innerText = `Olá ${localStorage.getItem("loged")}`;
+      }else if(localStorage.getItem("loginStatus") == 2){
+        this.showHide(".logedin", "remove");
+        this.showHide(".campologin", "add");
+        this.invisivel = true,
+        this.visivel = false
+        console.log("ok");
+        document.getElementById("user").innerText = `Olá ${localStorage.getItem("loged")}`;
+        this.$router.push("HomeAdm")
       }
     },
   },
   mounted() {
-    // this.loginCheck();
-    // verifica se usuario esta logado para ativar botão "Minhas Reservas"
-    if (localStorage.getItem("loginStatus") === "1") {
-      this.showHide(".campologin", "add");
-      this.showHide(".logedin", "remove");
-      console.log("ok");
-      document.getElementById("user").innerText = `Olá ${localStorage.getItem(
-        "loged"
-      )}`;
-    }
+    this.loginCheck();
   },
 };
 </script>
