@@ -1,8 +1,8 @@
-<!-- Preloader
+<!-- Preloader-->
 <template>
-    <div id="preloader">
+    <div id="preloader" v-if="!isloaded">
         <div class="inner">
-            <img src="images/loader/loader.gif" alt="loader">
+            <img src="@/assets/images/loader/loader.gif" alt="loader">
         </div>
     </div>
 </template>
@@ -10,6 +10,30 @@
 <script>
 export default {
     name: "PreloaderComponent",
+    data () {
+      return {
+        isloaded: false,
+        countDown: 3
+      }
+    },
+    methods: {
+            countDownTimer () {
+              for (let i = 3; i > 0 ; i--) {
+                  setTimeout(() => {
+                      this.countDown -= 1
+                      this.isLoaded()
+                  }, 1000)
+                }
+            },
+            isLoaded(){
+                if(this.countDown == 0){
+                    this.isloaded = true;
+                }        
+          }
+    },
+    mounted() {
+        this.countDownTimer();
+    },
 };
 
 // $(window).on('load', function () {
@@ -28,7 +52,7 @@ export default {
     right: 0;
     bottom: 0;
     background-color: #fff;
-    z-index: 999;
+    z-index: 99999;
 }
 
 #preloader .inner {
@@ -38,4 +62,4 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-</style> -->
+</style>

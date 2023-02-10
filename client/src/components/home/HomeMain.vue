@@ -1,6 +1,6 @@
 <template>
-  <router-link to="/Reservas"><button class="botaoreserva"> Reserve já ! </button> </router-link>
   <main>    
+    <router-link to="/Reservas"><button class="botaoreserva"> Reserve já ! </button> </router-link>
     <section class="sec">
       <div>
         <h2>BEM-VINDO</h2>        
