@@ -1,5 +1,6 @@
 <template>
   <div>
+    <PreLoader/>
     <!--Banner-->
     <!-- <BannerComponent/> -->
     <!--Header-->
@@ -19,12 +20,12 @@
 // import BannerComponent from './components/banner/BannerComponent.vue';
 import HeaderComponent from "./components/header/HeaderComponent.vue";
 import FooterComponent from "./components/footer/FooterComponent.vue";
+import PreLoader from '@/components/preloader/PreloaderComponent.vue'
 
 export default {
   name: 'AppVue',
   components: {
-    HeaderComponent,FooterComponent,
-    // BannerComponent
+    HeaderComponent,FooterComponent,PreLoader
   }
 }
 
