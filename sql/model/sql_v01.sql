@@ -241,3 +241,11 @@ from servicos;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Querys de mudanças a partir dia 10/02/2023
+-- -----------------------------------------------------
+
+ALTER TABLE `hotelcnp`.`servicos` 
+ADD COLUMN `labelServico` VARCHAR(45) NOT NULL AFTER `descricaoServico`,
+CHANGE COLUMN `valorServico` `vlrDiariaServico` DOUBLE NOT NULL;

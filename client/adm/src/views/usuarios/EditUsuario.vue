@@ -194,7 +194,7 @@ export default {
 
 .flex > div {
   flex: 1 1 420px;
-  margin: 10px;
+  margin: 0 5%;
 }
 
 .button {
