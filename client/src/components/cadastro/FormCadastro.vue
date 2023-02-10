@@ -16,6 +16,10 @@
                       <input class="cadinput" type="text" name="nome" id="nomeCli" required>
                     </div>
                     <div>
+                      <label class="cadlabel" for="nome"><strong>CPF</strong></label>
+                      <input class="cadinput" type="text" name="cpf" id="cpf" required>
+                    </div>
+                    <div>
                       <label class="cadlabel" for="telefone"><strong>Telefone</strong></label>
                       <input class="cadinput" type="number" name="telefone" id="telefoneCli" required>
                     </div>
@@ -24,23 +28,19 @@
                       <input class="cadinput" type="email" name="email" id="emailCli" required>
                     </div>
                     <div>
-                      <label class="cadlabel" for="dataNascimento"><strong>Nascimento</strong></label>
-                      <input class="cadinput" type="date" name="dataNascimento" id="datnascCli" required>
-                    </div>
-                    <div>
-                      <label class="cadlabel" for="nacionalidade"><strong>Nacionalidade</strong></label>
-                      <input class="cadinput" type="text" name="nacionalidade" id="nacionalidadeCli" required>
+                      <label class="cadlabel" for="nome"><strong>Senha</strong></label>
+                      <input class="cadinput" type="text" name="senha" id="senha" required>
                     </div>
                     <div>
                       <div>
-                      <label class="cadlabel" for="genero"><strong>Genero</strong></label>
+                      <!--<label class="cadlabel" for="genero"><strong>Genero</strong></label>
                       <select class="cadselect" name="genero" id="genCli" required>
                           <option selected disabled value="">Selecione</option>
                           <option>Homem</option>
                           <option>Mulher</option>
                           <option>Pessoa não-binaria</option>
                           <option>Prefiro não informar</option>
-                      </select>
+                      </select> -->
                       </div>
                     </div>  
                     <div>
@@ -56,7 +56,7 @@
                   <br>
                 </div>
               <br>
-              <button class="button" type="button" id="salvarCadastro" v-on:click="clickbutton()">Salvar Cadastro</button>
+              <button class="button" type="button" id="salvarCadastro" v-on:click="registrar()">Salvar Cadastro</button>
           </form>
         </div>
       </div>
@@ -68,7 +68,7 @@
 export default{
     name:"FormCadastro",
     methods:{
-        clickbutton(){
+        registrar(){
             let nomeCli = document.querySelector("#nomeCli")
             let telefoneCli = document.querySelector("#telefoneCli");
             let emailCli = document.querySelector("#emailCli");
