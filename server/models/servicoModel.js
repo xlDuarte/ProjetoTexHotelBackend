@@ -27,6 +27,7 @@ export const getServicoById = (id, result) => {
   
 // insere um servico ao banco
 export const insertServico = (data, result) => {
+    console.log("insertServico", data);
     db.query("INSERT INTO servicos SET ?", [data], (err, results) => {             
         if(err) {
             console.log(err);

@@ -152,6 +152,7 @@ export default {
       vlrDiaria: 0,
       servicos2: "",
       itemArrayServicos: 0,
+      itemArrayEdit: false,
       showSalvarButton: true,
       showExcluirButton: false,
       showCancelarButton: false,
@@ -196,18 +197,20 @@ export default {
           this.label,
           this.descricao,
           this.vlrDiaria,
-          this.showCancelaButton
+          this.itemArrayServicos,
+          this.itemArrayEdit
         );
         // recarrega lista de serviços
         this.servicos2 = JSON.parse(localStorage.getItem("servicoAdm"));
         this.name = "Cliquei HandleClick";
+        this.itemArrayEdit = false;
       }
+      
       if (action == "cancelar") {
         // não faz nada, a rotina de edição está no "servico.salvar" só desabilita o botão e limpa os campos na rotina que já está abaixo...
-
-        this.showSalvarButton = true;
-        this.showCancelarButton = false;
-        this.showExcluirButton = false;
+        // this.showSalvarButton = true;
+        // this.showCancelarButton = false;
+        // this.showExcluirButton = false;
       }
 
       if (action == "excluir") {
@@ -215,9 +218,7 @@ export default {
         let servico = new Servicos();
         servico.excluirServico(this.itemArrayServicos);
         this.servicos2 = JSON.parse(localStorage.getItem("servicoAdm"));
-        this.showSalvarButton = true;
-        this.showCancelarButton = false;
-        this.showExcluirButton = false;
+
       }
 
       // após inclusão, limpa campos do form...
@@ -225,6 +226,12 @@ export default {
       this.descricao = "";
       this.label = "";
       this.vlrDiaria = 0;
+
+      // retorna status dos botões...
+      this.showSalvarButton = true;
+      this.showCancelarButton = false;
+      this.showExcluirButton = false;
+
     },
     handleItem(action, id) {
       console.log("Entrei no handleItem");
@@ -232,6 +239,7 @@ export default {
       if (action == "editar") {
         this.name = "Cliquei HandleItem edit";
         this.preencheFormEdit(id);
+        this.itemArrayEdit = true;
         this.showSalvarButton = true;
         this.showCancelarButton = true;
         this.showExcluirButton = false;
@@ -247,21 +255,21 @@ export default {
     },
     preencheFormEdit(idSelecao) {
       let arrayServicos = JSON.parse(localStorage.getItem("servicoAdm"));
-      console.log(
-        "arrayServicos",
-        arrayServicos,
-        arrayServicos[0].id,
-        arrayServicos[0].nome
-      );
+      // console.log(
+      //   "arrayServicos",
+      //   arrayServicos,
+      //   arrayServicos[0].id,
+      //   arrayServicos[0].nome
+      // );
       // daqui sai o id para controlar exclusão e edição...utilizar!!!!
       for (let i = 0; i < arrayServicos.length; i++) {
-        console.log(
-          "arrayServicos2",
-          idSelecao,
-          arrayServicos,
-          arrayServicos[i].id,
-          arrayServicos[i].nome
-        );
+        // console.log(
+        //   "arrayServicos2",
+        //   idSelecao,
+        //   arrayServicos,
+        //   arrayServicos[i].id,
+        //   arrayServicos[i].nome
+        // );
         if (arrayServicos[i].id === idSelecao) {
           this.nome = arrayServicos[i].nome;
           this.descricao = arrayServicos[i].descricao;

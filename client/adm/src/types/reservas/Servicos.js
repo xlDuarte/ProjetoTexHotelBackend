@@ -1,5 +1,8 @@
 /* Servicos.js */
 // classe Servicos
+// para checar na edição...
+// > ["a","b","c"].forEach(letra => { letra === "a" ? console.log("Letra",letra) : console.log("erro")})
+
 console.log("Executando Servicos.js");
 
 export const msg = "Teste, Servicos.js";
@@ -15,19 +18,21 @@ export class Servicos {
   constructor(id) {
     !id ? (this.id = 0) : (this.id = id);
   }
-  salvar(inputNome, inputLabel, inputDescricao, inputVlrDiaria, novoServico) {
+  salvar(
+    inputNome,
+    inputLabel,
+    inputDescricao,
+    inputVlrDiaria,
+    itemArrayServicos,
+    itemArrayEdit
+  ) {
     this.nome = inputNome;
     this.label = inputLabel;
     this.descricao = inputDescricao;
     this.vlrDiaria = inputVlrDiaria;
-    this.novoServico = novoServico;
-    // console.log(
-    //   "Instanciei classe servico. Dados: ",
-    //   this.nome,
-    //   this.label,
-    //   this.descricao,
-    //   this.vlrDiaria
-    // );
+    this.itemArrayServicos = itemArrayServicos;
+    this.itemArrayEdit = itemArrayEdit;
+
     this.lerServico();
     this.validacao = this.validarCampos(
       inputNome,
@@ -36,22 +41,70 @@ export class Servicos {
     );
     console.log(
       "Controle de validação e edição:",
-      `Validação:${this.validacao} - Edição:${this.novoServico}`
+      `Validação:${this.validacao} - Edição:${this.itemArrayServicos} - ${this.itemArrayEdit} `
     );
     if (this.validacao !== true) {
       alert("Informações do serviço não estão ok! Verificar!");
       return false;
     }
+
+    // verifica se é uma edição, o tratamento é diferente...
+    if (this.itemArrayEdit) {
+      console.log(
+        "Dados alterados:",
+        this.id,
+        this.nome,
+        this.descricao,
+        this.label,
+        this.vlrDiaria
+      );
+
+      // cria 2 arrays - um com o conteudo atual (arrayStorage), do qual o item editado sera primeiro eliminado, para ser recriado no novo array (newStorage)
+      // com o BD esta rotina devera ser refeita.
+      let arrayStorage,
+        newStorage = [];
+      if (localStorage.getItem("servicoAdm")) {
+        arrayStorage = JSON.parse(localStorage.getItem("servicoAdm"));
+      }
+      // recupera id do servico antes de excluir...
+      this.id = arrayStorage[itemArrayServicos].id;
+      // console.log(
+      //   `Salvar - check de edição...: elemento array: ${this.itemArrayServicos} - id servico: ${this.id}`
+      // );
+      arrayStorage.splice(itemArrayServicos, 1);
+      newStorage = arrayStorage;
+      console.log("Arrays depois de excluir...arrayStorage", arrayStorage);
+      let jsonServico = this.lerServico(
+        this.id,
+        this.nome,
+        this.descricao,
+        this.label,
+        this.vlrDiaria
+      );
+      newStorage.push(jsonServico);
+      localStorage.setItem("servicoAdm", JSON.stringify(newStorage));
+      this.itemArrayEdit = false;
+      return true;
+    }
+
     // verifica ultimo id para inicializar id a partir do mesmo
     if (localStorage.getItem("servicoAdm")) {
       this.local = JSON.parse(localStorage.getItem("servicoAdm"));
-      this.id = this.local[this.local.length - 1]["id"] + 1;
+      // verifica se array esta vazio, se tiver conteudo realizar sort para gerar o id correto, se vazio this.local tem que iniciar com 0
+      if (this.local.length === 0) {
+        this.id = 0;
+      } else {
+        // realiza sort do array
+        this.local = this.listaServicos("id");
+        this.id = this.local[this.local.length - 1]["id"] + 1;
+      }
+
       console.log("controle do id:", this.id, this.local, this.local.length);
     } else {
       this.validacao ? this.id++ : null;
     }
-    //localStorage.setItem("servicoAdm", this.id);
 
+    //localStorage.setItem("servicoAdm", this.id);
     // prepara gravacao do registro em formato JSON
     // let jsonServico = [
     //   `{id:${this.id},nome:"${this.nome}",descricao:"${this.descricao}",label:"${this.label}",vlrDiaria:${this.vlrDiaria}}`,
@@ -75,7 +128,7 @@ export class Servicos {
     //console.log(JSON.parse(localStorage.getItem("servicoAdm")));
 
     // atualiza listagem de itens...
-    this.listaServicos("boxListagem_body");
+    this.listaServicos("id");
     return this.lerServico();
   }
 
@@ -89,15 +142,27 @@ export class Servicos {
     return servico;
   }
 
+  // editarServico(idArray) {
+  //   console.log("Vou editar o servico id:", idArray);
+  //   // let arrayStorage,
+  //   //   newStorage = [];
+  //   // if (localStorage.getItem("servicoAdm")) {
+  //   //   arrayStorage = JSON.parse(localStorage.getItem("servicoAdm"));
+  //   // }
+  //   // newStorage = arrayStorage.splice(idArray, 1);
+  //   // console.log("Novo Array Storage", newStorage);
+  //   // // atualiza localStorage...
+  //   // localStorage.setItem("servicoAdm", JSON.stringify(arrayStorage));
+
+  //   return true;
+  //}
+
   excluirServico(idArray) {
-    console.log("Vou exluir o servico id:", idArray);
-    let arrayStorage,
-      newStorage = [];
+    let arrayStorage = [];
     if (localStorage.getItem("servicoAdm")) {
       arrayStorage = JSON.parse(localStorage.getItem("servicoAdm"));
     }
-    newStorage = arrayStorage.splice(idArray, 1);
-    console.log("Novo Array Storage", newStorage);
+    arrayStorage.splice(idArray, 1);
     // atualiza localStorage...
     localStorage.setItem("servicoAdm", JSON.stringify(arrayStorage));
 
@@ -113,19 +178,29 @@ export class Servicos {
       : true;
   }
 
-  listaServicos(div) {
+  listaServicos(ordem) {
     // define conteudo do array de servicos...
     let servicos = [];
     if (localStorage.getItem("servicoAdm")) {
-      console.log(
-        "listaServicos",
-        div,
-        localStorage.getItem("servicoAdm").length
-      );
       servicos = JSON.parse(localStorage.getItem("servicoAdm"));
+      console.log("servicos sem sort", servicos);
+      servicos.sort(this.sortServicos("id"));
+      console.log("servicos com sort", servicos, ordem);
     }
 
     console.log;
     return servicos;
+  }
+
+  sortServicos(prop) {
+    //Comparer Function
+    return function (a, b) {
+      if (a[prop] > b[prop]) {
+        return 1;
+      } else if (a[prop] < b[prop]) {
+        return -1;
+      }
+      return 0;
+    };
   }
 }
