@@ -52,17 +52,18 @@
         <div class="campologin">
           <form action="campologin" method="post">
             <label for="login"><strong>USUARIO</strong></label>
-            <input class="box1 login" type="email" name="login" id="login" />
+            <input class="box1 login" type="email" name="login" id="login" v-model="login" />
             <label for="password"><strong>SENHA</strong></label>
             <input
               class="box1 pswd"
               type="password"
               name="password"
               id="password"
+              v-model="pswd"
             />
             <input
               class="button btnLogin"
-              v-on:click="validate"
+              @click="validate"
               type="button"
               value="OK"
               id="btnLogin"
@@ -78,7 +79,7 @@
             <div>
               <input
                 class="button btnExit"
-                v-on:click="logOut"
+                @click="logOut"
                 id="btnExit"
                 type="button"
                 value="Sair"
@@ -89,9 +90,11 @@
       </header>
     </nav>
   </div>
+
 </template>
 
 <script>
+import axios from "axios"
 import ModalSenha from '../home/ModalSenha';
 
 export default {
@@ -101,60 +104,63 @@ export default {
   },
   data() {
     return {
-      btnLogin: document.getElementById("btnLogin"),
-      regexLogin: /[A-Z.A-Z]@[A-Z.A-Z]/gi,
-      regexLoginAdm: /[A-Za-z0-9]/gi,
-      regexPswd: /[A-Za-z0-9]{8,14}/g,
-      loged: localStorage.getItem("loged"),
-      logedin: localStorage.getItem("loginStatus"),
-      btnExit: document.getElementById("btnExit"),
+      items:[],
+      login: "",
+      pswd: "", 
+      logedin: false,
       visivel: true,
       invisivel: false
     };
   },
   methods: {
-    validate() {
-      let login = document.getElementById("login").value;
-      let pswd = document.getElementById("password").value;
-
-      if (login != "" && pswd != "") {
-        if (login.match(this.regexLogin) && pswd.match(this.regexPswd)) {
-          let logedOn = 1;
-          localStorage.setItem("loged", login);
-          localStorage.setItem("loginStatus", logedOn);
-          //this.logedin = localStorage.getItem("logedin");
-          this.logedin = localStorage.getItem("loginStatus");
-          alert("Logado com sucesso!");
-          this.showHide(".logedin", "remove");
-          this.showHide(".campologin", "add");
-          document.getElementById(
-            "user"
-          ).innerText = `Olá ${localStorage.getItem("loged")}`;
-          location.reload();
-        } else if (
-          login.match(this.regexLoginAdm) &&
-          pswd.match(this.regexPswd)
-        ) {
-          let logedOn = 2;
-          localStorage.setItem("loged", login);
-          localStorage.setItem("loginStatus", logedOn);
-          document.getElementById(
-            "user"
-          ).innerText = `Olá ${localStorage.getItem("loged")}`;
-          // this.logedin = localStorage.getItem("logedin");
-          this.logedin = localStorage.getItem("loginStatus");
-          alert("Logado com sucesso como administrador!");
-          this.$router.push("HomeAdm")
-          this.showHide(".logedin", "remove");
-          this.showHide(".campologin", "add");
-          this.invisivel = true,
-          this.visivel = false
-        } else {
-          alert("Usuario ou senha incorretos");
+    async validate() {
+      if (this.login != "") {
+        try {
+          const response = await axios.get("http://localhost:5000/usuario");
+          this.items = response.data;
+          console.log(this.items)
+            this.items.forEach(item => {
+              if(item.emailUsuario == this.login && item.senhaUsuario == this.pswd){
+                console.log('ok')
+                let loged = item.nomeUsuario;
+                let logedOn = item.tipoUsuario;
+                let idUser = item.idUsuario;
+                let logedin = true;
+                if(logedOn == 'cliente'){
+                  this.showHide(".logedin", "remove");
+                  this.showHide(".campologin", "add");
+                  localStorage.setItem("userId", idUser)
+                  localStorage.setItem("loged", loged);
+                  localStorage.setItem("loginStatus", logedOn);
+                  alert("Logado com sucesso!");
+                  document.getElementById(
+                    "user"
+                    ).innerText = `Olá ${loged}`;
+                } else if(logedOn == 'admin'){
+                  localStorage.setItem("loged", loged);
+                  localStorage.setItem("loginStatus", logedOn);
+                  document.getElementById(
+                    "user"
+                  ).innerText = `Olá ${loged}`;
+                  this.logedin = localStorage.getItem("loginStatus");
+                  alert("Logado com sucesso como administrador!");
+                  this.$router.push("HomeAdm")
+                  this.showHide(".logedin", "remove");
+                  this.showHide(".campologin", "add");
+                  this.invisivel = true,
+                  this.visivel = false
+                }
+                
+            /*} else if(!this.logedin){
+                alert("Usuario ou senha incorretos");
+            */}  
+            });
+        } catch (err) {
+          console.log(err);
         }
       } else {
         alert("È preciso preencher os campos de login e senha");
-      }
+      }        
     },
 
     showHide(obj, action) {
@@ -178,12 +184,12 @@ export default {
 
     loginCheck() {
       //  if (this.logedin == 1) {
-      if (localStorage.getItem("loginStatus") == 1) {
+      if (localStorage.getItem("loginStatus") == 'cliente') {
         this.showHide(".campologin", "add");
         this.showHide(".logedin", "remove");
         console.log("ok");
         document.getElementById("user").innerText = `Olá ${localStorage.getItem("loged")}`;
-      }else if(localStorage.getItem("loginStatus") == 2){
+      }else if(localStorage.getItem("loginStatus") == 'admin'){
         this.showHide(".logedin", "remove");
         this.showHide(".campologin", "add");
         this.invisivel = true,

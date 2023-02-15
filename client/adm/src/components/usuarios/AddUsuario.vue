@@ -114,8 +114,8 @@ export default {
                 this.endUser="";
                 this.telefoneUser="";
                 this.tipoUser="";
-                this.senhaUser="";                
-                location.reload();//testar outras soluções para recarregar o componente
+                this.senhaUser="";   
+                this.$emit('updateList')             
             } catch (err) {
                 console.log(err);
             }

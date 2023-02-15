@@ -18,6 +18,10 @@ import {
   deleteServico,
   updateServico,
 } from "../controller/servicos.js";
+//import Login
+import{
+  showLogin
+} from "../controller/logins.js";
 //import Acomodações
 
 //import Consumo
@@ -26,6 +30,9 @@ import {
 
 // init express router
 const router = express.Router();
+
+// rota para captura do login
+router.get("/login", showLogin);
 
 // rota para listar todos os usuarios
 router.get("/usuario", showUsuario);
