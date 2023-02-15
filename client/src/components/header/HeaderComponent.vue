@@ -125,7 +125,7 @@ export default {
                 let loged = item.nomeUsuario;
                 let logedOn = item.tipoUsuario;
                 let idUser = item.idUsuario;
-                let logedin = true;
+                this.logedin = true;
                 if(logedOn == 'cliente'){
                   this.showHide(".logedin", "remove");
                   this.showHide(".campologin", "add");
