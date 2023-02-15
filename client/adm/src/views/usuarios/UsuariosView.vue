@@ -4,7 +4,7 @@
       <h2>CADASTRO DE USUARIOS</h2>
       <p>Preencha todos os campos</p>
     </div>
-    <AddUsuario/>
+    <AddUsuario @updateList="getUsuarios()"/>
     <table class="table">
       <thead>
         <th scope="col">ID</th>

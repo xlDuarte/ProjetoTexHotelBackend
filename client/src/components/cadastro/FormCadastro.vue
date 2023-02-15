@@ -13,23 +13,23 @@
                   <div class="flex">
                     <div>
                       <label class="cadlabel" for="nome"><strong>Nome</strong></label>
-                      <input class="cadinput" type="text" name="nome" id="nomeCli" required>
+                      <input class="cadinput" type="text" name="nome" id="nomeCli" v-model="nomeUser" required>
                     </div>
                     <div>
-                      <label class="cadlabel" for="nome"><strong>CPF</strong></label>
-                      <input class="cadinput" type="text" name="cpf" id="cpf" required>
+                      <label class="cadlabel" for="cpf"><strong>CPF</strong></label>
+                      <input class="cadinput" type="text" name="cpf" id="cpf" v-model="cpfUSer" required>
                     </div>
                     <div>
                       <label class="cadlabel" for="telefone"><strong>Telefone</strong></label>
-                      <input class="cadinput" type="number" name="telefone" id="telefoneCli" required>
+                      <input class="cadinput" type="number" name="telefone" id="telefoneCli" v-model="telefoneUser" required>
                     </div>
                     <div>
                       <label class="cadlabel" for="email"><strong>Email</strong></label>
-                      <input class="cadinput" type="email" name="email" id="emailCli" required>
+                      <input class="cadinput" type="email" name="email" id="emailCli" v-model="emailUser" required>
                     </div>
                     <div>
                       <label class="cadlabel" for="nome"><strong>Senha</strong></label>
-                      <input class="cadinput" type="text" name="senha" id="senha" required>
+                      <input class="cadinput" type="text" name="senha" id="senha" v-model="senhaUser" required>
                     </div>
                     <div>
                       <div>
@@ -46,7 +46,7 @@
                     <div>
                         <label class="cadlabel" for="endereco"><strong>Endereço</strong></label>
                         <br>
-                        <textarea class="cadtextarea" rows="6" id="endCli" name="endereco"></textarea>
+                        <textarea class="cadtextarea" rows="6" id="endCli" name="endereco" v-model="endUser"></textarea>
                         <div class="check">
                             <label for="notificaEmail"><strong>Notificações por E-mail?</strong></label>
                             <input class="checkbox" type="checkbox" id="npe" name="notificaEmail">
@@ -56,7 +56,7 @@
                   <br>
                 </div>
               <br>
-              <button class="button" type="button" id="salvarCadastro" v-on:click="registrar()">Salvar Cadastro</button>
+              <button class="button" type="button" id="salvarCadastro" @click="saveUsuario">Salvar Cadastro</button>
           </form>
         </div>
       </div>
@@ -65,30 +65,45 @@
 </template>
 
 <script>
+import router from '@/router';
+import axios from 'axios';
 export default{
     name:"FormCadastro",
+    data() {
+        return {
+            nomeUser: "",
+            senhaUser: "",
+            cpfUSer:"",
+            emailUser: "",
+            endUser: "",
+            telefoneUser: "",
+        };
+    },
     methods:{
-        registrar(){
-            let nomeCli = document.querySelector("#nomeCli")
-            let telefoneCli = document.querySelector("#telefoneCli");
-            let emailCli = document.querySelector("#emailCli");
-            let datnascCli = document.querySelector("#datnascCli");
-            let nacionalidadeCli = document.querySelector("#nacionalidadeCli");
-            let genCli = document.querySelector("#genCli");
-            let endCli = document.querySelector("#endCli");
-            let npe = document.querySelector("#npe");
-            
-            
-            
-            localStorage.setItem("nomeuser", nomeCli.value);
-            localStorage.setItem("teluser", telefoneCli.value);
-            localStorage.setItem("emailuser", emailCli.value);
-            localStorage.setItem("dateuser", datnascCli.value);
-            localStorage.setItem("nacuser", nacionalidadeCli.value);
-            localStorage.setItem("genuser", genCli.value);
-            localStorage.setItem("enduser", endCli.value);
-            localStorage.setItem("npeuser", npe.value);
-        }
+      async saveUsuario() {
+            try {
+                await axios.post("http://localhost:5000/usuario", {
+                    nomeUsuario: this.nomeUser,
+                    emailUsuario: this.emailUser,
+                    cpfUSuario: this.cpfUSer,
+                    endUsuario: this.endUser,
+                    telefoneUsuario: this.telefoneUser,
+                    tipoUsuario: this.tipoUser,
+                    senhaUsuario: this.senhaUser
+                });
+                this.nomeUser = "";
+                this.emailUser="";
+                this.cpfUSer="";
+                this.endUser="";
+                this.telefoneUser="";
+                this.tipoUser="";
+                this.senhaUser="";   
+                alert("Cadastro efetuado com sucesso")
+                router.push("/");        
+            } catch (err) {
+                console.log(err);
+            }
+      },
 
     }
 
