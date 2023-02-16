@@ -1,12 +1,12 @@
 <template>
   <div class="sec">
-    <h4>ServicosView.vue</h4>
+    <h4>ServicosView.vue - quando ok ocultar esta área!!!</h4>
     <hr />
-    <p>Teste nome: {{ name }}</p>
-    <span>Teste idade: {{ age }}</span>
+    <p>Teste msg1: {{ msg1 }}</p>
+    <span>Teste msg2: {{ msg2 }}</span>
     <p></p>
-    <button @click="changeName('Mudei o nome!')">Teste botão muda nome</button>
-    <button @click="changeAge(60)">teste botão muda idade</button>
+    <button @click="changeName('Alterei msg1!')">Teste msg1</button>
+    <button @click="changeAge('Alterei msg2!')">Teste msg2</button>
     <hr />
     <div class="container border p-4 my-5 w-50">
       <form class="formServicos" action="" @submit.prevent>
@@ -87,112 +87,144 @@
         </div>
       </form>
     </div>
-    <div class="boxListagem">
-      <div class="container w-50 boxListagem_info">
-        <div class="boxListagem_head container d-flex w-100">
-          <div class="w-10 border px-3">ID</div>
-          <div class="w-15 border px-3">Nome Abrev.</div>
-          <div class="w-25 border px-3">Descrição</div>
-          <div class="w-10 border px-3">Label</div>
-          <div class="w-10 border px-3">Valor Diaria</div>
-          <div class="w-30 border px-3"></div>
-        </div>
-        <div
-          class="boxListagem_body container d-flex w-100"
-          v-for="item in servicos2"
-          :key="item"
-        >
-          <div class="w-10 border px-3">{{ item.id }}</div>
-          <div class="w-15 border px-3">{{ item.nome }}</div>
-          <div class="w-25 border px-3">{{ item.descricao }}</div>
-          <div class="w-10 border px-3">{{ item.label }}</div>
-          <div class="w-10 border px-3">R$ {{ item.vlrDiaria }}</div>
-          <div class="handleItem w-30 border px-3">
-            <button
-              @click="handleItem('editar', item.id)"
-              id="btnEditar"
-              class="btn btn-warning my-3 fw-bold text-uppercase text-white"
-              type="button"
-            >
-              Editar
-            </button>
-            <button
-              @click="handleItem('excluir', item.id)"
-              id="btnEditar"
-              class="btn btn-warning my-3 fw-bold text-uppercase text-white"
-              type="button"
-            >
-              Excluir
-            </button>
-          </div>
-        </div>
-      </div>
+    <div class="listServicos">
+      <table class="table">
+        <thead>
+          <th scope="col">ID</th>
+          <th scope="col">Serviço</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Label</th>
+          <th scope="col">Vlr Diaria</th>
+        </thead>
+        <tbody>
+          <tr scope="row" v-for="item in items" :key="item.idServicos">
+            <td>{{ item.idServicos }}</td>
+            <td>{{ item.nomeServico }}</td>
+            <td>{{ item.descricaoServico }}</td>
+            <td>{{ item.labelServico }}</td>
+            <td>{{ item.vlrDiariaServico }}</td>
+            <!-- <td>
+              <router-link
+                :to="{ name: 'editServicos', params: { id: item.idServicos } }"
+              >
+                <button class="button">Editar</button></router-link
+              >
+            </td>
+            <td>
+              <button class="button" @click="deleteServicos(item.idServico)">
+                Deletar
+              </button>
+            </td> -->
+            <div class="handleItem w-30 border px-3">
+              <button
+                @click="handleItem('editar', item.idServicos)"
+                id="btnEditar"
+                class="btn btn-warning my-3 fw-bold text-uppercase text-white"
+                type="button"
+              >
+                Editar
+              </button>
+              <button
+                @click="handleItem('excluir', item.idServicos)"
+                id="btnEditar"
+                class="btn btn-warning my-3 fw-bold text-uppercase text-white"
+                type="button"
+              >
+                Excluir
+              </button>
+            </div>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
-
-// import { StorageServico } from "@/../adm/src/types/reservas/StorageServico.js";
-// import FormReserva from "@/components/reserva/FormReserva.vue";
-// import PainelAcomodacoes from "@/components/reserva/PainelAcomodacoes.vue";
-// import PainelReserva from "@/components/reserva/PainelReserva.vue";
 
 export default {
   name: "ServicosView",
   data() {
     // data
     return {
-      name: "Campo Name",
-      age: 25,
+      msg1: "msg1",
+      msg2: "msg2",
+      idServico: "",
       nome: "",
       descricao: "",
       label: "",
       vlrDiaria: 0,
-      servicos2: "",
+      item: [],
+      items: [],
       itemArrayServicos: 0,
       itemArrayEdit: false,
       showSalvarButton: true,
       showExcluirButton: false,
       showCancelarButton: false,
-      // servicos2: [
-      //   {
-      //     id: "servico99",
-      //     nome: "servico1",
-      //     label: "cafeQuarto",
-      //     descricao: "Cafe da Manhã no Quarto",
-      //     vlrDiaria: 100,
-      //   },
-      //   {
-      //     id: "servico98",
-      //     nome: "servico2",
-      //     label: "5G",
-      //     descricao: "Internet 5G",
-      //     vlrDiaria: 50,
-      //   },
-      // ],
     };
   },
-  setup() {},
-  components: {
-    // FormReserva,
-    // PainelReserva,
-    // PainelAcomodacoes,
+
+  created() {
+    this.getServicos();
   },
+
+  setup() {
+    // setup...
+  },
+
+  components: {
+    // components....
+  },
+
   methods: {
-    changeName(name) {
-      this.name = name;
+    // campos do cabecalho, apoio para desenvolvimento...
+    changeName(msg1) {
+      this.msg1 = msg1;
     },
-    changeAge(age) {
-      this.age = age;
+    changeAge(msg2) {
+      this.msg2 = msg2;
     },
+
+    // Lista todos os servicos
+    async getServicos() {
+      try {
+        const response = await axios.get("http://localhost:5000/servico");
+        this.items = response.data;
+        // console.log("getServicos", this.items);
+        return response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // localiza servico pelo id
+    async getServicosById(idServico) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/servico/${idServico}`
+        );
+        this.item = response.data;
+        this.idServico = this.item.idServicos;
+        this.nome = this.item.nomeServico;
+        this.descricao = this.item.descricaoServico;
+        this.label = this.item.labelServico;
+        this.vlrDiaria = this.item.vlrDiariaServico;
+        // console.log("getServicosById", this.item);
+        return response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
     handleClick(action) {
       console.log("Entrei no handleClick");
-      // let storageServico = new StorageServico(document.querySelector("form"));
       if (action == "salvar") {
+        console.log("Entrei no handleClick - salvar");
         let servico = new Servicos();
         servico.salvar(
+          this.idServico,
           this.nome,
           this.label,
           this.descricao,
@@ -201,11 +233,9 @@ export default {
           this.itemArrayEdit
         );
         // recarrega lista de serviços
-        this.servicos2 = JSON.parse(localStorage.getItem("servicoAdm"));
-        this.name = "Cliquei HandleClick";
-        this.itemArrayEdit = false;
+        this.getServicos();
       }
-      
+
       if (action == "cancelar") {
         // não faz nada, a rotina de edição está no "servico.salvar" só desabilita o botão e limpa os campos na rotina que já está abaixo...
         // this.showSalvarButton = true;
@@ -214,11 +244,12 @@ export default {
       }
 
       if (action == "excluir") {
-        // não faz nada, só desabilita o botão e limpa os campos na rotina que já está abaixo...
+        // chama rotina de exclusão, desabilita o botão e limpa os campos na rotina que já está abaixo...
+        console.log("Entrei no handleClick - excluir");
         let servico = new Servicos();
-        servico.excluirServico(this.itemArrayServicos);
-        this.servicos2 = JSON.parse(localStorage.getItem("servicoAdm"));
-
+        servico.excluir(this.idServico);
+        // recarrega lista de serviços
+        this.getServicos();
       }
 
       // após inclusão, limpa campos do form...
@@ -231,14 +262,17 @@ export default {
       this.showSalvarButton = true;
       this.showCancelarButton = false;
       this.showExcluirButton = false;
-
+      this.itemArrayEdit = false;
+      return true;
     },
-    handleItem(action, id) {
+
+    handleItem(action, idServico) {
       console.log("Entrei no handleItem");
       // let storageServico = new StorageServico(document.querySelector("form"));
       if (action == "editar") {
         this.name = "Cliquei HandleItem edit";
-        this.preencheFormEdit(id);
+        // atualiza campos do formulário
+        this.getServicosById(idServico);
         this.itemArrayEdit = true;
         this.showSalvarButton = true;
         this.showCancelarButton = true;
@@ -246,53 +280,21 @@ export default {
       }
       if (action == "excluir") {
         this.name = "Cliquei HandleItem excluir";
-        this.preencheFormEdit(id);
+        // atualiza campos do formulário
+        this.getServicosById(idServico);
+        this.itemArrayEdit = false;
         this.showSalvarButton = false;
         this.showCancelarButton = true;
         this.showExcluirButton = true;
       }
-      this.age = id;
-    },
-    preencheFormEdit(idSelecao) {
-      let arrayServicos = JSON.parse(localStorage.getItem("servicoAdm"));
-      // console.log(
-      //   "arrayServicos",
-      //   arrayServicos,
-      //   arrayServicos[0].id,
-      //   arrayServicos[0].nome
-      // );
-      // daqui sai o id para controlar exclusão e edição...utilizar!!!!
-      for (let i = 0; i < arrayServicos.length; i++) {
-        // console.log(
-        //   "arrayServicos2",
-        //   idSelecao,
-        //   arrayServicos,
-        //   arrayServicos[i].id,
-        //   arrayServicos[i].nome
-        // );
-        if (arrayServicos[i].id === idSelecao) {
-          this.nome = arrayServicos[i].nome;
-          this.descricao = arrayServicos[i].descricao;
-          this.label = arrayServicos[i].label;
-          this.vlrDiaria = arrayServicos[i].vlrDiaria;
-          this.itemArrayServicos = i;
-        }
-      }
-      //this.showCancelaButton = true;
-      return true;
+      this.msg2 = `idServico ${idServico}`;
     },
   },
   computed: {
     // incluir funções...
   },
   mounted() {
-    if (localStorage.getItem("servicoAdm")) {
-      this.servicos2 = JSON.parse(localStorage.getItem("servicoAdm"));
-    } else {
-      this.servicos2 = "";
-    }
-    let servico = new Servicos();
-    servico.listaServicos("boxListagem_body");
+    // funções mounted...
   },
 };
 </script>
