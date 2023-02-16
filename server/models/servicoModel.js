@@ -3,7 +3,7 @@ import db from "../config/database.js";
   
 // lista todos os servicos
 export const getServico = (result) => {
-    db.query("SELECT * FROM servicos", (err, results) => {             
+    db.query("SELECT * FROM hotelcnp.servicos ORDER BY idServicos ASC", (err, results) => {             
         if(err) {
             console.log(err);
             result(err, null);
