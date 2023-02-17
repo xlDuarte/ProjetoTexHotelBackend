@@ -10,6 +10,7 @@ import {
   deleteUsuario,
   updateUsuario,
 } from "../controller/usuarios.js";
+
 //import Serviços
 import {
   showServico,
@@ -18,15 +19,22 @@ import {
   deleteServico,
   updateServico,
 } from "../controller/servicos.js";
+
 //import Login
-import{
-  showLogin
-} from "../controller/logins.js";
+import { showLogin } from "../controller/logins.js";
+
 //import Acomodações
 
 //import Consumo
 
 //import Reservas
+import {
+  showReserva,
+  showReservaById,
+  createReserva,
+  deleteReserva,
+  updateReserva,
+} from "../controller/reservas.js";
 
 // init express router
 const router = express.Router();
@@ -64,6 +72,22 @@ router.put("/servico/:id", updateServico);
 
 // rota para deletar um servico
 router.delete("/servico/:id", deleteServico);
+
+// Reservas
+// rota para listar todas as reservas
+router.get("/reserva", showReserva);
+
+// rota para listar uma reserva
+router.get("/reserva/:id", showReservaById);
+
+// rota para criar uma reserva
+router.post("/reserva", createReserva);
+
+// rota para atualizar uma reserva
+router.put("/reserva/:id", updateReserva);
+
+// rota para deletar uma reserva
+router.delete("/reserva/:id", deleteReserva);
 
 // export do router
 export default router;
