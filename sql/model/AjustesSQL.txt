@@ -6,3 +6,53 @@ ALTER TABLE `hotelcnp`.`usuario`
 CHANGE COLUMN `statusUsuario` `statusUsuario` VARCHAR(45) NULL ;
 
 ************************************************************************************************************
+
+FRC - 17/02 - Ajuste para incluir novos campos na tabela Reservas
+
+ALTER TABLE `hotelcnp`.`Reservas` 
+ADD COLUMN `qtDiarias` INT NOT NULL AFTER `acomodacoes_idAcomodacao`,
+ADD COLUMN `acomodacaoTipo` VARCHAR(15) NOT NULL AFTER `qtDiarias`,
+ADD COLUMN `acomodacaoVlrDiaria` decimal(2) NOT NULL AFTER `acomodacaoTipo`,
+ADD COLUMN `statusReserva` VARCHAR(15) NOT NULL AFTER `acomodacaoVlrDiaria`,
+ADD COLUMN `motivoCancelamento` VARCHAR(100) NULL AFTER `statusReserva`,
+ADD COLUMN `dataCancelamento` date NULL AFTER `motivoCancelamento`,
+ADD COLUMN `cupom` VARCHAR(15) NOT NULL AFTER `dataCancelamento`,
+ADD COLUMN `taxaDescontoCupom` decimal(2) NOT NULL AFTER `cupom`,
+ADD COLUMN `valorTotalDesconto` decimal(2) NOT NULL AFTER `taxaDescontoCupom`,
+ADD COLUMN `valorTotalServicos` decimal(2) NOT NULL AFTER `valorTotalDesconto`;
+
+**************************************************************************************************************
+
+FRC - 17/02 - Criação de view para consulta de reservas / usuarios / acomodacoes
+
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `v_ConsultaReserva` AS
+    SELECT 
+        `Reservas`.`idReservas` AS `idReservas`,
+        `Reservas`.`dataReserva` AS `dataReserva`,
+        `Reservas`.`dataEntradaReserva` AS `dataEntradaReserva`,
+        `Reservas`.`dataSaidaReserva` AS `dataSaidaReserva`,
+        `Reservas`.`valorReserva` AS `valorReserva`,
+        `Reservas`.`qtdHospedesReserva` AS `qtdHospedesReserva`,
+        `Reservas`.`usuario_idUsuario` AS `usuario_idUsuario`,
+        `usuario`.`nomeUsuario` AS `nomeUsuario`,
+        `Reservas`.`acomodacoes_idAcomodacao` AS `acomodacoes_idAcomodacao`,
+        `acomodacoes`.`nomeAcomodacao` AS `nomeAcomodacao`,
+        `acomodacoes`.`valorAcomodacao` AS `valorAcomodacao`,
+        `acomodacoes`.`numeroAcomodacao` AS `numeroAcomodacao`
+        FROM
+        (`Reservas`
+        JOIN `usuario` ON ((`Reservas`.`usuario_idUsuario` = `usuario`.`idUsuario`))
+        JOIN `acomodacoes` ON ((`Reservas`.`acomodacoes_idAcomodacao` = `acomodacoes`.`idAcomodacao`)))
+
+**************************************************************************************************************
+
+FRC - 17/02 - Inclusão de quantidade maxima de hospedes por acomodacao na tabela acomodacoes
+
+ALTER TABLE `hotelcnp`.`acomodacoes` 
+ADD COLUMN `qtMaxPessoas` INT NOT NULL AFTER `numeroAcomodacao`;
+
+***************************************************************************************************************

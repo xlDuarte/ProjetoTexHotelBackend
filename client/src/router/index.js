@@ -41,6 +41,11 @@ const routes = [
     component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
   },
   {
+    path: "/ReservasAdm",
+    name: "reservasAdm",
+    component: () => import("../../adm/src/views/reservas/ReservasView.vue"),
+  },
+  {
     path: "/Usuarios",
     name: "usuarios",
     component: () => import("../../adm/src/views/usuarios/UsuariosView.vue"),
@@ -50,7 +55,6 @@ const routes = [
     name: "editUsuarios",
     component: () => import("../../adm/src/views/usuarios/EditUsuario.vue"),
   },
-  
 ];
 
 const router = createRouter({
