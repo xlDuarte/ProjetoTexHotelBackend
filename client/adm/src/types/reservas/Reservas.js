@@ -20,6 +20,17 @@ export class Reservas {
   idUsuario;
   idAcomodacaoTipo;
   idAcomodacao;
+  acomodacaoTipo;
+  acomodacaoVlrDiaria;
+  vlrDiariaAcomodacao;
+  qtDiarias;
+  statusReserva;
+  dataCancelamento;
+  motivoCancelamento;
+  cupom;
+  taxaDescontoCupom;
+  valorTotalDesconto;
+  valorTotalServicos;
   idCupom;
   storage = [];
 
@@ -34,11 +45,22 @@ export class Reservas {
     inputValorReserva,
     inputQtdHospedesReserva,
     inputIdUsuario,
-    // inputIdAcomodacaoTipo,
     inputIdAcomodacao,
+    acomodacaoTipo,
+    acomodacaoVlrDiaria,
+    vlrDiariaAcomodacao,
+    qtDiarias,
+    statusReserva,
+    dataCancelamento,
+    motivoCancelamento,
+    cupom,
+    taxaDescontoCupom,
+    valorTotalDesconto,
+    valorTotalServicos,
     itemArrayReservas,
     itemArrayEdit
   ) {
+    // campos input - form
     this.idReservas = idReservas;
     this.dataReserva = inputDataReserva;
     this.dataEntradaReserva = inputDataEntradaReserva;
@@ -46,20 +68,21 @@ export class Reservas {
     this.valorReserva = inputValorReserva;
     this.qtdHospedesReserva = inputQtdHospedesReserva;
     this.idUsuario = inputIdUsuario;
-    // this.idAcomodacaoTipo = inputIdAcomodacaoTipo;
     this.idAcomodacao = inputIdAcomodacao;
+    // campos não input
+    this.acomodacaoTipo = acomodacaoTipo;
+    this.acomodacaoVlrDiaria = acomodacaoVlrDiaria;
+    this.vlrDiariaAcomodacao = vlrDiariaAcomodacao;
+    this.qtDiarias = qtDiarias;
+    this.statusReserva = statusReserva;
+    this.dataCancelamento = dataCancelamento;
+    this.motivoCancelamento = motivoCancelamento;
+    this.cupom = cupom;
+    this.taxaDescontoCupom = taxaDescontoCupom;
+    this.valorTotalDesconto = valorTotalDesconto;
+    this.valorTotalServicos = valorTotalServicos;
     this.itemArrayReservas = itemArrayReservas;
     this.itemArrayEdit = itemArrayEdit;
-
-    // this.lerReserva();
-    console.log(
-      "Vou salvar...",
-      this.idReservas,
-      this.dataReserva,
-      this.dataEntradaReserva,
-      this.dataSaidaReserva,
-      this.qtdHospedesReserva
-    );
 
     this.validacao = this.validarCampos(
       inputDataEntradaReserva,
@@ -87,13 +110,15 @@ export class Reservas {
         this.valorReserva,
         this.qtdHospedesReserva,
         this.idUsuario,
-        this.idAcomodacaoTipo,
         this.idAcomodacao,
-        this.idCupom
+        this.statusReserva,
+        this.dataCancelamento,
+        this.motivoCancelamento
       );
-      //   this.updateServicoBD();
+      this.updateReservaBD();
       //   this.getReservas();
       this.itemArrayEdit = false;
+      this.getReservas();
       return true;
     }
 
@@ -105,17 +130,19 @@ export class Reservas {
     return true;
   }
 
-  excluir(idServico) {
-    this.excluirServicoBD(idServico);
+  excluir(idReservas) {
+    console.log("Rotina excluir()...", idReservas);
+    this.excluirReservaBD(idReservas);
     this.getReservas();
-    // força erro para recarregar o grid...verificar motivo!!!
-    // this.excluirServicoBD("null");
-    // this.getReservas();
     return true;
   }
 
   async criaReservaBD() {
-    console.log("entrei na gravação do registro...");
+    console.log(
+      "entrei na gravação do registro...",
+      this.dataReserva,
+      this.qtDiarias
+    );
     try {
       await axios.post("http://localhost:5000/reserva", {
         dataReserva: this.dataReserva,
@@ -125,6 +152,16 @@ export class Reservas {
         qtdHospedesReserva: this.qtdHospedesReserva,
         usuario_idUsuario: this.idUsuario,
         acomodacoes_idAcomodacao: this.idAcomodacao,
+        qtDiarias: this.qtDiarias,
+        acomodacaoTipo: this.acomodacaoTipo,
+        acomodacaoVlrDiaria: this.acomodacaoVlrDiaria,
+        statusReserva: this.statusReserva,
+        motivoCancelamento: this.motivoCancelamento,
+        dataCancelamento: this.dataCancelamento,
+        cupom: this.cupom,
+        taxaDescontoCupom: this.taxaDescontoCupom,
+        valorTotalDesconto: this.valorTotalDesconto,
+        valorTotalServicos: this.valorTotalServicos,
       });
     } catch (err) {
       console.log(err);
@@ -132,10 +169,17 @@ export class Reservas {
     return true;
   }
 
-  async updateServicoBD() {
-    console.log("entrei no update da reserva...");
+  async updateReservaBD() {
+    // console.log(
+    //   "entrei no update da reserva...",
+    //   this.idReservas,
+    //   this.qtdHospedesReserva,
+    //   this.idUsuario,
+    //   this.idAcomodacao,
+    //   this.motivoCancelamento
+    // );
     try {
-      await axios.put(`http://localhost:5000/reserva/${this.idReserva}`, {
+      await axios.put(`http://localhost:5000/reserva/${this.idReservas}`, {
         dataReserva: this.dataReserva,
         dataEntradaReserva: this.dataEntradaReserva,
         dataSaidaReserva: this.dataSaidaReserva,
@@ -143,6 +187,9 @@ export class Reservas {
         qtdHospedesReserva: this.qtdHospedesReserva,
         idUsuario: this.idUsuario,
         idAcomodacao: this.idAcomodacao,
+        statusReserva: this.statusReserva,
+        dataCancelamento: this.dataCancelamento,
+        motivoCancelamento: this.motivoCancelamento,
       });
       this.dataReserva = "";
       this.dataEntradaReserva = "";
@@ -157,19 +204,14 @@ export class Reservas {
     return true;
   }
 
-  async excluirServicoBD(idServico) {
-    console.log("excluirServicoBD", idServico);
+  async excluirReservaBD(idReservas) {
+    console.log("excluirReservaBD", idReservas);
     try {
-      await axios.delete(`http://localhost:5000/servico/${idServico}`, {
-        nomeServico: this.nome,
-        vlrDiariaServico: this.vlrDiaria,
-        descricaoServico: this.descricao,
-        labelServico: this.label,
-      });
-      this.nome = "";
-      this.vlrDiaria = "";
-      this.descricao = "";
-      this.label = "";
+      await axios.delete(`http://localhost:5000/reserva/${idReservas}`, {});
+      // this.nome = "";
+      // this.vlrDiaria = "";
+      // this.descricao = "";
+      // this.label = "";
     } catch (err) {
       console.log(err);
     }
@@ -185,18 +227,6 @@ export class Reservas {
     servico.descricao = this.descricao;
     servico.vlrDiaria = this.vlrDiaria;
     return servico;
-  }
-
-  excluirServico(idArray) {
-    let arrayStorage = [];
-    if (localStorage.getItem("servicoAdm")) {
-      arrayStorage = JSON.parse(localStorage.getItem("servicoAdm"));
-    }
-    arrayStorage.splice(idArray, 1);
-    // atualiza localStorage...
-    localStorage.setItem("servicoAdm", JSON.stringify(arrayStorage));
-
-    return true;
   }
 
   validarCampos(
@@ -231,24 +261,6 @@ export class Reservas {
       console.log(err);
       throw err;
     }
-    // servicos = [
-    //   {
-    //     id: "servico99",
-    //     nome: "servico1",
-    //     label: "cafeQuarto",
-    //     descricao: "Cafe da Manhã no Quarto",
-    //     vlrDiaria: 100,
-    //   },
-    //   {
-    //     id: "servico98",
-    //     nome: "servico2",
-    //     label: "5G",
-    //     descricao: "Internet 5G",
-    //     vlrDiaria: 50,
-    //   },
-    // ];
-    // console.log("servicos do listaReservas", servicos);
-    // return servicos;
   }
 
   getReservas = async () => {
