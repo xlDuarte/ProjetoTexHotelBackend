@@ -86,6 +86,10 @@ https://proto.io/
 https://www.canva.com/design/DAFNeIFNOlA/AWn9doq6dVS-whvxdW6B8A/view?utm_content=DAFNeIFNOlA&utm_campaign=designshare&utm_medium=link&utm_source=homepage_design_menu
 ~~~
 
+## BootStrap e VUE - Verificar!!!
+https://dev.to/codeply/using-bootstrap-5-with-vue-js-5fnp#:~:text=js,-%23javascript%20%23vue%20%23&text=It%20used%20to%20be%20that,easier%20and%20with%20no%20conflicts!
+
+
 ## Membros do projeto:
 <table>
 <tr>
