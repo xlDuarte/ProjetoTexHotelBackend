@@ -6,3 +6,99 @@ ALTER TABLE `hotelcnp`.`usuario`
 CHANGE COLUMN `statusUsuario` `statusUsuario` VARCHAR(45) NULL ;
 
 ************************************************************************************************************
+
+FRC - 17/02 - Ajuste para incluir novos campos na tabela Reservas
+
+ALTER TABLE `hotelcnp`.`Reservas` 
+ADD COLUMN `qtDiarias` INT NOT NULL AFTER `acomodacoes_idAcomodacao`,
+ADD COLUMN `acomodacaoTipo` VARCHAR(15) NOT NULL AFTER `qtDiarias`,
+ADD COLUMN `acomodacaoVlrDiaria` decimal(2) NOT NULL AFTER `acomodacaoTipo`,
+ADD COLUMN `statusReserva` VARCHAR(15) NOT NULL AFTER `acomodacaoVlrDiaria`,
+ADD COLUMN `motivoCancelamento` VARCHAR(100) NULL AFTER `statusReserva`,
+ADD COLUMN `dataCancelamento` date NULL AFTER `motivoCancelamento`,
+ADD COLUMN `cupom` VARCHAR(15) NOT NULL AFTER `dataCancelamento`,
+ADD COLUMN `taxaDescontoCupom` decimal(2) NOT NULL AFTER `cupom`,
+ADD COLUMN `valorTotalDesconto` decimal(2) NOT NULL AFTER `taxaDescontoCupom`,
+ADD COLUMN `valorTotalServicos` decimal(2) NOT NULL AFTER `valorTotalDesconto`;
+
+**************************************************************************************************************
+
+FRC - 17/02 - Criação de view v_ConsultaReserva para consulta de reservas / usuarios / acomodacoes
+
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `v_ConsultaReserva` AS
+    SELECT 
+        `Reservas`.`idReservas` AS `idReservas`,
+        `Reservas`.`dataReserva` AS `dataReserva`,
+        `Reservas`.`dataEntradaReserva` AS `dataEntradaReserva`,
+        `Reservas`.`dataSaidaReserva` AS `dataSaidaReserva`,
+        `Reservas`.`valorReserva` AS `valorReserva`,
+        `Reservas`.`qtdHospedesReserva` AS `qtdHospedesReserva`,
+        `Reservas`.`usuario_idUsuario` AS `usuario_idUsuario`,
+        `usuario`.`nomeUsuario` AS `nomeUsuario`,
+        `Reservas`.`acomodacoes_idAcomodacao` AS `acomodacoes_idAcomodacao`,
+        `acomodacoes`.`nomeAcomodacao` AS `nomeAcomodacao`,
+        `acomodacoes`.`valorAcomodacao` AS `valorAcomodacao`,
+        `acomodacoes`.`numeroAcomodacao` AS `numeroAcomodacao`
+        FROM
+        (`Reservas`
+        JOIN `usuario` ON ((`Reservas`.`usuario_idUsuario` = `usuario`.`idUsuario`))
+        JOIN `acomodacoes` ON ((`Reservas`.`acomodacoes_idAcomodacao` = `acomodacoes`.`idAcomodacao`)))
+
+**************************************************************************************************************
+
+FRC - 17/02 - Inclusão de quantidade maxima de hospedes por acomodacao na tabela acomodacoes
+
+ALTER TABLE `hotelcnp`.`acomodacoes` 
+ADD COLUMN `qtMaxPessoas` INT NOT NULL AFTER `numeroAcomodacao`;
+
+***************************************************************************************************************
+
+FRC - 19/02 - Ajustes tabela Reservas, campos de valores
+
+ALTER TABLE `hotelcnp`.`Reservas` 
+CHANGE COLUMN `acomodacaoVlrDiaria` `acomodacaoVlrDiaria` DECIMAL(12,2) NOT NULL ,
+CHANGE COLUMN `taxaDescontoCupom` `taxaDescontoCupom` DECIMAL(5,2) NOT NULL ,
+CHANGE COLUMN `valorTotalDesconto` `valorTotalDesconto` DECIMAL(12,2) NOT NULL ,
+CHANGE COLUMN `valorTotalServicos` `valorTotalServicos` DECIMAL(12,2) NOT NULL ;
+
+***************************************************************************************************************
+
+FRC - 20/02 - Ajustes view v_ConsultaReserva
+
+USE `hotelcnp`;
+CREATE 
+     OR REPLACE ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `v_ConsultaReserva` AS
+    SELECT 
+        `Reservas`.`idReservas` AS `idReservas`,
+        `Reservas`.`dataReserva` AS `dataReserva`,
+        `Reservas`.`dataEntradaReserva` AS `dataEntradaReserva`,
+        `Reservas`.`dataSaidaReserva` AS `dataSaidaReserva`,
+        `Reservas`.`valorReserva` AS `valorReserva`,
+        `Reservas`.`qtdHospedesReserva` AS `qtdHospedesReserva`,
+        `Reservas`.`usuario_idUsuario` AS `usuario_idUsuario`,
+        `usuario`.`nomeUsuario` AS `nomeUsuario`,
+        `Reservas`.`acomodacoes_idAcomodacao` AS `acomodacoes_idAcomodacao`,
+        `acomodacoes`.`nomeAcomodacao` AS `nomeAcomodacao`,
+        `acomodacoes`.`valorAcomodacao` AS `valorAcomodacao`,
+        `acomodacoes`.`numeroAcomodacao` AS `numeroAcomodacao`,
+        `Reservas`.`statusReserva` AS `statusReserva`,
+		`Reservas`.`dataCancelamento` AS `dataCancelamento`,
+		`Reservas`.`motivoCancelamento` AS `motivoCancelamento`,
+		`Reservas`.`cupom` AS `cupom`,
+		`Reservas`.`taxaDescontoCupom` AS `taxaDescontoCupom`,
+		`Reservas`.`valorTotalDesconto` AS `valorTotalDesconto`,
+		`Reservas`.`valorTotalServicos` AS `valorTotalServicos`
+    FROM
+        ((`Reservas`
+        JOIN `usuario` ON ((`Reservas`.`usuario_idUsuario` = `usuario`.`idUsuario`)))
+        JOIN `acomodacoes` ON ((`Reservas`.`acomodacoes_idAcomodacao` = `acomodacoes`.`idAcomodacao`)));
+
+
+***************************************************************************************************************

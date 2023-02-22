@@ -7,6 +7,9 @@ console.log("Executando Servicos.js");
 
 export const msg = "Teste, Servicos.js";
 
+// import axios
+import axios from "axios";
+
 export class Servicos {
   id;
   nome;
@@ -19,6 +22,7 @@ export class Servicos {
     !id ? (this.id = 0) : (this.id = id);
   }
   salvar(
+    idServico,
     inputNome,
     inputLabel,
     inputDescricao,
@@ -26,7 +30,7 @@ export class Servicos {
     itemArrayServicos,
     itemArrayEdit
   ) {
-    this.nome = inputNome;
+    (this.idServico = idServico), (this.nome = inputNome);
     this.label = inputLabel;
     this.descricao = inputDescricao;
     this.vlrDiaria = inputVlrDiaria;
@@ -34,6 +38,7 @@ export class Servicos {
     this.itemArrayEdit = itemArrayEdit;
 
     this.lerServico();
+
     this.validacao = this.validarCampos(
       inputNome,
       inputDescricao,
@@ -52,84 +57,91 @@ export class Servicos {
     if (this.itemArrayEdit) {
       console.log(
         "Dados alterados:",
-        this.id,
+        this.idServico,
         this.nome,
         this.descricao,
         this.label,
         this.vlrDiaria
       );
-
-      // cria 2 arrays - um com o conteudo atual (arrayStorage), do qual o item editado sera primeiro eliminado, para ser recriado no novo array (newStorage)
-      // com o BD esta rotina devera ser refeita.
-      let arrayStorage,
-        newStorage = [];
-      if (localStorage.getItem("servicoAdm")) {
-        arrayStorage = JSON.parse(localStorage.getItem("servicoAdm"));
-      }
-      // recupera id do servico antes de excluir...
-      this.id = arrayStorage[itemArrayServicos].id;
-      // console.log(
-      //   `Salvar - check de edição...: elemento array: ${this.itemArrayServicos} - id servico: ${this.id}`
-      // );
-      arrayStorage.splice(itemArrayServicos, 1);
-      newStorage = arrayStorage;
-      console.log("Arrays depois de excluir...arrayStorage", arrayStorage);
-      let jsonServico = this.lerServico(
-        this.id,
-        this.nome,
-        this.descricao,
-        this.label,
-        this.vlrDiaria
-      );
-      newStorage.push(jsonServico);
-      localStorage.setItem("servicoAdm", JSON.stringify(newStorage));
+      this.updateServicoBD();
+      this.getServicos();
       this.itemArrayEdit = false;
       return true;
     }
 
-    // verifica ultimo id para inicializar id a partir do mesmo
-    if (localStorage.getItem("servicoAdm")) {
-      this.local = JSON.parse(localStorage.getItem("servicoAdm"));
-      // verifica se array esta vazio, se tiver conteudo realizar sort para gerar o id correto, se vazio this.local tem que iniciar com 0
-      if (this.local.length === 0) {
-        this.id = 0;
-      } else {
-        // realiza sort do array
-        this.local = this.listaServicos("id");
-        this.id = this.local[this.local.length - 1]["id"] + 1;
-      }
-
-      console.log("controle do id:", this.id, this.local, this.local.length);
-    } else {
-      this.validacao ? this.id++ : null;
-    }
-
-    //localStorage.setItem("servicoAdm", this.id);
-    // prepara gravacao do registro em formato JSON
-    // let jsonServico = [
-    //   `{id:${this.id},nome:"${this.nome}",descricao:"${this.descricao}",label:"${this.label}",vlrDiaria:${this.vlrDiaria}}`,
-    // ];
-
-    let jsonServico = this.lerServico(
-      this.id,
-      this.nome,
-      this.descricao,
-      this.label,
-      this.vlrDiaria
-    );
-
-    // verifica se já existem outros servicos...
-    if (localStorage.getItem("servicoAdm")) {
-      this.storage = JSON.parse(localStorage.getItem("servicoAdm"));
-    }
-    this.storage.push(jsonServico);
-    //console.log("storage=", this.storage);
-    localStorage.setItem("servicoAdm", JSON.stringify(this.storage));
-    //console.log(JSON.parse(localStorage.getItem("servicoAdm")));
-
+    // grava dados do servico
+    this.criaServicoBD();
     // atualiza listagem de itens...
-    this.listaServicos("id");
-    return this.lerServico();
+    this.listaServicos("idServicos");
+    this.getServicos();
+    return true;
+  }
+
+  excluir(idServico) {
+    this.excluirServicoBD(idServico);
+    this.getServicos();
+    // força erro para recarregar o grid...verificar motivo!!!
+    // this.excluirServicoBD("null");
+    // this.getServicos();
+    return true;
+  }
+
+  async criaServicoBD() {
+    console.log("entrei na gravação do registro...");
+    try {
+      await axios.post("http://localhost:5000/servico", {
+        nomeServico: this.nome,
+        vlrDiariaServico: this.vlrDiaria,
+        descricaoServico: this.descricao,
+        labelServico: this.label,
+      });
+      this.nome = "";
+      this.vlrDiaria = "";
+      this.descricao = "";
+      this.label = "";
+    } catch (err) {
+      console.log(err);
+    }
+    return true;
+  }
+
+  async updateServicoBD() {
+    console.log("entrei no update do servico...");
+    try {
+      await axios.put(`http://localhost:5000/servico/${this.idServico}`, {
+        nomeServico: this.nome,
+        vlrDiariaServico: this.vlrDiaria,
+        descricaoServico: this.descricao,
+        labelServico: this.label,
+      });
+      this.nome = "";
+      this.vlrDiaria = "";
+      this.descricao = "";
+      this.label = "";
+    } catch (err) {
+      console.log(err);
+    }
+    return true;
+  }
+
+  async excluirServicoBD(idServico) {
+    console.log("excluirServicoBD", idServico);
+    try {
+      await axios.delete(`http://localhost:5000/servico/${idServico}`, {
+        nomeServico: this.nome,
+        vlrDiariaServico: this.vlrDiaria,
+        descricaoServico: this.descricao,
+        labelServico: this.label,
+      });
+      this.nome = "";
+      this.vlrDiaria = "";
+      this.descricao = "";
+      this.label = "";
+    } catch (err) {
+      console.log(err);
+    }
+    //this.getServicos();
+    return true;
   }
 
   lerServico() {
@@ -141,21 +153,6 @@ export class Servicos {
     servico.vlrDiaria = this.vlrDiaria;
     return servico;
   }
-
-  // editarServico(idArray) {
-  //   console.log("Vou editar o servico id:", idArray);
-  //   // let arrayStorage,
-  //   //   newStorage = [];
-  //   // if (localStorage.getItem("servicoAdm")) {
-  //   //   arrayStorage = JSON.parse(localStorage.getItem("servicoAdm"));
-  //   // }
-  //   // newStorage = arrayStorage.splice(idArray, 1);
-  //   // console.log("Novo Array Storage", newStorage);
-  //   // // atualiza localStorage...
-  //   // localStorage.setItem("servicoAdm", JSON.stringify(arrayStorage));
-
-  //   return true;
-  //}
 
   excluirServico(idArray) {
     let arrayStorage = [];
@@ -178,19 +175,51 @@ export class Servicos {
       : true;
   }
 
-  listaServicos(ordem) {
+  async listaServicos(ordem) {
     // define conteudo do array de servicos...
     let servicos = [];
-    if (localStorage.getItem("servicoAdm")) {
-      servicos = JSON.parse(localStorage.getItem("servicoAdm"));
-      console.log("servicos sem sort", servicos);
-      servicos.sort(this.sortServicos("id"));
-      console.log("servicos com sort", servicos, ordem);
+    console.log("listaServicos", ordem);
+    try {
+      const response = await axios.get("http://localhost:5000/servico");
+      this.items = response.data;
+      servicos = response.data;
+      console.log("servicos do listaServicos", servicos);
+      return servicos;
+    } catch (err) {
+      console.log(err);
+      throw err;
     }
-
-    console.log;
-    return servicos;
+    // servicos = [
+    //   {
+    //     id: "servico99",
+    //     nome: "servico1",
+    //     label: "cafeQuarto",
+    //     descricao: "Cafe da Manhã no Quarto",
+    //     vlrDiaria: 100,
+    //   },
+    //   {
+    //     id: "servico98",
+    //     nome: "servico2",
+    //     label: "5G",
+    //     descricao: "Internet 5G",
+    //     vlrDiaria: 50,
+    //   },
+    // ];
+    // console.log("servicos do listaServicos", servicos);
+    // return servicos;
   }
+
+  getServicos = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/servico");
+      const data = await response.json();
+      console.log("getServicos", data);
+      return data;
+    } catch (error) {
+      console.log("Error getting data", error);
+      return Promise.reject(error);
+    }
+  };
 
   sortServicos(prop) {
     //Comparer Function

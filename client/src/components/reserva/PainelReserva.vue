@@ -65,7 +65,7 @@ export default {
   props: {
     msg: String,
   },
-    methods: {
+  methods: {
     // força refresh do componente...
     // https://michaelnthiessen.com/force-re-render/
     methodThatForcesUpdate() {
