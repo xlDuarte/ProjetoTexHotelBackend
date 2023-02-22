@@ -55,6 +55,18 @@ const routes = [
     name: "editUsuarios",
     component: () => import("../../adm/src/views/usuarios/EditUsuario.vue"),
   },
+  {
+    path: "/AcomodacaoAdm",
+    name: "acomodacaoAdm",
+    component: () => import("../../adm/src/views/acomodacoes/AcomodacoesView.vue"),
+  },
+  {
+    path: "/edit/:id",
+    name: "editAcomodacao",
+    component: () => import("../../adm/src/views/acomodacoes/EditAcomodacao.vue"),
+  },
+
+  
 ];
 
 const router = createRouter({

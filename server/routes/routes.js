@@ -24,6 +24,13 @@ import {
 import { showLogin } from "../controller/logins.js";
 
 //import Acomodações
+import {
+  showAcomodacao,
+  showAcomodacaoById,
+  createAcomodacao,
+  deleteAcomodacao,
+  updateAcomodacao,
+} from "../controller/acomodacao.js";
 
 //import Consumo
 
@@ -88,6 +95,24 @@ router.put("/reserva/:id", updateReserva);
 
 // rota para deletar uma reserva
 router.delete("/reserva/:id", deleteReserva);
+
+// Acomodações
+// rota para listar todas as acomodacoes
+router.get("/acomodacao", showAcomodacao);
+
+// rota para listar uma acomodacao
+router.get("/acomodacao/:id", showAcomodacaoById);
+
+// rota para criar uma aomodacao
+router.post("/acomodacao", createAcomodacao);
+
+// rota para atualizar uma aomodacao
+router.put("/acomodacao/:id", updateAcomodacao);
+
+// rota para deletar uma acomodacao
+router.delete("/acomodacao/:id", deleteAcomodacao);
+
+
 
 // export do router
 export default router;
