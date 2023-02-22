@@ -1,4 +1,4 @@
- // importa o db
+// importa o db
 import db from "../config/database.js";
 
 // lista todos as reservas
@@ -51,7 +51,7 @@ export const insertReserva = (data, result) => {
 export const updateReservaById = (data, id, result) => {
   console.log("updateReservaById", data);
   db.query(
-    "UPDATE Reservas SET dataReserva = ?, dataEntradaReserva = ?, dataSaidaReserva = ?, valorReserva = ?, qtdHospedesReserva = ?, usuario_idUsuario = ?, acomodacoes_idAcomodacao = ?, statusReserva = ?, dataCancelamento = ?, motivoCancelamento = ? WHERE idReservas = ?",
+    "UPDATE Reservas SET dataReserva = ?, dataEntradaReserva = ?, dataSaidaReserva = ?, valorReserva = ?, qtdHospedesReserva = ?, usuario_idUsuario = ?, acomodacoes_idAcomodacao = ?, acomodacaoTipo=?, acomodacaoVlrDiaria = ?, statusReserva = ?, dataCancelamento = ?, motivoCancelamento = ? WHERE idReservas = ?",
     [
       data.dataReserva,
       data.dataEntradaReserva,
@@ -60,6 +60,8 @@ export const updateReservaById = (data, id, result) => {
       data.qtdHospedesReserva,
       data.idUsuario,
       data.idAcomodacao,
+      data.acomodacaoTipo,
+      data.acomodacaoVlrDiaria,
       data.statusReserva,
       data.dataCancelamento,
       data.motivoCancelamento,

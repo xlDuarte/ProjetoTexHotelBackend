@@ -24,6 +24,7 @@
                 v-model="dataReserva"
                 placeholder="Data da reserva"
                 class="form-control"
+                :disabled="camposAtivos"
               />
             </div>
             <div class="my-2">
@@ -36,6 +37,7 @@
                 v-model="dataEntradaReserva"
                 placeholder="Data Checkin Reserva"
                 class="form-control"
+                :disabled="camposAtivos"
               />
             </div>
             <div class="my-2">
@@ -48,6 +50,7 @@
                 v-model="dataSaidaReserva"
                 placeholder="Data Checkout Reserva"
                 class="form-control"
+                :disabled="camposAtivos"
               />
             </div>
             <div>
@@ -60,6 +63,7 @@
                 v-model.number="qtdHospedesReserva"
                 placeholder="Qtd Hospedes"
                 class="form-control"
+                :disabled="camposAtivos"
               />
             </div>
             <div>
@@ -76,6 +80,7 @@
                 placeholder="Status da Reserva"
                 class="form-control"
                 v-if="itemArrayEdit"
+                :disabled="camposAtivos"
               />
             </div>
             <!-- <div>
@@ -94,7 +99,10 @@
               </div>
             </div> -->
             <div>
-              <label for="dataCancelamento" class="d-block fw-bold mb-2"
+              <label
+                for="dataCancelamento"
+                class="d-block fw-bold mb-2"
+                v-if="itemArrayEdit"
                 >Data cancelamento reserva</label
               >
               <input
@@ -103,10 +111,15 @@
                 v-model="dataCancelamento"
                 placeholder="Data cancelamento reserva"
                 class="form-control"
+                v-if="itemArrayEdit"
+                :disabled="true"
               />
             </div>
             <div>
-              <label for="motivoCancelamento" class="d-block fw-bold mb-2"
+              <label
+                for="motivoCancelamento"
+                class="d-block fw-bold mb-2"
+                v-if="itemArrayEdit"
                 >Motivo cancelamento reserva</label
               >
               <input
@@ -115,6 +128,8 @@
                 v-model="motivoCancelamento"
                 placeholder="Motivo cancelamento reserva"
                 class="form-control"
+                v-if="itemArrayEdit"
+                :disabled="camposAtivos"
               />
             </div>
           </div>
@@ -130,6 +145,7 @@
                   v-model.number="idUsuario"
                   placeholder="id do Usuario"
                   class="form-control"
+                  :disabled="camposAtivos"
                 />
                 <span>Nome usuario: {{ nomeUsuario }}</span>
               </div>
@@ -143,11 +159,11 @@
                   v-model.number="idAcomodacao"
                   placeholder="id da Acomodacao"
                   class="form-control"
+                  :disabled="camposAtivos"
                 />
-                <span
-                  >Tipo acomodação / Vlr Diaria: {{ acomodacaoTipo }} - R$
-                  {{ acomodacaoVlrDiaria }}</span
-                >
+                <span id="acomodacaoTipo">{{ acomodacaoTipo }}</span>
+                <span> - R$ </span>
+                <span id="acomodacaoVlrDiaria">{{ acomodacaoVlrDiaria }}</span>
               </div>
               <div>
                 <label for="valorReserva" class="d-block fw-bold mb-2"
@@ -159,6 +175,7 @@
                   v-model.number="valorReserva"
                   placeholder="Valor da Reserva"
                   class="form-control"
+                  :disabled="true"
                 />
               </div>
             </div>
@@ -170,6 +187,7 @@
             v-if="showSalvarButton"
             @click="handleClick('salvar')"
             class="btn btn-info my-3 fw-bold text-uppercase text-white"
+            :disabled="camposAtivos"
           >
             Salvar
           </button>
@@ -188,6 +206,7 @@
             id="btnExcluir"
             class="btn btn-warning my-3 fw-bold text-uppercase text-red"
             type="button"
+            :disabled="camposAtivos"
           >
             Excluir Reserva
           </button>
@@ -235,7 +254,7 @@
               >
                 Editar
               </button>
-              <button
+              <!-- <button
                 @click="handleItem('cancelar', item.idReservas)"
                 id="btnEditar"
                 class="btn btn-warning my-3 fw-bold text-uppercase text-red"
@@ -243,7 +262,7 @@
                 title="Cancela a reserva"
               >
                 Cancelar
-              </button>
+              </button> -->
               <button
                 @click="handleItem('excluir', item.idReservas)"
                 id="btnEditar"
@@ -264,6 +283,10 @@
 <script>
 import axios from "axios";
 import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
+
+var jQuery = require("jquery");
+window.jQuery = jQuery;
+window.$ = jQuery;
 
 export default {
   name: "ReservasView.view",
@@ -297,6 +320,7 @@ export default {
       items: [],
       itemArrayReservas: 0,
       itemArrayEdit: false,
+      camposAtivos: false,
       showSalvarButton: true,
       showCancelarReservaButton: false,
       showExcluirButton: false,
@@ -325,8 +349,22 @@ export default {
       this.msg2 = msg2;
     },
 
+    // teste...
+    updateBinding() {
+      // let el = document.getElementById("input");
+      // el.value = 'Hello!';
+      // el.dispatchEvent(new Event('input'));
+      let el = document.getElementById("idAcomodacao");
+      let el2 = document.getElementById("acomodacaoTipo");
+      console.log("updateBinding", el, el2);
+      el2 = "Master";
+      el2.dispatchEvent(new Event("acomodacaoTipo"));
+      console.log("updateBinding", el, el2);
+    },
+
     // Lista todos os servicos
     async getReservas() {
+      console.log("getReservas ReservasView.js");
       try {
         const response = await axios.get("http://localhost:5000/reserva");
         this.items = response.data;
@@ -339,6 +377,7 @@ export default {
 
     // localiza servico pelo id
     async getReservasById(idReservas) {
+      console.log("getReservasById ReservasView.js");
       try {
         const response = await axios.get(
           `http://localhost:5000/reserva/${idReservas}`
@@ -374,6 +413,15 @@ export default {
         //   this.acomodacaoVlrDiaria,
         //   this.item.valorAcomodacao
         // );
+        if (this.statusReserva === "Cancelada") {
+          this.camposAtivos = true;
+          alert(
+            "Esta reserva foi cancelada! Edição e exclusão não permitidos!"
+          );
+        } else {
+          this.camposAtivos = false;
+        }
+
         return response.data;
       } catch (err) {
         console.log(err);
@@ -385,15 +433,18 @@ export default {
         this.msg1 = "Cliquei handleClick salvar...";
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
         let reserva = new Reservas();
-        // console.log(
-        //   "Entrei no handleClick - salvar...",
-        //   this.idReservas,
-        //   this.dataReserva,
-        //   this.dataEntradaReserva,
-        //   this.dataSaidaReserva,
-        //   this.qtdHospedesReserva,
-        //   this.valorReserva
-        // );
+        console.log(
+          "Entrei no handleClick - salvar...",
+          this.idReservas,
+          this.dataReserva,
+          this.dataEntradaReserva,
+          this.dataSaidaReserva,
+          this.qtdHospedesReserva,
+          this.valorReserva,
+          this.acomodacaoTipo,
+          this.acomodacaoVlrDiaria,
+          "*"
+        );
         reserva.salvar(
           this.idReservas,
           this.dataReserva,
@@ -405,7 +456,6 @@ export default {
           this.idAcomodacao,
           this.acomodacaoTipo,
           this.acomodacaoVlrDiaria,
-          this.vlrDiariaAcomodacao,
           this.qtDiarias,
           this.statusReserva,
           this.dataCancelamento,
@@ -429,6 +479,7 @@ export default {
         // this.showSalvarButton = true;
         // this.showCancelarButton = false;
         // this.showExcluirButton = false;
+        this.camposAtivos = false;
       }
 
       if (action == "cancelarReserva") {
@@ -444,7 +495,9 @@ export default {
         // chama rotina de exclusão, desabilita o botão e limpa os campos na rotina que já está abaixo...
         this.msg1 = "Cliquei handleClick excluir...";
         this.msg2 = `this.idReservas=${this.idReservas}`;
-        let conf = confirm("Confirma exclusão da reserva?");
+        let conf = confirm(
+          "Confirma exclusão da reserva? Esta operação não poderá ser desfeita!"
+        );
         if (conf) {
           let reserva = new Reservas();
           reserva.excluir(this.idReservas);
@@ -462,8 +515,10 @@ export default {
       this.idUsuario = "";
       this.nomeUsuario = "";
       this.idAcomodacao = "";
+      this.acomodacaoTipo = "";
+      this.acomodacaoVlrDiaria = 0;
       this.qtDiarias = 0;
-      this.statusReserva = "";
+      this.statusReserva = "Criada"; // status inicial da Reserva
       this.dataCancelamento = new Date().toISOString().substring(0, 10);
       (this.motivoCancelamento = ""),
         (this.cupom = ""),
@@ -517,11 +572,50 @@ export default {
       //this.msg2 = `idReservas ${idReservas}`;
     },
   },
+  watch: {
+    // isso funciona, mas executa a cada novo caracter, e não somente depois de um tab ou enter...
+    idUsuario: function (val) {
+      console.log("Mudou valor id usuario. ID: ", val);
+    },
+  },
   computed: {
     // incluir funções...
   },
   mounted() {
     // funções mounted...
+    // verifica dados de usuarios, acomodacoes, etc
+    // window.$("#idUsuario").change(function () {
+    //   let id = document.getElementById("idUsuario").value;
+    //   console.log("mudou id Usuario", id);
+    //   validaUsuario(id);
+    // });
+    window.$("#idAcomodacao").change(function () {
+      let idOK = true;
+      let id = document.getElementById("idAcomodacao").value;
+      console.log("id", id);
+      console.log("mudou tipo acomodacao", this.acomodacaoTipo);
+      switch (id) {
+        case "1":
+          this.acomodacaoTipo = "Master";
+          this.acomodacaoVlrDiaria = 600;
+          break;
+        case "2":
+          this.acomodacaoTipo = "Family";
+          this.acomodacaoVlrDiaria = 400;
+          break;
+        case "3":
+          this.acomodacaoTipo = "Comfort";
+          this.acomodacaoVlrDiaria = 250;
+          break;
+        default:
+          alert("Erro: Tipo de suite inválida! Verificar! ID: ", id);
+          idOK = false;
+      }
+      console.log("Acomodacao", this.acomodacaoTipo, this.acomodacaoVlrDiaria);
+      return idOK;
+
+      // this.updateBinding()
+    });
   },
 };
 
@@ -541,6 +635,12 @@ export function formataData(dataUTC) {
       dateConv
     );
   return dateConv;
+}
+
+export function validaUsuario(id) {
+  let idUsuario = id;
+  console.log("id Usuario: ", idUsuario);
+  return true;
 }
 </script>
 
@@ -590,3 +690,34 @@ export function formataData(dataUTC) {
   margin: 10px;
 }
 </style>
+
+<!-- verificar se é possível simplificar o formulário usando o conceito abaixo, o form atual tem muitos campos 
+e fica complicado de tratar entre as funções -->
+
+<!-- <template>
+    <form>
+        <input v-model="form.first_name"/>
+        <input v-model="form.last_name"/>
+        <input v-model="form.email"/>
+    </form> 
+</template>
+
+<script>
+    const defaultForm = {
+        first_name: '',
+        last_name: '',
+        email: '',
+    }  
+    export default {
+      data () {
+        return {
+            form: defaultForm
+        }
+      },
+      computed: {
+        hasChanged () {
+          return Object.keys(this.form).some(field => this.form[field] !== defaultForm[field])
+        }
+      }
+    }
+</script> -->
