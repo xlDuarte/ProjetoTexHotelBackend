@@ -56,14 +56,14 @@ const routes = [
     component: () => import("../../adm/src/views/usuarios/EditUsuario.vue"),
   },
   {
-    path: "/AcomodacoesAdm",
-    name: "acomodacoesAdm",
+    path: "/AcomodacaoAdm",
+    name: "acomodacaoAdm",
     component: () => import("../../adm/src/views/acomodacoes/AcomodacoesView.vue"),
   },
   {
     path: "/edit/:id",
-    name: "editAcomodacoes",
-    component: () => import("../../adm/src/views/acomodacoes/EditAcomodacoes.vue"),
+    name: "editAcomodacao",
+    component: () => import("../../adm/src/views/acomodacoes/EditAcomodacao.vue"),
   },
 
   

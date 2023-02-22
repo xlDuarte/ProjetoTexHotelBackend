@@ -2,78 +2,48 @@
     <div>
         <div class="flex">
             <div class="field">
-                <label class="label">Nome</label>
+                <label class="label">Nome da acomodação</label>
                 <div class="control">
                     <input
                       class="input"
                       type="text"
-                      v-model="nomeUser"
+                      v-model="nomeAcomod"
                     />
                 </div>
             </div>      
             <div class="field">
-                <label class="label">E-mail</label>
+                <label class="label">Descrição da acomodação</label>
                 <div class="control">
                     <input
-                      class="input"
-                      type="text"
-                      v-model="emailUser"
+                      class="text"
+                      type="input"
+                      v-model="descAcomod"
                     />
                 </div>
             </div>
             <div class="field">
-                <label class="label">CPF</label>
+                <label class="label">Valor</label>
                 <div class="control">
                     <input
                       class="input"
                       type="text"
-                      v-model="cpfUSer"
+                      v-model="valorAcomod"
                     />
                 </div>
             </div>
             <div class="field">
-                <label class="label">Endereço</label>
+                <label class="label">Tipo de acomodação</label>
                 <div class="control">
                     <input
                       class="input"
                       type="text"
-                      v-model="endUser"
-                    />
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Tipo</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="tipoUser"
-                    />
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Telefone</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="telefoneUser"
-                    />
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Senha</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="senhaUser"
+                      v-model="tipoAcomod"
                     />
                 </div>
             </div>
         </div>
         <div class="control">
-            <button class="button is-success" @click="saveUsuario">Cadastrar</button>
+            <button class="button is-success" @click="saveAcomodacao">Cadastrar</button>
         </div>
     </div>
 </template>
@@ -83,38 +53,29 @@
 import axios from "axios";
   
 export default {
-    name: "AddUsuario",
+    name: "AddAcomodacao",
     data() {
         return {
-            nomeUser: "",
-            senhaUser: "",
-            cpfUSer:"",
-            emailUser: "",
-            endUser: "",
-            telefoneUser: "",
-            tipoUser: "",
+            nomeAcomod: "",
+            descAcomod: "",
+            valorAcomod:"",
+            tipoAcomod: ""
         };
     },
     methods: {
         // cria novo usuario
-        async saveUsuario() {
+        async saveAcomodacao() {
             try {
-                await axios.post("http://localhost:5000/usuario", {
-                    nomeUsuario: this.nomeUser,
-                    emailUsuario: this.emailUser,
-                    cpfUSuario: this.cpfUSer,
-                    endUsuario: this.endUser,
-                    telefoneUsuario: this.telefoneUser,
-                    tipoUsuario: this.tipoUser,
-                    senhaUsuario: this.senhaUser
+                await axios.post("http://localhost:5000/acomodacao", {
+                    nomeAcomodacao: this.nomeAcomod,
+                    descricaoAcomodacao: this.descAcomod,
+                    valorAcomodacao: this.valorAcomod,
+                    tipoAcomodacao: this.tipoAcomod
                 });
-                this.nomeUser = "";
-                this.emailUser="";
-                this.cpfUSer="";
-                this.endUser="";
-                this.telefoneUser="";
-                this.tipoUser="";
-                this.senhaUser="";   
+                this.nomeAcomod = "";
+                this.descAcomod="";
+                this.valorAcomod="";
+                this.tipoAcomod="";  
                 this.$emit('updateList')             
             } catch (err) {
                 console.log(err);

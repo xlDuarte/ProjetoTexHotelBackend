@@ -1,19 +1,17 @@
 <template>
   <div class="sec">
     <div>
-      <h2>CADASTRO DE USUARIOS</h2>
+      <h2>CADASTRO DE ACOMODAÇÕES</h2>
       <p>Preencha todos os campos</p>
     </div>
-    <AddUsuario @updateList="getUsuarios()"/>
+    <AddAcomodacao @updateList="getAcomodacao()"/>
     <table class="table">
       <thead>
         <th scope="col">ID</th>
         <th scope="col">Nome</th>
-        <th scope="col">E-mail</th>
-        <th scope="col">CPF</th>
-        <th scope="col">Endereço</th>
+        <th scope="col">Descrição</th>
+        <th scope="col">Valor</th>
         <th scope="col">Tipo</th>
-        <th scope="col">Telefone</th>
       </thead>
       <tbody>
         <tr
@@ -21,19 +19,17 @@
           v-for="item in items"
           :key="item.idUsuario"
         >
-          <td >{{ item.idUsuario }}</td>
-          <td >{{ item.nomeUsuario }}</td>
-          <td >{{ item.emailUsuario }}</td>
-          <td >{{ item.cpfUsuario }}</td>
-          <td >{{ item.endUsuario }}</td>
-          <td >{{ item.tipoUsuario }}</td>
-          <td >{{ item.telefoneUsuario }}</td>
+          <td >{{ item.idAcomodacao }}</td>
+          <td >{{ item.nomeAcomodacao }}</td>
+          <td >{{ item.descricaoAcomodacao }}</td>
+          <td >{{ item.valorAcomodacao }}</td>
+          <td >{{ item.tipoAcomodacao }}</td>
           <td >              
-            <router-link :to="{ name: 'editUsuarios', params: { id: item.idUsuario } }">
+            <router-link :to="{ name: 'editAcomodacao', params: { id: item.idAcomodacao } }">
               <button class="button">Editar</button></router-link>
           </td>
           <td >              
-              <button class="button" @click="deleteUsuarios(item.idUsuario)">Deletar</button>
+              <button class="button" @click="deleteAcomodacao(item.idAcomodacao)">Deletar</button>
           </td>
         </tr>
       </tbody>
@@ -43,26 +39,26 @@
 
 <script>
 import axios from "axios"
-import AddUsuario from '@/../adm/src/components/usuarios/AddUsuario.vue'
+import AddAcomodacao from '@/../adm/src/components/acomodacoes/AddAcomodacoes.vue'
   
 export default {
-  name: "UsuariosView",
+  name: "AcomodacoesView",
   data() {
     return {
       items: [],
     };
   },
-  components: {AddUsuario},
+  components: {AddAcomodacao},
     
   created() {
-    this.getUsuarios();
+    this.getAcomodacao();
   },
     
   methods: {
     // Lista todos os usuarios
-    async getUsuarios() {
+    async getAcomodacao() {
       try {
-        const response = await axios.get("http://localhost:5000/usuario");
+        const response = await axios.get("http://localhost:5000/acomodacao");
         this.items = response.data;
       } catch (err) {
           console.log(err);
@@ -70,10 +66,10 @@ export default {
     },
     
     // Delete Usuario
-    async deleteUsuarios(id) {
+    async deleteAcomodacao(id) {
       try {
-        await axios.delete(`http://localhost:5000/usuario/${id}`);
-          this.getUsuarios();
+        await axios.delete(`http://localhost:5000/acomodacao/${id}`);
+          this.getAcomodacao();
       } catch (err) {
           console.log(err);
       }
