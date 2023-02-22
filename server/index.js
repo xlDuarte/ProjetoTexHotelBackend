@@ -4,6 +4,8 @@ import express from "express";
 import cors from "cors";
 //import do bodyParser 
 import bodyParser from "body-parser";
+//import do incriptador
+import bcrypt from "bcrypt";
  
 // import das rotas para usar os endpoints
 import Router from "./routes/routes.js";
@@ -13,7 +15,7 @@ const app = express();
   
 // usar json
 app.use(express.json());
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({extended: false}))
   
 // usar cors
 app.use(cors());
