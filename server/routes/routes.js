@@ -112,7 +112,5 @@ router.put("/acomodacao/:id", updateAcomodacao);
 // rota para deletar uma acomodacao
 router.delete("/acomodacao/:id", deleteAcomodacao);
 
-
-
 // export do router
 export default router;

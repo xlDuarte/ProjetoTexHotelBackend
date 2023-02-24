@@ -7,6 +7,7 @@
     <p></p>
     <button @click="changeName('Alterei msg1!')">Teste msg1</button>
     <button @click="changeAge('Alterei msg2!')">Teste msg2</button>
+    <input v-model="inputValue" />
     <hr />
     <div class="container border p-4 my-5 w-100">
       <p id="msgAlerta">{{ msgAlerta }}</p>
@@ -83,21 +84,6 @@
                 :disabled="camposAtivos"
               />
             </div>
-            <!-- <div>
-              <b-form-select
-                v-model="selected"
-                :options="options"
-              ></b-form-select>
-              <b-form-select
-                v-model="selected"
-                :options="options"
-                size="sm"
-                class="mt-3"
-              ></b-form-select>
-              <div class="mt-3">
-                Selected: <strong>{{ selected }}</strong>
-              </div>
-            </div> -->
             <div>
               <label
                 for="dataCancelamento"
@@ -145,9 +131,17 @@
                   v-model.number="idUsuario"
                   placeholder="id do Usuario"
                   class="form-control"
+                  @change="changeUserId"
                   :disabled="camposAtivos"
                 />
-                <span>Nome usuario: {{ nomeUsuario }}</span>
+                <input
+                  type="text"
+                  id="nomeUsuario"
+                  v-model="nomeUsuario"
+                  placeholder="Nome Usuario"
+                  class="form-control"
+                  :disabled="true"
+                />
               </div>
               <div>
                 <label for="idAcomodacao" class="d-block fw-bold mb-2"
@@ -159,11 +153,25 @@
                   v-model.number="idAcomodacao"
                   placeholder="id da Acomodacao"
                   class="form-control"
+                  @change="changeAcomodacaoId"
                   :disabled="camposAtivos"
                 />
-                <span id="acomodacaoTipo">{{ acomodacaoTipo }}</span>
-                <span> - R$ </span>
-                <span id="acomodacaoVlrDiaria">{{ acomodacaoVlrDiaria }}</span>
+                <input
+                  type="text"
+                  id="acomodacaoTipo"
+                  v-model="acomodacaoTipo"
+                  placeholder="Tipo Acomodação"
+                  class="form-control"
+                  :disabled="true"
+                />
+                <input
+                  type="text"
+                  id="acomodacaoVlrDiaria"
+                  v-model="acomodacaoVlrDiaria"
+                  placeholder="Vlr Diaria Acomodação"
+                  class="form-control"
+                  :disabled="true"
+                />
               </div>
               <div>
                 <label for="valorReserva" class="d-block fw-bold mb-2"
@@ -283,6 +291,7 @@
 <script>
 import axios from "axios";
 import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
+//import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
 
 var jQuery = require("jquery");
 window.jQuery = jQuery;
@@ -295,6 +304,7 @@ export default {
     return {
       msg1: "msg1",
       msg2: "msg2",
+      inputValue: "Teste",
       msgAlerta: "Mensagens do sistema",
       idReservas: "",
       dataReserva: new Date().toISOString().substring(0, 10),
@@ -318,6 +328,11 @@ export default {
       valorTotalServicos: 0,
       item: [],
       items: [],
+      itemServico: [],
+      idServico: "",
+      nomeServico: "",
+      itemUsuario: [],
+      itemAcomodacao: [],
       itemArrayReservas: 0,
       itemArrayEdit: false,
       camposAtivos: false,
@@ -329,7 +344,22 @@ export default {
   },
 
   created() {
+    //
+    // emit e props, avaliar !!!!!
+    //
+    // ajuste para usar objeto Reservas...
+    // let reserva = new Reservas();
+    // this.itens = reserva.getReservas();
+    // console.log("Created:", this.itens);
+    //
+    // fica assim na console...
+    // [[Prototype]] : Promise
+    // [[PromiseState]] : "fulfilled"
+    // [[PromiseResult]] : Array(4)
+    // ou
+
     this.getReservas();
+    console.log("Created:", this.itens);
   },
 
   setup() {
@@ -344,27 +374,98 @@ export default {
     // campos do cabecalho, apoio para desenvolvimento...
     changeName(msg1) {
       this.msg1 = msg1;
+      this.inputValue = "Teste Alterado";
     },
     changeAge(msg2) {
       this.msg2 = msg2;
     },
 
-    // teste...
-    updateBinding() {
-      // let el = document.getElementById("input");
-      // el.value = 'Hello!';
-      // el.dispatchEvent(new Event('input'));
-      let el = document.getElementById("idAcomodacao");
-      let el2 = document.getElementById("acomodacaoTipo");
-      console.log("updateBinding", el, el2);
-      el2 = "Master";
-      el2.dispatchEvent(new Event("acomodacaoTipo"));
-      console.log("updateBinding", el, el2);
+    changeUserId() {
+      // mudou o id do usuario, dispara api para checar validade...
+      this.validaUsuariosById(this.idUsuario);
     },
 
-    // Lista todos os servicos
+    // localiza servico pelo id
+    async getServicosById(idServico) {
+      // console.log("idServico = ", idServico);
+      //let id = document.getElementById("idUsuario").value;
+      //console.log("Mudou id Usuario", id);
+      //console.log(this.itemUsuario);
+
+      // somente para testes...incluir no local correto para checar id de servicos
+      //let serv = new Servicos();
+      //this.itemServico = serv.getServicosById(18);
+      // this.getServicosById(18);
+      // console.log(this.itemServico);
+      // console.log(this.idServico);
+      // console.log(this.nomeServico);
+      // this.nomeUsuario
+      // validaUsuario(id);
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/servico/${idServico}`
+        );
+        this.itemServico = response.data;
+        this.idServico = response.data.idServicos;
+        this.nomeServico = response.data.nomeServico;
+        this.nomeUsuario = response.data.nomeServico;
+        //console.log("getServicosById", this.itemServico);
+        return response;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // verificar usuario pelo id
+    async validaUsuariosById(idUsuario) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/usuario/${idUsuario}`
+        );
+        this.itemUsuario = response.data;
+        if (idUsuario === response.data.idUsuario) {
+          this.nomeUsuario = response.data.nomeUsuario;
+        } else {
+          this.nomeUsuario = "Usuario inválido - Verificar!!";
+        }
+        //console.log("getServicosById", this.itemServico);
+        return response;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    changeAcomodacaoId() {
+      let idOK = true;
+      // let id = document.getElementById("idAcomodacao").value;
+      // console.log("id", id);
+      // console.log("mudou tipo acomodacao", this.acomodacaoTipo);
+      switch (this.idAcomodacao) {
+        case 1:
+          this.acomodacaoTipo = "Master";
+          this.acomodacaoVlrDiaria = 600;
+          break;
+        case 2:
+          this.acomodacaoTipo = "Family";
+          this.acomodacaoVlrDiaria = 400;
+          break;
+        case 3:
+          this.acomodacaoTipo = "Comfort";
+          this.acomodacaoVlrDiaria = 250;
+          break;
+        default:
+          alert(
+            "Erro: ID tipo suite inválido - verificar! ID: ",
+            this.idAcomodacao
+          );
+          idOK = false;
+      }
+      console.log("Acomodacao", this.acomodacaoTipo, this.acomodacaoVlrDiaria);
+      return idOK;
+    },
+
+    // Lista todas as reservas
     async getReservas() {
-      console.log("getReservas ReservasView.js");
       try {
         const response = await axios.get("http://localhost:5000/reserva");
         this.items = response.data;
@@ -377,7 +478,6 @@ export default {
 
     // localiza servico pelo id
     async getReservasById(idReservas) {
-      console.log("getReservasById ReservasView.js");
       try {
         const response = await axios.get(
           `http://localhost:5000/reserva/${idReservas}`
@@ -405,14 +505,6 @@ export default {
           .toISOString()
           .substring(0, 10);
         this.motivoCancelamento = this.item.motivoCancelamento;
-        // console.log("getReservasByID", this.nomeUsuario, this.item.nomeUsuario);
-        // console.log(
-        //   "getReservasById2",
-        //   this.acomodacaoTipo,
-        //   this.item.nomeAcomodacao,
-        //   this.acomodacaoVlrDiaria,
-        //   this.item.valorAcomodacao
-        // );
         if (this.statusReserva === "Cancelada") {
           this.camposAtivos = true;
           alert(
@@ -421,7 +513,12 @@ export default {
         } else {
           this.camposAtivos = false;
         }
-
+        console.log(
+          "this.acomodacaoTipo",
+          this.statusReserva,
+          this.acomodacaoTipo,
+          this.acomodacaoVlrDiaria
+        );
         return response.data;
       } catch (err) {
         console.log(err);
@@ -433,18 +530,6 @@ export default {
         this.msg1 = "Cliquei handleClick salvar...";
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
         let reserva = new Reservas();
-        console.log(
-          "Entrei no handleClick - salvar...",
-          this.idReservas,
-          this.dataReserva,
-          this.dataEntradaReserva,
-          this.dataSaidaReserva,
-          this.qtdHospedesReserva,
-          this.valorReserva,
-          this.acomodacaoTipo,
-          this.acomodacaoVlrDiaria,
-          "*"
-        );
         reserva.salvar(
           this.idReservas,
           this.dataReserva,
@@ -574,48 +659,15 @@ export default {
   },
   watch: {
     // isso funciona, mas executa a cada novo caracter, e não somente depois de um tab ou enter...
-    idUsuario: function (val) {
-      console.log("Mudou valor id usuario. ID: ", val);
-    },
+    // idUsuario: function (val) {
+    //   console.log("Mudou valor id usuario. ID: ", val);
+    // },
   },
   computed: {
     // incluir funções...
   },
   mounted() {
     // funções mounted...
-    // verifica dados de usuarios, acomodacoes, etc
-    // window.$("#idUsuario").change(function () {
-    //   let id = document.getElementById("idUsuario").value;
-    //   console.log("mudou id Usuario", id);
-    //   validaUsuario(id);
-    // });
-    window.$("#idAcomodacao").change(function () {
-      let idOK = true;
-      let id = document.getElementById("idAcomodacao").value;
-      console.log("id", id);
-      console.log("mudou tipo acomodacao", this.acomodacaoTipo);
-      switch (id) {
-        case "1":
-          this.acomodacaoTipo = "Master";
-          this.acomodacaoVlrDiaria = 600;
-          break;
-        case "2":
-          this.acomodacaoTipo = "Family";
-          this.acomodacaoVlrDiaria = 400;
-          break;
-        case "3":
-          this.acomodacaoTipo = "Comfort";
-          this.acomodacaoVlrDiaria = 250;
-          break;
-        default:
-          alert("Erro: Tipo de suite inválida! Verificar! ID: ", id);
-          idOK = false;
-      }
-      console.log("Acomodacao", this.acomodacaoTipo, this.acomodacaoVlrDiaria);
-      return idOK;
-
-      // this.updateBinding()
-    });
   },
 };
 
@@ -635,12 +687,6 @@ export function formataData(dataUTC) {
       dateConv
     );
   return dateConv;
-}
-
-export function validaUsuario(id) {
-  let idUsuario = id;
-  console.log("id Usuario: ", idUsuario);
-  return true;
 }
 </script>
 

@@ -88,10 +88,10 @@ export class Reservas {
       inputQtdHospedesReserva
     );
 
-    console.log(
-      "Controle de validação e edição:",
-      `Validação:${this.validacao} - Edição:${this.itemArrayReservas} - ${this.itemArrayEdit}`
-    );
+    // console.log(
+    //   "Controle de validação e edição:",
+    //   `Validação:${this.validacao} - Edição:${this.itemArrayReservas} - ${this.itemArrayEdit}`
+    // );
     if (this.validacao !== true) {
       alert("Informações da reserva não estão ok! Verificar!");
       return false;
@@ -105,34 +105,31 @@ export class Reservas {
     dateEndAux = this.dataSaidaReserva.split("-");
     dateEnd = new Date(dateEndAux[0], dateEndAux[1] - 1, dateEndAux[2]);
     difDates = Math.ceil(dateEnd - dateStart) / (1000 * 60 * 60 * 24);
-    // console.log(`Qtdade de diárias: ${difDates}`);
 
     // calcula valor da reserva, sem servicos
-    console.log(
-      `Calculo valor total - difDate: ${difDates} - qtHospedes: ${this.qtdHospedesReserva} - vlrDiaria: ${this.acomodacaoVlrDiaria}`
-    );
     this.valorReserva =
-      parseFloat(difDates) * parseFloat(this.qtdHospedesReserva);
-    // *  parseFloat(this.vlrDiariaAcomodacao);
-    console.log(
-      `Valor reserva: ${this.valorReserva} - ${difDates} - ${this.qtdHospedesReserva} - ${this.acomodacaoVlrDiaria}`
-    );
+      parseFloat(difDates) *
+      parseFloat(this.qtdHospedesReserva) *
+      parseFloat(this.acomodacaoVlrDiaria);
+    // console.log(
+    //   `Valor reserva: ${this.valorReserva} - ${difDates} - ${this.qtdHospedesReserva} - ${this.acomodacaoVlrDiaria}`
+    // );
 
     // verifica se é uma edição, o tratamento é diferente...
     if (this.itemArrayEdit) {
       console.log(
-        "Dados alterados:",
-        idReservas,
-        this.dataReserva,
-        this.dataEntradaReserva,
-        this.dataSaidaReserva,
-        this.valorReserva,
-        this.qtdHospedesReserva,
-        this.idUsuario,
-        this.idAcomodacao,
-        this.statusReserva,
-        this.dataCancelamento,
-        this.motivoCancelamento
+         "Dados alterados:",
+         idReservas,
+         this.dataReserva,
+         this.dataEntradaReserva,
+         this.dataSaidaReserva,
+         this.valorReserva,
+         this.qtdHospedesReserva,
+         this.idUsuario,
+         this.idAcomodacao,
+         this.statusReserva,
+         this.dataCancelamento,
+         this.motivoCancelamento
       );
 
       // solicita confirmação em caso de cancelamento...
@@ -258,5 +255,17 @@ export class Reservas {
       inputQtdHospedesReserva.length < 1
       ? false
       : true;
+  }
+
+  // Lista todas as reservas
+  async getReservas() {
+    try {
+      const response = await axios.get("http://localhost:5000/reserva");
+      this.items = response.data;
+      // console.log("getReservas - atualizando itens da lista", this.items);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
