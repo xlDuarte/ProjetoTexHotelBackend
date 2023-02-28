@@ -118,18 +118,18 @@ export class Reservas {
     // verifica se é uma edição, o tratamento é diferente...
     if (this.itemArrayEdit) {
       console.log(
-         "Dados alterados:",
-         idReservas,
-         this.dataReserva,
-         this.dataEntradaReserva,
-         this.dataSaidaReserva,
-         this.valorReserva,
-         this.qtdHospedesReserva,
-         this.idUsuario,
-         this.idAcomodacao,
-         this.statusReserva,
-         this.dataCancelamento,
-         this.motivoCancelamento
+        "Dados alterados:",
+        idReservas,
+        this.dataReserva,
+        this.dataEntradaReserva,
+        this.dataSaidaReserva,
+        this.valorReserva,
+        this.qtdHospedesReserva,
+        this.idUsuario,
+        this.idAcomodacao,
+        this.statusReserva,
+        this.dataCancelamento,
+        this.motivoCancelamento
       );
 
       // solicita confirmação em caso de cancelamento...
@@ -263,6 +263,54 @@ export class Reservas {
       const response = await axios.get("http://localhost:5000/reserva");
       this.items = response.data;
       // console.log("getReservas - atualizando itens da lista", this.items);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // localiza servico pelo id
+  async getReservasById(idReservas) {
+    console.log("idReservas = ", idReservas);
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/reserva/${idReservas}`
+      );
+      this.item = response.data;
+      this.idReservas = this.item.idReservas;
+      this.dataReserva = new Date(this.item.dataReserva)
+        .toISOString()
+        .substring(0, 10);
+      this.dataEntradaReserva = new Date(this.item.dataEntradaReserva)
+        .toISOString()
+        .substring(0, 10);
+      this.dataSaidaReserva = new Date(this.item.dataSaidaReserva)
+        .toISOString()
+        .substring(0, 10);
+      this.qtdHospedesReserva = this.item.qtdHospedesReserva;
+      this.valorReserva = this.item.valorReserva;
+      this.idUsuario = this.item.usuario_idUsuario;
+      this.nomeUsuario = this.item.nomeUsuario;
+      this.idAcomodacao = this.item.acomodacoes_idAcomodacao;
+      this.acomodacaoTipo = this.item.nomeAcomodacao;
+      this.acomodacaoVlrDiaria = this.item.valorAcomodacao;
+      this.statusReserva = this.item.statusReserva;
+      this.dataCancelamento = new Date(this.item.dataCancelamento)
+        .toISOString()
+        .substring(0, 10);
+      this.motivoCancelamento = this.item.motivoCancelamento;
+      if (this.statusReserva === "Cancelada") {
+        this.camposAtivos = true;
+        alert("Esta reserva foi cancelada! Edição e exclusão não permitidos!");
+      } else {
+        this.camposAtivos = false;
+      }
+      console.log(
+        "this.acomodacaoTipo",
+        this.statusReserva,
+        this.acomodacaoTipo,
+        this.acomodacaoVlrDiaria
+      );
       return response.data;
     } catch (err) {
       console.log(err);
