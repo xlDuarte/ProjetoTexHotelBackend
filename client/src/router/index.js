@@ -56,6 +56,16 @@ const routes = [
     component: () => import("../../adm/src/views/usuarios/EditUsuario.vue"),
   },
   {
+    path: "/Consumos",
+    name: "consumos",
+    component: () => import("../../adm/src/views/consumos/ConsumosView.vue"),
+  },
+  {
+    path: "/editConsumo/:id",
+    name: "editConsumos",
+    component: () => import("../../adm/src/views/consumos/EditConsumo.vue"),
+  },
+  {
     path: "/AcomodacaoAdm",
     name: "acomodacaoAdm",
     component: () => import("../../adm/src/views/acomodacoes/AcomodacoesView.vue"),
@@ -67,6 +77,7 @@ const routes = [
   },
 
   
+
 ];
 
 const router = createRouter({
