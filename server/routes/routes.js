@@ -33,6 +33,13 @@ import {
 } from "../controller/acomodacao.js";
 
 //import Consumo
+import {
+  showConsumo,
+  showConsumoById,
+  createConsumo,
+  deleteConsumo,
+  updateConsumo,
+} from "../controller/consumo.js";
 
 //import Reservas
 import {
@@ -80,6 +87,22 @@ router.put("/servico/:id", updateServico);
 // rota para deletar um servico
 router.delete("/servico/:id", deleteServico);
 
+// Consumos
+// rota para listar todos os Consumos
+router.get("/Consumo", showConsumo);
+
+// rota para listar um Consumo
+router.get("/Consumo/:id", showConsumoById);
+
+// rota para criar um Consumo
+router.post("/Consumo", createConsumo);
+
+// rota para atualizar um Consumo
+router.put("/Consumo/:id", updateConsumo);
+
+// rota para deletar um Consumo
+router.delete("/Consumo/:id", deleteConsumo);
+
 // Reservas
 // rota para listar todas as reservas
 router.get("/reserva", showReserva);
@@ -111,7 +134,6 @@ router.put("/acomodacao/:id", updateAcomodacao);
 
 // rota para deletar uma acomodacao
 router.delete("/acomodacao/:id", deleteAcomodacao);
-
 
 
 // export do router

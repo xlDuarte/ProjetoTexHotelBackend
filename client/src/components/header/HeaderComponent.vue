@@ -45,7 +45,7 @@
             <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
             <div><router-link to="/ReservasAdm">Reservas</router-link></div>
             <div><router-link to="/ServicosAdm">Serviços</router-link></div>          
-            <div><router-link to="/RelatorioConsumoAdm">Consumo</router-link></div>
+            <div><router-link to="/Consumos">Consumo</router-link></div>
             <div><router-link to="/Usuarios">Usuarios</router-link></div>
           </div>
         </div>
