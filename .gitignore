@@ -2,6 +2,7 @@
 node_modules
 /dist
 /server/config/
+/server/config/database.js
 
 # local env files
 .env.local

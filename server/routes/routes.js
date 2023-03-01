@@ -10,6 +10,7 @@ import {
   deleteUsuario,
   updateUsuario,
 } from "../controller/usuarios.js";
+
 //import Serviços
 import {
   showServico,
@@ -18,11 +19,18 @@ import {
   deleteServico,
   updateServico,
 } from "../controller/servicos.js";
+
 //import Login
-import{
-  showLogin
-} from "../controller/logins.js";
+import { showLogin } from "../controller/logins.js";
+
 //import Acomodações
+import {
+  showAcomodacao,
+  showAcomodacaoById,
+  createAcomodacao,
+  deleteAcomodacao,
+  updateAcomodacao,
+} from "../controller/acomodacao.js";
 
 //import Consumo
 import {
@@ -34,6 +42,13 @@ import {
 } from "../controller/consumo.js";
 
 //import Reservas
+import {
+  showReserva,
+  showReservaById,
+  createReserva,
+  deleteReserva,
+  updateReserva,
+} from "../controller/reservas.js";
 
 // init express router
 const router = express.Router();
@@ -87,6 +102,39 @@ router.put("/Consumo/:id", updateConsumo);
 
 // rota para deletar um Consumo
 router.delete("/Consumo/:id", deleteConsumo);
+
+// Reservas
+// rota para listar todas as reservas
+router.get("/reserva", showReserva);
+
+// rota para listar uma reserva
+router.get("/reserva/:id", showReservaById);
+
+// rota para criar uma reserva
+router.post("/reserva", createReserva);
+
+// rota para atualizar uma reserva
+router.put("/reserva/:id", updateReserva);
+
+// rota para deletar uma reserva
+router.delete("/reserva/:id", deleteReserva);
+
+// Acomodações
+// rota para listar todas as acomodacoes
+router.get("/acomodacao", showAcomodacao);
+
+// rota para listar uma acomodacao
+router.get("/acomodacao/:id", showAcomodacaoById);
+
+// rota para criar uma aomodacao
+router.post("/acomodacao", createAcomodacao);
+
+// rota para atualizar uma aomodacao
+router.put("/acomodacao/:id", updateAcomodacao);
+
+// rota para deletar uma acomodacao
+router.delete("/acomodacao/:id", deleteAcomodacao);
+
 
 // export do router
 export default router;

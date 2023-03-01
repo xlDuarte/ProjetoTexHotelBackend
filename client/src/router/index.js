@@ -41,6 +41,11 @@ const routes = [
     component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
   },
   {
+    path: "/ReservasAdm",
+    name: "reservasAdm",
+    component: () => import("../../adm/src/views/reservas/ReservasView.vue"),
+  },
+  {
     path: "/Usuarios",
     name: "usuarios",
     component: () => import("../../adm/src/views/usuarios/UsuariosView.vue"),
@@ -60,6 +65,19 @@ const routes = [
     name: "editConsumos",
     component: () => import("../../adm/src/views/consumos/EditConsumo.vue"),
   },
+  {
+    path: "/AcomodacaoAdm",
+    name: "acomodacaoAdm",
+    component: () => import("../../adm/src/views/acomodacoes/AcomodacoesView.vue"),
+  },
+  {
+    path: "/edit/:id",
+    name: "editAcomodacao",
+    component: () => import("../../adm/src/views/acomodacoes/EditAcomodacao.vue"),
+  },
+
+  
+
 ];
 
 const router = createRouter({

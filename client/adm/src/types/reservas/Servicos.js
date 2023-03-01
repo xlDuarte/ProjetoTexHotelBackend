@@ -16,6 +16,7 @@ export class Servicos {
   label;
   descricao;
   vlrDiaria;
+  itemServico = [];
   storage = [];
 
   constructor(id) {
@@ -154,18 +155,6 @@ export class Servicos {
     return servico;
   }
 
-  excluirServico(idArray) {
-    let arrayStorage = [];
-    if (localStorage.getItem("servicoAdm")) {
-      arrayStorage = JSON.parse(localStorage.getItem("servicoAdm"));
-    }
-    arrayStorage.splice(idArray, 1);
-    // atualiza localStorage...
-    localStorage.setItem("servicoAdm", JSON.stringify(arrayStorage));
-
-    return true;
-  }
-
   validarCampos(inputNome, inputDescricao, inputValor) {
     console.log("to validando");
     return inputNome.length < 1 ||
@@ -189,24 +178,6 @@ export class Servicos {
       console.log(err);
       throw err;
     }
-    // servicos = [
-    //   {
-    //     id: "servico99",
-    //     nome: "servico1",
-    //     label: "cafeQuarto",
-    //     descricao: "Cafe da Manhã no Quarto",
-    //     vlrDiaria: 100,
-    //   },
-    //   {
-    //     id: "servico98",
-    //     nome: "servico2",
-    //     label: "5G",
-    //     descricao: "Internet 5G",
-    //     vlrDiaria: 50,
-    //   },
-    // ];
-    // console.log("servicos do listaServicos", servicos);
-    // return servicos;
   }
 
   getServicos = async () => {
@@ -220,6 +191,22 @@ export class Servicos {
       return Promise.reject(error);
     }
   };
+
+  // localiza servico pelo id
+  async getServicosById(idServico) {
+    console.log("idServico = ", idServico);
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/servico/${idServico}`
+      );
+      this.itemServico = response.data;
+      console.log("Type Servicos - getServicosById", this.itemServico);
+      return response;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  }
 
   sortServicos(prop) {
     //Comparer Function
