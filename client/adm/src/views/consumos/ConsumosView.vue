@@ -4,7 +4,7 @@
       <h2>CADASTRO DE CONSUMOS</h2>
       <p>Preencha todos os campos</p>
     </div>
-    <AddConsumo />
+    <AddConsumo @updateConsumo="getConsumo()" />
     <table class="table">
       <thead>
         <th scope="col">Quarto</th>
@@ -19,7 +19,7 @@
           <td>{{ item.localConsumo_idLocalConsumo }}</td>
           <td>{{ item.produtos_idprodutos}}</td>
           <td>{{ item.qtdConsumo }}</td>
-          <td>{{ item.dataConsumo }}</td>
+          <td>{{ item.dataFormatada }}</td>
           <td>
             <router-link
               :to="{ name: 'editConsumos', params: { id: item.idConsumo } }"
@@ -41,6 +41,7 @@
 <script>
 import axios from "axios";
 import AddConsumo from "@/../adm/src/components/consumos/AddConsumos.vue";
+import moment from 'moment';
 
 export default {
   name: "ConsumosView",
@@ -60,7 +61,10 @@ export default {
     async getConsumo() {
       try {
         const response = await axios.get("http://localhost:5000/Consumo");
-        this.items = response.data;
+        this.items = response.data.map(consumo => ({
+        ...consumo,
+        dataFormatada: moment(consumo.dataConsumo).format('DD/MM/YYYY')
+      }));
       } catch (err) {
         console.log(err);
       }
