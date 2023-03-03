@@ -205,14 +205,11 @@ export default {
         const response = await axios.get(
           `http://localhost:5000/servico/${idServico}`
         );
-        this.item = response.data;
-        this.idServico = this.item.idServicos;
-        this.nome = this.item.nomeServico;
-        this.descricao = this.item.descricaoServico;
-        this.label = this.item.labelServico;
-        this.vlrDiaria = this.item.vlrDiariaServico;
-        // console.log("getServicosById", this.item);
-        return response.data;
+        this.idServico = response.data.idServicos;
+        this.nome = response.data.nomeServico;
+        this.descricao = response.data.descricaoServico;
+        this.label = response.data.labelServico;
+        this.vlrDiaria = response.data.vlrDiariaServico;
       } catch (err) {
         console.log(err);
       }
