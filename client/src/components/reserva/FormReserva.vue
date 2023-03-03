@@ -226,7 +226,7 @@ export function checkInfo() {
   qtPessoas = localStorage.getItem("qtPessoas");
   tipoApto = localStorage.getItem("tipoapto");
 
-  if (localStorage.getItem("loginStatus") != "1") {
+  if (localStorage.getItem("loginStatus") != "cliente") {
       alert("Você precisa estar logado para concluir a reserva!");
       msgReturn = [false, "Você precisa estar logado para concluir a reserva!"];
   }
