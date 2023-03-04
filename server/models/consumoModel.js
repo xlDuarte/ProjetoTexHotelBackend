@@ -77,3 +77,33 @@ export const deleteConsumoById = (id, result) => {
     }
   });
 };
+
+export const getlocalConsumoById = (id, result) => {
+  db.query(
+    "SELECT nomeLocalConsumo FROM localconsumo WHERE idLocalConsumo = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results[0]);
+      }
+    }
+  );
+};
+
+export const getProdutoById = (id, result) => {
+  db.query(
+    "SELECT nomeProdutos FROM produtos WHERE idProdutos = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results[0]);
+      }
+    }
+  );
+};

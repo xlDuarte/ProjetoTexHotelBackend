@@ -16,8 +16,8 @@
       <tbody>
         <tr scope="row" v-for="item in items" :key="item.idConsumo">
           <td>{{ item.Reservas_idReservas }}</td>
-          <td>{{ item.localConsumo_idLocalConsumo }}</td>
-          <td>{{ item.produtos_idprodutos}}</td>
+          <td>{{ item.nomeLocalConsumo }}</td>
+          <td>{{ item.nomeProdutos}}</td>
           <td>{{ item.qtdConsumo }}</td>
           <td>{{ item.dataFormatada }}</td>
           <td>
@@ -48,6 +48,7 @@ export default {
   data() {
     return {
       items: [],
+      
     };
   },
   components: { AddConsumo },
@@ -59,16 +60,23 @@ export default {
   methods: {
     // Lista todos os Consumos
     async getConsumo() {
-      try {
-        const response = await axios.get("http://localhost:5000/Consumo");
-        this.items = response.data.map(consumo => ({
+  try {
+    const response = await axios.get("http://localhost:5000/Consumo");
+    this.items = await Promise.all(response.data.map(async consumo => {
+      const localResponse = await axios.get(`http://localhost:5000/localConsumo/${consumo.localConsumo_idLocalConsumo}`);
+      const localResponse2 = await axios.get(`http://localhost:5000/produto/${consumo.produtos_idprodutos}`);
+      return {
         ...consumo,
-        dataFormatada: moment(consumo.dataConsumo).format('DD/MM/YYYY')
-      }));
-      } catch (err) {
-        console.log(err);
+        nomeLocalConsumo: localResponse.data.nomeLocalConsumo,
+        dataFormatada: moment(consumo.dataConsumo).format('DD/MM/YYYY'),
+        nomeProdutos:localResponse2.data.nomeProdutos
       }
-    },
+    }));
+  } catch (err) {
+    console.log(err);
+  }
+},
+
 
     // Delete Consumo
     async deleteConsumos(id) {
