@@ -54,13 +54,14 @@
             class="form-control"
             v-model="data"
           />
-          <button type="button" class="btn btn-primary" @click="saveConsumo">
-            Cadastrar
-          </button>
         </div>
       </form>
+      <button class="btn btn-primary" @click="saveConsumo">
+            Cadastrar
+      </button>
     </div>
   </main>
+  
 </template>
 
 <script>
@@ -127,7 +128,7 @@ export default {
         this.idproduto = "";
         this.quantidade = "";
         this.data = "";
-        location.reload(); //testar outras soluções para recarregar o componente
+        this.$emit('updateConsumo') 
       } catch (err) {
         console.log(err);
       }

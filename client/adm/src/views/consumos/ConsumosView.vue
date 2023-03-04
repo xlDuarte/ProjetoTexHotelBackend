@@ -4,7 +4,7 @@
       <h2>CADASTRO DE CONSUMOS</h2>
       <p>Preencha todos os campos</p>
     </div>
-    <AddConsumo />
+    <AddConsumo @updateConsumo="getConsumo()" />
     <table class="table">
       <thead>
         <th scope="col">Quarto</th>
@@ -16,10 +16,10 @@
       <tbody>
         <tr scope="row" v-for="item in items" :key="item.idConsumo">
           <td>{{ item.Reservas_idReservas }}</td>
-          <td>{{ item.localConsumo_idLocalConsumo }}</td>
-          <td>{{ item.produtos_idprodutos}}</td>
+          <td>{{ item.nomeLocalConsumo }}</td>
+          <td>{{ item.nomeProdutos}}</td>
           <td>{{ item.qtdConsumo }}</td>
-          <td>{{ item.dataConsumo }}</td>
+          <td>{{ item.dataFormatada }}</td>
           <td>
             <router-link
               :to="{ name: 'editConsumos', params: { id: item.idConsumo } }"
@@ -41,12 +41,14 @@
 <script>
 import axios from "axios";
 import AddConsumo from "@/../adm/src/components/consumos/AddConsumos.vue";
+import moment from 'moment';
 
 export default {
   name: "ConsumosView",
   data() {
     return {
       items: [],
+      
     };
   },
   components: { AddConsumo },
@@ -58,13 +60,23 @@ export default {
   methods: {
     // Lista todos os Consumos
     async getConsumo() {
-      try {
-        const response = await axios.get("http://localhost:5000/Consumo");
-        this.items = response.data;
-      } catch (err) {
-        console.log(err);
+  try {
+    const response = await axios.get("http://localhost:5000/Consumo");
+    this.items = await Promise.all(response.data.map(async consumo => {
+      const localResponse = await axios.get(`http://localhost:5000/localConsumo/${consumo.localConsumo_idLocalConsumo}`);
+      const localResponse2 = await axios.get(`http://localhost:5000/produto/${consumo.produtos_idprodutos}`);
+      return {
+        ...consumo,
+        nomeLocalConsumo: localResponse.data.nomeLocalConsumo,
+        dataFormatada: moment(consumo.dataConsumo).format('DD/MM/YYYY'),
+        nomeProdutos:localResponse2.data.nomeProdutos
       }
-    },
+    }));
+  } catch (err) {
+    console.log(err);
+  }
+},
+
 
     // Delete Consumo
     async deleteConsumos(id) {
