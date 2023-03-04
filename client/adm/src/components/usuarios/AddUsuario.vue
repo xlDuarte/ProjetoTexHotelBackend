@@ -99,7 +99,7 @@ export default {
         // cria novo usuario
         async saveUsuario() {
             try {
-                await axios.post("http://localhost:5000/usuario", {
+                await axios.post("http://localhost:5000/register", {
                     nomeUsuario: this.nomeUser,
                     emailUsuario: this.emailUser,
                     cpfUSuario: this.cpfUSer,

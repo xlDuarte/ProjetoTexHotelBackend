@@ -21,7 +21,11 @@ import {
 } from "../controller/servicos.js";
 
 //import Login
-import { showLogin } from "../controller/logins.js";
+import { 
+  loginValidation,
+  signupValidation,
+  registerValidation
+} from "../controller/logins.js";
 
 //import Acomodações
 import {
@@ -54,7 +58,15 @@ import {
 const router = express.Router();
 
 // rota para captura do login
-router.get("/login", showLogin);
+//router.post("/login", loginUser);
+
+router.post('/login', loginValidation);
+
+router.post('/register', registerValidation);
+
+router.post('/get-user', signupValidation); 
+
+router.post('')
 
 // rota para listar todos os usuarios
 router.get("/usuario", showUsuario);
@@ -63,7 +75,7 @@ router.get("/usuario", showUsuario);
 router.get("/usuario/:id", showUsuarioById);
 
 // rota para criar um usuario
-router.post("/usuario", createUsuario);
+//router.post("/register", registerUser);
 
 // rota para atualizar um usuario
 router.put("/usuario/:id", updateUsuario);

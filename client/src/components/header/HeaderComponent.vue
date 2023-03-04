@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="campologin">
-          <form action="campologin" method="post">
+          <form action="login" method="post">
             <label for="login"><strong>USUARIO</strong></label>
             <input class="box1 login" type="email" name="login" id="login" v-model="login" />
             <label for="password"><strong>SENHA</strong></label>
@@ -114,48 +114,49 @@ export default {
   },
   methods: {
     async validate() {
-      if (this.login != "") {
+      if (this.login != "" && this.pswd != "") {
         try {
-          const response = await axios.get("http://localhost:5000/usuario");
-          this.items = response.data;
-          console.log(this.items)
-            this.items.forEach(item => {
-              if(item.emailUsuario == this.login && item.senhaUsuario == this.pswd){
-                console.log('ok')
-                let loged = item.nomeUsuario;
-                let logedOn = item.tipoUsuario;
-                let idUser = item.idUsuario;
-                this.logedin = true;
-                if(logedOn == 'cliente'){
-                  this.showHide(".logedin", "remove");
-                  this.showHide(".campologin", "add");
-                  localStorage.setItem("userId", idUser)
-                  localStorage.setItem("loged", loged);
-                  localStorage.setItem("loginStatus", logedOn);
-                  alert("Logado com sucesso!");
-                  document.getElementById(
-                    "user"
-                    ).innerText = `Olá ${loged}`;
-                } else if(logedOn == 'admin'){
-                  localStorage.setItem("loged", loged);
-                  localStorage.setItem("loginStatus", logedOn);
-                  document.getElementById(
-                    "user"
+          const response = await axios.post("http://localhost:5000/login", {
+            emailUsuario: this.login,
+            senhaUsuario: this.pswd,
+          });
+          console.log(response.data[0])
+          this.items = response.data
+          if(this.items){ 
+            let loged = this.items.nomeUsuario;
+            let logedOn = this.items.tipoUsuario;
+            let idUser = this.items.idUsuario;
+            this.logedin = true
+            console.log(this.items.nomeUsuario)            
+              console.log('ok')
+              if(logedOn == 'cliente'){
+                this.showHide(".logedin", "remove");
+                this.showHide(".campologin", "add");
+                localStorage.setItem("userId", idUser)
+                localStorage.setItem("loged", loged);
+                localStorage.setItem("loginStatus", logedOn);
+                alert("Logado com sucesso!");
+                document.getElementById(
+                  "user"
                   ).innerText = `Olá ${loged}`;
-                  this.logedin = localStorage.getItem("loginStatus");
-                  alert("Logado com sucesso como administrador!");
-                  this.$router.push("HomeAdm")
-                  this.showHide(".logedin", "remove");
-                  this.showHide(".campologin", "add");
-                  this.invisivel = true,
-                  this.visivel = false
-                }
-                
-            /*} else if(!this.logedin){
-                alert("Usuario ou senha incorretos");
-            */}  
-            });
-        } catch (err) {
+              } else if(logedOn == 'admin'){
+                localStorage.setItem("loged", loged);
+                localStorage.setItem("loginStatus", logedOn);
+                document.getElementById(
+                  "user"
+                ).innerText = `Olá ${loged}`;
+                this.logedin = localStorage.getItem("loginStatus");
+                alert("Logado com sucesso como administrador!");
+                this.$router.push("HomeAdm")
+                this.showHide(".logedin", "remove");
+                this.showHide(".campologin", "add");
+                this.invisivel = true,
+                this.visivel = false
+              } 
+            }  else{
+              alert("Usuario não encontrado")
+            }
+        }catch (err) {
           console.log(err);
         }
       } else {
