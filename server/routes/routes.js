@@ -43,6 +43,8 @@ import {
   createConsumo,
   deleteConsumo,
   updateConsumo,
+  showlocalConsumoById,
+  showProdutoById,
 } from "../controller/consumo.js";
 
 //import Reservas
@@ -105,6 +107,12 @@ router.get("/Consumo", showConsumo);
 
 // rota para listar um Consumo
 router.get("/Consumo/:id", showConsumoById);
+
+// rota para listar um local de consumo
+router.get("/localConsumo/:id", showlocalConsumoById);
+
+// rota para listar um produto
+router.get("/produto/:id", showProdutoById);
 
 // rota para criar um Consumo
 router.post("/Consumo", createConsumo);
