@@ -13,18 +13,32 @@
           ></button>
         </div>
         <div class="modal-body">
+          <div>
+            <button @click="JokeData">Chuck Norris</button>
+            <div v-if="JokeNorris.data">
+              <p>{{ JokeNorris.data.value }}</p>
+            </div>
+          </div>
+          <div>
+            <button @click="Servicos2Data">Servicos2</button>
+            <div v-if="Servicos2.data">
+              <p>{{ Servicos2.data.value }}</p>
+            </div>
+          </div>
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
           <h3>Modal Servicos 2 - Selecione mais serviços!</h3>
           <hr />
-          <div class="painelServicos" v-for="item in servicos" :key="item">
+          <div class="painelServicos" v-for="item in Servicos2.data" :key="item">
             <input
               type="checkbox"
               v-model="checked"
-              :id="item.id"
-              :name="item.name"
-              :value="item.label"
+              :id="item.idServicos"
+              :name="item.nomeServico"
+              :value="item.labelServico"
             />
-            <label>{{ item.descricao }} - R$ {{ item.vlrDiaria }} </label>
+            <label
+              >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }}
+            </label>
             <br />
           </div>
           <hr />
@@ -57,6 +71,8 @@ var jQuery = require("jquery");
 window.jQuery = jQuery;
 window.$ = jQuery;
 
+import { mapState } from "vuex";
+
 export default {
   name: "ModalServicos2",
   props: {
@@ -85,32 +101,22 @@ export default {
       alert("Serviços adicionais incluídos! Obrigado!");
       window.$("#modalServicos").modal("hide");
     },
+    JokeData() {
+      this.$store.dispatch("JokeNorris/getData");
+    },
+    Servicos2Data() {
+      this.$store.dispatch("Servicos2/getData");
+    },
   },
   computed: {
-    servicos() {
-      return this.$store.getters.servicos;
-    },
-    servicos2() {
-      [
-        {
-          id: "servico1",
-          nome: "servico1",
-          label: "cafeQuarto",
-          descricao: "Cafe da Manhã no Quarto",
-          vlrDiaria: 100,
-        },
-        {
-          id: "servico2",
-          nome: "servico2",
-          label: "5G",
-          descricao: "Internet 5G",
-          vlrDiaria: 50,
-        },
-      ];
-      return this.servicos2;
-    },
+    ...mapState(["JokeNorris"]),
+    ...mapState(["Servicos2"]),
   },
   mounted() {
+    // carrega servicos para a store...
+    this.Servicos2Data();
+    this.JokeData();
+
     // deve ter outro jeito melhor de fazer isso...
     // teste para tentar simplificar a seleção de serviços...não funcionou
     // console.log(

@@ -8,43 +8,43 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     // dados para servicos
-    servicos: [
-      {
-        id: "servico1",
-        nome: "servico1",
-        label: "cafeQuarto",
-        descricao: "Cafe da Manhã no Quarto",
-        vlrDiaria: 100,
-      },
-      {
-        id: "servico2",
-        nome: "servico2",
-        label: "5G",
-        descricao: "Internet 5G",
-        vlrDiaria: 50,
-      },
-      {
-        id: "servico3",
-        nome: "servico3",
-        label: "massagem",
-        descricao: "Massagem Terapéutica",
-        vlrDiaria: 150,
-      },
-      {
-        id: "servico4",
-        nome: "servico4",
-        label: "children",
-        descricao: "Serviços ChildrenCare",
-        vlrDiaria: 200,
-      },
-      {
-        id: "servico5",
-        nome: "servico5",
-        label: "pet",
-        descricao: "Serviços PetCare",
-        vlrDiaria: 100,
-      },
-    ],
+    // servicos2: [
+    //   {
+    //     id: "servico1",
+    //     nome: "servico1",
+    //     label: "cafeQuarto",
+    //     descricao: "SERV 2 Cafe da Manhã no Quarto",
+    //     vlrDiaria: 100,
+    //   },
+    //   {
+    //     id: "servico22",
+    //     nome: "servico2",
+    //     label: "5G",
+    //     descricao: "SERV 2 Internet 22 5G",
+    //     vlrDiaria: 50,
+    //   },
+    //   {
+    //     id: "servico3",
+    //     nome: "servico3",
+    //     label: "massagem",
+    //     descricao: "Massagem Terapéutica",
+    //     vlrDiaria: 150,
+    //   },
+    //   {
+    //     id: "servico4",
+    //     nome: "servico4",
+    //     label: "children",
+    //     descricao: "Serviços ChildrenCare",
+    //     vlrDiaria: 200,
+    //   },
+    //   {
+    //     id: "servico5",
+    //     nome: "servico5",
+    //     label: "pet",
+    //     descricao: "Serviços PetCare",
+    //     vlrDiaria: 100,
+    //   },
+    // ],
 
     // dados para acomodações
     acomodacoes: [
@@ -80,33 +80,6 @@ export default createStore({
         imgURL: require("/src/assets/images/reservas/room03_comfort2.jpg"),
         qtPessoas: 2,
         vlrDiaria: 200,
-      },
-    ],
-    reservas: [
-      {
-        dtReserva: "28/12/2022",
-        codCliente: "cod Cliente",
-        dtEntrada: "28/12/2022",
-        dtSaida: "29/12/2022",
-        qtPessoas: "2",
-        tipoApto: "master",
-        diarias: "1",
-        vlrTotal: "R$ 1.200,00",
-        vlrTotalcomDesconto: "R$ 1.200,00",
-        cupom: "drbuosa",
-      },
-      {
-        dtReserva: "04/01/2023",
-
-        codCliente: "cod Cliente",
-        dtEntrada: "05/01/2023",
-        dtSaida: "09/01/2023",
-        qtPessoas: "2",
-        tipoApto: "family",
-        diarias: "3",
-        vlrTotal: "R$ 2.200,00",
-        vlrTotalcomDesconto: "R$ 1.200,00",
-        cupom: "drbuosa",
       },
     ],
     reservas2: {
@@ -181,18 +154,19 @@ export default createStore({
 
       return objJson;
     },
-    servicos: (state) => {
-      let servicos_hotel = state.servicos.map((item) => {
-        return {
-          id: item.id,
-          nome: item.nome,
-          label: item.label,
-          descricao: item.descricao,
-          vlrDiaria: item.vlrDiaria.toFixed(2),
-        };
-      });
-      return servicos_hotel;
-    },
+    // servicos2: (state) => {
+    //   console.log("Executei getters modalservicos2");
+    //   let servicos_hotel = state.servicos2.map((item) => {
+    //     return {
+    //       id: item.id,
+    //       nome: item.nome,
+    //       label: item.label,
+    //       descricao: item.descricao,
+    //       vlrDiaria: item.vlrDiaria.toFixed(2),
+    //     };
+    //   });
+    //   return servicos_hotel;
+    // },
     reservas: (state) => {
       let reservasAnteriores = state.reservas.map((item) => {
         return {
@@ -222,6 +196,7 @@ export default createStore({
       // });
     },
   },
+
   actions: {
     // yyy - confirmação das mutações - exemplo:
     // aplicaDesconto: (context, tipo) => {

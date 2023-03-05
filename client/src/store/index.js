@@ -4,8 +4,18 @@
 // https://www.section.io/engineering-education/vue2-crud-app-with-localstorage/#:~:text=Load%20data%20from%20local%20storage&text=We%20will%20use%20a%20lifecycle,use%20to%20retrieve%20the%20data.
 
 import { createStore } from "vuex";
+// import Servicos from "../../adm/src/types/reservas/Servicos.js";
+
+import JokeNorris from "./modules/JokeNorris.js";
+import Servicos2 from "./modules/Servicos2"
+
+// import FormReserva from "@/components/reserva/FormReserva.vue";
 
 export default createStore({
+  modules: {
+    Servicos2,
+    JokeNorris,
+  },
   state: {
     // dados para servicos
     servicos: [
@@ -13,7 +23,7 @@ export default createStore({
         id: "servico1",
         nome: "servico1",
         label: "cafeQuarto",
-        descricao: "Cafe da Manhã no Quarto",
+        descricao: "Cafe XXX da Manhã no Quarto",
         vlrDiaria: 100,
       },
       {
@@ -82,33 +92,59 @@ export default createStore({
         vlrDiaria: 200,
       },
     ],
-    reservas: [
-      {
-        dtReserva: "28/12/2022",
-        codCliente: "cod Cliente",
-        dtEntrada: "28/12/2022",
-        dtSaida: "29/12/2022",
-        qtPessoas: "2",
-        tipoApto: "master",
-        diarias: "1",
-        vlrTotal: "R$ 1.200,00",
-        vlrTotalcomDesconto: "R$ 1.200,00",
-        cupom: "drbuosa",
-      },
-      {
-        dtReserva: "04/01/2023",
+    // reservas: [
+    //   {
+    //     dtReserva: "28/12/2022",
+    //     codCliente: "cod Cliente",
+    //     dtEntrada: "28/12/2022",
+    //     dtSaida: "29/12/2022",
+    //     qtPessoas: "2",
+    //     tipoApto: "master",
+    //     diarias: "1",
+    //     vlrTotal: "R$ 1.200,00",
+    //     vlrTotalcomDesconto: "R$ 1.200,00",
+    //     cupom: "drbuosa",
+    //   },
+    //   {
+    //     dtReserva: "04/01/2023",
 
-        codCliente: "cod Cliente",
-        dtEntrada: "05/01/2023",
-        dtSaida: "09/01/2023",
-        qtPessoas: "2",
-        tipoApto: "family",
-        diarias: "3",
-        vlrTotal: "R$ 2.200,00",
-        vlrTotalcomDesconto: "R$ 1.200,00",
-        cupom: "drbuosa",
-      },
-    ],
+    //     codCliente: "cod Cliente",
+    //     dtEntrada: "05/01/2023",
+    //     dtSaida: "09/01/2023",
+    //     qtPessoas: "2",
+    //     tipoApto: "family",
+    //     diarias: "3",
+    //     vlrTotal: "R$ 2.200,00",
+    //     vlrTotalcomDesconto: "R$ 1.200,00",
+    //     cupom: "drbuosa",
+    //   },
+    // ],
+
+    // servicos2: {
+    //   handler() {
+    //     let servAux = new Servicos();
+    //     servAux.getServicos();
+    //     //console.log("servArray", servArray.map);
+    //   },
+    // },
+
+    // [
+    //   {
+    //     id: "servico1",
+    //     nome: "servico1",
+    //     label: "cafeQuarto",
+    //     descricao: "serv 2 Cafe XXX da Manhã no Quarto",
+    //     vlrDiaria: 100,
+    //   },
+    //   {
+    //     id: "servico2",
+    //     nome: "servico2",
+    //     label: "5G",
+    //     descricao: "serv 2 Internet 5G",
+    //     vlrDiaria: 50,
+    //   },
+    // ],
+
     reservas2: {
       handler() {
         for (var i = 0; i < localStorage.length; i++) {
@@ -148,13 +184,13 @@ export default createStore({
       });
 
       let objStr = JSON.stringify(quartos_hotel);
-      console.log("getters =>", quartos_hotel.length);
+      //console.log("getters =>", quartos_hotel.length);
       for (let i = 0; i < quartos_hotel.length; i++) {
-        console.log("getters 2", quartos_hotel[i].id);
+        //console.log("getters 2", quartos_hotel[i].id);
         if (quartos_hotel[i].id == "family") {
-          console.log("mudar valor da ordem");
+          //console.log("mudar valor da ordem");
         } else {
-          console.log("manter valor da ordem");
+          //console.log("manter valor da ordem");
         }
       }
 
@@ -172,12 +208,12 @@ export default createStore({
       //   return value;
       // });
 
-      console.log("getters =>", objStr);
+      //console.log("getters =>", objStr);
       let objJson = JSON.parse(objStr);
-
       return objJson;
     },
     servicos: (state) => {
+      console.log("servicos1...", state.servicos);
       let servicos_hotel = state.servicos.map((item) => {
         return {
           id: item.id,
@@ -189,6 +225,34 @@ export default createStore({
       });
       return servicos_hotel;
     },
+
+    // servicos2: (state) => {
+    //   // let servAux = new Servicos();
+    //   // let servArray = servAux.getServicos();
+    //   // console.log("servArray",servArray.map)
+    //   console.log("servicos2...", state.servicos2);
+    //   let servicos_hotel = state.servicos2.map((item) => {
+    //     return {
+    //       id: item.idServicos,
+    //       nome: item.nomeServico,
+    //       label: item.labelServico,
+    //       descricao: item.descricaoServico,
+    //       vlrDiaria: item.vlrDiariaServico.toFixed(2),
+    //     };
+    //   });
+
+    // let servicos_hotel = state.servicos2.map((item) => {
+    //   return {
+    //     id: item.id,
+    //     nome: item.nome,
+    //     label: item.label,
+    //     descricao: item.descricao,
+    //     vlrDiaria: item.vlrDiaria.toFixed(2),
+    //   };
+    // });
+    //return servicos_hotel;
+    //},
+
     reservas: (state) => {
       let reservasAnteriores = state.reservas.map((item) => {
         return {
@@ -227,13 +291,12 @@ export default createStore({
       context.commit("confirmaServicos");
     },
   },
-  modules: {},
 });
 
-        // servicos: [
-        //   { id: "1001", servico: "Regular", vlrServico: "Valor Servico" },
-        //   { id: "1002", servico: "Regular", vlrServico: "Valor Servico" },
-        //   { id: "1003", servico: "Regular", vlrServico: "Valor Servico" },
-        //   { id: "1004", servico: "Regular", vlrServico: "Valor Servico" },
-        //   { id: "1005", servico: "Regular", vlrServico: "Valor Servico" },
-        // ],
+// servicos: [
+//   { id: "1001", servico: "Regular", vlrServico: "Valor Servico" },
+//   { id: "1002", servico: "Regular", vlrServico: "Valor Servico" },
+//   { id: "1003", servico: "Regular", vlrServico: "Valor Servico" },
+//   { id: "1004", servico: "Regular", vlrServico: "Valor Servico" },
+//   { id: "1005", servico: "Regular", vlrServico: "Valor Servico" },
+// ],
