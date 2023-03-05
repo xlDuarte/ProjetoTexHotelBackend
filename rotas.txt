@@ -1,0 +1,77 @@
+Login.
+rotas e endpoints
+
+rota para do login
+router.get("/login", Login);
+
+Usuarios.
+rotas e endpoints
+
+rota para listar todos os usuarios
+router.get("/usuario", showUsuario);
+
+rota para listar um usuario
+router.get("/usuario/:id", showUsuarioById);
+
+rota para criar um usuario
+router.post("/usuario", createUsuario);
+
+rota para atualizar um usuario
+router.put("/usuario/:id", updateUsuario);
+
+rota para deletar um usuario
+router.delete("/usuario/:id", deleteUsuario);
+
+Reservas.
+rotas e endpoints
+
+rota para listar todas as reservas
+router.get("/reserva", showReserva);
+
+rota para listar uma reserva
+router.get("/reserva/:id", showReservaById);
+
+rota para criar uma reserva
+router.post("/reserva", createReserva);
+
+rota para atualizar uma reserva
+router.put("/reserva/:id", updateReserva);
+
+rota para deletar uma reserva
+router.delete("/reserva/:id", deleteReserva);
+
+Acomodações.
+rotas e endpoints
+
+rota para listar todas as acomodacoes
+router.get("/acomodacao", showAcomodacao);
+
+rota para listar uma acomodacao
+router.get("/acomodacao/:id", showAcomodacaoById);
+
+rota para criar uma aomodacao
+router.post("/acomodacao", createAcomodacao);
+
+rota para atualizar uma aomodacao
+router.put("/acomodacao/:id", updateAcomodacao);
+
+rota para deletar uma acomodacao
+router.delete("/acomodacao/:id", deleteAcomodacao);
+
+Consumo.
+rotas e endpoints
+
+rota para listar todos os items de consumo
+router.get("/usuario", showUsuario);
+
+rota para listar um item de consumo
+router.get("/usuario/:id", showUsuarioById);
+
+rota para criar um item de consumo
+router.post("/usuario", createUsuario);
+
+rota para atualizar um usuario
+router.put("/usuario/:id", updateUsuario);
+
+rota para deletar item de consumo
+router.delete("/usuario/:id", deleteUsuario);
