@@ -7,6 +7,7 @@ import {
   deleteConsumoById,
   getlocalConsumoById,
   getProdutoById,
+  getValorProdutoById,
 } from "../models/consumoModel.js";
 
 // lista todos os Consumos
@@ -80,6 +81,16 @@ export const showlocalConsumoById = (req, res) => {
 
 export const showProdutoById = (req, res) => {
   getProdutoById(req.params.id, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+export const showValorProdutoById = (req, res) => {
+  getValorProdutoById(req.params.id, (err, results) => {
     if (err) {
       res.send(err);
     } else {

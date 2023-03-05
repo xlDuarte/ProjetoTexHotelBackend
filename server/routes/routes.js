@@ -41,6 +41,7 @@ import {
   updateConsumo,
   showlocalConsumoById,
   showProdutoById,
+  showValorProdutoById,
 } from "../controller/consumo.js";
 
 //import Reservas
@@ -101,6 +102,9 @@ router.get("/localConsumo/:id", showlocalConsumoById);
 
 // rota para listar um produto
 router.get("/produto/:id", showProdutoById);
+
+// rota para listar um valor do produto
+router.get("/valorProduto/:id", showValorProdutoById);
 
 // rota para criar um Consumo
 router.post("/Consumo", createConsumo);
