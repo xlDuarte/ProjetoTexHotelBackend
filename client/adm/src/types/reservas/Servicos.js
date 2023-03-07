@@ -4,13 +4,12 @@
 // > ["a","b","c"].forEach(letra => { letra === "a" ? console.log("Letra",letra) : console.log("erro")})
 
 console.log("Executando Servicos.js");
-
 export const msg = "Teste, Servicos.js";
 
 // import axios
 import axios from "axios";
 
-export class Servicos {
+export default class Servicos {
   id;
   nome;
   label;
