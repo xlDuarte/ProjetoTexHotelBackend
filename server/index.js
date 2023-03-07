@@ -4,10 +4,24 @@ import express from "express";
 import cors from "cors"; 
 // import das rotas para usar os endpoints
 import Router from "./routes/routes.js";
-import createError from "http-errors"
+import session from "express-session";
+import cookieParser from "cookie-parser";
   
 // iniciando o express
-const app = express();  
+const app = express();
+
+const dia = 1000 * 60 * 60 * 1 //1 horas em milisegundos
+
+app.use(cookieParser())
+app.use(session(
+    {
+    secret:'343re0598098098344wqiueoi93439483049',
+    saveUninitialized:true,
+    cookie:{maxAge:dia},
+    resave:false
+    }
+))
+
 // usar json
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))  

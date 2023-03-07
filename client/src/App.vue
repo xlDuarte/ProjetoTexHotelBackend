@@ -4,7 +4,7 @@
     <!--Banner-->
     <!-- <BannerComponent/> -->
     <!--Header-->
-    <HeaderComponent/>
+    <HeaderComponent :check="checkLogin"/>
     <div class="banner">
       <img alt="" src="./assets/BANNER-CASANAPRAIA.png">
     </div>
@@ -26,8 +26,22 @@ export default {
   name: 'AppVue',
   components: {
     HeaderComponent,FooterComponent,PreLoader
-  }
+  },
+  beforeMount() {
+    this.checkLogin();
+  },
+  methods:{    
+    checkLogin() {
+      if(localStorage.getItem("userId")){
+        return true 
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    },
+  },
 }
+
 
 </script>
 

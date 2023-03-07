@@ -175,7 +175,8 @@
 export default {
   name: 'HomeMain',
   components: {
-  }
+  },
+  
 }
 
 </script>

@@ -56,10 +56,19 @@ export default {
     
   created() {
     this.getUsuarios();
+    this.checkLogin();
   },
     
   methods: {
     // Lista todos os usuarios
+    checkLogin() {
+      if(localStorage.getItem("userId")){
+        return true 
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    },
     async getUsuarios() {
       try {
         const response = await axios.get("http://localhost:5000/usuario");

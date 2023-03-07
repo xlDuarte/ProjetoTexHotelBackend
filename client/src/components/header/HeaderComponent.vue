@@ -102,11 +102,17 @@ export default {
   components:{
     ModalSenha
   },
+  props:{
+    check:{
+      type: Function
+    }
+  },
   data() {
     return {
       items:[],
       login: "",
-      pswd: "", 
+      pswd: "",
+      x: "", 
       logedin: false,
       visivel: true,
       invisivel: false
@@ -120,9 +126,84 @@ export default {
             emailUsuario: this.login,
             senhaUsuario: this.pswd,
           });
-          console.log(response.data[0])
-          this.items = response.data
-          if(this.items){ 
+          this.x = response.data.sessionUser.cookie
+          this.items = response.data.data
+          console.log(this.items)
+          console.log(response.data)
+          console.log(response.data.sessionUser)
+          if(this.x){ 
+            let loged = this.items.nomeUsuario;
+            let logedOn = this.items.tipoUsuario;
+            let idUser = this.items.idUsuario;
+            this.logedin = true
+            console.log(this.items.nomeUsuario)            
+              console.log('ok')
+              if(logedOn == 'cliente'){
+                this.showHide(".logedin", "remove");
+                this.showHide(".campologin", "add");
+                localStorage.setItem("userId", idUser);
+                localStorage.setItem("loged", loged);
+                localStorage.setItem("loginStatus", logedOn);
+                alert("Logado com sucesso!");
+                document.getElementById(
+                  "user"
+                  ).innerText = `Olá ${loged}`;
+              } else if(logedOn == 'admin'){
+                localStorage.setItem("userId", idUser);
+                localStorage.setItem("loged", loged);
+                localStorage.setItem("loginStatus", logedOn);
+                document.getElementById(
+                  "user"
+                ).innerText = `Olá ${loged}`;
+                this.logedin = localStorage.getItem("loginStatus");
+                alert("Logado com sucesso como administrador!");
+                this.$router.push("HomeAdm")
+                this.showHide(".logedin", "remove");
+                this.showHide(".campologin", "add");
+                this.invisivel = true,
+                this.visivel = false
+              } 
+          }  else{
+            alert("Usuario não encontrado")
+          }
+        }catch (err) {
+          console.log(err);
+        }
+      } else {
+        alert("È preciso preencher os campos de login e senha");
+      }        
+    },
+
+    showHide(obj, action) {
+      document.querySelector(obj).classList[action]("hide");
+    },
+
+    async logOut() {
+      const response = await axios.get("http://localhost:5000/logout");
+      let logedOut = 0;
+      this.showHide(".campologin", "remove");
+      this.showHide(".logedin", "add");
+      this.invisivel = false,
+      this.visivel = true
+      localStorage.setItem("loginStatus", logedOut);
+      localStorage.removeItem("loged");
+      localStorage.removeItem("userId")
+      localStorage.removeItem("loginStatus");
+      document.getElementById("login").value = "";
+      document.getElementById("password").value = "";
+      this.logedin = localStorage.getItem("logedOut");
+      this.$router.push("/")
+      console.log("logout",response)
+    },
+
+    async loginCheck() {
+      console.log("check header",this.check())   
+      if(this.check() == true){ 
+          try{
+            const response = await axios.get("http://localhost:5000/get-user")
+            this.items = response.data.data
+            console.log("check",this.items)
+            console.log("check",this.x)
             let loged = this.items.nomeUsuario;
             let logedOn = this.items.tipoUsuario;
             let idUser = this.items.idUsuario;
@@ -153,55 +234,15 @@ export default {
                 this.invisivel = true,
                 this.visivel = false
               } 
-            }  else{
-              alert("Usuario não encontrado")
+            } catch(err) {
+              console.log(err);
             }
-        }catch (err) {
-          console.log(err);
-        }
-      } else {
-        alert("È preciso preencher os campos de login e senha");
-      }        
-    },
-
-    showHide(obj, action) {
-      document.querySelector(obj).classList[action]("hide");
-    },
-
-
-    logOut() {
-      let logedOut = 0;
-      this.showHide(".campologin", "remove");
-      this.showHide(".logedin", "add");
-      this.invisivel = false,
-      this.visivel = true
-      localStorage.setItem("loginStatus", logedOut);
-      localStorage.removeItem("loged");
-      document.getElementById("login").value = "";
-      document.getElementById("password").value = "";
-      this.logedin = localStorage.getItem("logedOut");
-      this.$router.push("/")
-    },
-
-    loginCheck() {
-      //  if (this.logedin == 1) {
-      if (localStorage.getItem("loginStatus") == 'cliente') {
-        this.showHide(".campologin", "add");
-        this.showHide(".logedin", "remove");
-        console.log("ok");
-        document.getElementById("user").innerText = `Olá ${localStorage.getItem("loged")}`;
-      }else if(localStorage.getItem("loginStatus") == 'admin'){
-        this.showHide(".logedin", "remove");
-        this.showHide(".campologin", "add");
-        this.invisivel = true,
-        this.visivel = false
-        console.log("ok");
-        document.getElementById("user").innerText = `Olá ${localStorage.getItem("loged")}`;
-        this.$router.push("HomeAdm")
-      }
+          }else{
+            this.$router.push("/")
+          }
     },
   },
-  mounted() {
+  beforeMount() {
     this.loginCheck();
   },
 };

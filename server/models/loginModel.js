@@ -2,7 +2,7 @@
 import db from "../config/database.js";
 
 
-// lista o usuario a partir do email e senha
+// lista o usuario a partir do email
 export const getUsers = (email, result) => {
   db.query(`SELECT * FROM usuario WHERE emailUsuario = ${db.escape(email)};`,
   [email],

@@ -53,8 +53,19 @@ export default {
   created() {
     this.getAcomodacao();
   },
-    
-  methods: {
+  beforeMount() {
+  this.checkLogin();
+  console.log(this.checkLogin())
+  }, 
+  methods:{    
+    checkLogin() {
+      if(localStorage.getItem("userId")){
+        return true 
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    },  
     // Lista todos os usuarios
     async getAcomodacao() {
       try {

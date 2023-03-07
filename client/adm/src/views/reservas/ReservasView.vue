@@ -402,7 +402,10 @@ export default {
     this.getReservas();
     console.log("Created:", this.itens);
   },
-
+  beforeMount() {
+    this.checkLogin();
+    console.log(this.checkLogin())
+  },
   setup() {
     // setup...
     // const modalActive = ref(true);
@@ -413,6 +416,14 @@ export default {
   },
 
   methods: {
+    checkLogin() {
+      if(localStorage.getItem("userId")){
+        return true 
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    },
     // campos do cabecalho, apoio para desenvolvimento...
     changeName(msg1) {
       this.msg1 = msg1;

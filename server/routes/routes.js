@@ -24,7 +24,8 @@ import {
 import { 
   loginValidation,
   signupValidation,
-  registerValidation
+  registerValidation,
+  logOut
 } from "../controller/logins.js";
 
 //import Acomodações
@@ -64,9 +65,11 @@ const router = express.Router();
 
 router.post('/login', loginValidation);
 
+router.get('/logout', logOut);
+
 router.post('/register', registerValidation);
 
-router.post('/get-user', signupValidation); 
+router.get('/get-user', signupValidation); 
 
 router.post('')
 

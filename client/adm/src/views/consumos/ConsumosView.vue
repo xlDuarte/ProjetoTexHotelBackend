@@ -56,8 +56,19 @@ export default {
   created() {
     this.getConsumo();
   },
-
+  beforeMount() {
+    this.checkLogin();
+    console.log(this.checkLogin())
+  },
   methods: {
+    checkLogin() {
+      if(localStorage.getItem("userId")){
+        return true 
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    },
     // Lista todos os Consumos
     async getConsumo() {
   try {
