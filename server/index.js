@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 // iniciando o express
 const app = express();
 
+const port = 5000
 const dia = 1000 * 60 * 60 * 1 //1 horas em milisegundos
 
 app.use(cookieParser())
@@ -24,20 +25,11 @@ app.use(session(
 
 // usar json
 app.use(express.json());
-app.use(express.urlencoded({extended: false}))  
+app.use(express.urlencoded({extended: false}))
 // usar cors
 app.use(cors());  
 // use o router
 app.use(Router);
 
-app.use((err, req, res, next) => {
-    console.log(err);
-    err.statusCode = err.statusCode || 500;
-    err.message = err.message || "Internal Server Error";
-    res.status(err.statusCode).json({
-        message: err.message,
-    });
-});
-
-//depois criar uma const port para melhorar isso
-app.listen(5000, () => console.log('Server running at http://localhost:5000'));
+//Servidor rodando
+app.listen(port, () => console.log(`Server running at http://localhost:${port}`));

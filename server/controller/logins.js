@@ -1,42 +1,39 @@
-
-
-
 import bcrypt from "bcrypt"
 //import jwt from "jsonwebtoken"
 import db from "../config/database.js";
-
 
 let sessionUser
 let userId
 export const registerValidation = (req, res, next) => {
     db.query(
-        `SELECT * FROM usuario WHERE LOWER(emailUsuario) = LOWER(${db.escape(req.body.emailUsuario)});`,
+        `SELECT * FROM usuario WHERE emailUsuario = ?`,
+        [req.body.emailUsuario],
         (err, result) => {
             if (result.length) {
                 return res.status(409).send({
-                    msg: 'This user is already in use!'
+                    msg: 'Usuario já cadastrado!'
                 });
             } else {
                 // se o email estiver disponivel
                 bcrypt.hash(req.body.senhaUsuario, 10, (err, hash) => {
                     if (err) {
                         return res.status(500).send({
-                            msg: err
+                            msg: 'algo deu errado!'
                         });
                     } else {
                         // encripta o password => adiciona ao db
                         db.query(
-                            `INSERT INTO usuario (nomeUsuario, emailUsuario, senhaUsuario, endUsuario, cpfUsuario, telefoneUsuario) VALUES (
-                                '${req.body.nomeUsuario}',${db.escape(req.body.emailUsuario)},${db.escape(hash)}, '${req.body.endUsuario}','${req.body.cpfUsuario}','${req.body.telefoneUsuario}')`,
+                            `INSERT INTO usuario SET ?`,[req.body],
                             (err, result) => {
                                 if (err) {
+                                    console.log(err)
                                     //throw err;
                                     return res.status(400).send({
                                         msg: err
                                     });
                                 }
                                 return res.status(201).send({
-                                    msg: 'The user has been registerd with us!'
+                                    msg: 'Usuario registrado com sucesso!'
                                 });
                             }
                         );
@@ -49,7 +46,7 @@ export const registerValidation = (req, res, next) => {
 
 export const loginValidation = (req, res, next) => {
     db.query(
-        `SELECT * FROM usuario WHERE emailUsuario = ${db.escape(req.body.emailUsuario)};`,
+        `SELECT * FROM usuario WHERE emailUsuario = ?`,[req.body.emailUsuario],
         (err, result) => {
             // se o usuario nao existir
             if (err) {
@@ -60,7 +57,7 @@ export const loginValidation = (req, res, next) => {
             }
             if (!result.length) {
                 return res.status(401).send({
-                    msg: 'Email or password is incorrect!'
+                    msg: 'Usuario não existe'
                 });
             }
             // checa o password
@@ -68,11 +65,10 @@ export const loginValidation = (req, res, next) => {
                 req.body.senhaUsuario,
                 result[0]['senhaUsuario'],
                 (bErr, bResult) => {
-                    // se a senha estiver errada
                     if (bErr) {
                         //throw bErr;
                         return res.status(401).send({
-                            msg: 'Email or password is incorrect!'
+                            msg: 'Algo deu errado'
                         });
                     }
                     if (bResult) {
@@ -81,15 +77,17 @@ export const loginValidation = (req, res, next) => {
                         userId = result[0].idUsuario
                         console.log(sessionUser)
                         db.query(
-                            `UPDATE usuario SET ultimoLogin = now() WHERE idUsuario = '${result[0].idUsuario}'`
-                        );                        
-                        return res.status(200).send({
-                            msg: 'Logged in!',
-                            sessionUser,
-                            data: result[0]})
+                            `UPDATE usuario SET ultimoLogin = now() WHERE idUsuario = ?`,[result[0].idUsuario]
+                            );                        
+                            return res.status(200).send({
+                                msg: 'Logado!',
+                                sessionUser,
+                                data: result[0]})
+                                
                     }
+                    // se a senha estiver errada
                     return res.status(401).send({
-                        msg: 'Username or password is incorrect!'
+                        msg: 'Senha incorreta'
                     });
                 }
             );
@@ -97,7 +95,6 @@ export const loginValidation = (req, res, next) => {
         }
     );
 };
-
 
 export const signupValidation = (req,res)=>{
     sessionUser = req.session
@@ -113,7 +110,7 @@ export const signupValidation = (req,res)=>{
         });
     } else{
         return res.status(422).json({
-            message: "sessão invalida",
+            message: "sessão expirou! Faça login novamente.",
         });
     }
 };
@@ -122,14 +119,16 @@ export const logOut = (req,res)=>{
     req.session.destroy()
     sessionUser = req.session
     userId = ""
-    console.log(sessionUser)
-    res.send({sessionUser})
+    res.json({data: !sessionUser}) 
 }
-    /*console.log(req.headers)
+
+/*Validação com JWT
+export const signupValidation = (req,res)=>{
+    console.log(req.headers)
     if(
         !req.headers.authorization ||
         !req.headers.authorization.startsWith('Bearer') ||
-        !req.headers.authorization.split(' ')[1]
+        !req.headers.authorization.split(' ')[0]
     ){
         return res.status(422).json({
             message: "Please provide the token",

@@ -1,7 +1,6 @@
 <!-- Header -->
 <template>
   <div>
-
     <ModalSenha/>
     <nav>
       <header>
@@ -102,11 +101,7 @@ export default {
   components:{
     ModalSenha
   },
-  props:{
-    check:{
-      type: Function
-    }
-  },
+  
   data() {
     return {
       items:[],
@@ -167,6 +162,7 @@ export default {
             alert("Usuario não encontrado")
           }
         }catch (err) {
+          alert(err.response.data.msg)
           console.log(err);
         }
       } else {
@@ -180,7 +176,7 @@ export default {
 
     async logOut() {
       const response = await axios.get("http://localhost:5000/logout");
-      let logedOut = 0;
+      let logedOut = response.data;
       this.showHide(".campologin", "remove");
       this.showHide(".logedin", "add");
       this.invisivel = false,
@@ -192,18 +188,15 @@ export default {
       document.getElementById("login").value = "";
       document.getElementById("password").value = "";
       this.logedin = localStorage.getItem("logedOut");
-      this.$router.push("/")
-      console.log("logout",response)
+      console.log("logout", response)      
+      window.location.href="/"
     },
 
-    async loginCheck() {
-      console.log("check header",this.check())   
-      if(this.check() == true){ 
+    async loginCheck() {  
+      if(!this.logedin){ 
           try{
             const response = await axios.get("http://localhost:5000/get-user")
             this.items = response.data.data
-            console.log("check",this.items)
-            console.log("check",this.x)
             let loged = this.items.nomeUsuario;
             let logedOn = this.items.tipoUsuario;
             let idUser = this.items.idUsuario;

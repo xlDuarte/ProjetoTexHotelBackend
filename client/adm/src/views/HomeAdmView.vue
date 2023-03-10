@@ -19,13 +19,17 @@ export default {
   },
   methods:{
     checkLogin() {
-        if(localStorage.getItem("userId")){
-          return true 
-        }else{
+      if(localStorage.getItem("loginStatus")){
+        if(localStorage.getItem("loginStatus") == "admin")
+          return true
+        else if(localStorage.getItem("loginStatus") == "cliente")
           this.$router.push("/")
-          return false
-        }
-      },
+          return true
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    },  
   }
 }
 </script>

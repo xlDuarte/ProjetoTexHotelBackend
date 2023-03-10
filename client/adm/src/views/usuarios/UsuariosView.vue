@@ -5,7 +5,7 @@
       <p>Preencha todos os campos</p>
     </div>
     <AddUsuario @updateList="getUsuarios()"/>
-    <table class="table">
+    <table class="table table-responsive table-striped">
       <thead>
         <th scope="col">ID</th>
         <th scope="col">Nome</th>
@@ -60,15 +60,18 @@ export default {
   },
     
   methods: {
-    // Lista todos os usuarios
     checkLogin() {
-      if(localStorage.getItem("userId")){
-        return true 
+      if(localStorage.getItem("loginStatus")){
+        if(localStorage.getItem("loginStatus") == "admin")
+          return true
+        else if(localStorage.getItem("loginStatus") == "cliente")
+          this.$router.push("/")
+          return true
       }else{
         this.$router.push("/")
         return false
       }
-    },
+    }, 
     async getUsuarios() {
       try {
         const response = await axios.get("http://localhost:5000/usuario");

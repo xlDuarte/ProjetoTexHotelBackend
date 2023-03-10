@@ -6,7 +6,6 @@ import express from "express";
 import {
   showUsuario,
   showUsuarioById,
-  createUsuario,
   deleteUsuario,
   updateUsuario,
 } from "../controller/usuarios.js";
@@ -60,27 +59,25 @@ import {
 // init express router
 const router = express.Router();
 
+//Login e Autenticação
 // rota para captura do login
-//router.post("/login", loginUser);
-
 router.post('/login', loginValidation);
 
+//rota para deslogar e destruir seção
 router.get('/logout', logOut);
 
+//rota para registrar o usuario
 router.post('/register', registerValidation);
 
+//rota para checar se logdado
 router.get('/get-user', signupValidation); 
 
-router.post('')
-
+//Usuarios
 // rota para listar todos os usuarios
 router.get("/usuario", showUsuario);
 
 // rota para listar um usuario
 router.get("/usuario/:id", showUsuarioById);
-
-// rota para criar um usuario
-//router.post("/register", registerUser);
 
 // rota para atualizar um usuario
 router.put("/usuario/:id", updateUsuario);
