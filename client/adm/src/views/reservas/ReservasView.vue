@@ -4,7 +4,11 @@
       <ModalServicos2 />
     </div>
     <div class="modalResumo2">
-      <ModalResumo2 :msg="msgModalResumo" :idReservas="idReservasModalResumo" :itemReservas="itemReservaModalResumo" />
+      <ModalResumo2
+        :msg="msgModalResumo"
+        :idReservas="idReservasModalResumo"
+        :itemReservas="itemReservaModalResumo"
+      />
     </div>
     <div class="sec">
       <h4>ReservasView.vue - quando ok ocultar esta área!!!</h4>
@@ -81,7 +85,7 @@
                   v-if="itemArrayEdit"
                   >Status Reserva</label
                 >
-                <input
+                <!-- <input
                   type="text"
                   id="statusReserva"
                   v-model="statusReserva"
@@ -89,7 +93,22 @@
                   class="form-control"
                   v-if="itemArrayEdit"
                   :disabled="camposAtivos"
-                />
+                /> -->
+
+                <select
+                  id="statusReserva"
+                  v-model="statusReserva"
+                  placeholder="Status da Reserva"
+                  class="form-control"
+                  v-if="itemArrayEdit"
+                  :disabled="camposAtivos"
+                >
+                  <option value="Registrada">Registrada</option>
+                  <option value="Confirmada">Confirmada</option>
+                  <option value="Encerrada">Encerrada</option>
+                  <option value="Cancelada">Cancelada</option>
+                  <option value="Excluida">Excluída</option>
+                </select>
               </div>
               <div>
                 <label
@@ -358,7 +377,7 @@ export default {
       acomodacaoVlrDiaria: 0,
       acomodacaoQtMaxPessoas: 0,
       qtDiarias: 0,
-      statusReserva: "Criada",
+      statusReserva: "Registrada",
       dataCancelamento: new Date().toISOString().substring(0, 10),
       motivoCancelamento: "",
       cupom: "",
@@ -699,7 +718,7 @@ export default {
       this.acomodacaoTipo = "";
       this.acomodacaoVlrDiaria = 0;
       this.qtDiarias = 0;
-      this.statusReserva = "Criada"; // status inicial da Reserva
+      this.statusReserva = "Registrada"; // status inicial da Reserva
       this.dataCancelamento = new Date().toISOString().substring(0, 10);
       (this.motivoCancelamento = ""),
         (this.cupom = ""),

@@ -20,6 +20,7 @@
             v-model="nome"
             placeholder="Abreviação do serviço"
             class="form-control"
+            maxlength="45"
           />
         </div>
         <div class="my-2">
@@ -32,6 +33,7 @@
             v-model="descricao"
             placeholder="Descrição do serviço"
             class="form-control"
+            maxlength="45"
           />
         </div>
         <div class="my-2">
@@ -44,6 +46,7 @@
             v-model="label"
             placeholder="Label de tela do serviço"
             class="form-control"
+            maxlength="45"            
           />
         </div>
         <div>
@@ -70,7 +73,7 @@
             v-if="showExcluirButton"
             @click="handleClick('excluir')"
             id="btnExcluir"
-            class="btn btn-warning my-3 fw-bold text-uppercase text-red"
+            class="btn btn-danger my-3 fw-bold text-uppercase text-red"
             type="button"
           >
             Excluir
@@ -219,7 +222,8 @@ export default {
       console.log("Entrei no handleClick");
       if (action == "salvar") {
         console.log("Entrei no handleClick - salvar");
-        let servico = new Servicos();
+        const servico = new Servicos();
+        console.log("Entrei no handleClick - salvar - intanciei Servicos...",servico)
         servico.salvar(
           this.idServico,
           this.nome,
@@ -246,8 +250,8 @@ export default {
         this.msg2 = `this.idReservas=${this.idServico}`;
         let conf = confirm("Confirma exclusão do serviço?");
         if (conf) {
-          let servico = new Servicos();
-          servico.excluir(this.idServico);
+          const servExcluir = new Servicos();
+          servExcluir.excluir(this.idServico);
           // recarrega lista de serviços
           this.getServicos();
         }

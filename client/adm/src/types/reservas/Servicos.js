@@ -9,7 +9,7 @@ export const msg = "Teste, Servicos.js";
 // import axios
 import axios from "axios";
 
-export default class Servicos {
+export class Servicos {
   id;
   nome;
   label;
@@ -88,6 +88,7 @@ export default class Servicos {
 
   async criaServicoBD() {
     console.log("entrei na gravação do registro...");
+    console.log(this.nome, this.descricao, this.label, this.vlrDiaria);
     try {
       await axios.post("http://localhost:5000/servico", {
         nomeServico: this.nome,
@@ -106,7 +107,8 @@ export default class Servicos {
   }
 
   async updateServicoBD() {
-    console.log("entrei no update do servico...");
+    console.log("entrei no update do servico...", this.idServico);
+    console.log(this.nome, this.descricao, this.label, this.vlrDiaria);
     try {
       await axios.put(`http://localhost:5000/servico/${this.idServico}`, {
         nomeServico: this.nome,

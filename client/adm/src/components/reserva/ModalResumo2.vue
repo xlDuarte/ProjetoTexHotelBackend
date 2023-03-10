@@ -81,6 +81,11 @@
                 Confirma Reserva
               </button> -->
             </div>
+            <div id="geraPDF">
+              <button class="btn btn-secondary" @click="geraPDF">
+                Gera PDF
+              </button>
+            </div>
             <hr />
             <p id="totalDesconto"></p>
             <hr />
