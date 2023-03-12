@@ -144,7 +144,7 @@ export default {
             try {
               const response = await axios.get("http://localhost:5000/acomodacao");
               this.items = response.data;
-              console.log(this.items[0].imagem1Acomodacao)
+              console.log(this.items)
             } catch (err) {
                 console.log(err);
             }
