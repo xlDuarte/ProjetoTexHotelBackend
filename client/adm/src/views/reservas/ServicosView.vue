@@ -20,6 +20,7 @@
             v-model="nome"
             placeholder="Abreviação do serviço"
             class="form-control"
+            maxlength="45"
           />
         </div>
         <div class="my-2">
@@ -32,6 +33,7 @@
             v-model="descricao"
             placeholder="Descrição do serviço"
             class="form-control"
+            maxlength="45"
           />
         </div>
         <div class="my-2">
@@ -44,6 +46,7 @@
             v-model="label"
             placeholder="Label de tela do serviço"
             class="form-control"
+            maxlength="45"            
           />
         </div>
         <div>
@@ -70,7 +73,7 @@
             v-if="showExcluirButton"
             @click="handleClick('excluir')"
             id="btnExcluir"
-            class="btn btn-warning my-3 fw-bold text-uppercase text-red"
+            class="btn btn-danger my-3 fw-bold text-uppercase text-red"
             type="button"
           >
             Excluir
@@ -143,7 +146,6 @@
 <script>
 import axios from "axios";
 import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
-
 export default {
   name: "ServicosView",
   data() {
@@ -165,20 +167,32 @@ export default {
       showCancelarButton: false,
     };
   },
-
+  beforeMount() {
+    this.checkLogin();
+    console.log(this.checkLogin())
+  },
   created() {
     this.getServicos();
   },
-
   setup() {
     // setup...
   },
-
   components: {
     // components....
   },
-
   methods: {
+    checkLogin() {
+      if(localStorage.getItem("loginStatus")){
+        if(localStorage.getItem("loginStatus") == "admin")
+          return true
+        else if(localStorage.getItem("loginStatus") == "cliente")
+          this.$router.push("/")
+          return true
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    }, 
     // campos do cabecalho, apoio para desenvolvimento...
     changeName(msg1) {
       this.msg1 = msg1;
@@ -186,7 +200,6 @@ export default {
     changeAge(msg2) {
       this.msg2 = msg2;
     },
-
     // Lista todos os servicos
     async getServicos() {
       try {
@@ -198,7 +211,6 @@ export default {
         console.log(err);
       }
     },
-
     // localiza servico pelo id
     async getServicosById(idServico) {
       try {
@@ -214,12 +226,12 @@ export default {
         console.log(err);
       }
     },
-
     handleClick(action) {
       console.log("Entrei no handleClick");
       if (action == "salvar") {
         console.log("Entrei no handleClick - salvar");
-        let servico = new Servicos();
+        const servico = new Servicos();
+        console.log("Entrei no handleClick - salvar - intanciei Servicos...",servico)
         servico.salvar(
           this.idServico,
           this.nome,
@@ -232,33 +244,29 @@ export default {
         // recarrega lista de serviços
         this.getServicos();
       }
-
       if (action == "cancelar") {
         // não faz nada, a rotina de edição está no "servico.salvar" só desabilita o botão e limpa os campos na rotina que já está abaixo...
         // this.showSalvarButton = true;
         // this.showCancelarButton = false;
         // this.showExcluirButton = false;
       }
-
       if (action == "excluir") {
         // chama rotina de exclusão, desabilita o botão e limpa os campos na rotina que já está abaixo...
         this.msg1 = "Cliquei handleClick excluir...";
-        this.msg2 = `this.idReservas=${this.idServico}`;
+        this.msg2 = `this.idReservas=${idServico}`;
         let conf = confirm("Confirma exclusão do serviço?");
         if (conf) {
-          let servico = new Servicos();
-          servico.excluir(this.idServico);
+          const servExcluir = new Servicos();
+          servExcluir.excluir(idServico);
           // recarrega lista de serviços
           this.getServicos();
         }
       }
-
       // após inclusão, limpa campos do form...
       this.nome = "";
       this.descricao = "";
       this.label = "";
       this.vlrDiaria = 0;
-
       // retorna status dos botões...
       this.showSalvarButton = true;
       this.showCancelarButton = false;
@@ -266,7 +274,6 @@ export default {
       this.itemArrayEdit = false;
       return true;
     },
-
     handleItem(action, idServico) {
       console.log("Entrei no handleItem");
       // let storageServico = new StorageServico(document.querySelector("form"));
@@ -309,26 +316,22 @@ export default {
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-
 .sec {
   position: relative;
   padding: 2vw;
   transition: all 0.3s ease;
   color: black;
 }
-
 .sec > div {
   max-width: 90%;
   margin: 2% 5%;
 }
-
 .flex {
   display: flex;
   flex-wrap: wrap;
   max-width: 90%;
   margin: 0 5%;
 }
-
 .flex > div {
   flex: 1 1 420px;
   margin: 10px;

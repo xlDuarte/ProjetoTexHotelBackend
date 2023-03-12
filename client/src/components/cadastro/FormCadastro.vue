@@ -82,13 +82,12 @@ export default{
     methods:{
       async saveUsuario() {
             try {
-                await axios.post("http://localhost:5000/usuario", {
+                await axios.post("http://localhost:5000/register", {
                     nomeUsuario: this.nomeUser,
                     emailUsuario: this.emailUser,
-                    cpfUSuario: this.cpfUSer,
+                    cpfUsuario: this.cpfUSer,
                     endUsuario: this.endUser,
                     telefoneUsuario: this.telefoneUser,
-                    tipoUsuario: this.tipoUser,
                     senhaUsuario: this.senhaUser
                 });
                 this.nomeUser = "";
@@ -96,7 +95,6 @@ export default{
                 this.cpfUSer="";
                 this.endUser="";
                 this.telefoneUser="";
-                this.tipoUser="";
                 this.senhaUser="";   
                 alert("Cadastro efetuado com sucesso")
                 router.push("/");        

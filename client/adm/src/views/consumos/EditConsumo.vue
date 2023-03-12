@@ -64,8 +64,21 @@ export default {
   },
   created: function () {
     this.getConsumoById();
+    this.checkLogin();
   },
   methods: {
+    checkLogin() {
+      if(localStorage.getItem("loginStatus")){
+        if(localStorage.getItem("loginStatus") == "admin")
+          return true
+        else if(localStorage.getItem("loginStatus") == "cliente")
+          this.$router.push("/")
+          return true
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    }, 
     // lista usuario por id
     async getConsumoById() {
       try {

@@ -1,6 +1,6 @@
 <template>
-    <router-link to="/Reservas"><button class="botaoreserva"> Reserve já ! </button> </router-link>
-    <main>
+  <main>
+      <router-link to="/Reservas"><button class="botaoreserva"> Reserve já ! </button> </router-link>
         <section class="sec">
           <div>
             <h2>ACOMODAÇÕES DO NOSSO HOTEL</h2>
@@ -9,145 +9,148 @@
               cofre, estacionamento e serviços de quarto.
             </p>
           </div>
-          <hr/>
-          <div><h2>Premium Master Suite - "Ninho das Araras"</h2></div>
-          <div class="flex">        
-            <div id="acomodacoes_card_imgMaster1" class="acomodacoes_card">
-              <h2 class="card__titulo_"></h2>
-              <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-7.jpg" alt="Premium master" /></a>                        
+          <hr/>          
+          <div 
+            v-for="item in items"
+            :key="item.idAcomodacao">
+            <div v-if="item.tipoAcomodacao == 'Master'">
+              <div><h2>Suite {{item.tipoAcomodacao}} - {{item.nomeAcomodacao}}</h2></div>
+              <div class="flex">        
+                <div id="acomodacoes_card_imgMaster1" class="acomodacoes_card">
+                  <h2 class="card__titulo_"></h2>
+                  <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-2.jpg" alt="Premium master" /></a>                        
+                </div>
+                <div id="acomodacoes_card_imgMaster2" class="acomodacoes_card">
+                  <h2 class="card__titulo_"></h2>
+                  <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-8.jpg" alt="Premium master" /></a>                        
+                </div>
+                <div id="acomodacoes_card_imgMaster3" class="acomodacoes_card">
+                  <h2 class="card__titulo_"></h2>
+                  <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-5.jpg" alt="Premium master" /></a>                        
+                </div>
+                <div id="acomodacoes_card_imgMaster4" class="acomodacoes_card">
+                  <h2 class="card__titulo_"></h2>                        
+                  <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-6.jpg" alt="Premium master" /></a>                        
+                </div>
+                <div id="acomodacoes_card_imgMaster5" class="acomodacoes_card">
+                  <h2 class="card__titulo_"></h2>
+                  <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-2.jpg" alt="Premium master" /></a>                        
+                </div>
+                <div id="acomodacoes_card_imgMaster6" class="acomodacoes_card">
+                  <h2 class="card__titulo_"></h2>
+                  <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-3.jpg" alt="Premium master" /></a>
+                </div>
+              </div>
+              <div>
+                <h3>Bem vindo ao requinte de nossa suite {{item.nomeAcomodacao}}!</h3>
+                <p>{{item.descricaoAcomodacao}}</p>
+                <h4>R${{item.valorAcomodacao}},00</h4> 
+              </div>
+              <hr />
             </div>
-            <div id="acomodacoes_card_imgMaster2" class="acomodacoes_card">
-              <h2 class="card__titulo_"></h2>
-              <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-8.jpg" alt="Premium master" /></a>                        
+            <div v-else-if="item.tipoAcomodacao == 'Family'">
+              <div><h2>Suite {{item.tipoAcomodacao}} - {{item.nomeAcomodacao}}</h2></div>
+              <div class="flex">
+                <div id="acomodacoes_card_imgFamilia1" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+               <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-1.jpg" alt="Familia Suite" /></a>                        
+                </div>
+                <div id="acomodacoes_card_imgFamilia2" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-2.jpg" alt="Familia Suite" /></a>
+                </div>
+                <div id="acomodacoes_card_imgFamilia3" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-3.jpg" alt="Familia Suite" /></a>
+                </div>
+                <div id="acomodacoes_card_imgFamilia4" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-5.jpg" alt="Familia Suite" /></a>
+                </div>
+                <div id="acomodacoes_card_imgFamilia5" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-6.jpg" alt="Familia Suite" /></a>
+                </div>
+                <div id="acomodacoes_card_imgFamilia6" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-4.jpg" alt="Familia Suite" /></a>
+                </div>
+              </div>
+              <div>
+                <h3>Bem vindo ao requinte de nossa suite {{item.nomeAcomodacao}}!</h3>
+                <p>{{item.descricaoAcomodacao}}</p>
+                <h4>R${{item.valorAcomodacao}},00</h4> 
+              </div>
+              <hr />
             </div>
-            <div id="acomodacoes_card_imgMaster3" class="acomodacoes_card">
-              <h2 class="card__titulo_"></h2>
-              <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-5.jpg" alt="Premium master" /></a>                        
+            <div v-else-if="item.tipoAcomodacao == 'Confort'" >
+              <div><h2>Suite {{item.tipoAcomodacao}} - {{item.nomeAcomodacao}}</h2></div>
+              <div class="flex">
+                <div id="acomodacoes_card_imgSingle1" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-6.jpg" alt="Economic Single" /></a>
+                </div>
+                <div id="acomodacoes_card_imgSingle2" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-4.jpg" alt="Economic Single" /></a>
+                </div>
+                <div id="acomodacoes_card_imgSingle3" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-5.png" alt="Economic Single" /></a>
+                </div>
+                <div id="acomodacoes_card_imgSingle4" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-1.jpg" alt="Economic Single" /></a>
+                </div>
+                <div id="acomodacoes_card_imgSingle5" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-3.jpg" alt="Economic Single" /></a>
+                </div>
+                <div id="acomodacoes_card_imgSingle6" class="acomodacoes_card">
+                <h2 class="card__titulo_"></h2>
+                <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-2.jpg" alt="Economic Single" /></a>
+                </div>
+              </div>
+              <div>
+                <h3>Bem vindo ao requinte de nossa suite {{item.nomeAcomodacao}}!</h3>
+                <p>{{item.descricaoAcomodacao}}</p>
+                <h4>R${{item.valorAcomodacao}},00</h4> 
+              </div>
             </div>
-            <div id="acomodacoes_card_imgMaster4" class="acomodacoes_card">
-              <h2 class="card__titulo_"></h2>                        
-              <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-6.jpg" alt="Premium master" /></a>                        
-            </div>
-            <div id="acomodacoes_card_imgMaster5" class="acomodacoes_card">
-              <h2 class="card__titulo_"></h2>
-              <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-2.jpg" alt="Premium master" /></a>                        
-            </div>
-            <div id="acomodacoes_card_imgMaster6" class="acomodacoes_card">
-              <h2 class="card__titulo_"></h2>
-              <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/premium-3.jpg" alt="Premium master" /></a>
-            </div>
-          </div>
-          <div>
-            <h3>Bem vindo ao requinte de nossa Suite Master!</h3>
-            <p>Aqui você poderá descansar e usufruir de todo o
-              conforto de um quarto equipado com a mais moderna tecnologia.
-              No quarto você encontrará uma cama estilo "queen-size" com 05
-              funções de massagem, e ainda uma TV 4K de 50" com programação
-              livre (NetFlix, Prime e canais abertos).</p>
-            <p>A acomodação possui ainda uma sala um sofá grande e uma
-              poltrona de leitura, uma TV de 45", dispositivo Alexa,
-              video-game (PS4 ou XBox) com jogos instalados, e ainda uma
-              pequena mesa para notebook. A cozinha é extremamente funcional
-              - um mini-fogão elétrico, uma micro-ondas, cafeteira e
-              utensílios básicos para preparar pequenas refeições.
-            </p>
-            <h4>R$ $$$$$</h4> 
-          </div>
-          <hr />
-          <div><h2>Família Suite - "Pousada dos Tucanos"</h2></div>
-          <div class="flex">
-            <div id="acomodacoes_card_imgFamilia1" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-           <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-1.jpg" alt="Familia Suite" /></a>                        
-            </div>
-            <div id="acomodacoes_card_imgFamilia2" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-2.jpg" alt="Familia Suite" /></a>
-            </div>
-            <div id="acomodacoes_card_imgFamilia3" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-3.jpg" alt="Familia Suite" /></a>
-            </div>
-            <div id="acomodacoes_card_imgFamilia4" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-5.jpg" alt="Familia Suite" /></a>
-            </div>
-            <div id="acomodacoes_card_imgFamilia5" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-6.jpg" alt="Familia Suite" /></a>
-            </div>
-            <div id="acomodacoes_card_imgFamilia6" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/tucanos-4.jpg" alt="Familia Suite" /></a>
-            </div>
-          </div>
-          <div>
-            <h3>Nada melhor do que curtir uns dias com a família em nosso hotel!</h3>
-            <p>
-              Nesta acomodação você conta com um quarto amplo com duas camas
-              tamanho "king-size", para até 4 pessoas. E na sala conjugada
-              uma TV de 50" com programação livre (NetFlix, Prime e canais
-              abertos).
-            </p>
-            <p>A sala ainda possui um sofá cama caso seja necessário hospedar
-              mais uma pessoa. E você pode contar com um frigobar, uma
-              pequena pia e uma cafeteira.</p>
-            <h4>R$ $$$</h4>
-          </div>
-          <hr />
-          <div><h2>Economic Single - "Recanto da Águia"</h2></div>          
-          <div class="flex">
-            <div id="acomodacoes_card_imgSingle1" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-6.jpg" alt="Economic Single" /></a>
-            </div>
-            <div id="acomodacoes_card_imgSingle2" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-4.jpg" alt="Economic Single" /></a>
-            </div>
-            <div id="acomodacoes_card_imgSingle3" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-5.png" alt="Economic Single" /></a>
-            </div>
-            <div id="acomodacoes_card_imgSingle4" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-1.jpg" alt="Economic Single" /></a>
-            </div>
-            <div id="acomodacoes_card_imgSingle5" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-3.jpg" alt="Economic Single" /></a>
-            </div>
-            <div id="acomodacoes_card_imgSingle6" class="acomodacoes_card">
-            <h2 class="card__titulo_"></h2>
-            <a href="/root/pages/acomodacoes.html#/Reservas"><img src="@/assets/images/acomodacoes/aguia-2.jpg" alt="Economic Single" /></a>
-            </div>
-          </div>
-          <div>
-            <h3>
-                Se está a trabalho e precisa de uma boa noite de sono, conte
-                conosco!
-            </h3>
-            <p>Nosso quarto básico possui uma cama confortável, TV a cabo e
-                frigobar. Tem ainda uma mesa de trabalho caso tenha que
-                realizar alguma atividade pela empresa, ou mesmo se reunir com
-                mais alguém.
-            </p>
-            <p>A melhor opção da região - simplicidade sem perder o conforto,
-                e isso por um preço justo!</p>
-            <h4>R$ $$</h4>
           </div>
         </section>
     </main>
 </template>
     
 <script>
-    // @ is an alias to /src
+import axios from "axios"
 export default {
         name: 'AcomodacoesMain',
         components: {          
+        },
+        data() {
+          return {
+            items: [],
+            images:[
+              
+            ],
+          };
+        },
+        created() {
+          this.getAcomodacao();
+        },
+        methods: {
+          async getAcomodacao() {
+            try {
+              const response = await axios.get("http://localhost:5000/acomodacao");
+              this.items = response.data;
+              console.log(this.items)
+            } catch (err) {
+                console.log(err);
+            }
+          },
         }
-    }
-    
+    }    
 </script>
   
 <style scoped>
