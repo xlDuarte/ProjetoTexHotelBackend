@@ -16,15 +16,16 @@
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
           <h3>Selecione mais serviços!</h3>
           <hr />
-          <div class="painelServicos" v-for="item in servicos" :key="item">
+          <!-- <div class="painelServicos" v-for="item in servicos" :key="item"> -->
+          <div class="painelServicos" v-for="item in Servicos2.data" :key="item">
             <input
               type="checkbox"
               v-model="checked"
-              :id="item.id"
-              :name="item.name"
-              :value="item.label"
+              :id="item.idServicos"
+              :name="item.nomeServico"
+              :value="item.labelServico"
             />
-            <label>{{ item.descricao }} - R$ {{ item.vlrDiaria }} </label>
+            <label>{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }} </label>
             <br />
           </div>
           <hr />
@@ -52,6 +53,8 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 const bootstrap = require("bootstrap");
+
+import { mapState } from "vuex";
 
 var jQuery = require("jquery");
 window.jQuery = jQuery;
@@ -81,17 +84,24 @@ export default {
     alerta() {
       //
     },
+    Servicos2Data() {
+      this.$store.dispatch("Servicos2/getData");
+    },    
     confirmaServicos() {
       alert("Serviços adicionais incluídos! Obrigado!");
       window.$("#modalServicos").modal("hide");
     },
   },
   computed: {
+    ...mapState(["Servicos2"]),
     servicos() {
       return this.$store.getters.servicos;
     },
   },
   mounted() {
+    // carrega servicos para a store...
+    this.Servicos2Data();
+    
     // deve ter outro jeito melhor de fazer isso...
     // teste para tentar simplificar a seleção de serviços...não funcionou
     // console.log(

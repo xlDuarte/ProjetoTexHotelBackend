@@ -253,11 +253,11 @@ export default {
       if (action == "excluir") {
         // chama rotina de exclusão, desabilita o botão e limpa os campos na rotina que já está abaixo...
         this.msg1 = "Cliquei handleClick excluir...";
-        this.msg2 = `this.idReservas=${idServico}`;
+        this.msg2 = `this.idReservas=${this.idServico}`;
         let conf = confirm("Confirma exclusão do serviço?");
         if (conf) {
-          const servExcluir = new Servicos();
-          servExcluir.excluir(idServico);
+          let servico = new Servicos();
+          servico.excluir(this.idServico);
           // recarrega lista de serviços
           this.getServicos();
         }
