@@ -45,14 +45,13 @@ export const insertConsumo = (data, result) => {
 // atualiza um Consumo no banco
 export const updateConsumoById = (data, id, result) => {
   db.query(
-    "UPDATE Consumo SET dataConsumo = ?, qtdConsumo = ?, Reservas_idReservas = ?, produtos_idprodutos = ?, localConsumo_idLocalConsumo=?  WHERE idConsumo = ?",
+    "UPDATE consumo SET Reservas_idReservas = ?,localConsumo_idLocalConsumo=?,  produtos_idprodutos = ?, qtdConsumo = ?, dataConsumo = ? WHERE idConsumo = ?",
     [
-      data.dataConsumo,
-      data.nomeConsumo,
-      data.qtdConsumo,
       data.Reservas_idReservas,
-      data.produtos_idprodutos,
       data.localConsumo_idLocalConsumo,
+      data.produtos_idprodutos,
+      data.qtdConsumo,
+      data.dataConsumo,
       id,
     ],
     (err, results) => {
@@ -96,6 +95,21 @@ export const getlocalConsumoById = (id, result) => {
 export const getProdutoById = (id, result) => {
   db.query(
     "SELECT nomeProdutos FROM produtos WHERE idProdutos = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results[0]);
+      }
+    }
+  );
+};
+
+export const getValorProdutoById = (id, result) => {
+  db.query(
+    "SELECT valorProdutos FROM produtos WHERE idProdutos = ?",
     [id],
     (err, results) => {
       if (err) {

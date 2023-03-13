@@ -1,79 +1,111 @@
 <!-- Header -->
 <template>
   <div>
-
     <ModalSenha/>
-    <nav>
-      <header>
-        <div class="navigation-drop">
-          <input class="dropbtn" type="checkbox" id="Menu" />
-          <label class="navigation-drop-btn" for="Menu">Menu</label>
-          <div class="navigation-drop-content">
-            <ul>
-              <li><a href="" class="active">Home</a></li>
-              <li><a href="">Acomodações</a></li>
-              <li><a href="">Reservas</a></li>
-              <div class="campologindrop">
-                <form action="campologin" method="post">
-                  <label for="login"><strong>USUARIO</strong></label>
-                  <input class="box1" type="email" name="login" id="logindrop" />
-                  <label for="password"><strong>SENHA</strong></label>
-                  <input
-                    class="box1"
-                    type="password"
-                    name="password"
-                    id="passworddrop"
-                  />
-                  <div><input class="button" type="submit" value="OK" /></div>
-  
-                  <br />
-                  <router-link to="/Cadastro">Cadastre-se!</router-link>
-                  <a class="links" href="">Esqueceu sua senha?</a>
-                </form>
+    <header class="header">
+        <nav>
+          <div class="navigation-drop">
+            <input class="dropbtn" type="checkbox" id="Menu" />
+            <label class="navigation-drop-btn" for="Menu">Menu</label>
+            <div class="navigation-drop-content">
+              <div class="pub menu" v-show="visivel">
+                <div><router-link to="/">Home</router-link></div>
+                <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
+                <div><router-link to="/Reservas">Reservas</router-link></div>
               </div>
-            </ul>
+              <div class="adm menudrop" v-show="invisivel">
+                <div><router-link to="/HomeAdm">Home</router-link></div>
+                <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
+                <div><router-link to="/ReservasAdm">Reservas</router-link></div>
+                <div><router-link to="/ServicosAdm">Serviços</router-link></div>          
+                <div><router-link to="/Consumos">Consumo</router-link></div>
+                <div><router-link to="/Usuarios">Usuarios</router-link></div>
+              </div>                
+              <form class="campologin" v-show="showLogin" action="post">
+                  <div>
+                    <label for="login"><strong>USUARIO</strong></label>
+                    <input class="box1 login" type="email" name="login" id="login" v-model="login" />  
+                    <label for="password"><strong>SENHA</strong></label>
+                    <input
+                      class="box1 pswd"
+                      type="password"
+                      name="password"
+                      id="password"
+                      v-model="pswd"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      class="btnLogin"
+                      @click="validate"
+                      type="button"
+                      value="OK"
+                      id="btnLogin"
+                    />
+                    <br>         
+                    <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
+                    <br>
+                    <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>
+                  </div>
+              </form>
+              <div class="logedin" v-show="showLogOut">
+              <div>
+                  <p id="userdrop"></p>
+                  <div>
+                    <input
+                      class="button btnExit"
+                      @click="logOut"
+                      id="btnExit"
+                      type="button"
+                      value="Sair"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div id="inicio" class="navigation">
-          <div class="pub" v-show="visivel">
-            <div><router-link to="/">Home</router-link></div>
-            <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
-            <div><router-link to="/Reservas">Reservas</router-link></div>
+          <div class="navigation">
+            <div class="pub menu" v-show="visivel">
+              <div><router-link to="/">Home</router-link></div>
+              <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
+              <div><router-link to="/Reservas">Reservas</router-link></div>
+            </div>
+            <div class="adm menu" v-show="invisivel">
+              <div><router-link to="/HomeAdm">Home</router-link></div>
+              <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
+              <div><router-link to="/ReservasAdm">Reservas</router-link></div>
+              <div><router-link to="/ServicosAdm">Serviços</router-link></div>          
+              <div><router-link to="/Consumos">Consumo</router-link></div>
+              <div><router-link to="/Usuarios">Usuarios</router-link></div>
+            </div>
           </div>
-          <div class="adm =" v-show="invisivel">
-            <div><router-link to="/HomeAdm">Home</router-link></div>
-            <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
-            <div><router-link to="/ReservasAdm">Reservas</router-link></div>
-            <div><router-link to="/ServicosAdm">Serviços</router-link></div>          
-            <div><router-link to="/Consumos">Consumo</router-link></div>
-            <div><router-link to="/Usuarios">Usuarios</router-link></div>
-          </div>
-        </div>
-        <div class="campologin">
-          <form action="campologin" method="post">
-            <label for="login"><strong>USUARIO</strong></label>
-            <input class="box1 login" type="email" name="login" id="login" v-model="login" />
-            <label for="password"><strong>SENHA</strong></label>
-            <input
-              class="box1 pswd"
-              type="password"
-              name="password"
-              id="password"
-              v-model="pswd"
-            />
-            <input
-              class="button btnLogin"
-              @click="validate"
-              type="button"
-              value="OK"
-              id="btnLogin"
-            />
-            <br />          
+        </nav>
+        <form class="campologin" v-show="showLogin" action="post">
+            <div>
+              <label for="login"><strong>USUARIO</strong></label>
+              <input class="box1 login" type="email" name="login" id="login" v-model="login" />  
+              <label for="password"><strong>SENHA</strong></label>
+              <input
+                class="box1 pswd"
+                type="password"
+                name="password"
+                id="password"
+                v-model="pswd"
+              />
+            </div>
+            <div>
+              <input
+                class="btnLogin"
+                @click="validate"
+                type="button"
+                value="OK"
+                id="btnLogin"
+              />         
               <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
-              <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>          
-          </form>
-        </div>
-        <div class="logedin hide">
+              <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>
+            </div>
+        </form>
+        <div class="logedin" v-show="showLogOut">
           <div>
             <p id="user"></p>
             <div>
@@ -87,10 +119,11 @@
             </div>
           </div>
         </div>
-      </header>
-    </nav>
+    </header>
+    <div class="banner ">
+      <img alt="" src="@/assets/BANNER-CASANAPRAIA.png">
+    </div>
   </div>
-
 </template>
 
 <script>
@@ -102,60 +135,74 @@ export default {
   components:{
     ModalSenha
   },
+  
   data() {
     return {
       items:[],
       login: "",
-      pswd: "", 
+      pswd: "",
+      x: "", 
       logedin: false,
       visivel: true,
-      invisivel: false
+      invisivel: false,
+      showLogin: true,
+      showLogOut: false
     };
   },
   methods: {
     async validate() {
-      if (this.login != "") {
+      if (this.login != "" && this.pswd != "") {
         try {
-          const response = await axios.get("http://localhost:5000/usuario");
-          this.items = response.data;
+          const response = await axios.post("http://localhost:5000/login", {
+            emailUsuario: this.login,
+            senhaUsuario: this.pswd,
+          });
+          this.x = response.data.sessionUser.cookie
+          this.items = response.data.data
           console.log(this.items)
-            this.items.forEach(item => {
-              if(item.emailUsuario == this.login && item.senhaUsuario == this.pswd){
-                console.log('ok')
-                let loged = item.nomeUsuario;
-                let logedOn = item.tipoUsuario;
-                let idUser = item.idUsuario;
-                this.logedin = true;
-                if(logedOn == 'cliente'){
-                  this.showHide(".logedin", "remove");
-                  this.showHide(".campologin", "add");
-                  localStorage.setItem("userId", idUser)
-                  localStorage.setItem("loged", loged);
-                  localStorage.setItem("loginStatus", logedOn);
-                  alert("Logado com sucesso!");
-                  document.getElementById(
-                    "user"
-                    ).innerText = `Olá ${loged}`;
-                } else if(logedOn == 'admin'){
-                  localStorage.setItem("loged", loged);
-                  localStorage.setItem("loginStatus", logedOn);
-                  document.getElementById(
-                    "user"
-                  ).innerText = `Olá ${loged}`;
-                  this.logedin = localStorage.getItem("loginStatus");
-                  alert("Logado com sucesso como administrador!");
-                  this.$router.push("HomeAdm")
-                  this.showHide(".logedin", "remove");
-                  this.showHide(".campologin", "add");
-                  this.invisivel = true,
-                  this.visivel = false
-                }
-                
-            /*} else if(!this.logedin){
-                alert("Usuario ou senha incorretos");
-            */}  
-            });
-        } catch (err) {
+          console.log(response.data)
+          console.log(response.data.sessionUser)
+          if(this.x){ 
+            let loged = this.items.nomeUsuario;
+            let logedOn = this.items.tipoUsuario;
+            let idUser = this.items.idUsuario;
+            this.logedin = true
+            this.showLogOut = true
+            this.showLogin = false
+            console.log(this.items.nomeUsuario)            
+              console.log('ok')
+              if(logedOn == 'cliente'){
+                localStorage.setItem("userId", idUser);
+                localStorage.setItem("loged", loged);
+                localStorage.setItem("loginStatus", logedOn);
+                alert("Logado com sucesso!");
+                document.getElementById(
+                  "user"
+                ).innerText = `Olá ${loged}`;
+                document.getElementById(
+                  "userdrop"
+                ).innerText = `Olá ${loged}`;
+              } else if(logedOn == 'admin'){
+                localStorage.setItem("userId", idUser);
+                localStorage.setItem("loged", loged);
+                localStorage.setItem("loginStatus", logedOn);
+                document.getElementById(
+                  "user"
+                ).innerText = `Olá ${loged}`;
+                document.getElementById(
+                  "userdrop"
+                ).innerText = `Olá ${loged}`;
+                this.logedin = localStorage.getItem("loginStatus");
+                alert("Logado com sucesso como administrador!");
+                this.$router.push("HomeAdm")
+                this.invisivel = true
+                this.visivel = false
+              } 
+          }  else{
+            alert("Usuario não encontrado")
+          }
+        }catch (err) {
+          alert(err.response.data.msg)
           console.log(err);
         }
       } else {
@@ -167,40 +214,72 @@ export default {
       document.querySelector(obj).classList[action]("hide");
     },
 
-
-    logOut() {
-      let logedOut = 0;
-      this.showHide(".campologin", "remove");
-      this.showHide(".logedin", "add");
+    async logOut() {
+      const response = await axios.get("http://localhost:5000/logout");
+      let logedOut = response.data;
+      this.showLogOut = false
+      this.showLogin = true
       this.invisivel = false,
       this.visivel = true
       localStorage.setItem("loginStatus", logedOut);
       localStorage.removeItem("loged");
+      localStorage.removeItem("userId")
+      localStorage.removeItem("loginStatus");
       document.getElementById("login").value = "";
       document.getElementById("password").value = "";
       this.logedin = localStorage.getItem("logedOut");
-      this.$router.push("/")
+      console.log("logout", response)      
+      window.location.href="/"
     },
 
-    loginCheck() {
-      //  if (this.logedin == 1) {
-      if (localStorage.getItem("loginStatus") == 'cliente') {
-        this.showHide(".campologin", "add");
-        this.showHide(".logedin", "remove");
-        console.log("ok");
-        document.getElementById("user").innerText = `Olá ${localStorage.getItem("loged")}`;
-      }else if(localStorage.getItem("loginStatus") == 'admin'){
-        this.showHide(".logedin", "remove");
-        this.showHide(".campologin", "add");
-        this.invisivel = true,
-        this.visivel = false
-        console.log("ok");
-        document.getElementById("user").innerText = `Olá ${localStorage.getItem("loged")}`;
-        this.$router.push("HomeAdm")
-      }
+    async loginCheck() {  
+      if(!this.logedin){ 
+          try{
+            const response = await axios.get("http://localhost:5000/get-user")
+            this.items = response.data.data
+            let loged = this.items.nomeUsuario;
+            let logedOn = this.items.tipoUsuario;
+            let idUser = this.items.idUsuario;
+            this.logedin = true
+            this.showLogin = false
+            this.showLogOut = true
+            console.log(this.items.nomeUsuario)            
+              console.log('ok')
+              if(logedOn == 'cliente'){
+                localStorage.setItem("userId", idUser)
+                localStorage.setItem("loged", loged);
+                localStorage.setItem("loginStatus", logedOn);
+                alert("Logado com sucesso!");
+                document.getElementById(
+                  "user"
+                ).innerText = `Olá ${loged}`;
+                document.getElementById(
+                  "userdrop"
+                ).innerText = `Olá ${loged}`;
+              } else if(logedOn == 'admin'){
+                localStorage.setItem("loged", loged);
+                localStorage.setItem("loginStatus", logedOn);
+                this.invisivel = true,
+                this.visivel = false
+                document.getElementById(
+                  "user"
+                ).innerText = `Olá ${loged}`;
+                document.getElementById(
+                  "userdrop"
+                ).innerText = `Olá ${loged}`;
+                this.logedin = localStorage.getItem("loginStatus");
+                alert("Logado com sucesso como administrador!");
+                this.$router.push("HomeAdm")
+              } 
+            } catch(err) {
+              console.log(err);
+            }
+          }else{
+            this.$router.push("/")
+          }
     },
   },
-  mounted() {
+  beforeMount() {
     this.loginCheck();
   },
 };
@@ -212,29 +291,54 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+  max-height: 100vh;
+  max-width: 100vw;
 }
 
 body {
-  overflow-x: hidden;
-  background: #fff;
-  min-height: 100vh;
+  margin-bottom: 100px;
 }
 
-header {
-  position: absolute;
-  margin-top: 0.5em;
-  left: 0;
-  right: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  z-index: 1000;
-  transition: all 0.3s cubic-bezier(0.2, 1, 0.2, 1) ease;
+a {
+  text-decoration: none;
+  color: black;
 }
 
-.navigation-drop,
-.navigation ul {
+.hide {
   display: none;
+}
+
+.header {
+  width: 100%;
+  position: absolute;
+  background: transparent;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  z-index: 9999;
+}
+
+.menu {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+}
+
+.menu div {
+  margin-left: 10px;
+}
+
+.menu div a {
+  display: block;
+  padding: 10px;
+}
+
+.campologin label,
+.campologin a{
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .navigation-drop-btn {
@@ -247,95 +351,214 @@ header {
   top: 1vw;
 }
 
-.campologin,
-.campologindrop,
-.logedin {
-  padding: 5px 0;
-  margin: 0 20px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  transition: all 0.3s ease;
-  flex-wrap: wrap;
-}
-
-.campologin label {
-  margin-right: 5px;
-  margin-left: 5px;
-}
-
-.campologin a {
-  text-decoration: none;
-  color: #112434;
-}
-
-.campologin a:hover,
-.campologin a.active {
-  background: #112434;
-  color: #fff;
-  border-radius: 50px;
-}
-
 .button {
   background: transparent;
   color: black;
   padding: 10px;
-  border-radius: 50px;
+  border-radius: 25px;
   cursor: pointer;
   overflow: hidden;
   font-size: 1em;
+  margin: 5px;
+}
+.btnLogin {
+  background: transparent;
+  color: black;
+  padding: 10px;
+  border-radius: 25px;
+  cursor: pointer;
+  overflow: hidden;
+  font-size: 1em;
+  margin: 0 5px;
+  margin-left: 20px;
 }
 
-.button:hover {
+.button:hover,
+.btnLogin:hover {
   background: #112434;
   color: #fff;
-  border-radius: 50px;
+  border-radius: 25px;
   padding: 10px;
 }
 
-.links {
-  text-decoration: none;
-  color: black;
-  padding: 0.4em;
-}
-
-.navigation {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 1% 0;
-  margin: 0 20px;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
-}
-
-.navigation div {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 0 20px;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
-}
-
-
-
-.navigation div a {
-  text-decoration: none;
-  color: #112434;
-}
-
-.navigation div a:hover,
-.navigation div a.router-link-active,
+.menu div a:hover,
+.menu div a.router-link-active,
 .campologin a.router-link-active,
 .campologin a:hover {
   background: #112434;
   color: #fff;
-  padding: 0.5em;
+  padding: 10px;
   border-radius: 50px;
 }
 
-.hide {
+.banner img {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  object-position: center;  
+}
+
+.navigation-drop,
+.campologindrop,
+.navigation ul {
   display: none;
+}
+@media (max-width: 980px) {
+  .navigation,
+  .campologin,
+  .loged,
+  .banner {
+    display: none;
+  }
+  .header {
+  position: inherit;
+  background-image: url(@/assets/footerborder.png);
+  display: flex;
+  height: 80px;
+  justify-content: left;
+  align-items: center;
+  padding: 10px;
+  z-index: 9998;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+  .dropbtn {
+    display: none;
+  }
+  .navigation-drop .campologin {
+    display: block;
+  }
+  .navigation-drop {
+    padding: 1%;
+    display: inline-block;
+    
+  }
+  .navigation-drop-btn {
+    background: white;
+    color: black;
+    padding: 5px;
+    border-radius: 50px;
+    cursor: pointer;
+    overflow: hidden;
+    right: 1vw;
+    top: 1vw;
+    font-size: 1.5em;
+    z-index: 9999;
+  }
+  .dropbtn:checked ~ .navigation-drop-content {
+    -webkit-transform: translate(300px);
+    -moz-transform: translate(300px);
+    -ms-transform: translate(300px);
+    -o-transform: translate(300px);
+    transform: translate(300px);
+  }
+  .navigation-drop-btn:hover,
+  .navigation-drop-btn:active {
+    background: #112434;
+    color: #fff;
+    border-radius: 50px;
+    padding: 0.4em;
+    z-index: 9999;
+  }
+  .navigation-drop-content {
+    width: 300px;
+    position: fixed;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    border: 5px solid transparent;
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(45, 55, 68, 0.3);
+    line-height: 1.5;
+    left: -300px;
+    -webkit-transition: all 0.25s linear;
+    -moz-transition: all 0.25s linear;
+    -ms-transition: all 0.25s linear;
+    -o-transition: all 0.25s linear;
+    transition: all 0.25s linear;
+    z-index: 999;
+  }
+  .navigation-drop .menu{
+    display: block;
+  }
+}
+
+
+@media (max-width: 980px) and (orientation: portrait) {
+  .navigation,
+  .campologin,
+  .loged {
+    display: none;
+  }
+  html,
+  body {
+    overflow-x: hidden;
+  }
+  .dropbtn {
+    display: none;
+  }
+  .navigation-drop .campologin {
+    display: block;
+  }
+  .navigation-drop {
+    padding: 1%;
+    display: inline-block;
+    
+  }
+  .navigation-drop-btn {
+    background: transparent;
+    color: white;
+    padding: 5px;
+    border-radius: 50px;
+    cursor: pointer;
+    overflow: hidden;
+    right: 1vw;
+    top: 1vw;
+    font-size: 1.5em;
+    z-index: 9999;
+  }
+  .dropbtn:checked ~ .navigation-drop-content {
+    -webkit-transform: translate(300px);
+    -moz-transform: translate(300px);
+    -ms-transform: translate(300px);
+    -o-transform: translate(300px);
+    transform: translate(300px);
+  }
+  .navigation-drop-btn:hover,
+  .navigation-drop-btn:active {
+    background: #ffffff;
+    color: #000000;
+    border-radius: 50px;
+    padding: 0.4em;
+    z-index: 9999;
+  }
+  .navigation-drop-content {
+    width: 300px;
+    position: fixed;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    border: 5px solid transparent;
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(45, 55, 68, 0.3);
+    line-height: 1.5;
+    left: -300px;
+    -webkit-transition: all 0.25s linear;
+    -moz-transition: all 0.25s linear;
+    -ms-transition: all 0.25s linear;
+    -o-transition: all 0.25s linear;
+    transition: all 0.25s linear;
+    z-index: 998;
+  }
+  .navigation-drop .menu{
+    display: block;
+  }
 }
 </style>

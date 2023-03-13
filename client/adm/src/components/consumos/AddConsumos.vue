@@ -56,7 +56,7 @@
           />
         </div>
       </form>
-      <button class="btn btn-primary" @click="saveConsumo">
+      <button class="button" @click="saveConsumo">
             Cadastrar
       </button>
     </div>
@@ -136,4 +136,20 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.button {
+  background: transparent;
+  color: black;
+  padding: 5px;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.button:hover {
+  background: #112434;
+  color: #fff;
+  border-radius: 50px;
+  padding: 5px;
+}
+</style>

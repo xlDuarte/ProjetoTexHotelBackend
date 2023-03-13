@@ -6,7 +6,6 @@ import express from "express";
 import {
   showUsuario,
   showUsuarioById,
-  createUsuario,
   deleteUsuario,
   updateUsuario,
 } from "../controller/usuarios.js";
@@ -21,7 +20,12 @@ import {
 } from "../controller/servicos.js";
 
 //import Login
-import { showLogin } from "../controller/logins.js";
+import { 
+  loginValidation,
+  signupValidation,
+  registerValidation,
+  logOut
+} from "../controller/logins.js";
 
 //import Acomodações
 import {
@@ -41,6 +45,7 @@ import {
   updateConsumo,
   showlocalConsumoById,
   showProdutoById,
+  showValorProdutoById,
 } from "../controller/consumo.js";
 
 //import Reservas
@@ -55,17 +60,25 @@ import {
 // init express router
 const router = express.Router();
 
+//Login e Autenticação
 // rota para captura do login
-router.get("/login", showLogin);
+router.post('/login', loginValidation);
 
+//rota para deslogar e destruir seção
+router.get('/logout', logOut);
+
+//rota para registrar o usuario
+router.post('/register', registerValidation);
+
+//rota para checar se logdado
+router.get('/get-user', signupValidation); 
+
+//Usuarios
 // rota para listar todos os usuarios
 router.get("/usuario", showUsuario);
 
 // rota para listar um usuario
 router.get("/usuario/:id", showUsuarioById);
-
-// rota para criar um usuario
-router.post("/usuario", createUsuario);
 
 // rota para atualizar um usuario
 router.put("/usuario/:id", updateUsuario);
@@ -101,6 +114,9 @@ router.get("/localConsumo/:id", showlocalConsumoById);
 
 // rota para listar um produto
 router.get("/produto/:id", showProdutoById);
+
+// rota para listar um valor do produto
+router.get("/valorProduto/:id", showValorProdutoById);
 
 // rota para criar um Consumo
 router.post("/Consumo", createConsumo);

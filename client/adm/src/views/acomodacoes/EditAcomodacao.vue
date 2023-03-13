@@ -75,8 +75,21 @@ export default {
     },
     created: function () {
         this.getAcomodacaoById();
+        this.checkLogin();
     },
     methods: {
+        checkLogin() {
+      if(localStorage.getItem("loginStatus")){
+        if(localStorage.getItem("loginStatus") == "admin")
+          return true
+        else if(localStorage.getItem("loginStatus") == "cliente")
+          this.$router.push("/")
+          return true
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    }, 
         // lista usuario por id
         async getAcomodacaoById() {
             try {

@@ -12,6 +12,7 @@
         <th scope="col">Produto</th>
         <th scope="col">Quantidade</th>
         <th scope="col">Data</th>
+        <th scope="col">Valor</th>
       </thead>
       <tbody>
         <tr scope="row" v-for="item in items" :key="item.idConsumo">
@@ -20,12 +21,14 @@
           <td>{{ item.nomeProdutos}}</td>
           <td>{{ item.qtdConsumo }}</td>
           <td>{{ item.dataFormatada }}</td>
+          <td>{{ item.valorProdutos*item.qtdConsumo }}</td>
           <td>
-            <router-link
+           <!-- <router-link
               :to="{ name: 'editConsumos', params: { id: item.idConsumo } }"
             >
               <button class="button">Editar</button></router-link
             >
+            -->
           </td>
           <td>
             <button class="button" @click="deleteConsumos(item.idConsumo)">
@@ -56,8 +59,23 @@ export default {
   created() {
     this.getConsumo();
   },
-
+  beforeMount() {
+    this.checkLogin();
+    console.log(this.checkLogin())
+  },
   methods: {
+    checkLogin() {
+      if(localStorage.getItem("loginStatus")){
+        if(localStorage.getItem("loginStatus") == "admin")
+          return true
+        else if(localStorage.getItem("loginStatus") == "cliente")
+          this.$router.push("/")
+          return true
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    }, 
     // Lista todos os Consumos
     async getConsumo() {
   try {
@@ -65,11 +83,13 @@ export default {
     this.items = await Promise.all(response.data.map(async consumo => {
       const localResponse = await axios.get(`http://localhost:5000/localConsumo/${consumo.localConsumo_idLocalConsumo}`);
       const localResponse2 = await axios.get(`http://localhost:5000/produto/${consumo.produtos_idprodutos}`);
+      const localResponse3 = await axios.get(`http://localhost:5000/valorProduto/${consumo.produtos_idprodutos}`);
       return {
         ...consumo,
         nomeLocalConsumo: localResponse.data.nomeLocalConsumo,
         dataFormatada: moment(consumo.dataConsumo).format('DD/MM/YYYY'),
-        nomeProdutos:localResponse2.data.nomeProdutos
+        nomeProdutos:localResponse2.data.nomeProdutos,
+        valorProdutos:localResponse3.data.valorProdutos,
       }
     }));
   } catch (err) {

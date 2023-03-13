@@ -5,7 +5,7 @@
       <p>Preencha todos os campos</p>
     </div>
     <AddAcomodacao @updateList="getAcomodacao()"/>
-    <table class="table">
+    <table class="table table-responsive table-striped">
       <thead>
         <th scope="col">ID</th>
         <th scope="col">Nome</th>
@@ -17,7 +17,7 @@
         <tr
           scope="row"
           v-for="item in items"
-          :key="item.idUsuario"
+          :key="item.idAcomodacao"
         >
           <td >{{ item.idAcomodacao }}</td>
           <td >{{ item.nomeAcomodacao }}</td>
@@ -53,8 +53,23 @@ export default {
   created() {
     this.getAcomodacao();
   },
-    
-  methods: {
+  beforeMount() {
+    this.checkLogin();
+    console.log(this.checkLogin())
+  }, 
+  methods:{    
+    checkLogin() {
+      if(localStorage.getItem("loginStatus")){
+        if(localStorage.getItem("loginStatus") == "admin")
+          return true
+        else if(localStorage.getItem("loginStatus") == "cliente")
+          this.$router.push("/")
+          return true
+      }else{
+        this.$router.push("/")
+        return false
+      }
+    }, 
     // Lista todos os usuarios
     async getAcomodacao() {
       try {

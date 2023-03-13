@@ -175,7 +175,8 @@
 export default {
   name: 'HomeMain',
   components: {
-  }
+  },
+  
 }
 
 </script>
@@ -225,10 +226,6 @@ export default {
   align-items: left;
 }
 
-mural > q {
-  width: 300px;
-}
-
 hr {
   color:slategray;  
 }
@@ -248,13 +245,13 @@ img{
 }
 
 .flex > div{
-  flex: 1 1 420px;
+  flex: 1 1 320px;
   margin: 10px;
 }
 
 .botaoreserva {
   position: fixed;
-  left: 93%;
+  left: 83%;
   top: 40%;
   font-weight: bold;
   font-size: 1em;
@@ -264,7 +261,7 @@ img{
   border: none;
   padding: 1em 1em 1em 1em;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .botaoreserva:hover {
@@ -275,4 +272,19 @@ img{
   transition: all 0.3s ease-out;
 }
 
+@media screen and (max-width: 720px) {
+  img{
+    max-width: 320px;
+    max-height: 160px;
+  }
+
+  .sec h2 {
+  font-size: 2em;
+  }
+
+  .botaoreserva{
+    left: 60%;
+    top: auto;
+  }
+}
 </style>
