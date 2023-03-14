@@ -32,7 +32,7 @@
       <div class="field">
         <label class="label">Data</label>
         <div class="control">
-          <input class="input" type="text" v-model="dateConsumo" />
+          <input class="input" type="datetime-local" v-model="dateConsumo" />
         </div>
       </div>
     </div>
