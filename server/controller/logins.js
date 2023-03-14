@@ -23,7 +23,15 @@ export const registerValidation = (req, res, next) => {
                     } else {
                         // encripta o password => adiciona ao db
                         db.query(
-                            `INSERT INTO usuario SET ?`,[req.body],
+                            `INSERT INTO usuario SET nomeUsuario = ?, emailUsuario = ?, cpfUsuario = ?, endUsuario = ?, senhaUsuario = ?, telefoneUsuario = ?`,
+                            [
+                                req.body.nomeUsuario,
+                                req.body.emailUsuario,
+                                req.body.cpfUsuario,
+                                req.body.endUsuario,
+                                hash,
+                                req.body.telefoneUsuario
+                            ],
                             (err, result) => {
                                 if (err) {
                                     console.log(err)
