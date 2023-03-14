@@ -23,7 +23,7 @@ export default createStore({
         id: "servico1",
         nome: "servico1",
         label: "cafeQuarto",
-        descricao: "Cafe XXX da Manhã no Quarto",
+        descricao: "Cafe da Manhã no Quarto",
         vlrDiaria: 100,
       },
       {

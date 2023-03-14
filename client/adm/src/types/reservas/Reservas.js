@@ -4,7 +4,6 @@
 // > ["a","b","c"].forEach(letra => { letra === "a" ? console.log("Letra",letra) : console.log("erro")})
 
 console.log("Executando Reservas.js");
-
 export const msg = "Teste, Reservas.js";
 
 // import axios
