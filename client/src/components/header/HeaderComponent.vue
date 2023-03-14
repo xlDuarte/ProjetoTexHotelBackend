@@ -272,7 +272,7 @@ export default {
                 this.$router.push("HomeAdm")
               } 
             } catch(err) {
-              console.log(err);
+              console.log(err.response.data.msg);
             }
           }else{
             this.$router.push("/")
