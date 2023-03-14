@@ -9,44 +9,66 @@ export const registerValidation = (req, res, next) => {
         `SELECT * FROM usuario WHERE emailUsuario = ?`,
         [req.body.emailUsuario],
         (err, result) => {
-            if (result.length) {
+            if(err){
+                return res.status(500).send({
+                    msg: 'algo deu errado!'
+                });
+            } else if (result.length) {
+                console.log(result[0])
                 return res.status(409).send({
-                    msg: 'Usuario já cadastrado!'
+                    msg: 'Email já cadastrado!'
                 });
             } else {
-                // se o email estiver disponivel
-                bcrypt.hash(req.body.senhaUsuario, 10, (err, hash) => {
-                    if (err) {
-                        return res.status(500).send({
-                            msg: 'algo deu errado!'
-                        });
-                    } else {
-                        // encripta o password => adiciona ao db
-                        db.query(
-                            `INSERT INTO usuario SET nomeUsuario = ?, emailUsuario = ?, cpfUsuario = ?, endUsuario = ?, senhaUsuario = ?, telefoneUsuario = ?`,
-                            [
-                                req.body.nomeUsuario,
-                                req.body.emailUsuario,
-                                req.body.cpfUsuario,
-                                req.body.endUsuario,
-                                hash,
-                                req.body.telefoneUsuario
-                            ],
-                            (err, result) => {
-                                if (err) {
-                                    console.log(err)
-                                    //throw err;
-                                    return res.status(400).send({
-                                        msg: err
-                                    });
-                                }
-                                return res.status(201).send({
-                                    msg: 'Usuario registrado com sucesso!'
+                db.query(
+                    `SELECT * FROM usuario WHERE cpfUsuario = ?`,
+                    [req.body.cpfUsuario],
+                    (err, result) => {
+                        if(err){
+                            return res.status(500).send({
+                                msg: 'algo deu errado!'
+                            });
+                        } else if (result.length) {
+                            console.log(result[0])
+                            return res.status(409).send({
+                                msg: 'CPF já cadastrado!'
+                            });
+                        } else {
+                        // se o email estiver disponivel
+                        bcrypt.hash(req.body.senhaUsuario, 10, (err, hash) => {
+                            if (err) {
+                                return res.status(500).send({
+                                    msg: 'algo deu errado!'
                                 });
+                            } else {
+                                // encripta o password => adiciona ao db
+                                db.query(
+                                    `INSERT INTO usuario SET nomeUsuario = ?, emailUsuario = ?, cpfUsuario = ?, endUsuario = ?, senhaUsuario = ?, telefoneUsuario = ?`,
+                                    [
+                                        req.body.nomeUsuario,
+                                        req.body.emailUsuario,
+                                        req.body.cpfUsuario,
+                                        req.body.endUsuario,
+                                        hash,
+                                        req.body.telefoneUsuario
+                                    ],
+                                    (err, result) => {
+                                        if (err) {
+                                            console.log(err)
+                                            //throw err;
+                                            return res.status(400).send({
+                                                msg: err
+                                            });
+                                        }
+                                        return res.status(201).send({
+                                            msg: 'Usuario registrado com sucesso!'
+                                        });
+                                    }
+                                );
                             }
-                        );
+                        });    
                     }
-                });
+                        
+                }); 
             }
         }
     );
@@ -114,11 +136,11 @@ export const signupValidation = (req,res)=>{
                     msg: err
                 });
             }
-            return res.send({data: results[0], message: 'Logado!' });
+            return res.send({data: results[0], msg: 'Logado!' });
         });
     } else{
         return res.status(422).json({
-            message: "sessão expirou! Faça login novamente.",
+            msg: "sessão expirou! Faça login novamente.",
         });
     }
 };
