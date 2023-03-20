@@ -23,12 +23,12 @@
           <td>{{ item.dataFormatada }}</td>
           <td>{{ item.valorProdutos*item.qtdConsumo }}</td>
           <td>
-           <!-- <router-link
+            <router-link
               :to="{ name: 'editConsumos', params: { id: item.idConsumo } }"
             >
               <button class="button">Editar</button></router-link
             >
-            -->
+          
           </td>
           <td>
             <button class="button" @click="deleteConsumos(item.idConsumo)">
