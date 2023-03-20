@@ -93,6 +93,9 @@ const bootstrap = require("bootstrap");
 import { cupomDesconto } from "./FormReserva.vue";
 import { gravaReserva } from "./FormReserva.vue";
 import { updateBindingForm } from "./FormReserva.vue";
+import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
+import moment from 'moment';
+
 
 // gera cupom de desconto caso não exista nenhum. Se já houver a mensagem é que não podem ser gerados dois cupons no mesmo dia...
 let msgCupomDesconto = "Lamento, um cupom de desconto já foi utilizado hoje...";
@@ -145,16 +148,89 @@ export default {
       ) {
         localStorage.setItem("cupomDescontoValido", "NOK");
       }
+
+      gravaReserva();
+
+      // inserir aqui a persistencia no banco...
+      // [{"reservaId":"Reserva_1","dtReserva":"16/03/2023","codCliente":"Hospede1","dtEntrada":"20/03/2023","dtSaida":"24/03/2023",
+      // "qtPessoas":"3","tipoApto":"comfort","diarias":"4","vlrTotal":"5520","vlrTotalcomDesconto":"R$ 4968.00","cupom":"aqqrgkz"}]
+
+      let reserva = new Reservas();
+
+      console.log(reserva.getReservasById("36"));
+      //obtem dados da reserva feita pelo hospede da localStorage
+      let reservaCriada = `Reserva_${localStorage.getItem("reservaId")}`;
+      let arrayReservaCriada = JSON.parse(localStorage.getItem(reservaCriada));
+
+      console.log("Reserva criada array...", arrayReservaCriada);
+      console.log("Reserva criada array...", arrayReservaCriada[0].reservaId);
+            console.log("Reserva criada array...", arrayReservaCriada[0].diarias);
+
+      /*
+      Você deve informar para o moment o formato de entrada, ou seja, como está a string com sua data antes de formatá-la pois internamente ele
+      fará um parse e chamará um new Date(). 
+      Fonte: http://momentjs.com/docs/#/parsing/string/
+      var data = moment("02/03/2018", "DD/MM/YYYY");
+      //Feito isso basta definir o formato de saída:
+      console.log(data.format("YYYY-MM-DD"));
+      */
+
+      let idReservas = "";
+      let dtReserva = moment(arrayReservaCriada[0].dtReserva,"DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtEntrada = moment(arrayReservaCriada[0].dtEntrada,"DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtSaida = moment(arrayReservaCriada[0].dtSaida,"DD/MM/YYYY").format("YYYY-MM-DD");
+      let vlrTotal = arrayReservaCriada[0].vlrTotal;
+      let qtPessoas = arrayReservaCriada[0].qtPessoas;
+      let idUsuario = arrayReservaCriada[0].idUsuario;
+      let idAcomodacao = "3"; // falta incluir na ls - arrayReservaCriada[0].idAcomodacao;
+      let acomodacaoVlrDiaria = 200; // falta inclir na LS - arrayReservaCriada[0].acomodacaoVlrDiaria;
+      let tipoApto = arrayReservaCriada[0].tipoApto;
+      let diarias = arrayReservaCriada[0].diarias;
+      let statusReserva = "Registrada";
+      let dataCancelamento = null;
+      let motivoCancelamento = "";
+      let cupom = arrayReservaCriada[0].cupom;
+      let taxaDescontoCupom = arrayReservaCriada[0].taxaDescontoCupom;
+      let valorTotalServicos = localStorage.getItem("valorTotalServicos");
+      let vlrTotalcomDesconto = arrayReservaCriada[0].vlrTotalcomDesconto;
+      let itemArrayReservas = 0; // avaliar, não está mais sendo utilizado...
+      let itemArrayEdit = false; //flag de controle se false é uma nova reserva...
+
+      reserva.salvar(
+        idReservas,
+        dtReserva,
+        dtEntrada,
+        dtSaida,
+        vlrTotal,
+        qtPessoas,
+        idUsuario,
+        idAcomodacao,
+        tipoApto,
+        acomodacaoVlrDiaria,
+        diarias,
+        statusReserva,
+        dataCancelamento,
+        motivoCancelamento,
+        cupom,
+        taxaDescontoCupom,
+        valorTotalServicos,
+        vlrTotalcomDesconto,
+        itemArrayReservas,
+        itemArrayEdit
+      );
+
       alert(
         "Sua reserva foi confirmada - você irá receber um email com a confirmação! Obrigado!"
       );
-      gravaReserva();
+
+      // verificar como limpar o selected de serviços para não vir flagado na próxima reserva!!!!
+      // clean serviços!!
+
       updateBindingForm();
       window.$("#modalResumo").modal("hide");
     },
   },
-  computed: {
-  },
+  computed: {},
   mounted() {
     // atualiza dados da modalResumo
     // preencheModalResumo();
@@ -183,7 +259,7 @@ window.$().ready(function () {
       .querySelector("#inputDesconto")
       .value.toLowerCase();
     let cupomStorage = localStorage.getItem("cupomDesconto");
-    let vlrTotalGeral = localStorage.getItem("valorTotalGeral").split("$");
+    let vlrTotalGeral = localStorage.getItem("valorTotalGeral");
     let percDesc = 1;
     let msg = "Total Reserva....: R$ "; //${localStorage.getItem("valorTotalGeral")}`;
 
@@ -201,9 +277,10 @@ window.$().ready(function () {
       alert("Este cupom já foi utilizado ou não é mais válido...");
     }
 
-    let desconto = parseFloat(vlrTotalGeral[1].replace(".", "")) * percDesc;
+    // let desconto = parseFloat(vlrTotalGeral[1].replace(".", "")) * percDesc;
+    let desconto = vlrTotalGeral * percDesc;
     console.log("VlrTotalDesconto", desconto);
-    localStorage.setItem("vlrTotalDesconto", `R$ ${desconto.toFixed(2)}`);
+    localStorage.setItem("vlrTotalDesconto",desconto.toFixed(2));
     let msg2 = `${msg} ${desconto.toFixed(2)}`;
     document.getElementById("totalDesconto").innerText = msg2;
   });

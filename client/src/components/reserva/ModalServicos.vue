@@ -16,16 +16,21 @@
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
           <h3>Selecione mais serviços!</h3>
           <hr />
-          <!-- <div class="painelServicos" v-for="item in servicos" :key="item"> -->
-          <div class="painelServicos" v-for="item in Servicos2.data" :key="item">
+          <div
+            class="painelServicos"
+            v-for="item in Servicos2.data"
+            :key="item"
+          >
             <input
               type="checkbox"
-              v-model="checked"
-              :id="item.idServicos"
+              v-model="item.isSelected"
+              :id="item.labelServico"
               :name="item.nomeServico"
               :value="item.labelServico"
             />
-            <label>{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }} </label>
+            <label
+              >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }}
+            </label>
             <br />
           </div>
           <hr />
@@ -50,6 +55,11 @@
 </template>
 
 <script>
+// referencias...
+// https://codingbeautydev.com/blog/vue-check-if-checkbox-is-checked/
+// https://stackoverflow.com/questions/61116534/vuejs-v-model-on-multiple-checkboxes
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 const bootstrap = require("bootstrap");
@@ -69,6 +79,7 @@ export default {
   data() {
     return {
       // informações que podem ser utilizadas no template...
+      message: "",
     };
   },
   methods: {
@@ -86,62 +97,61 @@ export default {
     },
     Servicos2Data() {
       this.$store.dispatch("Servicos2/getData");
-    },    
+    },
     confirmaServicos() {
       alert("Serviços adicionais incluídos! Obrigado!");
+      let arrayServicos = this.Servicos2;
+      let arrayServicosEscolhidos = [];
+      for (let i = 0; i < arrayServicos.data.length; i++) {
+        // persiste status do checkbox (servico) na localStorage...
+        // define idServico = "servico"+id e demais dados do servico
+        let servId = `idServicos_${arrayServicos.data[i].idServicos}`;
+        let servData = `"idServicos":"${arrayServicos.data[i].idServicos}","nomeServico":"${arrayServicos.data[i].nomeServico}","descricaoServico":"${arrayServicos.data[i].descricaoServico}","vlrDiariaServico":${arrayServicos.data[i].vlrDiariaServico},"isSelected":${arrayServicos.data[i].isSelected}`;
+        let itemLocal = "{" + servData + "}";
+        // localStorage.setItem(nomeServico, arrayServicos.data[i].isSelected);
+        localStorage.setItem(servId, itemLocal);
+        if (arrayServicos.data[i].isSelected) {
+          arrayServicosEscolhidos.push(itemLocal);
+        }
+      }
+      console.log("Servicos escolhidos...",arrayServicosEscolhidos);
+      // localStorage.setItem('servicosEscolhidos',JSON.stringify("["+arrayServicosEscolhidos+"]"));
+      localStorage.setItem('servicosEscolhidos',"["+arrayServicosEscolhidos+"]");
+      console.log("Servicos escolhidos localStorage...",localStorage.getItem('servicosEscolhidos'));
       window.$("#modalServicos").modal("hide");
     },
+
+    // teste para entender store + checkbox...
+    //
+    // essa parte vai no template...
+    //     <div id="tmp">
+    //   <input type="checkbox" name="js" ref="theCheckbox" />
+    //   <label for="js"> JavaScript </label>
+    //   <br />
+    //   <button @click="handleClick">Done</button>
+    //   <p v-if="message">{{ message }}</p>
+    // </div>
+    // essa parte é aqui mesmo, no script...
+    // handleClick() {
+    //   // Access ref with "$refs" property
+    //   if (this.$refs.theCheckbox.checked) {
+    //     this.message = "You know JS";
+    //   } else {
+    //     this.message = "You don't know JS";
+    //   }
+    // },
   },
   computed: {
     ...mapState(["Servicos2"]),
-    servicos() {
-      return this.$store.getters.servicos;
-    },
+
+    // chamada store "hardcoded"
+    // servicos() {
+    //   return this.$store.getters.servicos;
+    // },
   },
   mounted() {
     // carrega servicos para a store...
     this.Servicos2Data();
-    
-    // deve ter outro jeito melhor de fazer isso...
-    // teste para tentar simplificar a seleção de serviços...não funcionou
-    // console.log(
-    //   "Servicos da store 0...",
-    //   this.servicos.length,
-    //   this.servicos,
-    //   this.servicos[0].id,
-    //   this.servicos[1].id,
-    // );
-
-    // let tempServ = "";
-    // for (let i=0;i<this.servicos.length;i++) {
-    //   tempServ="#"+this.servicos[i].id
-    //   console.log("Servico:",tempServ)
-    //   window.$(tempServ).click(function () {
-    //     if (window.$(tempServ).is(":checked")) {
-    //       console.log(`${tempServ} checked!`)
-    //       localStorage.setItem("servico1", true);
-    //   } // checked
-    //   else {
-    //     localStorage.setItem(tempServ, false);
-    //   } // unchecked
-    // });
-    // }
-
-    window.$("#servico1").click(function () {
-      (window.$("#servico1").is(":checked")) ? localStorage.setItem("servico1", true) : localStorage.setItem("servico1", false)
-    });
-    window.$("#servico2").click(function () {
-      (window.$("#servico2").is(":checked")) ? localStorage.setItem("servico2", true) : localStorage.setItem("servico2", false)
-    });
-    window.$("#servico3").click(function () {
-      (window.$("#servico3").is(":checked")) ? localStorage.setItem("servico3", true) : localStorage.setItem("servico3", false)
-    });
-    window.$("#servico4").click(function () {
-      (window.$("#servico4").is(":checked")) ? localStorage.setItem("servico4", true) : localStorage.setItem("servico4", false)
-    });
-    window.$("#servico5").click(function () {
-      (window.$("#servico5").is(":checked")) ? localStorage.setItem("servico5", true) : localStorage.setItem("servico5", false)
-    });
   },
 };
 </script>
