@@ -283,8 +283,9 @@ img{
   }
 
   .botaoreserva{
-    left: 60%;
+    left: 65%;
     top: auto;
+    font-size: 0.9em;
   }
 }
 </style>

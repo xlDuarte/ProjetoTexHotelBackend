@@ -24,13 +24,13 @@
               <form class="campologin" v-show="showLogin" action="post">
                   <div>
                     <label for="login"><strong>USUARIO</strong></label>
-                    <input class="box1 login" type="email" name="login" id="login" v-model="login" />  
+                    <input class="box1 login" type="email" name="login" id="logindrop" v-model="login" />  
                     <label for="password"><strong>SENHA</strong></label>
                     <input
                       class="box1 pswd"
                       type="password"
                       name="password"
-                      id="password"
+                      id="passworddrop"
                       v-model="pswd"
                     />
                   </div>
@@ -40,7 +40,7 @@
                       @click="validate"
                       type="button"
                       value="OK"
-                      id="btnLogin"
+                      id="btnLogindrop"
                     />
                     <br>         
                     <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
