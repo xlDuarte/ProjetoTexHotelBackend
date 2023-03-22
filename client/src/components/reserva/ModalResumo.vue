@@ -39,13 +39,14 @@
           <!-- Inicio body confirma-->
           <div id="bodyConfirma">
             <h3>Confirme sua reserva</h3>
-            <h2>Seu cupom de desconto: {{ cupomDesconto }}</h2>
+            <h2>Seu cupom de desconto: {{ cupomDescontoResumo }}</h2>
             <div class="mt-2 pt-2 d-flex flex-start">
               <label for="">Aplicar Cupom de Desconto: </label>
               <input
                 id="inputDesconto"
                 class="w-50 inputPadrao bg-light px-3 text-uppercase fw-bold"
                 type="text"
+                v-model="cupomDescontoResumo"
               />
               <button id="btnCupom" type="button" class="btn btn-secondary">
                 Aplicar Cupom
@@ -63,8 +64,9 @@
               </button> -->
             </div>
             <hr />
-            <p id="totalDesconto"></p>
-            <hr />
+            <div id="totalDesconto">
+              <p id="totalDesconto"></p>
+            </div>
           </div>
         </div>
         <!-- fim body confirma -->
@@ -89,22 +91,19 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 const bootstrap = require("bootstrap");
 
-//import { preencheModalResumo } from "./FormReserva.vue";
+import { ref } from "vue";
 import { cupomDesconto } from "./FormReserva.vue";
 import { gravaReserva } from "./FormReserva.vue";
+import { currencyFormat } from "./FormReserva.vue";
 import { updateBindingForm } from "./FormReserva.vue";
 import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
-import moment from 'moment';
+import { mapState } from "vuex";
 
+
+import moment from "moment";
 
 // gera cupom de desconto caso não exista nenhum. Se já houver a mensagem é que não podem ser gerados dois cupons no mesmo dia...
-let msgCupomDesconto = "Lamento, um cupom de desconto já foi utilizado hoje...";
-if (localStorage.getItem("cupomDesconto") != "") {
-  localStorage.setItem("cupomDesconto", cupomDesconto());
-  msgCupomDesconto = localStorage.getItem("cupomDesconto");
-} else {
-  localStorage.setItem("cupomDesconto", msgCupomDesconto);
-}
+cupomDesconto();
 
 var jQuery = require("jquery");
 window.jQuery = jQuery;
@@ -119,7 +118,8 @@ export default {
   data() {
     return {
       // informações que podem ser utilizadas no template...
-      cupomDesconto: localStorage.getItem("cupomDesconto"),
+      // cupomDesconto: localStorage.getItem("cupomDesconto"),
+      cupomDescontoResumo: localStorage.getItem("cupomDesconto"),
       totalGeralDesconto: localStorage.getItem("vlrTotalDesconto"),
     };
   },
@@ -131,17 +131,6 @@ export default {
       return modal;
     },
     confirmaReserva() {
-      console.log("Cliquei na confirmação...");
-      console.log(
-        "Teste...",
-        localStorage.getItem("valorTotalGeral") !==
-          localStorage.getItem("vlrTotalDesconto")
-      );
-      console.log(
-        "Teste2",
-        localStorage.getItem("valorTotalGeral"),
-        localStorage.getItem("vlrTotalDesconto")
-      );
       if (
         localStorage.getItem("valorTotalGeral") !==
         localStorage.getItem("vlrTotalDesconto")
@@ -151,20 +140,16 @@ export default {
 
       gravaReserva();
 
-      // inserir aqui a persistencia no banco...
-      // [{"reservaId":"Reserva_1","dtReserva":"16/03/2023","codCliente":"Hospede1","dtEntrada":"20/03/2023","dtSaida":"24/03/2023",
-      // "qtPessoas":"3","tipoApto":"comfort","diarias":"4","vlrTotal":"5520","vlrTotalcomDesconto":"R$ 4968.00","cupom":"aqqrgkz"}]
-
       let reserva = new Reservas();
 
-      console.log(reserva.getReservasById("36"));
+      // console.log(reserva.getReservasById("36"));
       //obtem dados da reserva feita pelo hospede da localStorage
       let reservaCriada = `Reserva_${localStorage.getItem("reservaId")}`;
       let arrayReservaCriada = JSON.parse(localStorage.getItem(reservaCriada));
 
-      console.log("Reserva criada array...", arrayReservaCriada);
-      console.log("Reserva criada array...", arrayReservaCriada[0].reservaId);
-            console.log("Reserva criada array...", arrayReservaCriada[0].diarias);
+      // console.log("Reserva criada array...", arrayReservaCriada);
+      // console.log("Reserva criada array...", arrayReservaCriada[0].reservaId);
+      // console.log("Reserva criada array...", arrayReservaCriada[0].diarias);
 
       /*
       Você deve informar para o moment o formato de entrada, ou seja, como está a string com sua data antes de formatá-la pois internamente ele
@@ -176,9 +161,17 @@ export default {
       */
 
       let idReservas = "";
-      let dtReserva = moment(arrayReservaCriada[0].dtReserva,"DD/MM/YYYY").format("YYYY-MM-DD");
-      let dtEntrada = moment(arrayReservaCriada[0].dtEntrada,"DD/MM/YYYY").format("YYYY-MM-DD");
-      let dtSaida = moment(arrayReservaCriada[0].dtSaida,"DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtReserva = moment(
+        arrayReservaCriada[0].dtReserva,
+        "DD/MM/YYYY"
+      ).format("YYYY-MM-DD");
+      let dtEntrada = moment(
+        arrayReservaCriada[0].dtEntrada,
+        "DD/MM/YYYY"
+      ).format("YYYY-MM-DD");
+      let dtSaida = moment(arrayReservaCriada[0].dtSaida, "DD/MM/YYYY").format(
+        "YYYY-MM-DD"
+      );
       let vlrTotal = arrayReservaCriada[0].vlrTotal;
       let qtPessoas = arrayReservaCriada[0].qtPessoas;
       let idUsuario = arrayReservaCriada[0].idUsuario;
@@ -219,21 +212,50 @@ export default {
         itemArrayEdit
       );
 
+      let geraPDF = confirm("Quer gerar um PDF de sua reserva?");
+      if (geraPDF) {
+        // rotina para imprimrir PDF
+        console.log("Gerar PDF: ", geraPDF);
+      }
+
       alert(
         "Sua reserva foi confirmada - você irá receber um email com a confirmação! Obrigado!"
       );
 
       // verificar como limpar o selected de serviços para não vir flagado na próxima reserva!!!!
-      // clean serviços!!
+      for (var i = 0; i < localStorage.length; i++) {
+        // console.log(
+        //   "Valor item localStorage...",
+        //   localStorage.getItem(localStorage.key(i))
+        // );
+        console.log("Item localStorage...", localStorage.key(i));
+        if (localStorage.key(i).includes("idServicos")) {
+          localStorage.removeItem(localStorage.key(i));
+        }
+      }
+
+      // limpeza dos componentes após confirmação...
+      // limpa selected dos serviços...
+      let arrayServicos = this.Servicos2;
+      for (let i = 0; i < arrayServicos.data.length; i++) {
+          console.log("Servicos ",arrayServicos.data[i].nomeServico, arrayServicos.data[i].isSelected);
+          arrayServicos.data[i].isSelected = false;
+      }
+      // atualiza campo cupom da modal...
+      this.cupomDescontoResumo = ref(localStorage.getItem("cupomDesconto"));
 
       updateBindingForm();
       window.$("#modalResumo").modal("hide");
     },
   },
-  computed: {},
+  computed: {
+    ...mapState(["Servicos2"]),    
+
+  },
   mounted() {
     // atualiza dados da modalResumo
     // preencheModalResumo();
+    this.cupomDescontoResumo = ref(localStorage.getItem("cupomDesconto"));
   },
 };
 
@@ -261,27 +283,30 @@ window.$().ready(function () {
     let cupomStorage = localStorage.getItem("cupomDesconto");
     let vlrTotalGeral = localStorage.getItem("valorTotalGeral");
     let percDesc = 1;
-    let msg = "Total Reserva....: R$ "; //${localStorage.getItem("valorTotalGeral")}`;
+    let msg = "Total Reserva....: "; //${localStorage.getItem("valorTotalGeral")}`;
 
     if (localStorage.getItem("cupomDescontoValido") == "OK") {
       // tem direito a usar o cupom...
       if (cupomEntry == cupomStorage) {
         percDesc = 0.9;
-        msg = "Total Reserva com desconto....: R$ ";
+        msg = "Total Reserva com desconto....: ";
       } else {
         alert("Cupom inválido");
         document.getElementById("inputDesconto").value = "";
       }
     } else {
       // não pode mais usar o cupom...
-      alert("Este cupom já foi utilizado ou não é mais válido...");
+      alert(
+        "Lamentamos, sem cupom de desconto no momento, ou cupom não é mais válido..."
+      );
     }
 
     // let desconto = parseFloat(vlrTotalGeral[1].replace(".", "")) * percDesc;
+    console.log("Calculando desconto ou total sem desconto...", msg, percDesc);
     let desconto = vlrTotalGeral * percDesc;
     console.log("VlrTotalDesconto", desconto);
-    localStorage.setItem("vlrTotalDesconto",desconto.toFixed(2));
-    let msg2 = `${msg} ${desconto.toFixed(2)}`;
+    localStorage.setItem("vlrTotalDesconto", desconto.toFixed(2));
+    let msg2 = `${msg} ${currencyFormat(desconto)}`;
     document.getElementById("totalDesconto").innerText = msg2;
   });
 });

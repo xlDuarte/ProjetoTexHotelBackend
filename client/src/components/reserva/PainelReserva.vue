@@ -84,7 +84,7 @@ export default {
   },
   mounted() {
     // verifica se usuario esta logado para ativar botão "Minhas Reservas"
-    if (localStorage.getItem("loginStatus")) {
+    if (localStorage.getItem("loginStatus") != "") {
       //this.$refs.btnMinhasReservas.setAttribute("hidden", "false");
       this.$refs.btnMinhasReservas.style.visibility = "visible";
     } else {
