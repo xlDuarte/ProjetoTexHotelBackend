@@ -57,6 +57,11 @@ import {
   updateReserva,
 } from "../controller/reservas.js";
 
+import { 
+  resetPage,
+  resetPassword, updatePassword,
+} from "../controller/forgot.js";
+
 // init express router
 const router = express.Router();
 
@@ -71,7 +76,11 @@ router.get('/logout', logOut);
 router.post('/register', registerValidation);
 
 //rota para checar se logdado
-router.get('/get-user', signupValidation); 
+router.get('/get-user', signupValidation);
+
+router.post('/resetpdw-email', resetPassword);
+
+router.post('/resetpwd/:token', updatePassword);
 
 //Usuarios
 // rota para listar todos os usuarios

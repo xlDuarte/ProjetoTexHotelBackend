@@ -24,7 +24,7 @@
               <form class="campologin" v-show="showLogin" action="post">
                   <div>
                     <label for="login"><strong>USUARIO</strong></label>
-                    <input class="box1 login" type="email" name="login" id="logindrop" v-model="login" />  
+                    <input class="box1 login" type="email" name="login" id="logindrop" v-model="login" autocomplete="on"/>  
                     <label for="password"><strong>SENHA</strong></label>
                     <input
                       class="box1 pswd"
@@ -32,6 +32,7 @@
                       name="password"
                       id="passworddrop"
                       v-model="pswd"
+                      autocomplete="on"
                     />
                   </div>
                   <div>
@@ -83,7 +84,7 @@
         <form class="campologin" v-show="showLogin" action="post">
             <div>
               <label for="login"><strong>USUARIO</strong></label>
-              <input class="box1 login" type="email" name="login" id="login" v-model="login" />  
+              <input class="box1 login" type="email" name="login" id="login" v-model="login" autocomplete="on" />  
               <label for="password"><strong>SENHA</strong></label>
               <input
                 class="box1 pswd"
@@ -91,6 +92,7 @@
                 name="password"
                 id="password"
                 v-model="pswd"
+                autocomplete="on"
               />
             </div>
             <div>
