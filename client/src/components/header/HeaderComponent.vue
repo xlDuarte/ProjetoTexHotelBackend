@@ -1,126 +1,89 @@
 <!-- Header -->
 <template>
   <div>
-    <ModalSenha/>
+    <ModalSenha />
     <header class="header">
-        <nav>
-          <div class="navigation-drop">
-            <input class="dropbtn" type="checkbox" id="Menu" />
-            <label class="navigation-drop-btn" for="Menu">Menu</label>
-            <div class="navigation-drop-content">
-              <div class="pub menu" v-show="visivel">
-                <div><router-link to="/">Home</router-link></div>
-                <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
-                <div><router-link to="/Reservas">Reservas</router-link></div>
-              </div>
-              <div class="adm menudrop" v-show="invisivel">
-                <div><router-link to="/HomeAdm">Home</router-link></div>
-                <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
-                <div><router-link to="/ReservasAdm">Reservas</router-link></div>
-                <div><router-link to="/ServicosAdm">Serviços</router-link></div>          
-                <div><router-link to="/Consumos">Consumo</router-link></div>
-                <div><router-link to="/Usuarios">Usuarios</router-link></div>
-              </div>                
-              <form class="campologin" v-show="showLogin" action="post">
-                  <div>
-                    <label for="login"><strong>USUARIO</strong></label>
-                    <input class="box1 login" type="email" name="login" id="logindrop" v-model="login" autocomplete="on"/>  
-                    <label for="password"><strong>SENHA</strong></label>
-                    <input
-                      class="box1 pswd"
-                      type="password"
-                      name="password"
-                      id="passworddrop"
-                      v-model="pswd"
-                      autocomplete="on"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      class="btnLogin"
-                      @click="validate"
-                      type="button"
-                      value="OK"
-                      id="btnLogindrop"
-                    />
-                    <br>         
-                    <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
-                    <br>
-                    <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>
-                  </div>
-              </form>
-              <div class="logedin" v-show="showLogOut">
-              <div>
-                  <p id="userdrop"></p>
-                  <div>
-                    <input
-                      class="button btnExit"
-                      @click="logOut"
-                      id="btnExit"
-                      type="button"
-                      value="Sair"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="navigation">
+      <nav>
+        <div class="navigation-drop">
+          <input class="dropbtn" type="checkbox" id="Menu" />
+          <label class="navigation-drop-btn" for="Menu">Menu</label>
+          <div class="navigation-drop-content">
             <div class="pub menu" v-show="visivel">
               <div><router-link to="/">Home</router-link></div>
               <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
               <div><router-link to="/Reservas">Reservas</router-link></div>
             </div>
-            <div class="adm menu" v-show="invisivel">
+            <div class="adm menudrop" v-show="invisivel">
               <div><router-link to="/HomeAdm">Home</router-link></div>
               <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
               <div><router-link to="/ReservasAdm">Reservas</router-link></div>
-              <div><router-link to="/ServicosAdm">Serviços</router-link></div>          
+              <div><router-link to="/ServicosAdm">Serviços</router-link></div>
               <div><router-link to="/Consumos">Consumo</router-link></div>
               <div><router-link to="/Usuarios">Usuarios</router-link></div>
             </div>
-          </div>
-        </nav>
-        <form class="campologin" v-show="showLogin" action="post">
-            <div>
-              <label for="login"><strong>USUARIO</strong></label>
-              <input class="box1 login" type="email" name="login" id="login" v-model="login" autocomplete="on" />  
-              <label for="password"><strong>SENHA</strong></label>
-              <input
-                class="box1 pswd"
-                type="password"
-                name="password"
-                id="password"
-                v-model="pswd"
-                autocomplete="on"
-              />
-            </div>
-            <div>
-              <input
-                class="btnLogin"
-                @click="validate"
-                type="button"
-                value="OK"
-                id="btnLogin"
-              />         
-              <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
-              <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>
-            </div>
-        </form>
-        <div class="logedin" v-show="showLogOut">
-          <div>
-            <p id="user"></p>
-            <div>
-              <input
-                class="button btnExit"
-                @click="logOut"
-                id="btnExit"
-                type="button"
-                value="Sair"
-              />
+            <form class="campologin" v-show="showLogin" action="post">
+              <div>
+                <label for="login"><strong>USUARIO</strong></label>
+                <input class="box1 login" type="email" name="login" id="logindrop" v-model="login" autocomplete="on" />
+                <label for="password"><strong>SENHA</strong></label>
+                <input class="box1 pswd" type="password" name="password" id="passworddrop" v-model="pswd"
+                  autocomplete="on" />
+              </div>
+              <div>
+                <input class="btnLogin" @click="validate" type="button" value="OK" id="btnLogindrop" />
+                <br>
+                <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
+                <br>
+                <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>
+              </div>
+            </form>
+            <div class="logedin" v-show="showLogOut">
+              <div>
+                <p id="userdrop"></p>
+                <div>
+                  <input class="button btnExit" @click="logOut" id="btnExit" type="button" value="Sair" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="navigation">
+          <div class="pub menu" v-show="visivel">
+            <div><router-link to="/">Home</router-link></div>
+            <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
+            <div><router-link to="/Reservas">Reservas</router-link></div>
+          </div>
+          <div class="adm menu" v-show="invisivel">
+            <div><router-link to="/HomeAdm">Home</router-link></div>
+            <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
+            <div><router-link to="/ReservasAdm">Reservas</router-link></div>
+            <div><router-link to="/ServicosAdm">Serviços</router-link></div>
+            <div><router-link to="/Consumos">Consumo</router-link></div>
+            <div><router-link to="/Usuarios">Usuarios</router-link></div>
+          </div>
+        </div>
+      </nav>
+      <form class="campologin" v-show="showLogin" action="post">
+        <div>
+          <label for="login"><strong>USUARIO</strong></label>
+          <input class="box1 login" type="email" name="login" id="login" v-model="login" autocomplete="on" />
+          <label for="password"><strong>SENHA</strong></label>
+          <input class="box1 pswd" type="password" name="password" id="password" v-model="pswd" autocomplete="on" />
+        </div>
+        <div>
+          <input class="btnLogin" @click="validate" type="button" value="OK" id="btnLogin" />
+          <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
+          <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>
+        </div>
+      </form>
+      <div class="logedin" v-show="showLogOut">
+        <div>
+          <p id="user"></p>
+          <div>
+            <input class="button btnExit" @click="logOut" id="btnExit" type="button" value="Sair" />
+          </div>
+        </div>
+      </div>
     </header>
     <div class="banner ">
       <img alt="" src="@/assets/BANNER-CASANAPRAIA.png">
@@ -134,16 +97,16 @@ import ModalSenha from '../home/ModalSenha';
 
 export default {
   name: "HeaderComponent",
-  components:{
+  components: {
     ModalSenha
   },
-  
+
   data() {
     return {
-      items:[],
+      items: [],
       login: "",
       pswd: "",
-      x: "", 
+      x: "",
       logedin: false,
       visivel: true,
       invisivel: false,
@@ -164,52 +127,52 @@ export default {
           console.log(this.items)
           console.log(response.data)
           console.log(response.data.sessionUser)
-          if(this.x){ 
+          if (this.x) {
             let loged = this.items.nomeUsuario;
             let logedOn = this.items.tipoUsuario;
             let idUser = this.items.idUsuario;
             this.logedin = true
             this.showLogOut = true
             this.showLogin = false
-            console.log(this.items.nomeUsuario)            
-              console.log('ok')
-              if(logedOn == 'cliente'){
-                localStorage.setItem("userId", idUser);
-                localStorage.setItem("loged", loged);
-                localStorage.setItem("loginStatus", logedOn);
-                alert("Logado com sucesso!");
-                document.getElementById(
-                  "user"
-                ).innerText = `Olá ${loged}`;
-                document.getElementById(
-                  "userdrop"
-                ).innerText = `Olá ${loged}`;
-              } else if(logedOn == 'admin'){
-                localStorage.setItem("userId", idUser);
-                localStorage.setItem("loged", loged);
-                localStorage.setItem("loginStatus", logedOn);
-                document.getElementById(
-                  "user"
-                ).innerText = `Olá ${loged}`;
-                document.getElementById(
-                  "userdrop"
-                ).innerText = `Olá ${loged}`;
-                this.logedin = localStorage.getItem("loginStatus");
-                alert("Logado com sucesso como administrador!");
-                this.$router.push("HomeAdm")
-                this.invisivel = true
-                this.visivel = false
-              } 
-          }  else{
+            console.log(this.items.nomeUsuario)
+            console.log('ok')
+            if (logedOn == 'cliente') {
+              localStorage.setItem("userId", idUser);
+              localStorage.setItem("loged", loged);
+              localStorage.setItem("loginStatus", logedOn);
+              alert("Logado com sucesso!");
+              document.getElementById(
+                "user"
+              ).innerText = `Olá ${loged}`;
+              document.getElementById(
+                "userdrop"
+              ).innerText = `Olá ${loged}`;
+            } else if (logedOn == 'admin') {
+              localStorage.setItem("userId", idUser);
+              localStorage.setItem("loged", loged);
+              localStorage.setItem("loginStatus", logedOn);
+              document.getElementById(
+                "user"
+              ).innerText = `Olá ${loged}`;
+              document.getElementById(
+                "userdrop"
+              ).innerText = `Olá ${loged}`;
+              this.logedin = localStorage.getItem("loginStatus");
+              alert("Logado com sucesso como administrador!");
+              this.$router.push("HomeAdm")
+              this.invisivel = true
+              this.visivel = false
+            }
+          } else {
             alert("Usuario não encontrado")
           }
-        }catch (err) {
+        } catch (err) {
           alert(err.response.data.msg)
           console.log(err);
         }
       } else {
         alert("È preciso preencher os campos de login e senha");
-      }        
+      }
     },
 
     showHide(obj, action) {
@@ -222,7 +185,7 @@ export default {
       this.showLogOut = false
       this.showLogin = true
       this.invisivel = false,
-      this.visivel = true
+        this.visivel = true
       localStorage.setItem("loginStatus", logedOut);
       localStorage.removeItem("loged");
       localStorage.removeItem("userId")
@@ -230,55 +193,55 @@ export default {
       document.getElementById("login").value = "";
       document.getElementById("password").value = "";
       this.logedin = localStorage.getItem("logedOut");
-      console.log("logout", response)      
-      window.location.href="/"
+      console.log("logout", response)
+      window.location.href = "/"
     },
 
-    async loginCheck() {  
-      if(!this.logedin){ 
-          try{
-            const response = await axios.get("http://localhost:5000/get-user")
-            this.items = response.data.data
-            let loged = this.items.nomeUsuario;
-            let logedOn = this.items.tipoUsuario;
-            let idUser = this.items.idUsuario;
-            this.logedin = true
-            this.showLogin = false
-            this.showLogOut = true
-            console.log(this.items.nomeUsuario)            
-              console.log('ok')
-              if(logedOn == 'cliente'){
-                localStorage.setItem("userId", idUser)
-                localStorage.setItem("loged", loged);
-                localStorage.setItem("loginStatus", logedOn);
-                alert("Logado com sucesso!");
-                document.getElementById(
-                  "user"
-                ).innerText = `Olá ${loged}`;
-                document.getElementById(
-                  "userdrop"
-                ).innerText = `Olá ${loged}`;
-              } else if(logedOn == 'admin'){
-                localStorage.setItem("loged", loged);
-                localStorage.setItem("loginStatus", logedOn);
-                this.invisivel = true,
-                this.visivel = false
-                document.getElementById(
-                  "user"
-                ).innerText = `Olá ${loged}`;
-                document.getElementById(
-                  "userdrop"
-                ).innerText = `Olá ${loged}`;
-                this.logedin = localStorage.getItem("loginStatus");
-                alert("Logado com sucesso como administrador!");
-                this.$router.push("HomeAdm")
-              } 
-            } catch(err) {
-              console.log(err.response.data.msg);
-            }
-          }else{
-            this.$router.push("/")
+    async loginCheck() {
+      if (!this.logedin) {
+        try {
+          const response = await axios.get("http://localhost:5000/get-user")
+          this.items = response.data.data
+          let loged = this.items.nomeUsuario;
+          let logedOn = this.items.tipoUsuario;
+          let idUser = this.items.idUsuario;
+          this.logedin = true
+          this.showLogin = false
+          this.showLogOut = true
+          console.log(this.items.nomeUsuario)
+          console.log('ok')
+          if (logedOn == 'cliente') {
+            localStorage.setItem("userId", idUser)
+            localStorage.setItem("loged", loged);
+            localStorage.setItem("loginStatus", logedOn);
+            alert("Logado com sucesso!");
+            document.getElementById(
+              "user"
+            ).innerText = `Olá ${loged}`;
+            document.getElementById(
+              "userdrop"
+            ).innerText = `Olá ${loged}`;
+          } else if (logedOn == 'admin') {
+            localStorage.setItem("loged", loged);
+            localStorage.setItem("loginStatus", logedOn);
+            this.invisivel = true,
+              this.visivel = false
+            document.getElementById(
+              "user"
+            ).innerText = `Olá ${loged}`;
+            document.getElementById(
+              "userdrop"
+            ).innerText = `Olá ${loged}`;
+            this.logedin = localStorage.getItem("loginStatus");
+            alert("Logado com sucesso como administrador!");
+            this.$router.push("HomeAdm")
           }
+        } catch (err) {
+          console.log(err.response.data.msg);
+        }
+      } else {
+        this.$router.push("/")
+      }
     },
   },
   beforeMount() {
@@ -338,7 +301,7 @@ a {
 }
 
 .campologin label,
-.campologin a{
+.campologin a {
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -363,6 +326,7 @@ a {
   font-size: 1em;
   margin: 5px;
 }
+
 .btnLogin {
   background: transparent;
   color: black;
@@ -397,7 +361,7 @@ a {
   display: block;
   object-fit: cover;
   width: 100%;
-  object-position: center;  
+  object-position: center;
 }
 
 .navigation-drop,
@@ -405,39 +369,46 @@ a {
 .navigation ul {
   display: none;
 }
+
 @media (max-width: 980px) {
+
   .navigation,
   .campologin,
   .loged,
   .banner {
     display: none;
   }
+
   .header {
-  position: inherit;
-  background-image: url(@/assets/footerborder.png);
-  display: flex;
-  height: 80px;
-  justify-content: left;
-  align-items: center;
-  padding: 10px;
-  z-index: 9998;
+    position: inherit;
+    background-image: url(@/assets/footerborder.png);
+    display: flex;
+    height: 80px;
+    justify-content: left;
+    align-items: center;
+    padding: 10px;
+    z-index: 9998;
   }
 
   html,
   body {
     overflow-x: hidden;
   }
+
   .dropbtn {
     display: none;
   }
+
   .navigation-drop .campologin {
     display: block;
   }
+
   .navigation-drop {
     padding: 1%;
     display: inline-block;
-    
+
   }
+
   .navigation-drop-btn {
     background: white;
     color: black;
@@ -450,13 +421,15 @@ a {
     font-size: 1.5em;
     z-index: 9999;
   }
-  .dropbtn:checked ~ .navigation-drop-content {
+
+  .dropbtn:checked~.navigation-drop-content {
     -webkit-transform: translate(300px);
     -moz-transform: translate(300px);
     -ms-transform: translate(300px);
     -o-transform: translate(300px);
     transform: translate(300px);
   }
+
   .navigation-drop-btn:hover,
   .navigation-drop-btn:active {
     background: #112434;
@@ -465,6 +438,7 @@ a {
     padding: 0.4em;
     z-index: 9999;
   }
+
   .navigation-drop-content {
     width: 300px;
     position: fixed;
@@ -485,33 +459,40 @@ a {
     transition: all 0.25s linear;
     z-index: 999;
   }
-  .navigation-drop .menu{
+
+  .navigation-drop .menu {
     display: block;
   }
 }
 
 
 @media (max-width: 980px) and (orientation: portrait) {
+
   .navigation,
   .campologin,
   .loged {
     display: none;
   }
+
   html,
   body {
     overflow-x: hidden;
   }
+
   .dropbtn {
     display: none;
   }
+
   .navigation-drop .campologin {
     display: block;
   }
+
   .navigation-drop {
     padding: 1%;
     display: inline-block;
-    
+
   }
+
   .navigation-drop-btn {
     background: transparent;
     color: white;
@@ -524,13 +505,15 @@ a {
     font-size: 1.5em;
     z-index: 9999;
   }
-  .dropbtn:checked ~ .navigation-drop-content {
+
+  .dropbtn:checked~.navigation-drop-content {
     -webkit-transform: translate(300px);
     -moz-transform: translate(300px);
     -ms-transform: translate(300px);
     -o-transform: translate(300px);
     transform: translate(300px);
   }
+
   .navigation-drop-btn:hover,
   .navigation-drop-btn:active {
     background: #ffffff;
@@ -539,6 +522,7 @@ a {
     padding: 0.4em;
     z-index: 9999;
   }
+
   .navigation-drop-content {
     width: 300px;
     position: fixed;
@@ -559,7 +543,8 @@ a {
     transition: all 0.25s linear;
     z-index: 998;
   }
-  .navigation-drop .menu{
+
+  .navigation-drop .menu {
     display: block;
   }
 }

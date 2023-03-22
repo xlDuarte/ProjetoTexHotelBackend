@@ -1,23 +1,12 @@
 <template>
   <!-- Inicio Modal Resummo -->
-  <div
-    class="modal fade"
-    id="modalResumo"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="modalResumo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <!-- INÍCIO DO CONTEÚDO -->
@@ -42,11 +31,7 @@
             <h2>Seu cupom de desconto: {{ cupomDesconto }}</h2>
             <div class="mt-2 pt-2 d-flex flex-start">
               <label for="">Aplicar Cupom de Desconto: </label>
-              <input
-                id="inputDesconto"
-                class="w-50 inputPadrao bg-light px-3 text-uppercase fw-bold"
-                type="text"
-              />
+              <input id="inputDesconto" class="w-50 inputPadrao bg-light px-3 text-uppercase fw-bold" type="text" />
               <button id="btnCupom" type="button" class="btn btn-secondary">
                 Aplicar Cupom
               </button>
@@ -135,7 +120,7 @@ export default {
       console.log(
         "Teste...",
         localStorage.getItem("valorTotalGeral") !==
-          localStorage.getItem("vlrTotalDesconto")
+        localStorage.getItem("vlrTotalDesconto")
       );
       console.log(
         "Teste2",
@@ -164,7 +149,7 @@ export default {
 
       console.log("Reserva criada array...", arrayReservaCriada);
       console.log("Reserva criada array...", arrayReservaCriada[0].reservaId);
-            console.log("Reserva criada array...", arrayReservaCriada[0].diarias);
+      console.log("Reserva criada array...", arrayReservaCriada[0].diarias);
 
       /*
       Você deve informar para o moment o formato de entrada, ou seja, como está a string com sua data antes de formatá-la pois internamente ele
@@ -176,9 +161,9 @@ export default {
       */
 
       let idReservas = "";
-      let dtReserva = moment(arrayReservaCriada[0].dtReserva,"DD/MM/YYYY").format("YYYY-MM-DD");
-      let dtEntrada = moment(arrayReservaCriada[0].dtEntrada,"DD/MM/YYYY").format("YYYY-MM-DD");
-      let dtSaida = moment(arrayReservaCriada[0].dtSaida,"DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtReserva = moment(arrayReservaCriada[0].dtReserva, "DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtEntrada = moment(arrayReservaCriada[0].dtEntrada, "DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtSaida = moment(arrayReservaCriada[0].dtSaida, "DD/MM/YYYY").format("YYYY-MM-DD");
       let vlrTotal = arrayReservaCriada[0].vlrTotal;
       let qtPessoas = arrayReservaCriada[0].qtPessoas;
       let idUsuario = arrayReservaCriada[0].idUsuario;
@@ -280,7 +265,7 @@ window.$().ready(function () {
     // let desconto = parseFloat(vlrTotalGeral[1].replace(".", "")) * percDesc;
     let desconto = vlrTotalGeral * percDesc;
     console.log("VlrTotalDesconto", desconto);
-    localStorage.setItem("vlrTotalDesconto",desconto.toFixed(2));
+    localStorage.setItem("vlrTotalDesconto", desconto.toFixed(2));
     let msg2 = `${msg} ${desconto.toFixed(2)}`;
     document.getElementById("totalDesconto").innerText = msg2;
   });
@@ -307,6 +292,7 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
@@ -318,8 +304,10 @@ a {
 
 p {
   color: brown;
-  line-height: 10px; /* within paragraph */
-  margin-bottom: 10px; /* between paragraphs */
+  line-height: 10px;
+  /* within paragraph */
+  margin-bottom: 10px;
+  /* between paragraphs */
   font-size: 15px;
 }
 </style>

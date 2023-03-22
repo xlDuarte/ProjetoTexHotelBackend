@@ -18,7 +18,7 @@ export default {
   actions: {
     async getData({ commit }) {
       const response = await axios.get("http://localhost:5000/servico");
-      commit("setData",response.data)
+      commit("setData", response.data);
       console.log("Executei api getServicos...", response.data);
       // this.items = response.data;
       // console.log("getServicos", this.items);

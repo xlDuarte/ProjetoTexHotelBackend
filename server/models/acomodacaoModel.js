@@ -50,7 +50,7 @@ export const updateAcomodacaoById = (data, id, result) => {
       data.nomeAcomodacao,
       data.descricaoAcomodacao,
       data.valorAcomodacao,
-      data.tipoAcomodacao,      
+      data.tipoAcomodacao,
       id,
     ],
     (err, results) => {
@@ -66,12 +66,16 @@ export const updateAcomodacaoById = (data, id, result) => {
 
 // deleta um Acomodacao no banco
 export const deleteAcomodacaoById = (id, result) => {
-  db.query("DELETE FROM acomodacoes WHERE idAcomodacao = ?", [id], (err, results) => {
-    if (err) {
-      console.log(err);
-      result(err, null);
-    } else {
-      result(null, results);
+  db.query(
+    "DELETE FROM acomodacoes WHERE idAcomodacao = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results);
+      }
     }
-  });
+  );
 };

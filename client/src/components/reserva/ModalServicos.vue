@@ -5,31 +5,16 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
           <h3>Selecione mais serviços!</h3>
           <hr />
-          <div
-            class="painelServicos"
-            v-for="item in Servicos2.data"
-            :key="item"
-          >
-            <input
-              type="checkbox"
-              v-model="item.isSelected"
-              :id="item.labelServico"
-              :name="item.nomeServico"
-              :value="item.labelServico"
-            />
-            <label
-              >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }}
+          <div class="painelServicos" v-for="item in Servicos2.data" :key="item">
+            <input type="checkbox" v-model="item.isSelected" :id="item.labelServico" :name="item.nomeServico"
+              :value="item.labelServico" />
+            <label>{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }}
             </label>
             <br />
           </div>
@@ -114,10 +99,10 @@ export default {
           arrayServicosEscolhidos.push(itemLocal);
         }
       }
-      console.log("Servicos escolhidos...",arrayServicosEscolhidos);
+      console.log("Servicos escolhidos...", arrayServicosEscolhidos);
       // localStorage.setItem('servicosEscolhidos',JSON.stringify("["+arrayServicosEscolhidos+"]"));
-      localStorage.setItem('servicosEscolhidos',"["+arrayServicosEscolhidos+"]");
-      console.log("Servicos escolhidos localStorage...",localStorage.getItem('servicosEscolhidos'));
+      localStorage.setItem('servicosEscolhidos', "[" + arrayServicosEscolhidos + "]");
+      console.log("Servicos escolhidos localStorage...", localStorage.getItem('servicosEscolhidos'));
       window.$("#modalServicos").modal("hide");
     },
 

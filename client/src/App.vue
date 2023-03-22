@@ -1,12 +1,12 @@
 <template>
   <div>
-    <PreLoader/>
+    <PreLoader />
     <!--Banner-->
     <!-- <BannerComponent/> -->
     <!--Header-->
-    <HeaderComponent/>
-    <router-view class="content"/>
-    <FooterComponent/>
+    <HeaderComponent />
+    <router-view class="content" />
+    <FooterComponent />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import PreLoader from '@/components/preloader/PreloaderComponent.vue'
 export default {
   name: 'AppVue',
   components: {
-    HeaderComponent,FooterComponent,PreLoader
+    HeaderComponent, FooterComponent, PreLoader
   },
 }
 </script>
@@ -27,6 +27,7 @@ export default {
 <style>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -34,7 +35,7 @@ export default {
   font-family: "Poppins", sans-serif;
 }
 
-.content{
+.content {
   background-color: #f4f2e7;
   background-image: linear-gradient(90deg, #f4f2e7 0%, #f7f4e9 46%, #efe5d5 100%);
 }

@@ -1,156 +1,161 @@
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 //import jwt from "jsonwebtoken"
 import db from "../config/database.js";
 
-let sessionUser
-let userId
+let sessionUser;
+let userId;
 export const registerValidation = (req, res, next) => {
-    db.query(
-        `SELECT * FROM usuario WHERE emailUsuario = ?`,
-        [req.body.emailUsuario],
-        (err, result) => {
-            if(err){
-                return res.status(500).send({
-                    msg: 'algo deu errado!'
-                });
+  db.query(
+    `SELECT * FROM usuario WHERE emailUsuario = ?`,
+    [req.body.emailUsuario],
+    (err, result) => {
+      if (err) {
+        return res.status(500).send({
+          msg: "algo deu errado!",
+        });
+      } else if (result.length) {
+        console.log(result[0]);
+        return res.status(409).send({
+          msg: "Email já cadastrado!",
+        });
+      } else {
+        db.query(
+          `SELECT * FROM usuario WHERE cpfUsuario = ?`,
+          [req.body.cpfUsuario],
+          (err, result) => {
+            if (err) {
+              return res.status(500).send({
+                msg: "algo deu errado!",
+              });
             } else if (result.length) {
-                console.log(result[0])
-                return res.status(409).send({
-                    msg: 'Email já cadastrado!'
-                });
+              console.log(result[0]);
+              return res.status(409).send({
+                msg: "CPF já cadastrado!",
+              });
             } else {
-                db.query(
-                    `SELECT * FROM usuario WHERE cpfUsuario = ?`,
-                    [req.body.cpfUsuario],
+              // se o email estiver disponivel
+              bcrypt.hash(req.body.senhaUsuario, 10, (err, hash) => {
+                if (err) {
+                  return res.status(500).send({
+                    msg: "algo deu errado!",
+                  });
+                } else {
+                  // encripta o password => adiciona ao db
+                  db.query(
+                    `INSERT INTO usuario SET nomeUsuario = ?, emailUsuario = ?, cpfUsuario = ?, endUsuario = ?, senhaUsuario = ?, telefoneUsuario = ?`,
+                    [
+                      req.body.nomeUsuario,
+                      req.body.emailUsuario,
+                      req.body.cpfUsuario,
+                      req.body.endUsuario,
+                      hash,
+                      req.body.telefoneUsuario,
+                    ],
                     (err, result) => {
-                        if(err){
-                            return res.status(500).send({
-                                msg: 'algo deu errado!'
-                            });
-                        } else if (result.length) {
-                            console.log(result[0])
-                            return res.status(409).send({
-                                msg: 'CPF já cadastrado!'
-                            });
-                        } else {
-                        // se o email estiver disponivel
-                        bcrypt.hash(req.body.senhaUsuario, 10, (err, hash) => {
-                            if (err) {
-                                return res.status(500).send({
-                                    msg: 'algo deu errado!'
-                                });
-                            } else {
-                                // encripta o password => adiciona ao db
-                                db.query(
-                                    `INSERT INTO usuario SET nomeUsuario = ?, emailUsuario = ?, cpfUsuario = ?, endUsuario = ?, senhaUsuario = ?, telefoneUsuario = ?`,
-                                    [
-                                        req.body.nomeUsuario,
-                                        req.body.emailUsuario,
-                                        req.body.cpfUsuario,
-                                        req.body.endUsuario,
-                                        hash,
-                                        req.body.telefoneUsuario
-                                    ],
-                                    (err, result) => {
-                                        if (err) {
-                                            console.log(err)
-                                            //throw err;
-                                            return res.status(400).send({
-                                                msg: err
-                                            });
-                                        }
-                                        return res.status(201).send({
-                                            msg: 'Usuario registrado com sucesso!'
-                                        });
-                                    }
-                                );
-                            }
-                        });    
+                      if (err) {
+                        console.log(err);
+                        //throw err;
+                        return res.status(400).send({
+                          msg: err,
+                        });
+                      }
+                      return res.status(201).send({
+                        msg: "Usuario registrado com sucesso!",
+                      });
                     }
-                        
-                }); 
+                  );
+                }
+              });
             }
-        }
-    );
+          }
+        );
+      }
+    }
+  );
 };
 
 export const loginValidation = (req, res, next) => {
-    db.query(
-        `SELECT * FROM usuario WHERE emailUsuario = ?`,[req.body.emailUsuario],
-        (err, result) => {
-            // se o usuario nao existir
-            if (err) {
-                //throw err;
-                return res.status(400).send({
-                    msg: err
-                });
-            }
-            if (!result.length) {
-                return res.status(401).send({
-                    msg: 'Usuario não existe'
-                });
-            }
-            // checa o password
-            bcrypt.compare(
-                req.body.senhaUsuario,
-                result[0]['senhaUsuario'],
-                (bErr, bResult) => {
-                    if (bErr) {
-                        //throw bErr;
-                        return res.status(401).send({
-                            msg: 'Algo deu errado'
-                        });
-                    }
-                    if (bResult) {
-                        //const token = jwt.sign({id:result[0].idUsuario},'the-super-strong-secrect',{ expiresIn: '1h' });
-                        sessionUser = req.session
-                        userId = result[0].idUsuario
-                        console.log(sessionUser)
-                        db.query(
-                            `UPDATE usuario SET ultimoLogin = now() WHERE idUsuario = ?`,[result[0].idUsuario]
-                            );                        
-                            return res.status(200).send({
-                                msg: 'Logado!',
-                                sessionUser,
-                                data: result[0]})
-                                
-                    }
-                    // se a senha estiver errada
-                    return res.status(401).send({
-                        msg: 'Senha incorreta'
-                    });
-                }
+  db.query(
+    `SELECT * FROM usuario WHERE emailUsuario = ?`,
+    [req.body.emailUsuario],
+    (err, result) => {
+      // se o usuario nao existir
+      if (err) {
+        //throw err;
+        return res.status(400).send({
+          msg: err,
+        });
+      }
+      if (!result.length) {
+        return res.status(401).send({
+          msg: "Usuario não existe",
+        });
+      }
+      // checa o password
+      bcrypt.compare(
+        req.body.senhaUsuario,
+        result[0]["senhaUsuario"],
+        (bErr, bResult) => {
+          if (bErr) {
+            //throw bErr;
+            return res.status(401).send({
+              msg: "Algo deu errado",
+            });
+          }
+          if (bResult) {
+            //const token = jwt.sign({id:result[0].idUsuario},'the-super-strong-secrect',{ expiresIn: '1h' });
+            sessionUser = req.session;
+            userId = result[0].idUsuario;
+            console.log(sessionUser);
+            db.query(
+              `UPDATE usuario SET ultimoLogin = now() WHERE idUsuario = ?`,
+              [result[0].idUsuario]
             );
-       
+            return res.status(200).send({
+              msg: "Logado!",
+              sessionUser,
+              data: result[0],
+            });
+          }
+          // se a senha estiver errada
+          return res.status(401).send({
+            msg: "Senha incorreta",
+          });
         }
-    );
-};
-
-export const signupValidation = (req,res)=>{
-    sessionUser = req.session
-    console.log("signupValidation", userId)
-    if(sessionUser){        
-        db.query('SELECT * FROM usuario where idUsuario=?', userId, (err, results) => {
-            if (err){
-                return res.status(400).send({
-                    msg: err
-                });
-            }
-            return res.send({data: results[0], msg: 'Logado!' });
-        });
-    } else{
-        return res.status(422).json({
-            msg: "sessão expirou! Faça login novamente.",
-        });
+      );
     }
+  );
 };
 
-export const logOut = (req,res)=>{
-    req.session.destroy()
-    sessionUser = req.session
-    userId = ""
-    res.json({data: !sessionUser}) 
-}
+export const signupValidation = (req, res) => {
+  sessionUser = req.session;
+  console.log("signupValidation", userId);
+  if (sessionUser) {
+    db.query(
+      "SELECT * FROM usuario where idUsuario=?",
+      userId,
+      (err, results) => {
+        if (err) {
+          return res.status(400).send({
+            msg: err,
+          });
+        }
+        return res.send({ data: results[0], msg: "Logado!" });
+      }
+    );
+  } else {
+    return res.status(422).json({
+      msg: "sessão expirou! Faça login novamente.",
+    });
+  }
+};
+
+export const logOut = (req, res) => {
+  req.session.destroy();
+  sessionUser = req.session;
+  userId = "";
+  res.json({ data: !sessionUser });
+};
 
 /*Validação com JWT
 export const signupValidation = (req,res)=>{
@@ -171,8 +176,6 @@ export const signupValidation = (req,res)=>{
         return res.send({ error: false, data: results[0], message: 'Fetch Successfully.' });
     });
 };*/
-
-
 
 /* Import das funcs do models
 import { getUsers} from "../models/loginModel.js";

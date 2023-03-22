@@ -18,17 +18,14 @@
         <tr scope="row" v-for="item in items" :key="item.idConsumo">
           <td>{{ item.Reservas_idReservas }}</td>
           <td>{{ item.nomeLocalConsumo }}</td>
-          <td>{{ item.nomeProdutos}}</td>
+          <td>{{ item.nomeProdutos }}</td>
           <td>{{ item.qtdConsumo }}</td>
           <td>{{ item.dataFormatada }}</td>
-          <td>{{ item.valorProdutos*item.qtdConsumo }}</td>
+          <td>{{ item.valorProdutos * item.qtdConsumo }}</td>
           <td>
-            <router-link
-              :to="{ name: 'editConsumos', params: { id: item.idConsumo } }"
-            >
-              <button class="button">Editar</button></router-link
-            >
-          
+            <router-link :to="{ name: 'editConsumos', params: { id: item.idConsumo } }">
+              <button class="button">Editar</button></router-link>
+
           </td>
           <td>
             <button class="button" @click="deleteConsumos(item.idConsumo)">
@@ -51,7 +48,7 @@ export default {
   data() {
     return {
       items: [],
-      
+
     };
   },
   components: { AddConsumo },
@@ -65,37 +62,37 @@ export default {
   },
   methods: {
     checkLogin() {
-      if(localStorage.getItem("loginStatus")){
-        if(localStorage.getItem("loginStatus") == "admin")
+      if (localStorage.getItem("loginStatus")) {
+        if (localStorage.getItem("loginStatus") == "admin")
           return true
-        else if(localStorage.getItem("loginStatus") == "cliente")
+        else if (localStorage.getItem("loginStatus") == "cliente")
           this.$router.push("/")
-          return true
-      }else{
+        return true
+      } else {
         this.$router.push("/")
         return false
       }
-    }, 
+    },
     // Lista todos os Consumos
     async getConsumo() {
-  try {
-    const response = await axios.get("http://localhost:5000/Consumo");
-    this.items = await Promise.all(response.data.map(async consumo => {
-      const localResponse = await axios.get(`http://localhost:5000/localConsumo/${consumo.localConsumo_idLocalConsumo}`);
-      const localResponse2 = await axios.get(`http://localhost:5000/produto/${consumo.produtos_idprodutos}`);
-      const localResponse3 = await axios.get(`http://localhost:5000/valorProduto/${consumo.produtos_idprodutos}`);
-      return {
-        ...consumo,
-        nomeLocalConsumo: localResponse.data.nomeLocalConsumo,
-        dataFormatada: moment(consumo.dataConsumo).format('DD/MM/YYYY'),
-        nomeProdutos:localResponse2.data.nomeProdutos,
-        valorProdutos:localResponse3.data.valorProdutos,
+      try {
+        const response = await axios.get("http://localhost:5000/Consumo");
+        this.items = await Promise.all(response.data.map(async consumo => {
+          const localResponse = await axios.get(`http://localhost:5000/localConsumo/${consumo.localConsumo_idLocalConsumo}`);
+          const localResponse2 = await axios.get(`http://localhost:5000/produto/${consumo.produtos_idprodutos}`);
+          const localResponse3 = await axios.get(`http://localhost:5000/valorProduto/${consumo.produtos_idprodutos}`);
+          return {
+            ...consumo,
+            nomeLocalConsumo: localResponse.data.nomeLocalConsumo,
+            dataFormatada: moment(consumo.dataConsumo).format('DD/MM/YYYY'),
+            nomeProdutos: localResponse2.data.nomeProdutos,
+            valorProdutos: localResponse3.data.valorProdutos,
+          }
+        }));
+      } catch (err) {
+        console.log(err);
       }
-    }));
-  } catch (err) {
-    console.log(err);
-  }
-},
+    },
 
 
     // Delete Consumo
@@ -114,6 +111,7 @@ export default {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -128,7 +126,7 @@ export default {
   color: black;
 }
 
-.sec > div {
+.sec>div {
   max-width: 90%;
   margin: 2% 5%;
 }
@@ -140,7 +138,7 @@ export default {
   margin: 0 5%;
 }
 
-.flex > div {
+.flex>div {
   flex: 1 1 420px;
   margin: 10px;
 }

@@ -11,80 +11,36 @@
     <div class="container border p-4 my-5 w-50">
       <form class="formServicos" action="" @submit.prevent>
         <div class="my-2">
-          <label for="nome" class="d-block fw-bold mb-2"
-            >Nome abreviado do serviço</label
-          >
-          <input
-            type="text"
-            id="nome"
-            v-model="nome"
-            placeholder="Abreviação do serviço"
-            class="form-control"
-            maxlength="45"
-          />
+          <label for="nome" class="d-block fw-bold mb-2">Nome abreviado do serviço</label>
+          <input type="text" id="nome" v-model="nome" placeholder="Abreviação do serviço" class="form-control"
+            maxlength="45" />
         </div>
         <div class="my-2">
-          <label for="descricao" class="d-block fw-bold mb-2"
-            >Descriçao do serviço</label
-          >
-          <input
-            type="text"
-            id="descricao"
-            v-model="descricao"
-            placeholder="Descrição do serviço"
-            class="form-control"
-            maxlength="45"
-          />
+          <label for="descricao" class="d-block fw-bold mb-2">Descriçao do serviço</label>
+          <input type="text" id="descricao" v-model="descricao" placeholder="Descrição do serviço" class="form-control"
+            maxlength="45" />
         </div>
         <div class="my-2">
-          <label for="label" class="d-block fw-bold mb-2"
-            >Label de tela do serviço</label
-          >
-          <input
-            type="text"
-            id="label"
-            v-model="label"
-            placeholder="Label de tela do serviço"
-            class="form-control"
-            maxlength="45"            
-          />
+          <label for="label" class="d-block fw-bold mb-2">Label de tela do serviço</label>
+          <input type="text" id="label" v-model="label" placeholder="Label de tela do serviço" class="form-control"
+            maxlength="45" />
         </div>
         <div>
-          <label for="vlrDiaria" class="d-block fw-bold mb-2"
-            >Valor da Diária do Serviço</label
-          >
-          <input
-            type="number"
-            id="vlrDiaria"
-            v-model.number="vlrDiaria"
-            placeholder="Valor da Diária do Serviço"
-            class="form-control"
-          />
+          <label for="vlrDiaria" class="d-block fw-bold mb-2">Valor da Diária do Serviço</label>
+          <input type="number" id="vlrDiaria" v-model.number="vlrDiaria" placeholder="Valor da Diária do Serviço"
+            class="form-control" />
         </div>
         <div class="formServicosButtons">
-          <button
-            v-if="showSalvarButton"
-            @click="handleClick('salvar')"
-            class="btn btn-info my-3 fw-bold text-uppercase text-white"
-          >
+          <button v-if="showSalvarButton" @click="handleClick('salvar')"
+            class="btn btn-info my-3 fw-bold text-uppercase text-white">
             Salvar
           </button>
-          <button
-            v-if="showExcluirButton"
-            @click="handleClick('excluir')"
-            id="btnExcluir"
-            class="btn btn-danger my-3 fw-bold text-uppercase text-red"
-            type="button"
-          >
+          <button v-if="showExcluirButton" @click="handleClick('excluir')" id="btnExcluir"
+            class="btn btn-danger my-3 fw-bold text-uppercase text-red" type="button">
             Excluir
           </button>
-          <button
-            v-if="showCancelarButton"
-            @click="handleClick('cancelar')"
-            id="btnCancelar"
-            class="btn btn-warning my-3 fw-bold text-uppercase text-white"
-            type="button"
-          >
+          <button v-if="showCancelarButton" @click="handleClick('cancelar')" id="btnCancelar"
+            class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
             Cancelar
           </button>
         </div>
@@ -119,20 +75,12 @@
               </button>
             </td> -->
             <div class="handleItem w-30 border px-3">
-              <button
-                @click="handleItem('editar', item.idServicos)"
-                id="btnEditar"
-                class="btn btn-warning my-3 fw-bold text-uppercase text-white"
-                type="button"
-              >
+              <button @click="handleItem('editar', item.idServicos)" id="btnEditar"
+                class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
                 Editar
               </button>
-              <button
-                @click="handleItem('excluir', item.idServicos)"
-                id="btnEditar"
-                class="btn btn-warning my-3 fw-bold text-uppercase text-white"
-                type="button"
-              >
+              <button @click="handleItem('excluir', item.idServicos)" id="btnEditar"
+                class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
                 Excluir
               </button>
             </div>
@@ -182,17 +130,17 @@ export default {
   },
   methods: {
     checkLogin() {
-      if(localStorage.getItem("loginStatus")){
-        if(localStorage.getItem("loginStatus") == "admin")
+      if (localStorage.getItem("loginStatus")) {
+        if (localStorage.getItem("loginStatus") == "admin")
           return true
-        else if(localStorage.getItem("loginStatus") == "cliente")
+        else if (localStorage.getItem("loginStatus") == "cliente")
           this.$router.push("/")
-          return true
-      }else{
+        return true
+      } else {
         this.$router.push("/")
         return false
       }
-    }, 
+    },
     // campos do cabecalho, apoio para desenvolvimento...
     changeName(msg1) {
       this.msg1 = msg1;
@@ -231,7 +179,7 @@ export default {
       if (action == "salvar") {
         console.log("Entrei no handleClick - salvar");
         const servico = new Servicos();
-        console.log("Entrei no handleClick - salvar - intanciei Servicos...",servico)
+        console.log("Entrei no handleClick - salvar - intanciei Servicos...", servico)
         servico.salvar(
           this.idServico,
           this.nome,
@@ -310,29 +258,34 @@ export default {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
 .sec {
   position: relative;
   padding: 2vw;
   transition: all 0.3s ease;
   color: black;
 }
-.sec > div {
+
+.sec>div {
   max-width: 90%;
   margin: 2% 5%;
 }
+
 .flex {
   display: flex;
   flex-wrap: wrap;
   max-width: 90%;
   margin: 0 5%;
 }
-.flex > div {
+
+.flex>div {
   flex: 1 1 420px;
   margin: 10px;
 }

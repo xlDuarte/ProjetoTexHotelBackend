@@ -5,12 +5,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
@@ -37,11 +32,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  class="ultimasReservas"
-                  v-for="item in reservas2"
-                  :key="item"
-                >
+                <tr class="ultimasReservas" v-for="item in reservas2" :key="item">
                   <td>{{ item.dtReserva }}</td>
                   <td>{{ item.dtCheckIn }}</td>
                   <td>{{ item.dtCheckOut }}</td>
@@ -157,6 +148,7 @@ export default {
 .modal-body {
   color: black;
 }
+
 .tableReserva * {
   box-sizing: border-box;
   font-size: 0.8rem;
@@ -182,11 +174,7 @@ body {
   border-collapse: collapse;
   /* These are just initial values which are overriden using JavaScript when a column is resized */
   grid-template-columns:
-    minmax(auto, auto)
-    minmax(auto, auto)
-    minmax(auto, auto)
-    minmax(auto, auto)
-    minmax(auto, auto);
+    minmax(auto, auto) minmax(auto, auto) minmax(auto, auto) minmax(auto, auto) minmax(auto, auto);
 }
 
 .tableReserva th,

@@ -4,7 +4,9 @@
     <ModalResumo />
     <ModalMinhasReservas />
     <div class="secResumo">
-      <div><h3>Resumo da reserva</h3></div>
+      <div>
+        <h3>Resumo da reserva</h3>
+      </div>
       <div class="flex">
         <div class="form">
           <form action="">
@@ -24,21 +26,11 @@
               Adicionar serviços
             </button>
             <br />
-            <button
-              type="button"
-              class="button"
-              id="btnMinhasReservas"
-              ref="btnMinhasReservas"
-            >
+            <button type="button" class="button" id="btnMinhasReservas" ref="btnMinhasReservas">
               Minhas Reservas
             </button>
             <br />
-            <button
-              type="button"
-              class="button"
-              id="btnResumoReserva"
-              ref="btnResumoReserva"
-            >
+            <button type="button" class="button" id="btnResumoReserva" ref="btnResumoReserva">
               Confirmar
             </button>
           </form>
@@ -118,6 +110,7 @@ window.$().ready(function () {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -135,10 +128,11 @@ window.$().ready(function () {
   background-color: #f4f2e7;
 }
 
-.secResumo > div {
+.secResumo>div {
   max-width: 90%;
   margin: 2% 5%;
 }
+
 .secResumo h2 {
   font-size: 3em;
 }
@@ -168,7 +162,7 @@ img {
   margin: 0 5%;
 }
 
-.flex > div {
+.flex>div {
   flex: 1 1 420px;
   margin: 10px;
 }
@@ -177,10 +171,12 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 p,
 a {
   color: #79382a;

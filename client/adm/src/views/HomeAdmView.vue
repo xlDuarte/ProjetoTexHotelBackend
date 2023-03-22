@@ -8,33 +8,34 @@
 
 export default {
   name: 'HomeAdmView',
-  components: {    
+  components: {
   },
   data() {
     return {
     };
   },
-  beforeMount(){
+  beforeMount() {
     this.checkLogin();
   },
-  methods:{
+  methods: {
     checkLogin() {
-      if(localStorage.getItem("loginStatus")){
-        if(localStorage.getItem("loginStatus") == "admin")
+      if (localStorage.getItem("loginStatus")) {
+        if (localStorage.getItem("loginStatus") == "admin")
           return true
-        else if(localStorage.getItem("loginStatus") == "cliente")
+        else if (localStorage.getItem("loginStatus") == "cliente")
           this.$router.push("/")
-          return true
-      }else{
+        return true
+      } else {
         this.$router.push("/")
         return false
       }
-    },  
+    },
   }
 }
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;

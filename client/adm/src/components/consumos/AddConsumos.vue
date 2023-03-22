@@ -4,33 +4,18 @@
       <form>
         <div class="form-group">
           <label for="roomNumber">Número do quarto:</label>
-          <input
-            type="number"
-            id="quarto"
-            name="Quarto"
-            class="form-control"
-            v-model="quarto"
-          />
+          <input type="number" id="quarto" name="Quarto" class="form-control" v-model="quarto" />
         </div>
         <div class="form-group">
           <label for="local">Local do Consumo</label>
-          <select
-            id="localDeConsumo"
-            class="form-control"
-            v-model="localConsumo"
-            @change="updateProdutos"
-          >
+          <select id="localDeConsumo" class="form-control" v-model="localConsumo" @change="updateProdutos">
             <option value='1'>Frigobar</option>
             <option value='2'>Cesta</option>
             <option value='3'>Bar</option>
           </select>
           <label for="produtoNumber">Produto</label>
           <select id="produto" class="form-control" v-model="idproduto">
-            <option
-              v-for="produto in filteredProdutos"
-              :value="produto.id"
-              v-bind:key="produto.id"
-            >
+            <option v-for="produto in filteredProdutos" :value="produto.id" v-bind:key="produto.id">
               {{ produto.name }}
             </option>
           </select>
@@ -38,30 +23,18 @@
 
         <div class="form-group">
           <label for="quantity">Quantidade:</label>
-          <input
-            type="text"
-            id="quantidade"
-            name="quantidade"
-            class="form-control"
-            v-model="quantidade"
-          />
+          <input type="text" id="quantidade" name="quantidade" class="form-control" v-model="quantidade" />
         </div>
         <div class="form-group">
           <label for="date">Data:</label>
-          <input
-            type="datetime-local"
-            id="inputDateTime"
-            class="form-control"
-            v-model="data"
-          />
+          <input type="datetime-local" id="inputDateTime" class="form-control" v-model="data" />
         </div>
       </form>
       <button class="button" @click="saveConsumo">
-            Cadastrar
+        Cadastrar
       </button>
     </div>
   </main>
-  
 </template>
 
 <script>
@@ -107,8 +80,8 @@ export default {
         return this.produtosCesta
       } else if (this.localConsumo === '3') {
         return this.produtosBar
-      }else{
-        return[]
+      } else {
+        return []
       }
     }
   },
@@ -128,7 +101,7 @@ export default {
         this.idproduto = "";
         this.quantidade = "";
         this.data = "";
-        this.$emit('updateConsumo') 
+        this.$emit('updateConsumo')
       } catch (err) {
         console.log(err);
       }

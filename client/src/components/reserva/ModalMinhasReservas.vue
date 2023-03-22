@@ -6,12 +6,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
@@ -38,11 +33,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  class="ultimasReservas"
-                  v-for="item in reservas"
-                  :key="item"
-                >
+                <tr class="ultimasReservas" v-for="item in reservas" :key="item">
                   <td>{{ item.dtReserva }}</td>
                   <td>{{ item.dtCheckIn }}</td>
                   <td>{{ item.dtCheckOut }}</td>
@@ -50,12 +41,7 @@
                   <td>{{ item.vlrTotal }}</td>
                   <td>
                     <!-- <a id="comentario" class="button" href="">Comentário</a> -->
-                    <button
-                      type="button"
-                      @click="abreComentario(item)"
-                      class="btn btn-dark"
-                      id="btnAbreComentario"
-                    >
+                    <button type="button" @click="abreComentario(item)" class="btn btn-dark" id="btnAbreComentario">
                       Inserir comentário
                     </button>
                   </td>
@@ -72,61 +58,33 @@
             </p>
             <p id="lblReserva">Reserva: {{ reservaId }}</p>
             <form>
-              <input
-                class="inputPadrao p-1 mtb-1 border textBold"
-                type="text"
-                placeholder="Nome"
-                id="inputNome"
-                v-model="inputNome"
-                name="nome"
-              />
-              <textarea
-                class="form-control inputPadrao p-1 mtb-1 border textBold"
-                name="mensagem"
-                id="txtMensagem"
-                v-model="txtMensagem"
-                rows="5"
-                placeholder="Comentários"
-              ></textarea>
+              <input class="inputPadrao p-1 mtb-1 border textBold" type="text" placeholder="Nome" id="inputNome"
+                v-model="inputNome" name="nome" />
+              <textarea class="form-control inputPadrao p-1 mtb-1 border textBold" name="mensagem" id="txtMensagem"
+                v-model="txtMensagem" rows="5" placeholder="Comentários"></textarea>
               <a href="javascript:void(0)" @click="Avaliar(1)">
-                <img src="@/assets/images/star0.png" id="s1"
-              /></a>
+                <img src="@/assets/images/star0.png" id="s1" /></a>
 
               <a href="javascript:void(0)" @click="Avaliar(2)">
-                <img src="@/assets/images/star0.png" id="s2"
-              /></a>
+                <img src="@/assets/images/star0.png" id="s2" /></a>
 
               <a href="javascript:void(0)" @click="Avaliar(3)">
-                <img src="@/assets/images/star0.png" id="s3"
-              /></a>
+                <img src="@/assets/images/star0.png" id="s3" /></a>
 
               <a href="javascript:void(0)" @click="Avaliar(4)">
-                <img src="@/assets/images/star0.png" id="s4"
-              /></a>
+                <img src="@/assets/images/star0.png" id="s4" /></a>
 
               <a href="javascript:void(0)" @click="Avaliar(5)">
-                <img src="@/assets/images/star0.png" id="s5"
-              /></a>
+                <img src="@/assets/images/star0.png" id="s5" /></a>
               <p id="rating"></p>
 
-              <button
-                type="button"
-                @click="adComentario"
-                class="btn btn-dark"
-                id="btnComentario"
-              >
+              <button type="button" @click="adComentario" class="btn btn-dark" id="btnComentario">
                 Confirmar
               </button>
             </form>
             <div class="my-5">
-              <div
-                class="border p-3 my-2"
-                v-for="(coment, n) in comentarios"
-                :key="coment"
-              >
-                <span class="autor"
-                  ><strong>Nome: </strong>{{ coment.nome }}</span
-                >
+              <div class="border p-3 my-2" v-for="(coment, n) in comentarios" :key="coment">
+                <span class="autor"><strong>Nome: </strong>{{ coment.nome }}</span>
                 <p class="my-4" id="mensagem">{{ coment.comentario }}</p>
                 <a href="#" @click.prevent="excluir(n)">Excluir</a>
               </div>
@@ -353,6 +311,7 @@ window.$().ready(function () {
 .modal-body {
   color: black;
 }
+
 .tableReserva * {
   box-sizing: border-box;
   font-size: 0.8rem;
@@ -378,11 +337,7 @@ body {
   border-collapse: collapse;
   /* These are just initial values which are overriden using JavaScript when a column is resized */
   grid-template-columns:
-    minmax(auto, auto)
-    minmax(auto, auto)
-    minmax(auto, auto)
-    minmax(auto, auto)
-    minmax(auto, auto);
+    minmax(auto, auto) minmax(auto, auto) minmax(auto, auto) minmax(auto, auto) minmax(auto, auto);
 }
 
 .tableReserva th,

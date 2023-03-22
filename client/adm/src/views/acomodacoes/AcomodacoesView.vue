@@ -4,7 +4,7 @@
       <h2>CADASTRO DE ACOMODAÇÕES</h2>
       <p>Preencha todos os campos</p>
     </div>
-    <AddAcomodacao @updateList="getAcomodacao()"/>
+    <AddAcomodacao @updateList="getAcomodacao()" />
     <table class="table table-responsive table-striped">
       <thead>
         <th scope="col">ID</th>
@@ -14,22 +14,18 @@
         <th scope="col">Tipo</th>
       </thead>
       <tbody>
-        <tr
-          scope="row"
-          v-for="item in items"
-          :key="item.idAcomodacao"
-        >
-          <td >{{ item.idAcomodacao }}</td>
-          <td >{{ item.nomeAcomodacao }}</td>
-          <td >{{ item.descricaoAcomodacao }}</td>
-          <td >{{ item.valorAcomodacao }}</td>
-          <td >{{ item.tipoAcomodacao }}</td>
-          <td >              
+        <tr scope="row" v-for="item in items" :key="item.idAcomodacao">
+          <td>{{ item.idAcomodacao }}</td>
+          <td>{{ item.nomeAcomodacao }}</td>
+          <td>{{ item.descricaoAcomodacao }}</td>
+          <td>{{ item.valorAcomodacao }}</td>
+          <td>{{ item.tipoAcomodacao }}</td>
+          <td>
             <router-link :to="{ name: 'editAcomodacao', params: { id: item.idAcomodacao } }">
               <button class="button">Editar</button></router-link>
           </td>
-          <td >              
-              <button class="button" @click="deleteAcomodacao(item.idAcomodacao)">Deletar</button>
+          <td>
+            <button class="button" @click="deleteAcomodacao(item.idAcomodacao)">Deletar</button>
           </td>
         </tr>
       </tbody>
@@ -40,7 +36,7 @@
 <script>
 import axios from "axios"
 import AddAcomodacao from '@/../adm/src/components/acomodacoes/AddAcomodacoes.vue'
-  
+
 export default {
   name: "AcomodacoesView",
   data() {
@@ -48,45 +44,45 @@ export default {
       items: [],
     };
   },
-  components: {AddAcomodacao},
-    
+  components: { AddAcomodacao },
+
   created() {
     this.getAcomodacao();
   },
   beforeMount() {
     this.checkLogin();
     console.log(this.checkLogin())
-  }, 
-  methods:{    
+  },
+  methods: {
     checkLogin() {
-      if(localStorage.getItem("loginStatus")){
-        if(localStorage.getItem("loginStatus") == "admin")
+      if (localStorage.getItem("loginStatus")) {
+        if (localStorage.getItem("loginStatus") == "admin")
           return true
-        else if(localStorage.getItem("loginStatus") == "cliente")
+        else if (localStorage.getItem("loginStatus") == "cliente")
           this.$router.push("/")
-          return true
-      }else{
+        return true
+      } else {
         this.$router.push("/")
         return false
       }
-    }, 
+    },
     // Lista todos os usuarios
     async getAcomodacao() {
       try {
         const response = await axios.get("http://localhost:5000/acomodacao");
         this.items = response.data;
       } catch (err) {
-          console.log(err);
+        console.log(err);
       }
     },
-    
+
     // Delete Usuario
     async deleteAcomodacao(id) {
       try {
         await axios.delete(`http://localhost:5000/acomodacao/${id}`);
-          this.getAcomodacao();
+        this.getAcomodacao();
       } catch (err) {
-          console.log(err);
+        console.log(err);
       }
     },
   },
@@ -96,6 +92,7 @@ export default {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -110,7 +107,7 @@ export default {
   color: black;
 }
 
-.sec > div {
+.sec>div {
   max-width: 90%;
   margin: 2% 5%;
 }
@@ -122,7 +119,7 @@ export default {
   margin: 0 5%;
 }
 
-.flex > div {
+.flex>div {
   flex: 1 1 420px;
   margin: 10px;
 }

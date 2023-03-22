@@ -7,7 +7,7 @@ import { createStore } from "vuex";
 // import Servicos from "../../adm/src/types/reservas/Servicos.js";
 
 import JokeNorris from "./modules/JokeNorris.js";
-import Servicos2 from "./modules/Servicos2"
+import Servicos2 from "./modules/Servicos2";
 
 // import FormReserva from "@/components/reserva/FormReserva.vue";
 

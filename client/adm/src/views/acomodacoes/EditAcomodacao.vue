@@ -8,41 +8,25 @@
             <div class="field">
                 <label class="label">Nome da acomodação</label>
                 <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="nomeAcomod"
-                    />
+                    <input class="input" type="text" v-model="nomeAcomod" />
                 </div>
-            </div>      
+            </div>
             <div class="field">
                 <label class="label">Descrição da acomodação</label>
                 <div class="control">
-                    <input
-                      class="text"
-                      type="input"
-                      v-model="descAcomod"
-                    />
+                    <input class="text" type="input" v-model="descAcomod" />
                 </div>
             </div>
             <div class="field">
                 <label class="label">Valor</label>
                 <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="valorAcomod"
-                    />
+                    <input class="input" type="text" v-model="valorAcomod" />
                 </div>
             </div>
             <div class="field">
                 <label class="label">Tipo de acomodação</label>
                 <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="tipoAcomod"
-                    />
+                    <input class="input" type="text" v-model="tipoAcomod" />
                 </div>
             </div>
         </div>
@@ -54,21 +38,21 @@
                 <button class="button" @click="returnPage">VOLTAR</button>
             </div>
         </div>
-        
-        
+
+
     </div>
 </template>
   
 <script>
 // import axios
 import axios from "axios";
-  
+
 export default {
     name: "EditAcomodacao",
     data() {
         return {
             nomeAcomod: "",
-            descAcomod:"",
+            descAcomod: "",
             valorAcomod: "",
             tipoAcomod: "",
         };
@@ -79,17 +63,17 @@ export default {
     },
     methods: {
         checkLogin() {
-      if(localStorage.getItem("loginStatus")){
-        if(localStorage.getItem("loginStatus") == "admin")
-          return true
-        else if(localStorage.getItem("loginStatus") == "cliente")
-          this.$router.push("/")
-          return true
-      }else{
-        this.$router.push("/")
-        return false
-      }
-    }, 
+            if (localStorage.getItem("loginStatus")) {
+                if (localStorage.getItem("loginStatus") == "admin")
+                    return true
+                else if (localStorage.getItem("loginStatus") == "cliente")
+                    this.$router.push("/")
+                return true
+            } else {
+                this.$router.push("/")
+                return false
+            }
+        },
         // lista usuario por id
         async getAcomodacaoById() {
             try {
@@ -97,18 +81,18 @@ export default {
                     `http://localhost:5000/acomodacao/${this.$route.params.id}`
                 );
                 this.nomeAcomod = response.data.nomeAcomodacao;
-                this.descAcomod= response.data.descricaoAcomodacao;
-                this.valorAcomod= response.data.valorAcomodacao;
-                this.tipoAcomod= response.data.tipoAcomodacao;
+                this.descAcomod = response.data.descricaoAcomodacao;
+                this.valorAcomod = response.data.valorAcomodacao;
+                this.tipoAcomod = response.data.tipoAcomodacao;
             } catch (err) {
                 console.log(err);
             }
         },
 
-        returnPage(){
+        returnPage() {
             this.$router.push("/AcomodacaoAdm");
         },
-  
+
         // atualiza o usuario
         async updateAcomodacao() {
             try {
@@ -122,9 +106,9 @@ export default {
                     }
                 );
                 this.nomeAcomod = "";
-                this.descAcomod="";
-                this.valorAcomod="";
-                this.tipoAcomod="";  
+                this.descAcomod = "";
+                this.valorAcomod = "";
+                this.tipoAcomod = "";
                 this.$router.push("/AcomodacaoAdm");
             } catch (err) {
                 console.log(err);
@@ -137,50 +121,51 @@ export default {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
 .sec {
-  position: relative;
-  padding: 2vw;
-  transition: all 0.3s ease;
-  color: black;
+    position: relative;
+    padding: 2vw;
+    transition: all 0.3s ease;
+    color: black;
 }
 
-.sec > div {
-  max-width: 90%;
-  margin: 2% 5%;
+.sec>div {
+    max-width: 90%;
+    margin: 2% 5%;
 }
 
 .flex {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 90%;
-  margin: 0 5%;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 90%;
+    margin: 0 5%;
 }
 
-.flex > div {
-  flex: 1 1 420px;
-  margin: 0 5%;
+.flex>div {
+    flex: 1 1 420px;
+    margin: 0 5%;
 }
 
 .button {
-  background: transparent;
-  color: black;
-  padding: 5px;
-  border-radius: 50px;
-  cursor: pointer;
-  overflow: hidden;
+    background: transparent;
+    color: black;
+    padding: 5px;
+    border-radius: 50px;
+    cursor: pointer;
+    overflow: hidden;
 }
 
 .button:hover {
-  background: #112434;
-  color: #fff;
-  border-radius: 50px;
-  padding: 5px;
+    background: #112434;
+    color: #fff;
+    border-radius: 50px;
+    padding: 5px;
 }
 </style>

@@ -10,26 +10,26 @@
 <script>
 export default {
     name: "PreloaderComponent",
-    data () {
-      return {
-        isloaded: false,
-        countDown: 3
-      }
+    data() {
+        return {
+            isloaded: false,
+            countDown: 3
+        }
     },
     methods: {
-            countDownTimer () {
-              for (let i = 3; i > 0 ; i--) {
-                  setTimeout(() => {
-                      this.countDown -= 1
-                      this.isLoaded()
-                  }, 1000)
-                }
-            },
-            isLoaded(){
-                if(this.countDown == 0){
-                    this.isloaded = true;
-                }        
-          }
+        countDownTimer() {
+            for (let i = 3; i > 0; i--) {
+                setTimeout(() => {
+                    this.countDown -= 1
+                    this.isLoaded()
+                }, 1000)
+            }
+        },
+        isLoaded() {
+            if (this.countDown == 0) {
+                this.isloaded = true;
+            }
+        }
     },
     mounted() {
         this.countDownTimer();
