@@ -91,6 +91,10 @@ import { mapState } from "vuex";
 
 import moment from "moment";
 
+import jsPDF from 'jspdf';
+
+
+
 // gera cupom de desconto caso não exista nenhum. Se já houver a mensagem é que não podem ser gerados dois cupons no mesmo dia...
 cupomDesconto();
 
@@ -203,8 +207,9 @@ export default {
 
       let geraPDF = confirm("Quer gerar um PDF de sua reserva?");
       if (geraPDF) {
-        // rotina para imprimrir PDF
-        console.log("Gerar PDF: ", geraPDF);
+        var blob = this.gerarPDF();
+        var url = URL.createObjectURL(blob);
+        window.open(url);
       }
 
       alert(
@@ -236,6 +241,20 @@ export default {
       updateBindingForm();
       window.$("#modalResumo").modal("hide");
     },
+    gerarPDF() {
+      const reserva = JSON.parse(localStorage.getItem(`Reserva_${localStorage.getItem("reservaId")}`));
+      var doc = new jsPDF();
+      doc.text("Hotel Casa na Praia", doc.internal.pageSize.getWidth()/2, 10, {align: "center"});
+      doc.text(`Dados da Reserva`, 10, 25).setLineWidth(0.3).line(10,26,57,26)
+      doc.text(`Id do Cliente: ${reserva[0].idUsuario} `, 10, 40)
+      doc.text(`Titular: ${reserva[0].codCliente}`,10, 50)
+      doc.text(`Data de entrada: ${reserva[0].dtEntrada}`,10, 60)
+      doc.text(`Data de Saída: ${reserva[0].dtSaida}`,10, 70)
+      doc.text(`Tipo de Quarto: ${reserva[0].tipoApto}`,10,80)
+      doc.text(`Valor Total: R$${reserva[0].vlrTotal},00`, 10, 90)
+      return doc.output("blob");
+    },
+    
   },
   computed: {
     ...mapState(["Servicos2"]),    
