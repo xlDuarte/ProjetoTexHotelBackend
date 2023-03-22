@@ -13,12 +13,12 @@
         
         <div class="mb-3 input-group">
             <label for="recipient-name" class="input-group-text text-white bg-info col-2 col-form-label">E-mail:</label>
-            <input type="text" class="col-10 form-control" id="recipient-name" placeholder="Digite seu email">
+            <input type="text" class="col-10 form-control" id="email" placeholder="Digite seu email" v-model="email">
           </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-outline-primary" data-bs-target="#modalSenhaToggle2" data-bs-toggle="modal" data-bs-dismiss="modal" require>Enviar</button>
+        <button type="submit" class="btn btn-outline-primary" data-bs-target="#modalSenhaToggle2" data-bs-toggle="modal" data-bs-dismiss="modal" @click="resetSenha" require>Enviar</button>
       </div>
       </div>
     </div>
@@ -49,20 +49,36 @@
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
+import axios from 'axios'
 //const bootstrap = require('bootstrap')
 
-
-
 export default {
-    name:'ModalSenha',
-    
-    
-    data() {
-        return {
-      
+  name:'ModalSenha',
+  data() {
+    return {
+      email: "",
     };
-   }
- }
+  },
+  
+  methods: {
+    async resetSenha() {
+      if (this.email != "") {
+        try {
+          const response = await axios.post("http://localhost:5000/resetpwd-email", {
+            emailUsuario: this.email
+          });
+          console.log(response.data)
+        }catch (err) {
+          alert(err.response.data.msg)
+          console.log(err);
+        }
+      } else {
+        alert("È preciso preencher o campo");
+      }       
+    }
+  },
+}
+ 
 
 </script>
 

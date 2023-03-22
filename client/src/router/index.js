@@ -75,8 +75,11 @@ const routes = [
     name: "editAcomodacao",
     component: () => import("../../adm/src/views/acomodacoes/EditAcomodacao.vue"),
   },
-
-  
+  {
+    path: "/resetpwd/:token",
+    name: "NovaSenha",
+    component: () => import("../views/NovaSenha.vue"),
+  },
 
 ];
 
