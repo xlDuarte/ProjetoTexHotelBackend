@@ -68,19 +68,20 @@ const routes = [
   {
     path: "/AcomodacaoAdm",
     name: "acomodacaoAdm",
-    component: () => import("../../adm/src/views/acomodacoes/AcomodacoesView.vue"),
+    component: () =>
+      import("../../adm/src/views/acomodacoes/AcomodacoesView.vue"),
   },
   {
     path: "/edit/:id",
     name: "editAcomodacao",
-    component: () => import("../../adm/src/views/acomodacoes/EditAcomodacao.vue"),
+    component: () =>
+      import("../../adm/src/views/acomodacoes/EditAcomodacao.vue"),
   },
   {
     path: "/resetpwd/:token",
     name: "NovaSenha",
     component: () => import("../views/NovaSenha.vue"),
   },
-
 ];
 
 const router = createRouter({

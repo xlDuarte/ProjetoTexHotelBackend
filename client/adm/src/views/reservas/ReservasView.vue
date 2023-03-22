@@ -4,11 +4,7 @@
       <ModalServicos2 />
     </div>
     <div class="modalResumo2">
-      <ModalResumo2
-        :msg="msgModalResumo"
-        :idReservas="idReservasModalResumo"
-        :itemReservas="itemReservaModalResumo"
-      />
+      <ModalResumo2 :msg="msgModalResumo" :idReservas="idReservasModalResumo" :itemReservas="itemReservaModalResumo" />
     </div>
     <div class="sec">
       <h4>ReservasView.vue - quando ok ocultar esta área!!!</h4>
@@ -27,64 +23,27 @@
           <div class="row">
             <div class="column">
               <div class="my-2">
-                <label for="dataReserva" class="d-block fw-bold mb-2"
-                  >Data da reserva</label
-                >
-                <input
-                  type="date"
-                  id="dataReserva"
-                  v-model="dataReserva"
-                  placeholder="Data da reserva"
-                  class="form-control"
-                  :disabled="camposAtivos"
-                />
+                <label for="dataReserva" class="d-block fw-bold mb-2">Data da reserva</label>
+                <input type="date" id="dataReserva" v-model="dataReserva" placeholder="Data da reserva"
+                  class="form-control" :disabled="camposAtivos" />
               </div>
               <div class="my-2">
-                <label for="dataEntradaReserva" class="d-block fw-bold mb-2"
-                  >Data de Checkin</label
-                >
-                <input
-                  type="date"
-                  id="descricao"
-                  v-model="dataEntradaReserva"
-                  placeholder="Data Checkin Reserva"
-                  class="form-control"
-                  :disabled="camposAtivos"
-                />
+                <label for="dataEntradaReserva" class="d-block fw-bold mb-2">Data de Checkin</label>
+                <input type="date" id="descricao" v-model="dataEntradaReserva" placeholder="Data Checkin Reserva"
+                  class="form-control" :disabled="camposAtivos" />
               </div>
               <div class="my-2">
-                <label for="dataSaidaReserva" class="d-block fw-bold mb-2"
-                  >Data de Checkout</label
-                >
-                <input
-                  type="date"
-                  id="label"
-                  v-model="dataSaidaReserva"
-                  placeholder="Data Checkout Reserva"
-                  class="form-control"
-                  :disabled="camposAtivos"
-                />
+                <label for="dataSaidaReserva" class="d-block fw-bold mb-2">Data de Checkout</label>
+                <input type="date" id="label" v-model="dataSaidaReserva" placeholder="Data Checkout Reserva"
+                  class="form-control" :disabled="camposAtivos" />
               </div>
               <div>
-                <label for="qtdHospedesReserva" class="d-block fw-bold mb-2"
-                  >Qtd Hospedes</label
-                >
-                <input
-                  type="number"
-                  id="qtdHospedesReserva"
-                  v-model.number="qtdHospedesReserva"
-                  placeholder="Qtd Hospedes"
-                  class="form-control"
-                  :disabled="camposAtivos"
-                />
+                <label for="qtdHospedesReserva" class="d-block fw-bold mb-2">Qtd Hospedes</label>
+                <input type="number" id="qtdHospedesReserva" v-model.number="qtdHospedesReserva"
+                  placeholder="Qtd Hospedes" class="form-control" :disabled="camposAtivos" />
               </div>
               <div>
-                <label
-                  for="statusReserva"
-                  class="d-block fw-bold mb-2"
-                  v-if="itemArrayEdit"
-                  >Status Reserva</label
-                >
+                <label for="statusReserva" class="d-block fw-bold mb-2" v-if="itemArrayEdit">Status Reserva</label>
                 <!-- <input
                   type="text"
                   id="statusReserva"
@@ -95,14 +54,8 @@
                   :disabled="camposAtivos"
                 /> -->
 
-                <select
-                  id="statusReserva"
-                  v-model="statusReserva"
-                  placeholder="Status da Reserva"
-                  class="form-control"
-                  v-if="itemArrayEdit"
-                  :disabled="camposAtivos"
-                >
+                <select id="statusReserva" v-model="statusReserva" placeholder="Status da Reserva" class="form-control"
+                  v-if="itemArrayEdit" :disabled="camposAtivos">
                   <option value="Registrada">Registrada</option>
                   <option value="Confirmada">Confirmada</option>
                   <option value="Encerrada">Encerrada</option>
@@ -111,164 +64,69 @@
                 </select>
               </div>
               <div>
-                <label
-                  for="dataCancelamento"
-                  class="d-block fw-bold mb-2"
-                  v-if="itemArrayEdit"
-                  >Data cancelamento reserva</label
-                >
-                <input
-                  type="date"
-                  id="dataCancelamento"
-                  v-model="dataCancelamento"
-                  placeholder="Data cancelamento reserva"
-                  class="form-control"
-                  v-if="itemArrayEdit"
-                  :disabled="true"
-                />
+                <label for="dataCancelamento" class="d-block fw-bold mb-2" v-if="itemArrayEdit">Data cancelamento
+                  reserva</label>
+                <input type="date" id="dataCancelamento" v-model="dataCancelamento"
+                  placeholder="Data cancelamento reserva" class="form-control" v-if="itemArrayEdit" :disabled="true" />
               </div>
               <div>
-                <label
-                  for="motivoCancelamento"
-                  class="d-block fw-bold mb-2"
-                  v-if="itemArrayEdit"
-                  >Motivo cancelamento reserva</label
-                >
-                <input
-                  type="text"
-                  id="motivoCancelamento"
-                  v-model="motivoCancelamento"
-                  placeholder="Motivo cancelamento reserva"
-                  class="form-control"
-                  v-if="itemArrayEdit"
-                  :disabled="camposAtivos"
-                />
+                <label for="motivoCancelamento" class="d-block fw-bold mb-2" v-if="itemArrayEdit">Motivo cancelamento
+                  reserva</label>
+                <input type="text" id="motivoCancelamento" v-model="motivoCancelamento"
+                  placeholder="Motivo cancelamento reserva" class="form-control" v-if="itemArrayEdit"
+                  :disabled="camposAtivos" />
               </div>
             </div>
             <div class="column">
               <div class="my-2">
                 <div>
-                  <label for="idUsuario" class="d-block fw-bold mb-2"
-                    >ID Usuario</label
-                  >
-                  <input
-                    type="number"
-                    id="idUsuario"
-                    v-model.number="idUsuario"
-                    placeholder="id do Usuario"
-                    class="form-control"
-                    @change="changeUserId"
-                    :disabled="camposAtivos"
-                  />
-                  <input
-                    type="text"
-                    id="nomeUsuario"
-                    v-model="nomeUsuario"
-                    placeholder="Nome Usuario"
-                    class="form-control"
-                    :disabled="true"
-                  />
+                  <label for="idUsuario" class="d-block fw-bold mb-2">ID Usuario</label>
+                  <input type="number" id="idUsuario" v-model.number="idUsuario" placeholder="id do Usuario"
+                    class="form-control" @change="changeUserId" :disabled="camposAtivos" />
+                  <input type="text" id="nomeUsuario" v-model="nomeUsuario" placeholder="Nome Usuario"
+                    class="form-control" :disabled="true" />
                 </div>
                 <div>
-                  <label for="idAcomodacao" class="d-block fw-bold mb-2"
-                    >ID Acomodacao</label
-                  >
-                  <input
-                    type="number"
-                    id="idAcomodacao"
-                    v-model.number="idAcomodacao"
-                    placeholder="id da Acomodacao"
-                    class="form-control"
-                    @change="changeAcomodacaoId"
-                    :disabled="camposAtivos"
-                  />
-                  <input
-                    type="text"
-                    id="acomodacaoTipo"
-                    v-model="acomodacaoTipo"
-                    placeholder="Tipo Acomodação"
-                    class="form-control"
-                    :disabled="true"
-                  />
-                  <input
-                    type="text"
-                    id="acomodacaoVlrDiaria"
-                    v-model="acomodacaoVlrDiaria"
-                    placeholder="Vlr Diaria Acomodação"
-                    class="form-control"
-                    :disabled="true"
-                  />
+                  <label for="idAcomodacao" class="d-block fw-bold mb-2">ID Acomodacao</label>
+                  <input type="number" id="idAcomodacao" v-model.number="idAcomodacao" placeholder="id da Acomodacao"
+                    class="form-control" @change="changeAcomodacaoId" :disabled="camposAtivos" />
+                  <input type="text" id="acomodacaoTipo" v-model="acomodacaoTipo" placeholder="Tipo Acomodação"
+                    class="form-control" :disabled="true" />
+                  <input type="text" id="acomodacaoVlrDiaria" v-model="acomodacaoVlrDiaria"
+                    placeholder="Vlr Diaria Acomodação" class="form-control" :disabled="true" />
                 </div>
                 <div>
-                  <label for="valorReserva" class="d-block fw-bold mb-2"
-                    >Valor Total Reserva</label
-                  >
-                  <input
-                    type="number"
-                    id="valorReserva"
-                    v-model.number="valorReserva"
-                    placeholder="Valor da Reserva"
-                    class="form-control"
-                    :disabled="true"
-                  />
+                  <label for="valorReserva" class="d-block fw-bold mb-2">Valor Total Reserva</label>
+                  <input type="number" id="valorReserva" v-model.number="valorReserva" placeholder="Valor da Reserva"
+                    class="form-control" :disabled="true" />
                 </div>
               </div>
             </div>
           </div>
 
           <div class="formServicosButtons">
-            <button
-              v-if="showSalvarButton"
-              @click="handleClick('salvar')"
-              class="btn btn-success my-3 fw-bold text-uppercase text-white"
-              :disabled="camposAtivos"
-            >
+            <button v-if="showSalvarButton" @click="handleClick('salvar')"
+              class="btn btn-success my-3 fw-bold text-uppercase text-white" :disabled="camposAtivos">
               Salvar
             </button>
-            <button
-              v-if="showCancelarReservaButton"
-              @click="handleClick('cancelarReserva')"
-              id="btnCancelarReserva"
-              class="btn btn-secondary my-3 fw-bold text-uppercase text-red"
-              type="button"
-            >
+            <button v-if="showCancelarReservaButton" @click="handleClick('cancelarReserva')" id="btnCancelarReserva"
+              class="btn btn-secondary my-3 fw-bold text-uppercase text-red" type="button">
               Cancelar Reserva
             </button>
-            <button
-              v-if="showExcluirButton"
-              @click="handleClick('excluir')"
-              id="btnExcluir"
-              class="btn btn-danger my-3 fw-bold text-uppercase text-white"
-              type="button"
-              :disabled="camposAtivos"
-            >
+            <button v-if="showExcluirButton" @click="handleClick('excluir')" id="btnExcluir"
+              class="btn btn-danger my-3 fw-bold text-uppercase text-white" type="button" :disabled="camposAtivos">
               Excluir Reserva
             </button>
-            <button
-              v-if="showModalServicos"
-              @click="handleClick('servicos')"
-              id="btnServicos"
-              class="btn btn-primary my-3 fw-bold text-uppercase text-white"
-              type="button"
-            >
+            <button v-if="showModalServicos" @click="handleClick('servicos')" id="btnServicos"
+              class="btn btn-primary my-3 fw-bold text-uppercase text-white" type="button">
               Serviços
             </button>
-            <button
-              v-if="showModalResumo"
-              @click="handleClick('resumo')"
-              id="btnCancelar"
-              class="btn btn-primary my-3 fw-bold text-uppercase text-white"
-              type="button"
-            >
+            <button v-if="showModalResumo" @click="handleClick('resumo')" id="btnCancelar"
+              class="btn btn-primary my-3 fw-bold text-uppercase text-white" type="button">
               Resumo
             </button>
-            <button
-              v-if="showCancelarButton"
-              @click="handleClick('cancelar')"
-              id="btnCancelar"
-              class="btn btn-warning my-3 fw-bold text-uppercase text-white"
-              type="button"
-            >
+            <button v-if="showCancelarButton" @click="handleClick('cancelar')" id="btnCancelar"
+              class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
               Sair
             </button>
           </div>
@@ -297,13 +155,8 @@
               <td>{{ item.valorReserva }}</td>
               <td>{{ item.statusReserva }}</td>
               <div class="handleItem w-30 border px-3">
-                <button
-                  @click="handleItem('editar', item.idReservas)"
-                  id="btnEditar"
-                  class="btn btn-warning my-3 fw-bold text-uppercase text-white"
-                  type="button"
-                  title="Edita a reserva"
-                >
+                <button @click="handleItem('editar', item.idReservas)" id="btnEditar"
+                  class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button" title="Edita a reserva">
                   Editar
                 </button>
                 <!-- <button
@@ -315,13 +168,8 @@
               >
                 Cancelar
               </button> -->
-                <button
-                  @click="handleItem('excluir', item.idReservas)"
-                  id="btnEditar"
-                  class="btn btn-warning my-3 fw-bold text-uppercase text-green"
-                  type="button"
-                  title="Exclui a reserva"
-                >
+                <button @click="handleItem('excluir', item.idReservas)" id="btnEditar"
+                  class="btn btn-warning my-3 fw-bold text-uppercase text-green" type="button" title="Exclui a reserva">
                   Excluir
                 </button>
               </div>
@@ -436,17 +284,17 @@ export default {
 
   methods: {
     checkLogin() {
-      if(localStorage.getItem("loginStatus")){
-        if(localStorage.getItem("loginStatus") == "admin")
+      if (localStorage.getItem("loginStatus")) {
+        if (localStorage.getItem("loginStatus") == "admin")
           return true
-        else if(localStorage.getItem("loginStatus") == "cliente")
+        else if (localStorage.getItem("loginStatus") == "cliente")
           this.$router.push("/")
-          return true
-      }else{
+        return true
+      } else {
         this.$router.push("/")
         return false
       }
-    },  
+    },
     // campos do cabecalho, apoio para desenvolvimento...
     changeName(msg1) {
       this.msg1 = msg1;
@@ -831,6 +679,7 @@ export function formataData(dataUTC) {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -857,7 +706,7 @@ export function formataData(dataUTC) {
   color: black;
 }
 
-.sec > div {
+.sec>div {
   max-width: 90%;
   margin: 2% 5%;
 }
@@ -869,7 +718,7 @@ export function formataData(dataUTC) {
   margin: 0 5%;
 }
 
-.flex > div {
+.flex>div {
   flex: 1 1 420px;
   margin: 10px;
 }

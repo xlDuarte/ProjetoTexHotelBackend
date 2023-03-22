@@ -5,12 +5,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div>
@@ -29,15 +24,9 @@
           <h3>Modal Servicos 2 - Selecione mais serviços!</h3>
           <hr />
           <div class="painelServicos" v-for="item in Servicos2.data" :key="item">
-            <input
-              type="checkbox"
-              v-model="checked"
-              :id="item.idServicos"
-              :name="item.nomeServico"
-              :value="item.labelServico"
-            />
-            <label
-              >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }}
+            <input type="checkbox" v-model="checked" :id="item.idServicos" :name="item.nomeServico"
+              :value="item.labelServico" />
+            <label>{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }}
             </label>
             <br />
           </div>

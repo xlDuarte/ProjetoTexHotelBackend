@@ -6,12 +6,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h2 class="modal-title"></h2>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
@@ -57,7 +52,7 @@
             </div>
             <hr />
           </div>
-  
+
           <!-- FINAL DO CONTEÚDO -->
         </div>
         <div class="modal-footer">
@@ -132,14 +127,17 @@ export default {
 h3 {
   margin: 40px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 p,
 a {
   color: #2304ed;
@@ -152,10 +150,11 @@ a {
   color: black;
 }
 
-.sec > div{
+.sec>div {
   max-width: 90%;
-  margin: 2% 5%; 
+  margin: 2% 5%;
 }
+
 .sec h2 {
   font-size: 3em;
 }
@@ -179,21 +178,21 @@ a {
   align-items: left;
 }
 
-img{
+img {
   width: 523px;
   height: 294px;
   display: block;
   border-radius: 20px;
 }
 
-.flex{
+.flex {
   display: flex;
   flex-wrap: wrap;
   max-width: 90%;
-  margin: 0 5%;  
+  margin: 0 5%;
 }
 
-.flex > div{
+.flex>div {
   flex: 1 1 420px;
   margin: 10px;
 }

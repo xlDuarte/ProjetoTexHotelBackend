@@ -1,107 +1,107 @@
 {
-	"variables": [],
-	"info": {
-		"name": "00-TEXProjetoHotel",
-		"_postman_id": "632e579c-4791-0376-8a79-e91bcb6d56f7",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Usuarios",
-			"description": "",
-			"item": [
-				{
-					"name": "Lista Usuarios",
-					"request": {
-						"url": "http://localhost:5000/usuario",
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Lista Usuario",
-					"request": {
-						"url": "http://localhost:5000/usuario/1",
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Adiciona Usuario",
-					"request": {
-						"url": "http://localhost:5000/usuario/",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nomeUsuario\":'Teste Teste TEste 1',\n  \"emailUsuario\":'teste1@uol.com.br',\n  \"cpfUSuario\":'123456789',\n  \"endUsuario\":'visconde de maua',\n  \"telefoneUsuario\":'11982180180',\n  \"tipoUsuario\":'cliente',\n  \"senhaUsuario\":'123456789'\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Servicos",
-			"description": "",
-			"item": [
-				{
-					"name": "Lista Servicos",
-					"request": {
-						"url": "http://localhost:5000/servico",
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Lista Servico",
-					"request": {
-						"url": "http://localhost:5000/servico/2",
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Adiciona Servico",
-					"request": {
-						"url": "http://localhost:5000/servico",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\n    \"nomeServico\":\"Servico03\",\n    \"vlrDiariaServico\":\"300\",\n    \"descricaoServico\":\"Descrição servico 03\",\n    \"labelServico\":\"label03\"\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				}
-			]
-		}
-	]
+  "variables": [],
+  "info": {
+    "name": "00-TEXProjetoHotel",
+    "_postman_id": "632e579c-4791-0376-8a79-e91bcb6d56f7",
+    "description": "",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Usuarios",
+      "description": "",
+      "item": [
+        {
+          "name": "Lista Usuarios",
+          "request": {
+            "url": "http://localhost:5000/usuario",
+            "method": "GET",
+            "header": [],
+            "body": {},
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "Lista Usuario",
+          "request": {
+            "url": "http://localhost:5000/usuario/1",
+            "method": "GET",
+            "header": [],
+            "body": {},
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "Adiciona Usuario",
+          "request": {
+            "url": "http://localhost:5000/usuario/",
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "description": ""
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeUsuario\":'Teste Teste TEste 1',\n  \"emailUsuario\":'teste1@uol.com.br',\n  \"cpfUSuario\":'123456789',\n  \"endUsuario\":'visconde de maua',\n  \"telefoneUsuario\":'11982180180',\n  \"tipoUsuario\":'cliente',\n  \"senhaUsuario\":'123456789'\n}"
+            },
+            "description": ""
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Servicos",
+      "description": "",
+      "item": [
+        {
+          "name": "Lista Servicos",
+          "request": {
+            "url": "http://localhost:5000/servico",
+            "method": "GET",
+            "header": [],
+            "body": {},
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "Lista Servico",
+          "request": {
+            "url": "http://localhost:5000/servico/2",
+            "method": "GET",
+            "header": [],
+            "body": {},
+            "description": ""
+          },
+          "response": []
+        },
+        {
+          "name": "Adiciona Servico",
+          "request": {
+            "url": "http://localhost:5000/servico",
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "description": ""
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\n    \"nomeServico\":\"Servico03\",\n    \"vlrDiariaServico\":\"300\",\n    \"descricaoServico\":\"Descrição servico 03\",\n    \"labelServico\":\"label03\"\n}"
+            },
+            "description": ""
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
 }

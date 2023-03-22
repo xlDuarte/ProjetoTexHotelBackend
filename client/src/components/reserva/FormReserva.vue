@@ -8,12 +8,7 @@
     <div class="flex minhaReserva" id="formDadosReserva">
       <div>
         <label for="dtEntrada">Entrada</label>
-        <input
-          type="date"
-          id="dtEntrada"
-          name="dtEntrada"
-          v-model="dtEntrada"
-        />
+        <input type="date" id="dtEntrada" name="dtEntrada" v-model="dtEntrada" />
         <label for="dtSaida">Saida</label>
         <input type="date" id="dtSaida" name="dtSaida" v-model="dtSaida" />
         <label for="qtPessoas">Quantidade Pessoas</label>
@@ -405,7 +400,7 @@ export function preencheModalResumo() {
   const divTotal = document.getElementById("total");
   const divTotalDesconto = document.getElementById("totalDesconto");  
 
-  let servicosEscolhidos="";
+  let servicosEscolhidos = "";
   if (localStorage.getItem("servicosEscolhidos") != null) {
     //let arrayServicosEscolhidos = JSON.parse(localStorage.getItem("servicosEscolhidos"));
     let arrayServicosEscolhidos = localStorage.getItem("servicosEscolhidos");
@@ -465,7 +460,7 @@ export function preencheModalResumo() {
   document.getElementById("diarias").appendChild(createPara(paraTexto));
 
   // atualiza div servicos se houver...
-  console.log("Atualiza div...",servicosEscolhidos)
+  console.log("Atualiza div...", servicosEscolhidos)
   if (servicosEscolhidos !== "") {
     for (let i = 0; i < servicosEscolhidos.length; i++) {
       vlrTotalServico = servicosEscolhidos[i].vlrDiariaServico * qtdDiarias;
@@ -545,6 +540,7 @@ export function aplicaDesconto() {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -559,10 +555,11 @@ export function aplicaDesconto() {
   color: black;
 }
 
-.sec > div {
+.sec>div {
   max-width: 90%;
   margin: 2% 5%;
 }
+
 .sec h2,
 h2 {
   font-size: 3em;
@@ -595,7 +592,7 @@ img {
   margin: 0 5%;
 }
 
-.flex > div {
+.flex>div {
   flex: 1 1 420px;
   margin: 10px;
 }
@@ -610,15 +607,15 @@ img {
   font-size: 1.5em;
 }
 
-.flex > div > button {
+.flex>div>button {
   margin-right: 10px;
 }
 
-.flex > div > label {
+.flex>div>label {
   margin-right: 10px;
 }
 
-.flex > div > input {
+.flex>div>input {
   max-width: 125px;
   margin-right: 10px;
 }

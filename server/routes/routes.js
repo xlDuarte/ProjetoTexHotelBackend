@@ -58,7 +58,6 @@ import {
 } from "../controller/reservas.js";
 
 import { 
-  resetPage,
   resetPassword, updatePassword,
 } from "../controller/forgot.js";
 
@@ -78,7 +77,7 @@ router.post('/register', registerValidation);
 //rota para checar se logdado
 router.get('/get-user', signupValidation);
 
-router.post('/resetpdw-email', resetPassword);
+router.post('/resetpwd-email', resetPassword);
 
 router.post('/resetpwd/:token', updatePassword);
 

@@ -1,23 +1,12 @@
 <template>
   <!-- Inicio Modal Resummo2 -->
-  <div
-    class="modal fade"
-    id="modalResumo2"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="modalResumo2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <!-- INÍCIO DO CONTEÚDO -->
@@ -61,11 +50,7 @@
             <h2>Seu cupom de desconto: {{ cupomDesconto }}</h2>
             <div class="mt-2 pt-2 d-flex flex-start">
               <label for="">Aplicar Cupom de Desconto: </label>
-              <input
-                id="inputDesconto"
-                class="w-50 inputPadrao bg-light px-3 text-uppercase fw-bold"
-                type="text"
-              />
+              <input id="inputDesconto" class="w-50 inputPadrao bg-light px-3 text-uppercase fw-bold" type="text" />
               <button id="btnCupom" type="button" class="btn btn-secondary">
                 Aplicar Cupom
               </button>
@@ -160,7 +145,7 @@ export default {
       console.log(
         "Teste...",
         localStorage.getItem("valorTotalGeral") !==
-          localStorage.getItem("vlrTotalDesconto")
+        localStorage.getItem("vlrTotalDesconto")
       );
       console.log(
         "Teste2",
@@ -256,6 +241,7 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
@@ -267,8 +253,10 @@ a {
 
 p {
   color: brown;
-  line-height: 10px; /* within paragraph */
-  margin-bottom: 10px; /* between paragraphs */
+  line-height: 10px;
+  /* within paragraph */
+  margin-bottom: 10px;
+  /* between paragraphs */
   font-size: 15px;
 }
 </style>

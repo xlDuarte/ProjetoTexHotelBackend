@@ -8,14 +8,11 @@
     <!-- a ordem é mostrar primeiro a acomodação selecionada IMPLEMENTAR!!! -->
     <div class="flex" v-for="item in acomodacoes" :key="item">
       <div>
-        <input class="inputRadio"
-          type="radio"
-          id="tipoApto"
-          name="tipoApto"
-          v-bind:value="item.id"
-          :checked="item.ordem == 1"
-        />
-        <label for="suiteMaster"><h2>{{ item.nome }}</h2></label>        
+        <input class="inputRadio" type="radio" id="tipoApto" name="tipoApto" v-bind:value="item.id"
+          :checked="item.ordem == 1" />
+        <label for="suiteMaster">
+          <h2>{{ item.nome }}</h2>
+        </label>
         <p>{{ item.descricaoBreve }}</p>
         <h3>R$ {{ item.vlrDiaria }}</h3>
       </div>
@@ -46,6 +43,7 @@ export default {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -60,10 +58,11 @@ export default {
   color: black;
 }
 
-.secAcomodacoes > div{
+.secAcomodacoes>div {
   max-width: 90%;
-  margin: 2% 5%; 
+  margin: 2% 5%;
 }
+
 .secAcomodacoes h2 {
   font-size: 3em;
 }
@@ -79,29 +78,29 @@ export default {
   font-weight: 300;
 }
 
-img{
+img {
   width: 523px;
   height: 294px;
   display: block;
   border-radius: 20px;
 }
 
-.flex{
+.flex {
   display: flex;
   flex-wrap: wrap;
   max-width: 90%;
-  margin: 0 5%;  
+  margin: 0 5%;
 }
 
-.flex > div{
+.flex>div {
   flex: 1 1 420px;
   margin: 10px;
 }
 
-.inputRadio{
+.inputRadio {
   width: 30px;
   height: 30px;
   margin-right: 5px;
-  
+
 }
 </style>

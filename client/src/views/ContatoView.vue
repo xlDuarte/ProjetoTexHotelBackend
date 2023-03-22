@@ -1,53 +1,54 @@
 <template>
     <div class="contato">
         <section class="sec">
-                <h2>Fale Conosco!</h2>
-                <form action="" method="post">
-                    <fieldset class="formularios">
-                        <p>Fale conosco através de nossas redes sociais, telefone, ou preencha o formulário abaixo.</p>
-                        <hr />
-                        <br />
-                        <label for="nome_mensagem">Nome:</label>
-                        <input type="name" id="nome_mensagem" placeholder="JOSE DA SILVA - MATRICULA 999.9999" />
-                        <br>
-                        <label for="email_mensagem">E-mail:</label>
-                        <input type="email" id="email_mensagem" placeholder="josedasilva@casanapraia.com.br" />
-                        <br>
-                        <label for="telefone_mensagem">Tel:</label>
-                        <input type="telefone" id="telefone_mensagem" placeholder="Seu telefone aqui" required />
-                        <br>
-                        <label for="faleRhObs">Sua mensagem para nós!</label>
-                        <br />
-                        <textarea name="faleRhObs" id="faleRhObs" cols="30" rows="10"></textarea>
-                        <br>
-                        <button>Enviar</button>
-                        <hr />
-                        <br>
-                    </fieldset>
+            <h2>Fale Conosco!</h2>
+            <form action="" method="post">
+                <fieldset class="formularios">
+                    <p>Fale conosco através de nossas redes sociais, telefone, ou preencha o formulário abaixo.</p>
+                    <hr />
+                    <br />
+                    <label for="nome_mensagem">Nome:</label>
+                    <input type="name" id="nome_mensagem" placeholder="JOSE DA SILVA - MATRICULA 999.9999" />
                     <br>
-                </form>
+                    <label for="email_mensagem">E-mail:</label>
+                    <input type="email" id="email_mensagem" placeholder="josedasilva@casanapraia.com.br" />
+                    <br>
+                    <label for="telefone_mensagem">Tel:</label>
+                    <input type="telefone" id="telefone_mensagem" placeholder="Seu telefone aqui" required />
+                    <br>
+                    <label for="faleRhObs">Sua mensagem para nós!</label>
+                    <br />
+                    <textarea name="faleRhObs" id="faleRhObs" cols="30" rows="10"></textarea>
+                    <br>
+                    <button>Enviar</button>
+                    <hr />
+                    <br>
+                </fieldset>
+                <br>
+            </form>
         </section>
-    </div>   
+    </div>
 </template>
 
 
 <script>
 export default {
     name: 'ContatoView',
-      components: {
-        
-      }
+    components: {
+
+    }
 }
 </script>
 
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
 .sec {
@@ -100,6 +101,6 @@ export default {
 }
 
 .formularios li {
-     list-style-type: none;
+    list-style-type: none;
 }
 </style>

@@ -68,17 +68,17 @@ export default {
   },
   methods: {
     checkLogin() {
-      if(localStorage.getItem("loginStatus")){
-        if(localStorage.getItem("loginStatus") == "admin")
+      if (localStorage.getItem("loginStatus")) {
+        if (localStorage.getItem("loginStatus") == "admin")
           return true
-        else if(localStorage.getItem("loginStatus") == "cliente")
+        else if (localStorage.getItem("loginStatus") == "cliente")
           this.$router.push("/")
-          return true
-      }else{
+        return true
+      } else {
         this.$router.push("/")
         return false
       }
-    }, 
+    },
     // lista usuario por id
     async getConsumoById() {
       try {
@@ -129,6 +129,7 @@ export default {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -143,7 +144,7 @@ export default {
   color: black;
 }
 
-.sec > div {
+.sec>div {
   max-width: 90%;
   margin: 2% 5%;
 }
@@ -155,7 +156,7 @@ export default {
   margin: 0 5%;
 }
 
-.flex > div {
+.flex>div {
   flex: 1 1 420px;
   margin: 0 5%;
 }

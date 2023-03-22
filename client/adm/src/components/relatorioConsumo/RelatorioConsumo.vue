@@ -7,12 +7,7 @@
           <input type="number" id="quarto" name="Quarto" class="form-control" />
         </div>
         <div class="form-group">
-          <select
-            id="localDeConsumo"
-            class="form-control"
-            v-model="selectedGroup"
-            @change="updateProdutos"
-          >
+          <select id="localDeConsumo" class="form-control" v-model="selectedGroup" @change="updateProdutos">
             <option value="Frigobar">Frigobar</option>
             <option value="Cesta">Cesta</option>
             <option value="Bar">Bar</option>
@@ -28,25 +23,12 @@
 
         <div class="form-group">
           <label for="quantity">Quantidade:</label>
-          <input
-            type="text"
-            id="quantidade"
-            name="quantidade"
-            class="form-control"
-          />
+          <input type="text" id="quantidade" name="quantidade" class="form-control" />
         </div>
         <div class="form-group">
           <label for="date">Data:</label>
-          <input
-            type="datetime-local"
-            id="inputDateTime"
-            class="form-control"
-          />
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="criarConsumo"
-          >
+          <input type="datetime-local" id="inputDateTime" class="form-control" />
+          <button type="button" class="btn btn-primary" @click="criarConsumo">
             Enviar
           </button>
         </div>
@@ -148,35 +130,35 @@ Bar.addProduct(3, product3);
 
 export default {
   name: "RalatorioConsumo",
-  mounted(){
+  mounted() {
     this.tableBody = document.querySelector("#table-body")
     console.log(this.tableBody)
-  }, 
+  },
   data() {
-        return{
-            tableBody:null,
-            selectedGroup:'Frigobar',
-            selectedProduto: null,
-            produtosFrigobar : [
-            { id: 1, name: "Água" },
-            { id: 2, name: "Cerveja" },
-            { id: 3, name: "Refrigerante" }
-            ],
-            produtosCesta : [
-            { id: 4, name: "Barra Chocolate" },
-            { id: 5, name: "Batata Chips" },
-            { id: 6, name: "Amendoim" }
-            ],
-            produtosBar : [
-            { id: 7, name: "Café" },
-            { id: 8, name: "Pão de queiijo" },
-            { id: 1, name: "Água" },
-            { id: 9, name: "Lanche" },
-            { id: 10, name: "Almoço" },
-            { id: 2, name: "Cerveja" },
-            { id: 3, name: "Refrigerante" }
-            ]
-        }
+    return {
+      tableBody: null,
+      selectedGroup: 'Frigobar',
+      selectedProduto: null,
+      produtosFrigobar: [
+        { id: 1, name: "Água" },
+        { id: 2, name: "Cerveja" },
+        { id: 3, name: "Refrigerante" }
+      ],
+      produtosCesta: [
+        { id: 4, name: "Barra Chocolate" },
+        { id: 5, name: "Batata Chips" },
+        { id: 6, name: "Amendoim" }
+      ],
+      produtosBar: [
+        { id: 7, name: "Café" },
+        { id: 8, name: "Pão de queiijo" },
+        { id: 1, name: "Água" },
+        { id: 9, name: "Lanche" },
+        { id: 10, name: "Almoço" },
+        { id: 2, name: "Cerveja" },
+        { id: 3, name: "Refrigerante" }
+      ]
+    }
   },
   computed: {
     filteredProdutos() {
@@ -186,8 +168,8 @@ export default {
         return this.produtosCesta
       } else if (this.selectedGroup === 'Bar') {
         return this.produtosBar
-      }else{
-        return[]
+      } else {
+        return []
       }
     }
   },
@@ -197,9 +179,8 @@ export default {
       quarto = parseInt(input.value);
       const date = document.getElementById("inputDateTime");
       dataConsumo = new Date(date.value);
-      let formattedDate = `${dataConsumo.getDate()}/${
-        dataConsumo.getMonth() + 1
-      }/${dataConsumo.getFullYear()}`;
+      let formattedDate = `${dataConsumo.getDate()}/${dataConsumo.getMonth() + 1
+        }/${dataConsumo.getFullYear()}`;
       const produto = document.getElementById("produto");
       const produtoid = parseInt(produto.value);
       const localDeConsumo = document.getElementById("localDeConsumo");
@@ -240,42 +221,42 @@ export default {
           const tdQuarto = document.createElement("td");
           tdQuarto.innerText = consumo.quarto.toString();
           if (tdQuarto != null) {
-                tr.appendChild(tdQuarto);
-            }
+            tr.appendChild(tdQuarto);
+          }
           const tdProduto = document.createElement("td");
           tdProduto.innerText = consumo.produto;
           if (tdProduto != null) {
-                tr.appendChild(tdProduto);
-            }
+            tr.appendChild(tdProduto);
+          }
           const tdValor = document.createElement("td");
           tdValor.innerText = consumo.valor.toString();
-          if (tdValor!= null) {
-                tr.appendChild(tdValor);
-            }
+          if (tdValor != null) {
+            tr.appendChild(tdValor);
+          }
           const tdQuantidade = document.createElement("td");
           tdQuantidade.innerText = consumo.quantidade.toString();
           if (tdQuantidade != null) {
-                tr.appendChild(tdQuantidade);
-            }
+            tr.appendChild(tdQuantidade);
+          }
           const tdTotal = document.createElement("td");
           tdTotal.innerText = consumo.total.toString();
           if (tdTotal != null) {
-                tr.appendChild(tdTotal);
-            }
+            tr.appendChild(tdTotal);
+          }
           const tdDataHora = document.createElement("td");
           tdDataHora.innerText = consumo.dataHora.toLocaleString();
           if (tdDataHora != null) {
-                tr.appendChild(tdDataHora);
-            }
+            tr.appendChild(tdDataHora);
+          }
           if (tr != null) {
-                this.tableBody.appendChild(tr);
-            }
+            this.tableBody.appendChild(tr);
+          }
         });
       }
       consumos = [];
       return;
     },
-     updateProdutos() {
+    updateProdutos() {
       this.selectedProduto = null
     },
   },

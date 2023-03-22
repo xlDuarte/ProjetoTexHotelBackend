@@ -39,6 +39,7 @@ export default {
 <style scoped>
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -53,21 +54,20 @@ export default {
   color: black;
 }
 
-.sec > div{
+.sec>div {
   max-width: 90%;
-  margin: 2% 5%; 
+  margin: 2% 5%;
 }
 
-.flex{
+.flex {
   display: flex;
   flex-wrap: wrap;
   max-width: 90%;
-  margin: 0 5%;  
+  margin: 0 5%;
 }
 
-.flex > div{
+.flex>div {
   flex: 1 1 420px;
   margin: 10px;
 }
-
 </style>
