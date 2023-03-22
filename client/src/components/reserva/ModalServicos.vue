@@ -27,6 +27,9 @@
         <button class="btn btn-secondary" @click="confirmaServicos">
           Confirma Serviços
         </button>
+        <button class="btn btn-secondary" @click="limpaServicos">
+          Exclui Serviços
+        </button>
         <!-- FINAL DO CONTEÚDO -->
       </div>
       <div class="modal-footer">
@@ -106,6 +109,14 @@ export default {
       window.$("#modalServicos").modal("hide");
     },
 
+    limpaServicos() {
+      console.log("Cliquei no limpaServicos...")
+      let arrayServicos = this.Servicos2;
+      for (let i = 0; i < arrayServicos.data.length; i++) {
+          console.log("Servicos ",arrayServicos.data[i].nomeServico, arrayServicos.data[i].isSelected);
+          arrayServicos.data[i].isSelected = false;
+      }
+    }
     // teste para entender store + checkbox...
     //
     // essa parte vai no template...
@@ -139,6 +150,7 @@ export default {
     this.Servicos2Data();
   },
 };
+
 </script>
 
 <style scoped>

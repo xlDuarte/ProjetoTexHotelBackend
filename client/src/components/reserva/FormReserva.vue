@@ -365,6 +365,9 @@ export function gravaReserva() {
 }
 
 export function limpaLocalStorage() {
+  // força geração cupom...
+  cupomDesconto()
+  
   // zera servicos...
   localStorage.setItem("dtEntrada", "");
   localStorage.setItem("dtSaida", "");
@@ -374,8 +377,9 @@ export function limpaLocalStorage() {
   localStorage.setItem("dtReserva", "");
   localStorage.setItem("valorTotalGeral", "");
   localStorage.setItem("vlrTotalDesconto", "");
-  localStorage.setItem("cupomDesconto", "");
+  // localStorage.setItem("cupomDesconto", "");
 }
+
 export function currencyFormat(strVlr) {
   // Intl.NumberFormat JavaScript has a number formatter (part of the Internationalization API).
   const options = {
@@ -394,6 +398,7 @@ export function preencheModalResumo() {
   const divDiarias = document.getElementById("diarias");
   //console.log("Entrei na preenche modal resumo.;;;", divDiarias);
   const divTotal = document.getElementById("total");
+  const divTotalDesconto = document.getElementById("totalDesconto");  
 
   let servicosEscolhidos = "";
   if (localStorage.getItem("servicosEscolhidos") != null) {
@@ -416,6 +421,11 @@ export function preencheModalResumo() {
   // limpa div para eliminar seleções anteriores...
   while (divTotal.hasChildNodes()) {
     divTotal.removeChild(divTotal.firstChild);
+  }
+
+  // limpa div para eliminar seleções anteriores...
+  while (divTotalDesconto.hasChildNodes()) {
+    divTotalDesconto.removeChild(divTotalDesconto.firstChild);
   }
 
   // recupera diferença dos dias da localStorage - quantidade de diarias
@@ -509,8 +519,17 @@ export function createPara(conteudo) {
 // line-height: 10px;   /* within paragraph */
 // margin-bottom: 5px; /* between paragraphs */
 export function cupomDesconto() {
-  let cupom = Math.random().toString(36).substring(2, 9);
-  return cupom;
+  // verifica se cupom ainda pode ser gerado, persistena na localStorage
+  let msgCupomDesconto="Sem desconto";
+  let dtCupomDesconto = new Date().toISOString().substring(0, 10);
+  if (localStorage.getItem("cupomDescontoValido") != "NOK") {
+    let cupom = Math.random().toString(36).substring(2, 9);
+    msgCupomDesconto = cupom;
+  } 
+  localStorage.setItem("cupomDesconto",msgCupomDesconto);
+  localStorage.setItem("dtCupomDesconto",dtCupomDesconto);
+  console.log("Gerando cupom...",`${localStorage.getItem("cupomDescontoValido")} - ${msgCupomDesconto} - ${dtCupomDesconto}`)
+  return true;
 }
 
 export function aplicaDesconto() {
