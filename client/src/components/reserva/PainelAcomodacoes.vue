@@ -17,7 +17,7 @@
         <h3>R$ {{ item.vlrDiaria }}</h3>
       </div>
       <div>
-        <img :src="item.imgURL" :alt="item.nome" />
+        <img :src="item.imgURL" class="img-fluid" :alt="item.nome" />
       </div>
     </div>
   </div>

@@ -4,7 +4,8 @@
             <h2>EDITAR REGISTRO DE USUARIO</h2>
             <p>Preencha todos os campos</p>
         </div>
-        <div class="flex">
+        <form>
+        <div class="container bg-light rounded-3 p-4 my-5 w-50">
             <div class="field">
                 <label class="label">Nome</label>
                 <div class="control">
@@ -84,7 +85,7 @@
                 <button class="button" @click="returnPage">VOLTAR</button>
             </div>
         </div>
-        
+        </form>
         
     </div>
 </template>
