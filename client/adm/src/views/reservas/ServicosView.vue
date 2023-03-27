@@ -1,39 +1,49 @@
 <template>
   <div class="sec">
-    <h4>ServicosView.vue - quando ok ocultar esta área!!!</h4>
-    <hr />
-    <p>Teste msg1: {{ msg1 }}</p>
-    <span>Teste msg2: {{ msg2 }}</span>
-    <p></p>
-    <button @click="changeName('Alterei msg1!')">Teste msg1</button>
-    <button @click="changeAge('Alterei msg2!')">Teste msg2</button>
-    <hr />
-    <div class="container border p-4 my-5 w-50">
+    
+    <div class="text-center">
+      <h2>CADASTRO DE SERVIÇOS</h2>
+      <p>*Campos de preenchimento obrigatório.</p>
+    </div>
+  <div class="d-flex flex-wrap align-items-start ">
+    <div class="shadow mx-auto bg-light rounded-3 p-4 my-5 w-50">
       <form class="formServicos" action="" @submit.prevent>
-        <div class="my-2">
-          <label for="nome" class="d-block fw-bold mb-2">Nome abreviado do serviço</label>
-          <input type="text" id="nome" v-model="nome" placeholder="Abreviação do serviço" class="form-control"
+
+        <div class="container">
+          <div class="row my-2">
+            
+            <div class="col col-5 me-5">
+            <label for="nome" class=" form-label fw-bold ">*Nome:</label>
+            <input type="text" id="nome" v-model="nome" placeholder="Abreviação do serviço" class="form-control  w-100 " maxlength="45" />
+            </div>
+          
+        
+
+        
+          <div class="col col-5 ms-4">
+            <label for="descricao" class=" d-block fw-bold ">*Descriçao:</label>
+            <input type="text" id="descricao" v-model="descricao" placeholder="Descrição do serviço" class="form-control w-100 "
+              maxlength="45" />
+          </div>
+          
+        
+
+        <div class="col col-5 me-5">
+          <label for="label" class="d-block fw-bold mt-3">*Label do serviço</label>
+          <input type="text" id="label" v-model="label" placeholder="Label de tela do serviço" class="form-control w-100"
             maxlength="45" />
         </div>
-        <div class="my-2">
-          <label for="descricao" class="d-block fw-bold mb-2">Descriçao do serviço</label>
-          <input type="text" id="descricao" v-model="descricao" placeholder="Descrição do serviço" class="form-control"
-            maxlength="45" />
-        </div>
-        <div class="my-2">
-          <label for="label" class="d-block fw-bold mb-2">Label de tela do serviço</label>
-          <input type="text" id="label" v-model="label" placeholder="Label de tela do serviço" class="form-control"
-            maxlength="45" />
-        </div>
-        <div>
-          <label for="vlrDiaria" class="d-block fw-bold mb-2">Valor da Diária do Serviço</label>
+
+        <div class="col col-5 ms-4">
+          <label for="vlrDiaria" class="d-block fw-bold mt-3">*Valor</label>
           <input type="number" id="vlrDiaria" v-model.number="vlrDiaria" placeholder="Valor da Diária do Serviço"
-            class="form-control" />
+            class="form-control w-100" />
         </div>
+
         <div class="formServicosButtons">
           <button v-if="showSalvarButton" @click="handleClick('salvar')"
-            class="btn btn-info my-3 fw-bold text-uppercase text-white">
-            Salvar
+            class="button mt-3">
+            Cadastrar
           </button>
           <button v-if="showExcluirButton" @click="handleClick('excluir')" id="btnExcluir"
             class="btn btn-danger my-3 fw-bold text-uppercase text-red" type="button">
@@ -44,8 +54,12 @@
             Cancelar
           </button>
         </div>
+        </div>
+        </div>
       </form>
+      
     </div>
+  </div>
     <div class="listServicos">
       <table class="table">
         <thead>
@@ -288,5 +302,20 @@ export default {
 .flex>div {
   flex: 1 1 420px;
   margin: 10px;
+}
+.button {
+  background: transparent;
+  color: black;
+  padding: 5px;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.button:hover {
+  background: #112434;
+  color: #fff;
+  border-radius: 50px;
+  padding: 5px;
 }
 </style>

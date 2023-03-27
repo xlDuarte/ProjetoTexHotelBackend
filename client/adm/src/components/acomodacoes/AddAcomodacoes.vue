@@ -1,34 +1,37 @@
 <template>
-  <div>
-    <div class="flex">
-      <div class="field">
-        <label class="label">Nome da acomodação</label>
-        <div class="control">
-          <input class="input" type="text" v-model="nomeAcomod" />
+  <div class="d-flex flex-wrap align-items-start ">
+    <div class="shadow mx-auto bg-light rounded-3 p-4 my-5 w-50">
+      <form>
+        <div class="container">
+          <div class="row my-2">            
+            <div class="col col-5">
+            <label for="nome" class="mb-0 form-label fw-bold ">*Nome:</label>
+            <input type="text"  v-model="nomeAcomod" placeholder="Abreviação do serviço" class="form-control  w-100 " maxlength="45" />
         </div>
+      
+      <div class="mx-auto col col-5">
+        <label for="descrição" class="mb-0 form-label fw-bold ">*Descrição:</label>
+        <input type="input"  v-model="descAcomod" placeholder="Abreviação do serviço" class="form-control  w-100 " maxlength="45" />      
       </div>
-      <div class="field">
-        <label class="label">Descrição da acomodação</label>
-        <div class="control">
-          <input class="text" type="input" v-model="descAcomod" />
-        </div>
+      <div class="col col-5"> 
+        <label for="valor" class="mb-0 form-label fw-bold mt-3">*Valor:</label>
+        <input type="input"  v-model="valorAcomod" placeholder="Abreviação do serviço" class="form-control  w-100 " maxlength="45" />         
       </div>
-      <div class="field">
-        <label class="label">Valor</label>
-        <div class="control">
-          <input class="input" type="text" v-model="valorAcomod" />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Tipo de acomodação</label>
-        <div class="control">
-          <input class="input" type="text" v-model="tipoAcomod" />
-        </div>
+      <div class="mx-auto col col-5"> 
+        
+        <label for="valor" class="mb-0 form-label fw-bold mt-3 ">*Tipo de acomodação:</label>
+        <input type="text"  v-model="tipoAcomod" placeholder="Abreviação do serviço" class="form-control  w-100 " maxlength="45" />
       </div>
     </div>
     <div class="control">
       <button class="button is-success" @click="saveAcomodacao">Cadastrar</button>
     </div>
+    </div>
+    
+  
+  </form>
+  
+  </div>
   </div>
 </template>
   

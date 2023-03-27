@@ -1,8 +1,8 @@
 <template>
   <div class="sec">
-    <div>
+    <div class="text-center">
       <h2>CADASTRO DE USUARIOS</h2>
-      <p>Preencha todos os campos</p>
+      <p>*Campos de preenchimento obrigatório.</p>
     </div>
     <AddUsuario @updateList="getUsuarios()"/>
     <table class="table table-responsive table-striped">
