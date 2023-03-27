@@ -19,6 +19,15 @@ import {
   updateServico,
 } from "../controller/servicos.js";
 
+//import Serviços_Reservas
+import {
+  showServicoReserva,
+  showServicoByIdReserva,
+  createServicoReserva,
+  deleteServicoReserva,
+  updateServicoReserva,
+} from "../controller/servicosReservas.js";
+
 //import Login
 import { 
   loginValidation,
@@ -53,6 +62,7 @@ import {
   showReserva,
   showReservaById,
   createReserva,
+  ultimoIdReserva,
   deleteReserva,
   updateReserva,
 } from "../controller/reservas.js";
@@ -110,6 +120,22 @@ router.put("/servico/:id", updateServico);
 // rota para deletar um servico
 router.delete("/servico/:id", deleteServico);
 
+// Servicos x Reservas
+// rota para listar todos os servicos selecionados por reserva
+router.get("/servicoReserva", showServicoReserva);
+
+// rota para listar um servico
+router.get("/servicoReserva/:id", showServicoByIdReserva);
+
+// rota para criar um servico
+router.post("/servicoReserva", createServicoReserva);
+
+// rota para atualizar um servico
+router.put("/servicoReserva/:id", updateServicoReserva);
+
+// rota para deletar um servico
+router.delete("/servicoReserva/:id", deleteServicoReserva);
+
 // Consumos
 // rota para listar todos os Consumos
 router.get("/Consumo", showConsumo);
@@ -145,6 +171,9 @@ router.get("/reserva/:id", showReservaById);
 // rota para criar uma reserva
 router.post("/reserva", createReserva);
 
+// rota para obter ultimo idReserva criado, para utilizar na persistencia dos serviços
+router.post("/reserva/ultima", ultimoIdReserva);
+
 // rota para atualizar uma reserva
 router.put("/reserva/:id", updateReserva);
 
@@ -166,7 +195,6 @@ router.put("/acomodacao/:id", updateAcomodacao);
 
 // rota para deletar uma acomodacao
 router.delete("/acomodacao/:id", deleteAcomodacao);
-
 
 // export do router
 export default router;

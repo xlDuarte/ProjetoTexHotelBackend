@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "jspdf": "^2.5.1"
+    "cookie-parser": "^1.4.6",
+    "express-session": "^1.17.3",
+    "jspdf": "^2.5.1",
+    "moment": "^2.29.4",
+    "nodemailer": "^6.9.1",
+    "rand-token": "^1.0.1"
   }
 }

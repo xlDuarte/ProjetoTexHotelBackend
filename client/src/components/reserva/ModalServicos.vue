@@ -59,7 +59,7 @@ window.jQuery = jQuery;
 window.$ = jQuery;
 
 export default {
-  name: "ModalView",
+  name: "ModalServicos",
   props: {
     // properties que vem da view que irá chamar o componente...
     msg: String,
