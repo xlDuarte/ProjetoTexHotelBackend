@@ -1,51 +1,44 @@
 <template>
-  <div>
-    <div class="flex">
-      <div class="field">
-        <label class="label">Nome</label>
-        <div class="control">
-          <input class="input" type="text" v-model="nomeUser" />
+ <div class="d-flex flex-wrap align-items-start ">
+    <div class="shadow mx-auto bg-light rounded-3 p-4 my-5 w-50">
+      <form>
+        <div class="container">
+          <div class="row my-2">            
+            <div class="col col-5">
+            <label for="nome" class="mb-0 form-label fw-bold ">*Nome:</label>
+            <input type="text"  v-model="nomeUser" class="form-control  w-100 "  />
         </div>
+      
+      <div class="mx-auto col col-5">
+        <label for="email" class="mb-0 form-label fw-bold ">*E-mail:</label>
+        <input type="text"  v-model="emailUser" class="form-control  w-100 "  />        
       </div>
-      <div class="field">
-        <label class="label">E-mail</label>
-        <div class="control">
-          <input class="input" type="text" v-model="emailUser" />
-        </div>
+      <div class="col col-5">
+        <label for="cpf" class="mt-3 mb-0 form-label fw-bold ">*CPF:</label>
+        <input type="text"  v-model="cpfUser" class="form-control  w-100 "  /> 
       </div>
-      <div class="field">
-        <label class="label">CPF</label>
-        <div class="control">
-          <input class="input" type="text" v-model="cpfUSer" />
-        </div>
+      <div class="mx-auto col col-5">        
+        <label for="endereço" class="mt-3 mb-0 form-label fw-bold ">*Endereço:</label>
+        <input type="text"  v-model="endUser" class="form-control  w-100 "  />
       </div>
-      <div class="field">
-        <label class="label">Endereço</label>
-        <div class="control">
-          <input class="input" type="text" v-model="endUser" />
-        </div>
+      <div class="col col-5">
+        <label for="tipo" class="mt-3 mb-0 form-label fw-bold ">*Tipo:</label>
+        <input type="text"  v-model="tipoUser" class="form-control  w-100 "  />
       </div>
-      <div class="field">
-        <label class="label">Tipo</label>
-        <div class="control">
-          <input class="input" type="text" v-model="tipoUser" />
-        </div>
+      <div class="mx-auto col col-5">
+        <label for="telefone" class="mt-3 mb-0 form-label fw-bold ">*Telefone:</label>
+        <input type="text"  v-model="telefoneUser" class="form-control  w-100 "  />
       </div>
-      <div class="field">
-        <label class="label">Telefone</label>
-        <div class="control">
-          <input class="input" type="text" v-model="telefoneUser" />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Senha</label>
-        <div class="control">
-          <input class="input" type="text" v-model="senhaUser" />
-        </div>
+      <div class="col col-5">
+        <label for="senha" class="mt-3 mb-0 form-label fw-bold ">*Senha:</label>
+        <input type="text"  v-model="senhaUser" class="form-control  w-100 "  />
       </div>
     </div>
-    <div class="control">
-      <button class="button is-success" @click="saveUsuario">Cadastrar</button>
+    <div class=" col col-5">
+      <button class="button mt-2" @click="saveUsuario">Cadastrar</button>
+    </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>

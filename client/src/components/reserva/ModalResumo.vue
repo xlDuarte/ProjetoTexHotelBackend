@@ -91,6 +91,8 @@ import { mapState } from "vuex";
 import moment from "moment";
 import jsPDF from 'jspdf';
 
+import logo from '@/assets/images/footer/logo_hotel.png'
+
 // gera cupom de desconto caso não exista nenhum. Se já houver a mensagem é que não podem ser gerados dois cupons no mesmo dia...
 cupomDesconto();
 
@@ -265,16 +267,149 @@ export default {
     gerarPDF() {
       const reserva = JSON.parse(localStorage.getItem(`Reserva_${localStorage.getItem("reservaId")}`));
       var doc = new jsPDF();
-      doc.text("Hotel Casa na Praia", doc.internal.pageSize.getWidth()/2, 10, {align: "center"});
-      doc.text(`Dados da Reserva`, 10, 25).setLineWidth(0.3).line(10,26,57,26)
-      doc.text(`Id do Cliente: ${reserva[0].idUsuario} `, 10, 40)
-      doc.text(`Titular: ${reserva[0].codCliente}`,10, 50)
-      doc.text(`Data de entrada: ${reserva[0].dtEntrada}`,10, 60)
-      doc.text(`Data de Saída: ${reserva[0].dtSaida}`,10, 70)
-      doc.text(`Tipo de Quarto: ${reserva[0].tipoApto}`,10,80)
-      doc.text(`Valor Total: R$${reserva[0].vlrTotal},00`, 10, 90)
+      const imgProps = doc.getImageProperties(logo);
+
+      
+      //trabalhando com a imagem
+      const imgWidth = 25
+      const imgHeight = (imgProps.height * imgWidth)/imgProps.width
+
+      const pageWidth = doc.internal.pageSize.getWidth(); // largura da página
+     // const pageHeight = doc.internal.pageSize.getHeight(); // altura da página
+      const xPos = (pageWidth - imgWidth) / 2; // posição x centralizada
+      //const yPos = (pageHeight - imgHeight) / 2; // posição y centralizada
+
+      //function para gerar a listagem
+      function addListBullet(doc, text, x, y) {
+        const fontSize = 12;
+        //const lineHeight = doc.getLineHeight();
+        const bulletRadius = 0.6;
+
+        // Define a posição da bolinha para ficar verticalmente centralizada em relação ao texto
+        const bulletX = x + bulletRadius;
+        const bulletY = y-1.5 ;
+
+        // Desenha a bolinha
+        doc.setFillColor(0, 0, 0);
+        doc.circle(bulletX, bulletY, bulletRadius, 'F');
+
+        // Adiciona o texto da lista
+        const textX = bulletX + bulletRadius * 2;
+        const textY = y;
+        doc.setFontSize(fontSize);
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(0,0,0)
+        doc.text(text, textX, textY);
+
+        // Desenha um sublinhado abaixo do texto
+        const lineWidth = doc.getStringUnitWidth(text) * fontSize / doc.internal.scaleFactor;
+        const lineX = textX;
+        const lineY = textY + 1; // adiciona uma pequena margem abaixo do texto
+        doc.line(lineX, lineY, lineX + lineWidth, lineY);
+      }
+
+
+
+
+      // Define o título do documento
+      doc.setProperties({
+        title: 'Resumo de Reserva - Hotel Casa na Praia'
+      });
+
+      // Define a fonte e tamanho do título
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+
+      // Adiciona a logo e título ao documento
+      doc.addImage(logo,'PNG', xPos, 0, imgWidth, imgHeight)
+      doc.text('RESUMO DE RESERVA - HOTEL CASA NA PRAIA', 105, 35, null, null, 'center')
+
+      // Define a fonte e tamanho do subtitulo
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+
+      // Adiciona o nome do hotel como subtitulo
+      doc.text(`Titular da Reserva: ${reserva[0].codCliente}`, 105, 45, null, null, 'center');
+
+
+      // Define a posição do primeiro campo
+      var x = 30;
+      var y = 60;
+
+      // Adiciona os campos de dados da reserva
+      
+      addListBullet(doc, "PERÍODO:", 25, 60)
+      y += 10;
+
+      // Define a fonte e tamanho do corpo do documento
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+
+      doc.text(`Data de entrada: ${reserva[0].dtEntrada}`,x, y)
+
+      y += 10;
+
+      doc.text(`Data de Saída: ${reserva[0].dtSaida}`,x,y)
+
+      y += 10;
+      
+      addListBullet(doc, "QUANTIDADE DE PESSOAS:", 25, y)
+      // Define a fonte e tamanho do corpo do documento
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.text(`${reserva[0].qtPessoas}`,86,y)
+      y+=10
+
+      addListBullet(doc, "OPÇÃO DE ACOMODAÇÃO:", 25, y)
+      // Define a fonte e tamanho do corpo do documento
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.text(`${reserva[0].tipoApto}`,85,y)
+      y+=10
+
+      addListBullet(doc, "VALOR TOTAL:", 25, y)
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.setTextColor('#B22222'); 
+      doc.text(`R$${reserva[0].vlrTotalcomDesconto},00`,59,y)
+
+      y+=10
+
+      addListBullet(doc, "SATUS DO PAGAMENTO:", 25, y)
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.setTextColor('#00FF00'); 
+      doc.text(`R$${reserva[0].vlrTotalcomDesconto},00(CONFIRMADO)`,80,y)
+
+
+      y=250
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(0,0,0)
+      doc.text(`Agradecemos a preferência!`,140,y,)
+      y+=5
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.text(`Grupo 3`,182,y,)
+      y+=5
+      doc.text(`Recepção & Reserva`,157,y,)
+      y+=20
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(`AV. XXXXXX-XXXXXX`,105,y, {align:"center"})
+      y+=5
+      doc.text(`Whatsapp: `,95,y, {align:"center"})
+      doc.setTextColor(24,77,117); 
+      doc.textWithLink('XXXX-XXXX', 104, y, {url: 'https://chat.whatsapp.com/KthRdCQBgphIxusvtrUFs7'}, {align: "center"});
+      y+=5
+      doc.setTextColor(0,0,0)
+      doc.text(`CNPJ: 74.656.453/0001-07`,105,y, {align:"center"})
+
+
+      //fundamental e inalterável
       return doc.output("blob");
-    },
+          },
     
   },
   computed: {
