@@ -45,6 +45,14 @@ const routes = [
     name: "reservasAdm",
     component: () => import("../../adm/src/views/reservas/ReservasView.vue"),
   },
+
+  {
+    path: "/ReservasAdmTab",
+    name: "reservasAdmTab",
+    component: () =>
+      import("../../adm/src/views/reservas/ReservasViewTab.vue"),
+  },
+
   {
     path: "/Usuarios",
     name: "usuarios",

@@ -88,14 +88,10 @@ import { updateBindingForm } from "./FormReserva.vue";
 import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
 import { mapState } from "vuex";
 
-
 import moment from "moment";
-
 import jsPDF from 'jspdf';
 
 import logo from '@/assets/images/footer/logo_hotel.png'
-
-
 
 // gera cupom de desconto caso não exista nenhum. Se já houver a mensagem é que não podem ser gerados dois cupons no mesmo dia...
 cupomDesconto();
@@ -109,6 +105,7 @@ export default {
   props: {
     // properties que vem da view que irá chamar o componente...
     msg: String,
+    ultimaReserva: String
   },
   data() {
     return {
@@ -133,18 +130,15 @@ export default {
         localStorage.setItem("cupomDescontoValido", "NOK");
       }
 
+      // persiste reserva original...localStorage
       gravaReserva();
 
+      // instancia classe para gravar reserva no BD....
       let reserva = new Reservas();
 
-      // console.log(reserva.getReservasById("36"));
       //obtem dados da reserva feita pelo hospede da localStorage
       let reservaCriada = `Reserva_${localStorage.getItem("reservaId")}`;
       let arrayReservaCriada = JSON.parse(localStorage.getItem(reservaCriada));
-
-      // console.log("Reserva criada array...", arrayReservaCriada);
-      // console.log("Reserva criada array...", arrayReservaCriada[0].reservaId);
-      // console.log("Reserva criada array...", arrayReservaCriada[0].diarias);
 
       /*
       Você deve informar para o moment o formato de entrada, ou seja, como está a string com sua data antes de formatá-la pois internamente ele
@@ -156,17 +150,9 @@ export default {
       */
 
       let idReservas = "";
-      let dtReserva = moment(
-        arrayReservaCriada[0].dtReserva,
-        "DD/MM/YYYY"
-      ).format("YYYY-MM-DD");
-      let dtEntrada = moment(
-        arrayReservaCriada[0].dtEntrada,
-        "DD/MM/YYYY"
-      ).format("YYYY-MM-DD");
-      let dtSaida = moment(arrayReservaCriada[0].dtSaida, "DD/MM/YYYY").format(
-        "YYYY-MM-DD"
-      );
+      let dtReserva = moment(arrayReservaCriada[0].dtReserva,"DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtEntrada = moment(arrayReservaCriada[0].dtEntrada,"DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtSaida = moment(arrayReservaCriada[0].dtSaida, "DD/MM/YYYY").format("YYYY-MM-DD");
       let vlrTotal = arrayReservaCriada[0].vlrTotal;
       let qtPessoas = arrayReservaCriada[0].qtPessoas;
       let idUsuario = arrayReservaCriada[0].idUsuario;
@@ -183,8 +169,13 @@ export default {
       let vlrTotalcomDesconto = arrayReservaCriada[0].vlrTotalcomDesconto;
       let itemArrayReservas = 0; // avaliar, não está mais sendo utilizado...
       let itemArrayEdit = false; //flag de controle se false é uma nova reserva...
+      let arrayServicos = [];
+      let arrayServicosEscolhidos = [];
 
-      reserva.salvar(
+     // salva a reserva e obtem o id para gravar os serviços
+
+     arrayServicosEscolhidos = this.Servicos2;
+     reserva.salvar(
         idReservas,
         dtReserva,
         dtEntrada,
@@ -204,8 +195,37 @@ export default {
         valorTotalServicos,
         vlrTotalcomDesconto,
         itemArrayReservas,
-        itemArrayEdit
+        itemArrayEdit,
+        arrayServicosEscolhidos,
       );
+      
+      // let ultimaReserva = localStorage.getItem("ultimaReserva");
+      // console.log("Ultima reserva ModalResumo..",ultimaReserva.data[0]["LAST_INSERT_ID()"]);
+      // console.log("Ultima reserva ModalResumo..",lastReserva);
+
+      // verifica serviços selecionados e persiste no BD...
+      // arrayServicos = this.Servicos2;
+      // for (let i = 0; i < arrayServicos.data.length; i++) {
+      //     console.log("verifica serviços selecionados")
+      //     // vou gravar esse aqui
+      //     if (arrayServicos.data[i].isSelected) {
+      //       console.log("Esse aqui eu vou gravar...",arrayServicos.data[i].nomeServico,arrayServicos.data[i].vlr)
+      //       let idServicos = arrayServicos.data[i].idServicos
+      //       let nomeServico = arrayServicos.data[i].nomeServico
+      //       let descricaoServico = arrayServicos.data[i].descricaoServico
+      //       let vlrDiariaServico = arrayServicos.data[i].vlrDiariaServico
+      //       console.log("Dados para gravar...",idServicos,nomeServico,descricaoServico,vlrDiariaServico)
+      //     }      
+      //     // console.log("Servicos ",arrayServicos.data[i].nomeServico, arrayServicos.data[i].isSelected);
+      //     // arrayServicos.data[i].isSelected = false;
+      // }      
+
+      // for (let i = 0; i < arrayServicosReservas.data.length; i++) {
+      //     console.log("Servicos ",arrayServicosReservas.data[i].nomeServico, arrayServicosReservas.data[i].isSelected);
+      // }
+      // servicosReserva.salvar(
+      //           idReservas,
+      // )
 
       let geraPDF = confirm("Quer gerar um PDF de sua reserva?");
       if (geraPDF) {
@@ -218,31 +238,32 @@ export default {
         "Sua reserva foi confirmada - você irá receber um email com a confirmação! Obrigado!"
       );
 
-      // verificar como limpar o selected de serviços para não vir flagado na próxima reserva!!!!
+      // limpeza dos componentes após confirmação...
+      // limpa serviços da localStorage...
+      //localStorage.removeItem("servicosEscolhidos");
       for (var i = 0; i < localStorage.length; i++) {
-        // console.log(
-        //   "Valor item localStorage...",
-        //   localStorage.getItem(localStorage.key(i))
-        // );
-        console.log("Item localStorage...", localStorage.key(i));
         if (localStorage.key(i).includes("idServicos")) {
           localStorage.removeItem(localStorage.key(i));
+
+          // remover aqui o array com todas os serviços...
+
         }
       }
 
-      // limpeza dos componentes após confirmação...
       // limpa selected dos serviços...
-      let arrayServicos = this.Servicos2;
+      arrayServicos = this.Servicos2;
       for (let i = 0; i < arrayServicos.data.length; i++) {
           console.log("Servicos ",arrayServicos.data[i].nomeServico, arrayServicos.data[i].isSelected);
           arrayServicos.data[i].isSelected = false;
       }
+
       // atualiza campo cupom da modal...
       this.cupomDescontoResumo = ref(localStorage.getItem("cupomDesconto"));
 
       updateBindingForm();
       window.$("#modalResumo").modal("hide");
     },
+
     gerarPDF() {
       const reserva = JSON.parse(localStorage.getItem(`Reserva_${localStorage.getItem("reservaId")}`));
       var doc = new jsPDF();

@@ -37,12 +37,41 @@ export const getReservaById = (id, result) => {
 // insere uma reserva no banco
 export const insertReserva = (data, result) => {
   console.log("insertReserva", data);
-  db.query("INSERT INTO Reservas SET ?", [data], (err, results) => {
+  db.query(
+    "INSERT INTO Reservas SET ?",
+    [data],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        
+          db.query("select LAST_INSERT_ID()", (err, results) => {
+            if (err) {
+              console.log(err);
+              result(err, null);
+            } else {
+              console.log("Results...",results)
+              // localStorage.setItem("ReservaUltimID",JSON.stringify(results))
+              result(null, results);
+            }
+          });
+        
+        // result(null, results);
+      }
+    }
+  );
+};
+
+// retorna ultimo id de reserva criado, necessario para persistir os servicos na sequencia
+export const selectUltimoID = (result) => {
+  console.log("selectUltimID");
+  db.query("select LAST_INSERT_ID()", (err, results) => {
     if (err) {
       console.log(err);
       result(err, null);
     } else {
-      result(null, results);
+      result(null, results[0]);
     }
   });
 };

@@ -1,10 +1,41 @@
 <template>
-  <div>
+  <div class="main">
+
+    <!-- <div class="tabs">
+      <v-card>
+        <v-tabs v-model="tab" bg-color="primary">
+          <v-tab value="reserva">Reserva</v-tab>
+          <v-tab value="servicos">Servicos</v-tab>
+          <v-tab value="resumo">Resumo</v-tab>
+        </v-tabs>
+        <v-card-text>
+          <v-window v-model="tab">
+            <v-window-item value="reserva">
+              <TabViewReserva msg="Tab Reserva!" />
+            </v-window-item>
+            <v-window-item value="servicos">
+              <TabViewServicos msg="Welcome to Your TabView02 Tab!" />
+            </v-window-item>
+            <v-window-item value="resumo">
+              <TabViewResumo msg="Welcome to Your TabView03 Tab!" />
+            </v-window-item>
+          </v-window>
+        </v-card-text>
+      </v-card>
+    </div> -->
+
     <div class="modalServicos2">
-      <ModalServicos2 />
+      <ModalServicos2 
+        :msg="msgModalServicos2"
+        :idReservas="idReservasModalServicos2"
+      />
     </div>
     <div class="modalResumo2">
-      <ModalResumo2 :msg="msgModalResumo" :idReservas="idReservasModalResumo" :itemReservas="itemReservaModalResumo" />
+      <ModalResumo2
+        :msg="msgModalResumo"
+        :idReservas="idReservasModalResumo"
+        :itemReservas="itemReservaModalResumo"
+      />
     </div>
     <div class="sec">
       
@@ -186,9 +217,19 @@
 </template>
 
 <script>
+
+// a ordem dos imports faz diferença
+// artigo https://stackoverflow.com/questions/27064176/typeerror-modal-is-not-a-function-with-bootstrap-modal
+
+// jquery primeiro, pois modal do bootstrap depende disso...
 var jQuery = require("jquery");
 window.jQuery = jQuery;
 window.$ = jQuery;
+
+// bootstrap
+//import "bootstrap/dist/css/bootstrap.css";
+//import "bootstrap/dist/js/bootstrap.js";
+//const bootstrap = require("bootstrap");
 
 //import { ref } from "vue";
 import axios from "axios";
@@ -196,7 +237,13 @@ import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
 //import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
 import ModalServicos2 from "@/../adm/src/components/reserva/ModalServicos2";
 import ModalResumo2 from "@/../adm/src/components/reserva/ModalResumo2";
+// import { currencyFormat } from "@/../src/components/reserva/FormReserva.vue";
 // import ModalResumo from "./ModalResumo";
+
+// tabs
+// import TabViewReserva from "@/../adm/src/components/reserva/TabViewServicos.vue";
+// import TabViewServicos from "@/../adm/src/components/reserva/TabViewServicos.vue";
+// import TabViewResumo from "@/../adm/src/components/reserva/TabViewServicos.vue";
 
 export default {
   name: "ReservasView.view",
@@ -204,18 +251,25 @@ export default {
     // components....
     ModalServicos2,
     ModalResumo2,
+    // TabViewReserva,
+    // TabViewServicos,
+    // TabViewResumo
   },
   data() {
     // data
     return {
+      message: "TabTest",
+      tab: null,
       msg1: "msg1",
       msg2: "msg2",
       inputValue: "Teste",
       msgAlerta: "Mensagens do sistema",
       flagSalvarOk: true, // flag para controle de inclusão e alteração registros
       idReservas: "",
-      idReservasModalResumo: "",
+      msgModalServicos2: "",
+      idReservasModalServicos2: "",      
       msgModalResumo: "",
+      idReservasModalResumo: "",
       itemReservaModalResumo: "",
       dataReserva: new Date().toISOString().substring(0, 10),
       dataEntradaReserva: new Date().toISOString().substring(0, 10),
@@ -257,25 +311,13 @@ export default {
 
   created() {
     //
-    // emit e props, avaliar !!!!!
-    //
-    // ajuste para usar objeto Reservas...
-    // let reserva = new Reservas();
-    // this.itens = reserva.getReservas();
-    // console.log("Created:", this.itens);
-    //
-    // fica assim na console...
-    // [[Prototype]] : Promise
-    // [[PromiseState]] : "fulfilled"
-    // [[PromiseResult]] : Array(4)
-    // ou
-
     this.getReservas();
     console.log("Created:", this.itens);
   },
+
   beforeMount() {
     this.checkLogin();
-    console.log(this.checkLogin())
+    console.log(this.checkLogin());
   },
   setup() {
     // setup...
@@ -287,16 +329,22 @@ export default {
   },
 
   methods: {
+    // abreTab() {
+    //   var tab = new bootstrap.Tab(document.querySelector("#nav-tabs"), {
+    //     keyboard: false,
+    //   });
+    //   return tab;
+    // },
+
     checkLogin() {
       if (localStorage.getItem("loginStatus")) {
-        if (localStorage.getItem("loginStatus") == "admin")
-          return true
+        if (localStorage.getItem("loginStatus") == "admin") return true;
         else if (localStorage.getItem("loginStatus") == "cliente")
-          this.$router.push("/")
-        return true
+          this.$router.push("/");
+        return true;
       } else {
-        this.$router.push("/")
-        return false
+        this.$router.push("/");
+        return false;
       }
     },
    
@@ -543,8 +591,10 @@ export default {
         }
       }
       if (action == "servicos") {
-        console.log("vou mostrar modal de servicos2");
+        console.log("vou mostrar modal de servicos2",this.idReservas);
         window.$("#modalServicos2").modal("show");
+        this.msgModalServicos2 = "Área de mensagens...ModalServicos2";
+        this.idReservasModalServicos2 = this.idReservas;
         // window.$().ready(function () {
         //   window.$("#btnServicos").click(function () {
         //     window.$("#modalServicos2").modal("show");
@@ -553,10 +603,10 @@ export default {
       }
 
       if (action == "resumo") {
-        console.log("vou mostrar modal de resumo2");
+        console.log("vou mostrar modal de resumo2",this.idReservas);
         this.idReservasModalResumo = this.idReservas;
         this.itemReservaModalResumo = this.item;
-        this.msgModalResumo = "Área de mensagens...";
+        this.msgModalResumo = "Área de mensagens...ModalResumo2";
         window.$("#modalResumo2").modal("show");
         // window.$().ready(function () {
         //   window.$("#btnServicos").click(function () {
@@ -702,7 +752,7 @@ export function formataData(dataUTC) {
   color: black;
 }
 
-.sec>div {
+.sec > div {
   max-width: 90%;
   margin: 2% 5%;
 }
@@ -714,7 +764,7 @@ export function formataData(dataUTC) {
   margin: 0 5%;
 }
 
-.flex>div {
+.flex > div {
   flex: 1 1 420px;
   margin: 10px;
 }

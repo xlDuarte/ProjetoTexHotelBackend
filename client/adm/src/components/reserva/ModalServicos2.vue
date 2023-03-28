@@ -9,6 +9,8 @@
         </div>
         <div class="modal-body">
           <div>
+            <p> Mensagem: {{ msg }}</p>
+            <p> ID da Reserva: {{ idReservas }}</p>
             <button @click="JokeData">Chuck Norris</button>
             <div v-if="JokeNorris.data">
               <p>{{ JokeNorris.data.value }}</p>
@@ -52,13 +54,13 @@
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap/dist/js/bootstrap.js";
-const bootstrap = require("bootstrap");
-
 var jQuery = require("jquery");
 window.jQuery = jQuery;
 window.$ = jQuery;
+
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
+const bootstrap = require("bootstrap");
 
 import { mapState } from "vuex";
 
@@ -67,6 +69,7 @@ export default {
   props: {
     // properties que vem da view que irá chamar o componente...
     msg: String,
+    idReservas: String,
   },
   data() {
     return {
@@ -105,31 +108,6 @@ export default {
     // carrega servicos para a store...
     this.Servicos2Data();
     this.JokeData();
-
-    // deve ter outro jeito melhor de fazer isso...
-    // teste para tentar simplificar a seleção de serviços...não funcionou
-    // console.log(
-    //   "Servicos da store 0...",
-    //   this.servicos.length,
-    //   this.servicos,
-    //   this.servicos[0].id,
-    //   this.servicos[1].id,
-    // );
-
-    // let tempServ = "";
-    // for (let i=0;i<this.servicos.length;i++) {
-    //   tempServ="#"+this.servicos[i].id
-    //   console.log("Servico:",tempServ)
-    //   window.$(tempServ).click(function () {
-    //     if (window.$(tempServ).is(":checked")) {
-    //       console.log(`${tempServ} checked!`)
-    //       localStorage.setItem("servico1", true);
-    //   } // checked
-    //   else {
-    //     localStorage.setItem(tempServ, false);
-    //   } // unchecked
-    // });
-    // }
 
     window.$("#servico1").click(function () {
       window.$("#servico1").is(":checked")
