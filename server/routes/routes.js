@@ -26,6 +26,7 @@ import {
   createServicoReserva,
   deleteServicoReserva,
   updateServicoReserva,
+  updateSelectedServicoReserva,
 } from "../controller/servicosReservas.js";
 
 //import Login
@@ -133,6 +134,9 @@ router.post("/servicoReserva", createServicoReserva);
 // rota para atualizar um servico
 router.put("/servicoReserva/:id", updateServicoReserva);
 
+// rota para atualizar o campo selected de servico
+router.put("/servicoReservaSelected/:id", updateSelectedServicoReserva);
+
 // rota para deletar um servico
 router.delete("/servicoReserva/:id", deleteServicoReserva);
 
@@ -178,6 +182,8 @@ router.post("/reserva/ultima", ultimoIdReserva);
 router.put("/reserva/:id", updateReserva);
 
 // rota para deletar uma reserva
+// router.delete("/reserva/:id", deleteReserva);
+// reservas não serao mais excluidas, mudar somente o status...
 router.delete("/reserva/:id", deleteReserva);
 
 // Acomodações

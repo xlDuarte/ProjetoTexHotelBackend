@@ -80,20 +80,25 @@ export const selectUltimoID = (result) => {
 export const updateReservaById = (data, id, result) => {
   console.log("updateReservaById", data);
   db.query(
-    "UPDATE Reservas SET dataReserva = ?, dataEntradaReserva = ?, dataSaidaReserva = ?, valorReserva = ?, qtdHospedesReserva = ?, usuario_idUsuario = ?, acomodacoes_idAcomodacao = ?, acomodacaoTipo=?, acomodacaoVlrDiaria = ?, statusReserva = ?, dataCancelamento = ?, motivoCancelamento = ? WHERE idReservas = ?",
+    "UPDATE Reservas SET dataReserva = ?, dataEntradaReserva = ?, dataSaidaReserva = ?, valorReserva = ?, qtdHospedesReserva = ?, usuario_idUsuario = ?, acomodacoes_idAcomodacao = ?, qtDiarias = ?, acomodacaoTipo=?, acomodacaoVlrDiaria = ?, statusReserva = ?, dataCancelamento = ?, motivoCancelamento = ?, cupom = ?, taxaDescontoCupom = ?, valorTotalDesconto = ?, valorTotalServicos = ? WHERE idReservas = ?",
     [
       data.dataReserva,
       data.dataEntradaReserva,
       data.dataSaidaReserva,
       data.valorReserva,
       data.qtdHospedesReserva,
-      data.idUsuario,
-      data.idAcomodacao,
+      data.usuario_idUsuario,
+      data.acomodacoes_idAcomodacao,
+      data.qtDiarias,
       data.acomodacaoTipo,
       data.acomodacaoVlrDiaria,
       data.statusReserva,
       data.dataCancelamento,
       data.motivoCancelamento,
+      data.cupom,
+      data.taxaDescontoCupom,
+      data.valorTotalDesconto,
+      data.valorTotalServicos,
       id,
     ],
     (err, results) => {
@@ -110,7 +115,7 @@ export const updateReservaById = (data, id, result) => {
 // deleta uma reserva no banco
 export const deleteReservaById = (id, result) => {
   db.query(
-    "DELETE FROM Reservas WHERE idReservas = ?",
+    "UPDATE Reservas SET statusReserva = 'Excluída' WHERE idReservas = ?",
     [id],
     (err, results) => {
       if (err) {
@@ -121,4 +126,16 @@ export const deleteReservaById = (id, result) => {
       }
     }
   );
+  // db.query(
+  //   "DELETE FROM Reservas WHERE idReservas = ?",
+  //   [id],
+  //   (err, results) => {
+  //     if (err) {
+  //       console.log(err);
+  //       result(err, null);
+  //     } else {
+  //       result(null, results);
+  //     }
+  //   }
+  // );
 };

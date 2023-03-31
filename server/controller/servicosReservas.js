@@ -54,6 +54,22 @@ export const updateServicoReserva = (req, res) => {
   });
 };
 
+// atualiza o selected do servico
+export const updateSelectedServicoReserva = (req, res) => {
+  const data = req.body;
+  const idReserva = req.params.idReserva;
+  const idServico = req.params.idServico;
+  updateSelectedServicoByIdReserva(data, idReserva,idServico, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+// updateSelectedServicoByIdReserva;
+
 // Deleta o servico
 export const deleteServicoReserva = (req, res) => {
   const id = req.params.id;

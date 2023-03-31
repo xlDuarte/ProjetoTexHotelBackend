@@ -308,9 +308,6 @@ export default {
         doc.line(lineX, lineY, lineX + lineWidth, lineY);
       }
 
-
-
-
       // Define o título do documento
       doc.setProperties({
         title: 'Resumo de Reserva - Hotel Casa na Praia'

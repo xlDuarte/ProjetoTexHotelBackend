@@ -1,6 +1,7 @@
 <template>
   <div class="main">
 
+    <!-- para substituir as modals por tabs, ficaria melhor - testar caso haja tempo -->
     <!-- <div class="tabs">
       <v-card>
         <v-tabs v-model="tab" bg-color="primary">
@@ -25,9 +26,12 @@
     </div> -->
 
     <div class="modalServicos2">
-      <ModalServicos2 
+      <ModalServicos2
         :msg="msgModalServicos2"
         :idReservas="idReservasModalServicos2"
+        :arrayServicosBD="arrayServicosBD"
+        :arrayServicosAux="arrayServicosAux"
+        :botaoModalServicos="botaoModalServicos"
       />
     </div>
     <div class="modalResumo2">
@@ -38,44 +42,78 @@
       />
     </div>
     <div class="sec">
-      
-     <div class="text-center">
-      <h2>CADASTRO DE RESERVAS</h2>
-      <p>*Campos de preenchimento obrigatório.</p>
-    </div>
-      
-      <div class="shadow container  bg-light rounded-3 p-4 mx-auto my-5 w-50">      
-          
+      <div class="text-center">
+        <h2>CADASTRO DE RESERVAS</h2>
+        <p>*Campos de preenchimento obrigatório.</p>
+      </div>
+
+      <div class="shadow container bg-light rounded-3 p-4 mx-auto my-5 w-50">
         <p id="msgAlerta">{{ msgAlerta }}</p>
         <hr />
         <form class="formReservas" action="" @submit.prevent>
-           <div class="container">
-          <div class="row my-2">
-            
-            <div class="col col-5 w-25">
-                <label for="dataReserva" class=" d-block fw-bold ">*Data da reserva</label>
-                <input type="date" id="dataReserva" v-model="dataReserva" placeholder="Data da reserva"
-                  class="form-control w-75 ms-1" :disabled="camposAtivos" />
-            </div>
+          <div class="container">
+            <div class="row my-2">
               <div class="col col-5 w-25">
-                <label for="dataEntradaReserva" class=" d-block fw-bold">*Data de Checkin</label>
-                <input type="date" id="descricao" v-model="dataEntradaReserva" placeholder="Data Checkin Reserva"
-                  class="form-control w-75 ms-1" :disabled="camposAtivos" />
+                <label for="dataReserva" class="d-block fw-bold"
+                  >*Data da reserva</label
+                >
+                <input
+                  type="date"
+                  id="dataReserva"
+                  v-model="dataReserva"
+                  placeholder="Data da reserva"
+                  class="form-control w-75 ms-1"
+                  :disabled="camposAtivos"
+                />
               </div>
               <div class="col col-5 w-25">
-                <label for="dataSaidaReserva" class=" d-block fw-bold">*Data de Checkout</label>
-                <input type="date" id="label" v-model="dataSaidaReserva" placeholder="Data Checkout Reserva"
-                  class="form-control w-75 ms-1" :disabled="camposAtivos" />
+                <label for="dataEntradaReserva" class="d-block fw-bold"
+                  >*Data de Checkin</label
+                >
+                <input
+                  type="date"
+                  id="descricao"
+                  v-model="dataEntradaReserva"
+                  placeholder="Data Checkin Reserva"
+                  class="form-control w-75 ms-1"
+                  :disabled="camposAtivos"
+                />
               </div>
               <div class="col col-5 w-25">
-                <label for="qtdHospedesReserva" class=" d-block fw-bold">*Qtd Hospedes</label>
-                <input type="number" id="qtdHospedesReserva" v-model.number="qtdHospedesReserva"
-                  placeholder="Qtd Hospedes" class="form-control w-75 ms-1" min="0" :disabled="camposAtivos" />
-              
+                <label for="dataSaidaReserva" class="d-block fw-bold"
+                  >*Data de Checkout</label
+                >
+                <input
+                  type="date"
+                  id="label"
+                  v-model="dataSaidaReserva"
+                  placeholder="Data Checkout Reserva"
+                  class="form-control w-75 ms-1"
+                  :disabled="camposAtivos"
+                />
+              </div>
+              <div class="col col-5 w-25">
+                <label for="qtdHospedesReserva" class="d-block fw-bold"
+                  >*Qtd Hospedes</label
+                >
+                <input
+                  type="number"
+                  id="qtdHospedesReserva"
+                  v-model.number="qtdHospedesReserva"
+                  placeholder="Qtd Hospedes"
+                  class="form-control w-75 ms-1"
+                  min="0"
+                  :disabled="camposAtivos"
+                />
               </div>
 
-              <div class="col col-3">  
-                <label for="statusReserva" class="mt-3 d-block fw-bold" v-if="itemArrayEdit">*Status Reserva</label>
+              <div class="col col-3">
+                <label
+                  for="statusReserva"
+                  class="mt-3 d-block fw-bold"
+                  v-if="itemArrayEdit"
+                  >*Status Reserva</label
+                >
                 <!-- <input
                   type="text"
                   id="statusReserva"
@@ -86,86 +124,194 @@
                   :disabled="camposAtivos"
                 /> -->
 
-                <select id="statusReserva" v-model="statusReserva" placeholder="Status da Reserva" class="form-control ms-1 w-75 "
-                  v-if="itemArrayEdit" :disabled="camposAtivos">
+                <select
+                  id="statusReserva"
+                  v-model="statusReserva"
+                  placeholder="Status da Reserva"
+                  class="form-control ms-1 w-75"
+                  v-if="itemArrayEdit"
+                  :disabled="camposAtivos"
+                >
                   <option value="Registrada">Registrada</option>
                   <option value="Confirmada">Confirmada</option>
                   <option value="Encerrada">Encerrada</option>
                   <option value="Cancelada">Cancelada</option>
-                  <option value="Excluida">Excluída</option>
+                  <option value="Excluída">Excluída</option>
                 </select>
               </div>
               <div class="mt-3 col col-4">
-                <label for="dataCancelamento" class="d-block fw-bold " v-if="itemArrayEdit"><small>Data cancelamento</small></label>
-                <input type="date" id="dataCancelamento" v-model="dataCancelamento"
-                  placeholder="Data cancelamento reserva" class="form-control w-50" v-if="itemArrayEdit" :disabled="true" />
+                <label
+                  for="dataCancelamento"
+                  class="d-block fw-bold"
+                  v-if="itemArrayEdit"
+                  ><small>Data cancelamento</small></label
+                >
+                <input
+                  type="date"
+                  id="dataCancelamento"
+                  v-model="dataCancelamento"
+                  placeholder="Data cancelamento reserva"
+                  class="form-control w-50"
+                  v-if="itemArrayEdit"
+                  :disabled="true"
+                />
               </div>
 
-              <div class="mt-3 col col-5 ">
-                <label for="motivoCancelamento" class="d-block fw-bold " v-if="itemArrayEdit"><small>Motivo cancelamento</small></label>
-                <input type="text" id="motivoCancelamento" v-model="motivoCancelamento"
-                  placeholder="Motivo cancelamento" class="form-control me-auto w-75" v-if="itemArrayEdit"
-                  :disabled="camposAtivos" />
+              <div class="mt-3 col col-5">
+                <label
+                  for="motivoCancelamento"
+                  class="d-block fw-bold"
+                  v-if="itemArrayEdit"
+                  ><small>Motivo cancelamento</small></label
+                >
+                <input
+                  type="text"
+                  id="motivoCancelamento"
+                  v-model="motivoCancelamento"
+                  placeholder="Motivo cancelamento"
+                  class="form-control me-auto w-75"
+                  v-if="itemArrayEdit"
+                  :disabled="camposAtivos"
+                />
               </div>
-
             </div>
-           
+
             <div class="container">
-          <div class="row my-2 mt-3">
-            
-            <div class="col col-5 me-5">
-                  <label for="idUsuario" class="d-block fw-bold ">ID Usuario</label>
-                  <input type="number" id="idUsuario" v-model.number="idUsuario" placeholder="id do Usuario"
-                    class="form-control" @change="changeUserId" :disabled="camposAtivos" />
-                  <input type="text" id="nomeUsuario" v-model="nomeUsuario" placeholder="Nome Usuario"
-                    class="form-control" :disabled="true" />
+              <div class="row my-2 mt-3">
+                <div class="col col-5 me-5">
+                  <label for="idUsuario" class="d-block fw-bold"
+                    >ID Usuario</label
+                  >
+                  <input
+                    type="number"
+                    id="idUsuario"
+                    v-model.number="idUsuario"
+                    placeholder="id do Usuario"
+                    class="form-control"
+                    @change="changeUserId"
+                    :disabled="campoAtivoIdUsuario"
+                  />
+                  <input
+                    type="text"
+                    id="nomeUsuario"
+                    v-model="nomeUsuario"
+                    placeholder="Nome Usuario"
+                    class="form-control"
+                    :disabled="true"
+                  />
                 </div>
                 <div class="col col-5 mx-auto">
-                  <label for="idAcomodacao" class="d-block fw-bold">ID Acomodacao</label>
-                  <input type="number" id="idAcomodacao" v-model.number="idAcomodacao" placeholder="id da Acomodacao"
-                    class="form-control" @change="changeAcomodacaoId" :disabled="camposAtivos" />
-                  <input type="text" id="acomodacaoTipo" v-model="acomodacaoTipo" placeholder="Tipo Acomodação"
-                    class="form-control" :disabled="true" />
-                  <input type="text" id="acomodacaoVlrDiaria" v-model="acomodacaoVlrDiaria"
-                    placeholder="Vlr Diaria Acomodação" class="form-control" :disabled="true" />
+                  <label for="idAcomodacao" class="d-block fw-bold"
+                    >ID Acomodacao</label
+                  >
+                  <input
+                    type="number"
+                    id="idAcomodacao"
+                    v-model.number="idAcomodacao"
+                    placeholder="id da Acomodacao"
+                    class="form-control"
+                    @change="changeAcomodacaoId"
+                    :disabled="camposAtivos"
+                  />
+                  <input
+                    type="text"
+                    id="acomodacaoTipo"
+                    v-model="acomodacaoTipo"
+                    placeholder="Tipo Acomodação"
+                    class="form-control"
+                    :disabled="true"
+                  />
+                  <input
+                    type="text"
+                    id="acomodacaoVlrDiaria"
+                    v-model="acomodacaoVlrDiaria"
+                    placeholder="Vlr Diaria Acomodação"
+                    class="form-control"
+                    :disabled="true"
+                  />
                 </div>
                 <div class="col col-5 me-5">
-                  <label for="valorReserva" class="d-block fw-bold ">Valor Total Reserva</label>
-                  <input type="number" id="valorReserva" v-model.number="valorReserva" placeholder="Valor da Reserva"
-                    class="form-control" :disabled="true" />
+                  <label for="valorReserva" class="d-block fw-bold"
+                    >Valor Total Reserva</label
+                  >
+                  <input
+                    type="number"
+                    id="valorReserva"
+                    v-model.number="valorReserva"
+                    placeholder="Valor da Reserva"
+                    class="form-control"
+                    :disabled="true"
+                  />
                 </div>
               </div>
             </div>
           </div>
 
           <div class="btn-group" role="group">
-            <button v-if="showSalvarButton" @click="handleClick('salvar')"
-              class="button mt-2" :disabled="camposAtivos">
+            <button
+              v-if="showSalvarButton"
+              @click="handleClick('salvar')"
+              class="button mt-2"
+              :disabled="camposAtivos"
+            >
               Cadastrar
             </button>
-            <button v-if="showCancelarReservaButton" @click="handleClick('cancelarReserva')" id="btnCancelarReserva"
-              class="button mt-2" type="button">
+            <button
+              v-if="showGerarCupomButton"
+              @click="handleClick('gerarCupom')"
+              class="button mt-2"
+              :disabled="camposAtivos"
+            >
+              Gerar Cupom
+            </button>
+            <button
+              v-if="showCancelarReservaButton"
+              @click="handleClick('cancelarReserva')"
+              id="btnCancelarReserva"
+              class="button mt-2"
+              type="button"
+            >
               Cancelar Reserva
             </button>
-            <button v-if="showExcluirButton" @click="handleClick('excluir')" id="btnExcluir"
-              class="button mt-2" type="button" :disabled="camposAtivos">
+            <button
+              v-if="showExcluirButton"
+              @click="handleClick('excluir')"
+              id="btnExcluir"
+              class="button mt-2"
+              type="button"
+              :disabled="camposAtivos"
+            >
               Excluir Reserva
             </button>
-            <button v-if="showModalServicos" @click="handleClick('servicos')" id="btnServicos"
-              class="button mt-2" type="button">
+            <button
+              v-if="showModalServicos"
+              @click="handleClick('servicos')"
+              id="btnServicos"
+              class="button mt-2"
+              type="button"
+            >
               Serviços
             </button>
-            <button v-if="showModalResumo" @click="handleClick('resumo')" id="btnCancelar"
-              class="button mt-2" type="button">
+            <button
+              v-if="showModalResumo"
+              @click="handleClick('resumo')"
+              id="btnCancelar"
+              class="button mt-2"
+              type="button"
+            >
               Resumo
             </button>
-            <button v-if="showCancelarButton" @click="handleClick('cancelar')" id="btnCancelar"
-              class="button mt-2" type="button">
+            <button
+              v-if="showCancelarButton"
+              @click="handleClick('cancelar')"
+              id="btnCancelar"
+              class="button mt-2"
+              type="button"
+            >
               Sair
             </button>
           </div>
         </form>
-        
       </div>
       <div class="listReservas">
         <table class="table">
@@ -190,8 +336,13 @@
               <td>{{ item.valorReserva }}</td>
               <td>{{ item.statusReserva }}</td>
               <div class="handleItem w-30 border px-3">
-                <button @click="handleItem('editar', item.idReservas)" id="btnEditar"
-                  class="button me-3" type="button" title="Edita a reserva">
+                <button
+                  @click="handleItem('editar', item.idReservas)"
+                  id="btnEditar"
+                  class="button me-3"
+                  type="button"
+                  title="Edita a reserva"
+                >
                   Editar
                 </button>
                 <!-- <button
@@ -203,8 +354,13 @@
               >
                 Cancelar
               </button> -->
-                <button @click="handleItem('excluir', item.idReservas)" id="btnEditar"
-                  class="button " type="button" title="Exclui a reserva">
+                <button
+                  @click="handleItem('excluir', item.idReservas)"
+                  id="btnEditar"
+                  class="button"
+                  type="button"
+                  title="Exclui a reserva"
+                >
                   Excluir
                 </button>
               </div>
@@ -217,7 +373,6 @@
 </template>
 
 <script>
-
 // a ordem dos imports faz diferença
 // artigo https://stackoverflow.com/questions/27064176/typeerror-modal-is-not-a-function-with-bootstrap-modal
 
@@ -237,8 +392,14 @@ import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
 //import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
 import ModalServicos2 from "@/../adm/src/components/reserva/ModalServicos2";
 import ModalResumo2 from "@/../adm/src/components/reserva/ModalResumo2";
+
+
+// testar currency via import VueCurrencyInput from 'vue-currency-input';
+// site https://vue-currency-input-v1.netlify.app/guide/#installation
 // import { currencyFormat } from "@/../src/components/reserva/FormReserva.vue";
 // import ModalResumo from "./ModalResumo";
+
+import { mapState } from "vuex";
 
 // tabs
 // import TabViewReserva from "@/../adm/src/components/reserva/TabViewServicos.vue";
@@ -267,7 +428,10 @@ export default {
       flagSalvarOk: true, // flag para controle de inclusão e alteração registros
       idReservas: "",
       msgModalServicos2: "",
-      idReservasModalServicos2: "",      
+      idReservasModalServicos2: "",
+      arrayServicosReserva: [],
+      arrayServicosBD: [],
+      arrayServicosAux: [],
       msgModalResumo: "",
       idReservasModalResumo: "",
       itemReservaModalResumo: "",
@@ -300,12 +464,15 @@ export default {
       itemArrayReservas: 0,
       itemArrayEdit: false,
       camposAtivos: false,
+      botaoModalServicos: false,       
+      campoAtivoIdUsuario: false,
       showSalvarButton: true,
       showCancelarReservaButton: false,
       showExcluirButton: false,
       showCancelarButton: false,
       showModalServicos: false,
       showModalResumo: false,
+      showGerarCupomButton: false,
     };
   },
 
@@ -321,11 +488,6 @@ export default {
   },
   setup() {
     // setup...
-    // const modalActive = ref(true);
-    // const toogleModal = () => {
-    //   modalActive.value = !modalActive.value;
-    // };
-    // return { modalActive, toogleModal };
   },
 
   methods: {
@@ -347,13 +509,13 @@ export default {
         return false;
       }
     },
-   
+
     changeUserId() {
       // mudou o id do usuario, dispara api para checar validade...
       this.validaUsuariosById(this.idUsuario);
     },
 
-    // localiza servico pelo id
+    // localiza servico pelo id, para verificação na tela...
     async getServicosById(idServico) {
       console.log("idServico = ", idServico);
       //let id = document.getElementById("idUsuario").value;
@@ -389,29 +551,6 @@ export default {
       this.validaAcomodacaoById(this.idAcomodacao);
 
       let idOK = true;
-      // // let id = document.getElementById("idAcomodacao").value;
-      // // console.log("id", id);
-      // // console.log("mudou tipo acomodacao", this.acomodacaoTipo);
-      // switch (this.idAcomodacao) {
-      //   case 1:
-      //     this.acomodacaoTipo = "Master";
-      //     this.acomodacaoVlrDiaria = 600;
-      //     break;
-      //   case 2:
-      //     this.acomodacaoTipo = "Family";
-      //     this.acomodacaoVlrDiaria = 400;
-      //     break;
-      //   case 3:
-      //     this.acomodacaoTipo = "Comfort";
-      //     this.acomodacaoVlrDiaria = 250;
-      //     break;
-      //   default:
-      //     alert(
-      //       "Erro: ID tipo suite inválido - verificar! ID: ",
-      //       this.idAcomodacao
-      //     );
-      //     idOK = false;
-      // }
       console.log(
         "Acomodacao",
         this.acomodacaoTipo,
@@ -475,6 +614,20 @@ export default {
       }
     },
 
+    // localiza servicos da Reserva pelo id
+    async getServicosByReservaId(idReserva) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/servicoReserva/${idReserva}`
+        );
+        console.log("Type Servicos - getServicosByReservaId");
+        return response;
+      } catch (err) {
+        console.log(err);
+        return [];
+      }
+    },
+
     // localiza servico pelo id
     async getReservasById(idReservas) {
       console.log("idReservas = ", idReservas);
@@ -505,13 +658,15 @@ export default {
           .toISOString()
           .substring(0, 10);
         this.motivoCancelamento = this.item.motivoCancelamento;
-        if (this.statusReserva === "Cancelada") {
+        if (this.statusReserva === "Cancelada" || this.statusReserva === "Encerrada" || this.statusReserva === "Excluída") {
           this.camposAtivos = true;
+          this.botaoModalServicos = true;
           alert(
-            "Esta reserva foi cancelada! Edição e exclusão não permitidos!"
+            "O status desta reserva não permite mais edição ou exclusão! Para reativar a reserva entre em contato com o gerente do Hotel"
           );
         } else {
           this.camposAtivos = false;
+          this.botaoModalServicos = false;          
         }
         console.log(
           "this.acomodacaoTipo",
@@ -529,6 +684,18 @@ export default {
       if (action == "salvar") {
         this.msg1 = "Cliquei handleClick salvar...";
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
+
+        // campos calculados...
+        // // calcula quantidade de diarias
+        // let dateStartAux = this.dataEntradaReserva.split("-");
+        // //console.log("dataemtradaaux", dateStartAux);
+        // let dateStart = new Date(dateStartAux[0], dateStartAux[1] - 1, dateStartAux[2]);
+        // let dateEndAux = this.dataSaidaReserva.split("-");
+        // let dateEnd = new Date(dateEndAux[0], dateEndAux[1] - 1, dateEndAux[2]);
+
+        // this.qtDiarias = Math.ceil(dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+        // console.log("Calculos1...",this.idUsuario,this.qtDiarias,this.dataSaidaReserva,this.dataEntradaReserva)
+
         let reserva = new Reservas();
         reserva.salvar(
           this.idReservas,
@@ -560,19 +727,12 @@ export default {
       }
 
       if (action == "cancelar") {
-        // não faz nada, a rotina de edição está no "servico.salvar" só desabilita o botão e limpa os campos na rotina que já está abaixo...
-        // this.showSalvarButton = true;
-        // this.showCancelarButton = false;
-        // this.showExcluirButton = false;
         this.camposAtivos = false;
       }
 
       if (action == "cancelarReserva") {
         // chama rotina de exclusão, desabilita o botão e limpa os campos na rotina que já está abaixo...
         console.log("Entrei no handleClick - cancelarReserva");
-        // let reserva = new Reservas();
-        //reserva.excluir(this.idReservas);
-        // recarrega lista de serviços
         this.getReservas();
       }
 
@@ -591,19 +751,21 @@ export default {
         }
       }
       if (action == "servicos") {
-        console.log("vou mostrar modal de servicos2",this.idReservas);
+        console.log("vou mostrar modal de servicos2", this.idReservas);
+        this.arrayServicosBD = this.ServicosReserva;
+        console.log(
+          "action Servicos arrayServicosBD e arrayServicosAux",
+          this.arrayServicosBD,
+          " - ",
+          this.arrayServicosAux
+        );
         window.$("#modalServicos2").modal("show");
-        this.msgModalServicos2 = "Área de mensagens...ModalServicos2";
-        this.idReservasModalServicos2 = this.idReservas;
-        // window.$().ready(function () {
-        //   window.$("#btnServicos").click(function () {
-        //     window.$("#modalServicos2").modal("show");
-        //   });
-        //});
+        this.msgModalServicos2 = "Baixa utilizaçao serviço 5G - ofereça desconto na reserva";
+        this.idReservasModalServicos2 = this.idReservas.toString();
       }
 
       if (action == "resumo") {
-        console.log("vou mostrar modal de resumo2",this.idReservas);
+        console.log("vou mostrar modal de resumo2", this.idReservas);
         this.idReservasModalResumo = this.idReservas;
         this.itemReservaModalResumo = this.item;
         this.msgModalResumo = "Área de mensagens...ModalResumo2";
@@ -615,6 +777,13 @@ export default {
         //});
       }
 
+      if (action == "gerarCupom") {
+        let conf = confirm(
+          "Confirma geração de cupom?"
+        );        
+        console.log("Vou gerar cupom", conf);
+      }
+      
       // após inclusão, limpa campos do form...
       this.dataReserva = new Date().toISOString().substring(0, 10);
       this.dataEntradaReserva = new Date().toISOString().substring(0, 10);
@@ -641,6 +810,7 @@ export default {
       this.showExcluirButton = false;
       this.showModalServicos = false;
       this.showModalResumo = false;
+      this.showGerarCupomButton = false;
       this.itemArrayEdit = false;
       this.getReservas();
       return true;
@@ -651,22 +821,34 @@ export default {
       // let storageServico = new StorageServico(document.querySelector("form"));
       if (action == "editar") {
         this.msg1 = "Cliquei HandleItem edit";
-        // atualiza campos do formulário
+        this.campoAtivoIdUsuario = false;
         this.getReservasById(idReservas);
         this.itemArrayEdit = true;
+        // contorle de edição do user
         this.showSalvarButton = true;
         this.showCancelarButton = true;
         this.showCancelarReservaButton = false;
         this.showExcluirButton = false;
         this.showModalServicos = true;
         this.showModalResumo = true;
+        this.showGerarCupomButton = true;
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
+        try {
+          // this.$store.dispatch("Servicos2/getData");
+          this.$store.dispatch("ServicosReserva/getData", {
+            idReserva: `${idReservas}`,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+        // console.log("action Editar arrayServicosAux",idReservas,this.arrayServicosAux)
       }
       if (action == "excluir") {
         this.msg1 = "Cliquei HandleItem excluir";
         // atualiza campos do formulário
         this.getReservasById(idReservas);
         this.itemArrayEdit = false;
+        this.campoAtivoIdUsuario = false;
         this.showSalvarButton = false;
         this.showCancelarButton = true;
         this.showCancelarReservaButton = false;
@@ -679,14 +861,17 @@ export default {
         // atualiza campos do formulário
         this.getReservasById(idReservas);
         this.itemArrayEdit = false;
+        this.campoAtivoIdUsuario = false;        
         this.showSalvarButton = false;
         this.showCancelarButton = true;
         this.showCancelarReservaButton = true;
         this.showExcluirButton = false;
         this.showModalServicos = false;
         this.showModalResumo = false;
+        this.showModalServicos = false;
       }
-      //this.msg2 = `idReservas ${idReservas}`;
+      this.msg2 = `idReservas ${idReservas}`;
+      this.campoAtivoIdUsuario = true;
     },
   },
   watch: {
@@ -697,9 +882,17 @@ export default {
   },
   computed: {
     // incluir funções...
+    ...mapState(["Servicos2"]),
+    ...mapState(["ServicosReserva"]),
   },
   mounted() {
     // funções mounted...
+    console.log("Passando pelo mounted...");
+    this.$store.dispatch("Servicos2/getData");
+
+    // não executar update de ServicosReserva pois ainda não existe uma reserva selecionada...
+    // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` } );
+
   },
 };
 
@@ -783,8 +976,6 @@ export function formataData(dataUTC) {
   border-radius: 50px;
   padding: 5px;
 }
-
-
 </style>
 
 <!-- verificar se é possível simplificar o formulário usando o conceito abaixo, o form atual tem muitos campos 

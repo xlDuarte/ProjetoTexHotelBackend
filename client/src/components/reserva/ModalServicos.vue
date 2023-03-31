@@ -98,9 +98,13 @@ export default {
         let itemLocal = "{" + servData + "}";
         // localStorage.setItem(nomeServico, arrayServicos.data[i].isSelected);
         localStorage.setItem(servId, itemLocal);
-        if (arrayServicos.data[i].isSelected) {
-          arrayServicosEscolhidos.push(itemLocal);
-        }
+
+        // gravava somente os selecionados, alterado para salvar todos...
+        arrayServicosEscolhidos.push(itemLocal);
+        // if (arrayServicos.data[i].isSelected) {
+        //   arrayServicosEscolhidos.push(itemLocal);
+        // }
+
       }
       console.log("Servicos escolhidos...", arrayServicosEscolhidos);
       // localStorage.setItem('servicosEscolhidos',JSON.stringify("["+arrayServicosEscolhidos+"]"));
@@ -117,6 +121,7 @@ export default {
           arrayServicos.data[i].isSelected = false;
       }
     }
+    
     // teste para entender store + checkbox...
     //
     // essa parte vai no template...
