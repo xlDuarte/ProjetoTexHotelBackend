@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-
     <!-- para substituir as modals por tabs, ficaria melhor - testar caso haja tempo -->
     <!-- <div class="tabs">
       <v-card>
@@ -229,19 +228,66 @@
                     class="form-control"
                     :disabled="true"
                   />
+                  <label for="qtDiarias" class="d-block fw-bold"
+                    >Qtdade Diarias</label
+                  >
+                  <input
+                    type="text"
+                    id="qtDiarias"
+                    v-model="qtDiarias"
+                    placeholder="Qtdade Diarias"
+                    class="form-control"
+                    :disabled="true"
+                  /> 
+                  <label for="cupom" class="d-block fw-bold"
+                    >Cupom Desconto</label
+                  >
+                  <input
+                    type="text"
+                    id="cupom"
+                    v-model="cupom"
+                    placeholder="Cupom desconto"
+                    class="form-control"
+                    :disabled="true"
+                  />
+                
                 </div>
+
                 <div class="col col-5 me-5">
                   <label for="valorReserva" class="d-block fw-bold"
-                    >Valor Total Reserva</label
+                    >Valor Total Diarias</label
                   >
                   <input
                     type="number"
                     id="valorReserva"
                     v-model.number="valorReserva"
-                    placeholder="Valor da Reserva"
+                    placeholder="Valor das Diarias"
+                    class="form-control"
+                    :disabled="true"
+                  />                  
+                  <label for="valorTotalServicos" class="d-block fw-bold"
+                    >Valor Total Serviços</label
+                  >
+                  <input
+                    type="number"
+                    id="valorTotalServicos"
+                    v-model.number="valorTotalServicos"
+                    placeholder="Valor dos Serviços"
                     class="form-control"
                     :disabled="true"
                   />
+                  <label for="valorTotalDesconto" class="d-block fw-bold"
+                    >Valor Total Reserva</label
+                  >
+                  <input
+                    type="number"
+                    id="valorTotalDesconto"
+                    v-model.number="valorTotalDesconto"
+                    placeholder="Valor Total Reserva"
+                    class="form-control"
+                    :disabled="true"
+                  />
+
                 </div>
               </div>
             </div>
@@ -392,7 +438,7 @@ import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
 //import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
 import ModalServicos2 from "@/../adm/src/components/reserva/ModalServicos2";
 import ModalResumo2 from "@/../adm/src/components/reserva/ModalResumo2";
-
+import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
 
 // testar currency via import VueCurrencyInput from 'vue-currency-input';
 // site https://vue-currency-input-v1.netlify.app/guide/#installation
@@ -451,9 +497,9 @@ export default {
       dataCancelamento: new Date().toISOString().substring(0, 10),
       motivoCancelamento: "",
       cupom: "",
-      taxaDescontoCupom: 0,
+      taxaDescontoCupom: 10,
       valorTotalDesconto: 0,
-      valorTotalServicos: 0,
+      valorTotalServico: 0,
       item: [],
       items: [],
       itemServico: [],
@@ -464,7 +510,7 @@ export default {
       itemArrayReservas: 0,
       itemArrayEdit: false,
       camposAtivos: false,
-      botaoModalServicos: false,       
+      botaoModalServicos: false,
       campoAtivoIdUsuario: false,
       showSalvarButton: true,
       showCancelarReservaButton: false,
@@ -648,6 +694,10 @@ export default {
           .substring(0, 10);
         this.qtdHospedesReserva = this.item.qtdHospedesReserva;
         this.valorReserva = this.item.valorReserva;
+        this.valorTotalServicos = this.item.valorTotalServicos;
+        this.valorTotalDesconto = this.item.valorTotalDesconto;
+        this.qtDiarias = this.item.qtDiarias;
+        this.cupom = this.item.cupom;
         this.idUsuario = this.item.usuario_idUsuario;
         this.nomeUsuario = this.item.nomeUsuario;
         this.idAcomodacao = this.item.acomodacoes_idAcomodacao;
@@ -658,7 +708,11 @@ export default {
           .toISOString()
           .substring(0, 10);
         this.motivoCancelamento = this.item.motivoCancelamento;
-        if (this.statusReserva === "Cancelada" || this.statusReserva === "Encerrada" || this.statusReserva === "Excluída") {
+        if (
+          this.statusReserva === "Cancelada" ||
+          this.statusReserva === "Encerrada" ||
+          this.statusReserva === "Excluída"
+        ) {
           this.camposAtivos = true;
           this.botaoModalServicos = true;
           alert(
@@ -666,7 +720,7 @@ export default {
           );
         } else {
           this.camposAtivos = false;
-          this.botaoModalServicos = false;          
+          this.botaoModalServicos = false;
         }
         console.log(
           "this.acomodacaoTipo",
@@ -697,6 +751,9 @@ export default {
         // console.log("Calculos1...",this.idUsuario,this.qtDiarias,this.dataSaidaReserva,this.dataEntradaReserva)
 
         let reserva = new Reservas();
+        // força calculo antes de salvar...
+        this.arrayServicosBD = this.ServicosReserva;
+        this.calculaReserva();
         reserva.salvar(
           this.idReservas,
           this.dataReserva,
@@ -760,7 +817,8 @@ export default {
           this.arrayServicosAux
         );
         window.$("#modalServicos2").modal("show");
-        this.msgModalServicos2 = "Baixa utilizaçao serviço 5G - ofereça desconto na reserva";
+        this.msgModalServicos2 =
+          "Baixa utilizaçao serviço 5G - ofereça desconto na reserva";
         this.idReservasModalServicos2 = this.idReservas.toString();
       }
 
@@ -778,12 +836,28 @@ export default {
       }
 
       if (action == "gerarCupom") {
-        let conf = confirm(
-          "Confirma geração de cupom?"
-        );        
-        console.log("Vou gerar cupom", conf);
+        if (this.cupom === "") {
+          let conf = confirm("Confirma geração de cupom?");
+          console.log("Conf...:", conf);
+          if (conf === true) {
+            this.cupom = mainFunc.geraCupomDesconto();
+            console.log("Vou gerar cupom", this.cupom);
+            let conf = confirm(`Cupom gerado e autorizado - ${this.cupom} - deseja aplicar o mesmo na reserva?\nApós o desconto alterações nos dados da reserva requerem atenção!`);
+            if (conf === true) {
+              // força calculo antes de salvar...
+              this.arrayServicosBD = this.ServicosReserva;
+              this.calculaReserva();
+              this.handleClick("salvar");
+            }
+          }
+        } else {
+          alert("Um cupom de desconto já foi aplicado nesta reserva!");
+          this.cupom === ""
+            ? (this.showGerarCupomButton = true)
+            : (this.showGerarCupomButton = false);
+        }
       }
-      
+
       // após inclusão, limpa campos do form...
       this.dataReserva = new Date().toISOString().substring(0, 10);
       this.dataEntradaReserva = new Date().toISOString().substring(0, 10);
@@ -831,17 +905,19 @@ export default {
         this.showExcluirButton = false;
         this.showModalServicos = true;
         this.showModalResumo = true;
-        this.showGerarCupomButton = true;
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
+
+        // botão de gerar cupom só renderiza após segundo click...
+        // requer outra abordagem...
+
         try {
           // this.$store.dispatch("Servicos2/getData");
-          this.$store.dispatch("ServicosReserva/getData", {
-            idReserva: `${idReservas}`,
-          });
+          this.$store.dispatch("ServicosReserva/getData", { idReserva: `${idReservas}`,});
         } catch (err) {
           console.log(err);
         }
-        // console.log("action Editar arrayServicosAux",idReservas,this.arrayServicosAux)
+        // this.cupom === "" ? (this.showGerarCupomButton = true) : (this.showGerarCupomButton = false);
+        this.showGerarCupomButton = true
       }
       if (action == "excluir") {
         this.msg1 = "Cliquei HandleItem excluir";
@@ -861,7 +937,7 @@ export default {
         // atualiza campos do formulário
         this.getReservasById(idReservas);
         this.itemArrayEdit = false;
-        this.campoAtivoIdUsuario = false;        
+        this.campoAtivoIdUsuario = false;
         this.showSalvarButton = false;
         this.showCancelarButton = true;
         this.showCancelarReservaButton = true;
@@ -873,6 +949,32 @@ export default {
       this.msg2 = `idReservas ${idReservas}`;
       this.campoAtivoIdUsuario = true;
     },
+
+    calculaReserva() {
+      console.log("Entrei no calculo...",this.arrayServicosBD,this.qtDiarias);
+      let vlrDiarias = 0;
+      let vlrServicos = 0;
+      let vlrTotalDesconto = 0;
+      console.log(this.acomodacaoVlrDiaria,this.qtDiarias);
+
+      vlrDiarias = this.acomodacaoVlrDiaria * this.qtDiarias * this.qtdHospedesReserva;
+
+      for (let i = 0; i < this.arrayServicosBD.data.length; i++) {
+        if (this.arrayServicosBD.data[i].isSelected) {
+          vlrServicos = vlrServicos + ((this.arrayServicosBD.data[i].vlrDiariaServico) * this.qtDiarias)
+        }
+      }
+      this.valorReserva = vlrDiarias;
+      this.valorTotalServicos = vlrServicos;
+      vlrTotalDesconto = vlrDiarias + vlrServicos;
+      this.valorTotalDesconto = vlrTotalDesconto;
+      console.log("valores...",vlrDiarias, vlrServicos, vlrTotalDesconto)
+
+      if (this.cupom !== "") {
+        this.valorTotalDesconto = vlrTotalDesconto * (1 - this.taxaDescontoCupom/100)
+      }
+    },
+
   },
   watch: {
     // isso funciona, mas executa a cada novo caracter, e não somente depois de um tab ou enter...
@@ -892,7 +994,6 @@ export default {
 
     // não executar update de ServicosReserva pois ainda não existe uma reserva selecionada...
     // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` } );
-
   },
 };
 
