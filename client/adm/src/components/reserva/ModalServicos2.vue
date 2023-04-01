@@ -116,7 +116,7 @@ const bootstrap = require("bootstrap");
 import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
 // import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
 import { mapState } from "vuex";
-import * as myFunctions from "@/../adm/src/types/reservas/MainFunctions.js";
+import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
 
 // import axios
 // import axios from "axios";
@@ -168,7 +168,7 @@ export default {
 
     confirmaServicos() {
       alert("Serviços adicionais incluídos! Obrigado!", this.arrayServicosBD);
-      console.log(myFunctions.teste());
+      console.log(mainFunc.teste());
       // let arrayServicos = this.Servicos2;
       let arrayServicos = this.arrayServicosBD;
       console.log("confirmaServicos...:", arrayServicos);
@@ -188,6 +188,10 @@ export default {
         // if (arrayServicos.data[i].isSelected) {
         arrayServicosEscolhidos.push(itemLocal);
         // }
+
+        // após confirmação dos serviços é necessário recalcular os valores da reserva...
+        
+
       }
       localStorage.setItem(
         "servicosEscolhidos",

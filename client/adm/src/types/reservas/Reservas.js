@@ -310,19 +310,19 @@ export class Reservas {
     return response;
   }
 
-  async ultimaReservaCriada() {
-    console.log("ultimaReservaCriada");
-    let ultimaReserva = "";
-    try {
-      ultimaReserva = await axios.get(
-        `http://localhost:5000/reserva/ultima`,
-        {}
-      );
-    } catch (err) {
-      console.log(err);
-    }
-    return ultimaReserva;
-  }
+  // async ultimaReservaCriada() {
+  //   console.log("ultimaReservaCriada");
+  //   let ultimaReserva = "";
+  //   try {
+  //     ultimaReserva = await axios.get(
+  //       `http://localhost:5000/reserva/ultima`,
+  //       {}
+  //     );
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   return ultimaReserva;
+  // }
 
   async updateReservaBD() {
     if (this.statusReserva === "Cancelada") {

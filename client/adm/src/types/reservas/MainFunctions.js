@@ -34,3 +34,10 @@ export function currencyFormat(strVlr) {
   return formatter.format(strVlr); /* $2,500.00 */
 }
 
+export function geraCupomDesconto() {
+
+  let cupom = Math.random().toString(36).substring(2, 9);
+  console.log("Cupom gerado...:",cupom);
+  return cupom;
+  
+}
