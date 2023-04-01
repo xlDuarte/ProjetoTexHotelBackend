@@ -6,6 +6,8 @@ import cors from "cors";
 import Router from "./routes/routes.js";
 import session from "express-session";
 import cookieParser from "cookie-parser";
+import swaggerUI from "swagger-ui-express";
+import swaggerFile from "./swagger/swagger_output.json" assert{type: 'json'};//import do arquivo contendo os endpoint gerados pelo autogen
 
 // iniciando o express
 const app = express();
@@ -13,6 +15,7 @@ const app = express();
 const port = 5000;
 const dia = 1000 * 60 * 60 * 1; //1 horas em milisegundos
 
+app.use('/docs',swaggerUI.serve, swaggerUI.setup(swaggerFile))//motagem da UI do swagger e como parametro o arquivo swagger.json gerado pelo autogen
 app.use(cookieParser());
 app.use(
   session({
