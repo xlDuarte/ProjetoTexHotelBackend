@@ -5,41 +5,92 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <div>
-            <p> Mensagem: {{ msg }}</p>
-            <p> ID da Reserva: {{ idReservas }}</p>
-            <button @click="JokeData">Chuck Norris</button>
+            <p>Mensagem sistema: {{ msg }}</p>
+            <p>ID da Reserva: {{ idReservas }}</p>
+            <!-- para avaliar os arrays sendo passados para a Modal-->
+            <!-- 
+            <p>arrayServicosBD: {{ arrayServicosBD }}</p>
+            <p>arrayServicosAux: {{ arrayServicosAux }}</p>
+            -->
+            <hr />
+            <!-- Incluido para teste !!!-->
+            <!-- <button @click="JokeData">Chuck Norris</button>
             <div v-if="JokeNorris.data">
               <p>{{ JokeNorris.data.value }}</p>
-            </div>
+            </div> -->
           </div>
-          <div>
+          <!-- Incluido para teste !!!-->
+          <!-- <div>
             <button @click="Servicos2Data">Servicos2</button>
             <div v-if="Servicos2.data">
               <p>{{ Servicos2.data.value }}</p>
             </div>
-          </div>
+          </div> -->
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
-          <h3>Modal Servicos 2 - Selecione mais serviços!</h3>
+          <h2>Manutenção Serviços - Selecione serviços para a reserva</h2>
           <hr />
-          <div class="painelServicos" v-for="item in Servicos2.data" :key="item">
-            <input type="checkbox" v-model="checked" :id="item.idServicos" :name="item.nomeServico"
-              :value="item.labelServico" />
-            <label>{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }}
+          <!-- <div
+            class="painelServicos"
+            v-for="item in Servicos2.data"
+            :key="item"
+          >
+            <input
+              type="checkbox"
+              v-model="item.isSelected"
+              :id="item.idServicos"
+              :name="item.nomeServico"
+              :value="item.labelServico"
+            />
+            <label
+              >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }}
+            </label>
+            <br />
+          </div> -->
+          <div
+            class="painelServicos"
+            v-for="item in this.arrayServicosBD.data"
+            :key="item"
+          >
+            <input
+              type="checkbox"
+              v-model="item.isSelected"
+              :id="item.idServicos"
+              :name="item.nomeServico"
+              :value="item.labelServico"
+            />
+            <label
+              >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }},00
             </label>
             <br />
           </div>
           <hr />
           <p>
-            Valores cobrados por diária - consulte nosso site para mais
-            informações
+            Atenção!!! Valores cobrados por diária - alinhar com o cliente
+            antecipadamente
           </p>
         </div>
-        <button class="btn btn-secondary" @click="confirmaServicos">
+        <button
+          class="btn btn-secondary"
+          @click="confirmaServicos"
+          :disabled="botaoModalServicos"
+        >
           Confirma Serviços
+        </button>
+        <button
+          class="btn btn-secondary"
+          @click="limpaServicos"
+          :disabled="botaoModalServicos"
+        >
+          Exclui Serviços
         </button>
         <!-- FINAL DO CONTEÚDO -->
       </div>
@@ -62,7 +113,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 const bootstrap = require("bootstrap");
 
+import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
+// import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
 import { mapState } from "vuex";
+import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
+
+// import axios
+// import axios from "axios";
 
 export default {
   name: "ModalServicos2",
@@ -70,11 +127,30 @@ export default {
     // properties que vem da view que irá chamar o componente...
     msg: String,
     idReservas: String,
+    arrayServicosBD: Object,
+    arrayServicosAux: Object,
+    botaoModalServicos: Boolean,
   },
   data() {
     return {
       // informações que podem ser utilizadas no template...
+      arrayServicos: [],
     };
+  },
+  ready() {
+    console.log("Created modalResumo2 - ready(): ");
+  },
+  setup() {
+    //
+    console.log("Created modalResumo2 - setup(): ");
+  },
+  created() {
+    //
+    console.log("Created modalResumo2 - created(): ");
+  },
+  watch() {
+    // não utilizado...
+    console.log("Created modalResumo2 - watch(): ");
   },
   methods: {
     abreModal() {
@@ -89,53 +165,122 @@ export default {
     alerta() {
       //
     },
+
     confirmaServicos() {
-      alert("Serviços adicionais incluídos! Obrigado!");
-      window.$("#modalServicos").modal("hide");
+      alert("Serviços adicionais incluídos! Obrigado!", this.arrayServicosBD);
+      console.log(mainFunc.teste());
+      // let arrayServicos = this.Servicos2;
+      let arrayServicos = this.arrayServicosBD;
+      console.log("confirmaServicos...:", arrayServicos);
+      let arrayServicosEscolhidos = [];
+      for (let i = 0; i < arrayServicos.data.length; i++) {
+        // define idServico e demais dados do servico,
+        // se reserva veio do frontend usar "servicos_idservicos" (FK)
+        // se reserva for criada no backend, usar "idServicos" (PK)
+        let servId = arrayServicos.data[i].servicos_idservicos;
+        if (typeof servId === "undefined") {
+          servId = arrayServicos.data[i].idServicos;
+        }
+        let servData = `"idServicos":"${servId}","nomeServico":"${arrayServicos.data[i].nomeServico}","descricaoServico":"${arrayServicos.data[i].descricaoServico}","vlrDiariaServico":${arrayServicos.data[i].vlrDiariaServico},"isSelected":${arrayServicos.data[i].isSelected}`;
+        console.log("confirmaServicos...:", servId, servData);
+        let itemLocal = "{" + servData + "}";
+        // só deveria gravar os selecionados, porém para facilitar esta gravando todos
+        // if (arrayServicos.data[i].isSelected) {
+        arrayServicosEscolhidos.push(itemLocal);
+        // }
+
+        // após confirmação dos serviços é necessário recalcular os valores da reserva...
+        
+
+      }
+      localStorage.setItem(
+        "servicosEscolhidos",
+        "[" + arrayServicosEscolhidos + "]"
+      );
+      //grava servicos no BD
+      // instancia classe para gravar reserva no BD....
+      //let reserva = new Reservas();
+      // para não ocorrer erro de duplicacão das chaves, os dados dos serviços por reserva serão eliminados...
+      // teste(this.idServicos,this.arrayServicosBD);
+      deleteAndCreateRecords(this.idReservas, this.arrayServicosBD)
+         .then(() => {
+           console.log("Exclusão e inclusão com sucesso...");
+      })
+         .catch((error) => {
+           console.error(`Ocorreu um erro: ${error}`);
+      });
+
+      // só com isso não funcionou...Misericórdia, só por Jesus - mais de 3 horas pra chegar na solução, e nem sei se está 100%...vou testar...
+      // reserva.excluiServicosReservaBD(this.idReservas);
+      // reserva.salvarServicos(this.idReservas, this.arrayServicosBD);
+
+      // limpa servicos do array...
+      this.limpaServicos();
+      window.$("#modalServicos2").modal("hide");
     },
+
+    limpaServicos() {
+      let arrayServicos = this.arrayServicosBD;
+      for (let i = 0; i < arrayServicos.data.length; i++) {
+        console.log(
+          "Servicos ",
+          arrayServicos.data[i].nomeServico,
+          arrayServicos.data[i].isSelected
+        );
+        arrayServicos.data[i].isSelected = false;
+      }
+    },
+
+    // somente para teste da store...
     JokeData() {
       this.$store.dispatch("JokeNorris/getData");
     },
+
+    // somente para teste...
     Servicos2Data() {
-      this.$store.dispatch("Servicos2/getData");
+      console.log("Servicos2Data...click!");
     },
   },
   computed: {
-    ...mapState(["JokeNorris"]),
+    // ...mapState(["JokeNorris"]),
     ...mapState(["Servicos2"]),
   },
+
   mounted() {
     // carrega servicos para a store...
-    this.Servicos2Data();
-    this.JokeData();
-
-    window.$("#servico1").click(function () {
-      window.$("#servico1").is(":checked")
-        ? localStorage.setItem("servico1", true)
-        : localStorage.setItem("servico1", false);
-    });
-    window.$("#servico2").click(function () {
-      window.$("#servico2").is(":checked")
-        ? localStorage.setItem("servico2", true)
-        : localStorage.setItem("servico2", false);
-    });
-    window.$("#servico3").click(function () {
-      window.$("#servico3").is(":checked")
-        ? localStorage.setItem("servico3", true)
-        : localStorage.setItem("servico3", false);
-    });
-    window.$("#servico4").click(function () {
-      window.$("#servico4").is(":checked")
-        ? localStorage.setItem("servico4", true)
-        : localStorage.setItem("servico4", false);
-    });
-    window.$("#servico5").click(function () {
-      window.$("#servico5").is(":checked")
-        ? localStorage.setItem("servico5", true)
-        : localStorage.setItem("servico5", false);
-    });
+    // this.Servicos2Data();
+    // this.JokeData();
   },
 };
+
+
+// controla a exclusão e criação...
+async function deleteAndCreateRecords(idReserva,arrayServicosBD) {
+  console.log("Primeiro apagar");
+  await new Promise(resolve => {
+    deleteRecords(idReserva);
+    resolve();
+    console.log("Terminei de apagar");
+  }),
+  console.log("Agora vou criar...");
+  let criaReserva = new Reservas();
+  criaReserva.salvarServicos(idReserva, arrayServicosBD);
+}
+
+// Function that takes some time to complete
+function deleteRecords(idReserva) {
+  return new Promise(resolve => {
+    let delReserva = new Reservas();
+    delReserva.excluiServicosReservaBD(idReserva);
+    console.log('deleteRecords finished',resolve);
+    resolve();
+    // setTimeout(() => {
+    //   console.log('myFunction finished');
+    //   resolve();
+    // }, 2000);
+  });
+}
+
 </script>
 
 <style scoped>

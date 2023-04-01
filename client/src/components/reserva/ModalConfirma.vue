@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <!-- Modal Confirma -->
     <div class="modal" tabindex="-1" id="modalConfirma">
@@ -196,4 +196,4 @@ img {
   flex: 1 1 420px;
   margin: 10px;
 }
-</style>
+</style> -->

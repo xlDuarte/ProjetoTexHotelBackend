@@ -64,6 +64,24 @@ export class Reservas {
     itemArrayEdit,
     arrayServicosEscolhidos
   ) {
+    console.log("Calculos3...:", idReservas,inputDataReserva,inputQtdHospedesReserva,inputIdUsuario,inputIdAcomodacao);
+
+    // dataReserva,dataEntradaReserva,dataSaidaReserva,valorReserva,qtdHospedesReserva,idUsuario,
+    //       this.idAcomodacao,
+    //       this.acomodacaoTipo,
+    //       this.acomodacaoVlrDiaria,
+    //       this.qtDiarias,
+    //       this.statusReserva,
+    //       this.dataCancelamento,
+    //       this.motivoCancelamento,
+    //       this.cupom,
+    //       this.taxaDescontoCupom,
+    //       this.valorTotalDesconto,
+    //       this.valorTotalServicos,
+    //       this.itemArrayReservas,
+    //       this.itemArrayEdit
+    //     );
+
     // campos input - form
     this.idReservas = idReservas;
     this.dataReserva = inputDataReserva;
@@ -105,21 +123,20 @@ export class Reservas {
 
     // verifica campos calculados - valorReserva, qtdade diarias, etc
     // rotina para tratar as datas de input
-    let dateStartAux, dateEndAux, dateStart, dateEnd, difDates;
+    let dateStartAux, dateEndAux, dateStart, dateEnd;
     dateStartAux = this.dataEntradaReserva.split("-");
     dateStart = new Date(dateStartAux[0], dateStartAux[1] - 1, dateStartAux[2]);
     dateEndAux = this.dataSaidaReserva.split("-");
     dateEnd = new Date(dateEndAux[0], dateEndAux[1] - 1, dateEndAux[2]);
-    difDates = Math.ceil(dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+    this.qtDiarias = Math.ceil(dateEnd - dateStart) / (1000 * 60 * 60 * 24);
 
     // calcula valor da reserva, sem servicos
     this.valorReserva =
-      parseFloat(difDates) *
+      parseFloat(this.qtDiarias) *
       parseFloat(this.qtdHospedesReserva) *
       parseFloat(this.acomodacaoVlrDiaria);
-    // console.log(
-    //   `Valor reserva: ${this.valorReserva} - ${difDates} - ${this.qtdHospedesReserva} - ${this.acomodacaoVlrDiaria}`
-    // );
+
+    console.log ("Calculos2...:",this.qtDiarias, this.valorReserva,this.idUsuario)
 
     // verifica se é uma edição, o tratamento é diferente...
     if (this.itemArrayEdit) {
@@ -168,7 +185,7 @@ export class Reservas {
     );
 
     // verifica se existem serviços para salvar...
-    if (localStorage.getItem("servicosEscolhidos") !== null) { 
+    if (localStorage.getItem("servicosEscolhidos") !== null) {
       arrayServ = JSON.parse(localStorage.getItem("servicosEscolhidos"));
 
       // verifica serviços selecionados e persiste no BD...
@@ -177,33 +194,29 @@ export class Reservas {
 
       for (let i = 0; i < arrayServ.length; i++) {
         console.log("verifica serviços selecionados");
-        // vou gravar esse aqui
+        // antes só grava os selecionados..ajustado para gravar todos...
+
+        let isSelected = "false";
         if (arrayServ[i].isSelected) {
-          let Reservas_idReservas = idUltimaReserva;
-          let servicos_idservicos = arrayServ[i].idServicos;
-          let nomeServico = arrayServ[i].nomeServico;
-          let descricaoServico = arrayServ[i].descricaoServico;
-          let vlrDiariaServico = arrayServ[i].vlrDiariaServico;
-          console.log(
-            "Esse aqui eu vou gravar...",
-            Reservas_idReservas,
-            servicos_idservicos,
-            nomeServico,
-            vlrDiariaServico,
-            descricaoServico
-          );
-          this.criaServicoReservaBD(
-            Reservas_idReservas,
-            servicos_idservicos,
-            nomeServico,
-            vlrDiariaServico,
-            descricaoServico
-          );
+          isSelected = "true";
         }
+
+        let Reservas_idReservas = idUltimaReserva;
+        let servicos_idservicos = arrayServ[i].idServicos;
+        let nomeServico = arrayServ[i].nomeServico;
+        let descricaoServico = arrayServ[i].descricaoServico;
+        let vlrDiariaServico = arrayServ[i].vlrDiariaServico;
+
+        this.criaServicoReservaBD(
+          Reservas_idReservas,
+          servicos_idservicos,
+          nomeServico,
+          vlrDiariaServico,
+          descricaoServico,
+          isSelected
+        );
       }
       localStorage.removeItem("servicosEscolhidos");
-      //   // console.log("Servicos ",arrayServicos.data[i].nomeServico, arrayServicos.data[i].isSelected);
-      //   // arrayServicos.data[i].isSelected = false;
     }
   }
 
@@ -258,7 +271,8 @@ export class Reservas {
     servicos_idservicos,
     nomeServico,
     vlrDiariaServico,
-    descricaoServico
+    descricaoServico,
+    isSelected
   ) {
     let response = "";
     try {
@@ -268,6 +282,7 @@ export class Reservas {
         nomeServico,
         vlrDiariaServico,
         descricaoServico,
+        isSelected,
       });
     } catch (err) {
       console.log(err);
@@ -275,38 +290,64 @@ export class Reservas {
     return response;
   }
 
-  async ultimaReservaCriada() {
-    console.log("ultimaReservaCriada");
-    let ultimaReserva = "";
+  async excluiServicosReservaBD(
+    Reservas_idReservas,
+  ) {
+    let response = "";
+    console.log("Vou apagar...",Reservas_idReservas)
     try {
-      ultimaReserva = await axios.get(
-        `http://localhost:5000/reserva/ultima`,
+      // response = await axios.delete(
+      //   `http://localhost:5000/servicoReserva/1`,
+      //   {}
+      // );
+      response = await axios.delete(
+        `http://localhost:5000/servicoReserva/${Reservas_idReservas}`,
         {}
       );
     } catch (err) {
       console.log(err);
     }
-    return ultimaReserva;
+    return response;
   }
+
+  // async ultimaReservaCriada() {
+  //   console.log("ultimaReservaCriada");
+  //   let ultimaReserva = "";
+  //   try {
+  //     ultimaReserva = await axios.get(
+  //       `http://localhost:5000/reserva/ultima`,
+  //       {}
+  //     );
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   return ultimaReserva;
+  // }
 
   async updateReservaBD() {
     if (this.statusReserva === "Cancelada") {
       this.dataCancelamento = new Date().toISOString().substring(0, 10);
     }
     try {
+      console.log("update....:",this.idUsuario,this.idAcomodacao)
       await axios.put(`http://localhost:5000/reserva/${this.idReservas}`, {
         dataReserva: this.dataReserva,
         dataEntradaReserva: this.dataEntradaReserva,
         dataSaidaReserva: this.dataSaidaReserva,
         valorReserva: this.valorReserva,
         qtdHospedesReserva: this.qtdHospedesReserva,
-        idUsuario: this.idUsuario,
-        idAcomodacao: this.idAcomodacao,
+        usuario_idUsuario: this.idUsuario,
+        acomodacoes_idAcomodacao: this.idAcomodacao,
+        qtDiarias: this.qtDiarias,
         acomodacaoTipo: this.acomodacaoTipo,
         acomodacaoVlrDiaria: this.acomodacaoVlrDiaria,
         statusReserva: this.statusReserva,
         dataCancelamento: this.dataCancelamento,
         motivoCancelamento: this.motivoCancelamento,
+        cupom: this.cupom,
+        taxaDescontoCupom: this.taxaDescontoCupom,
+        valorTotalDesconto: this.valorTotalDesconto,
+        valorTotalServicos: this.valorTotalServicos,
       });
       this.dataReserva = "";
       this.dataEntradaReserva = "";
