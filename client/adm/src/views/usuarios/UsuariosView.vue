@@ -1,43 +1,47 @@
 <template>
-  <div class="sec">
-    <div class="text-center">
-      <h2>CADASTRO DE USUARIOS</h2>
-      <p>*Campos de preenchimento obrigatório.</p>
+  <div class="sec">  
+    <div class="row">
+      <div class="text-center">
+        <h2>CADASTRO DE USUARIOS</h2>
+        <p>*Campos de preenchimento obrigatório.</p>
+      </div>
+      <AddUsuario @updateList="getUsuarios()"/>
+      <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <th scope="col">ID</th>
+          <th scope="col">Nome</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">CPF</th>
+          <th scope="col">Endereço</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Telefone</th>
+        </thead>
+        <tbody>
+          <tr
+            scope="row"
+            v-for="item in items"
+            :key="item.idUsuario"
+          >
+            <td >{{ item.idUsuario }}</td>
+            <td >{{ item.nomeUsuario }}</td>
+            <td >{{ item.emailUsuario }}</td>
+            <td >{{ item.cpfUsuario }}</td>
+            <td >{{ item.endUsuario }}</td>
+            <td >{{ item.tipoUsuario }}</td>
+            <td >{{ item.telefoneUsuario }}</td>
+            <td >              
+              <router-link :to="{ name: 'editUsuarios', params: { id: item.idUsuario } }">
+                <button class="button">Editar</button></router-link>
+            </td>
+            <td >              
+                <button class="button" @click="deleteUsuarios(item.idUsuario)">Deletar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
     </div>
-    <AddUsuario @updateList="getUsuarios()"/>
-    <table class="table table-responsive table-striped">
-      <thead>
-        <th scope="col">ID</th>
-        <th scope="col">Nome</th>
-        <th scope="col">E-mail</th>
-        <th scope="col">CPF</th>
-        <th scope="col">Endereço</th>
-        <th scope="col">Tipo</th>
-        <th scope="col">Telefone</th>
-      </thead>
-      <tbody>
-        <tr
-          scope="row"
-          v-for="item in items"
-          :key="item.idUsuario"
-        >
-          <td >{{ item.idUsuario }}</td>
-          <td >{{ item.nomeUsuario }}</td>
-          <td >{{ item.emailUsuario }}</td>
-          <td >{{ item.cpfUsuario }}</td>
-          <td >{{ item.endUsuario }}</td>
-          <td >{{ item.tipoUsuario }}</td>
-          <td >{{ item.telefoneUsuario }}</td>
-          <td >              
-            <router-link :to="{ name: 'editUsuarios', params: { id: item.idUsuario } }">
-              <button class="button">Editar</button></router-link>
-          </td>
-          <td >              
-              <button class="button" @click="deleteUsuarios(item.idUsuario)">Deletar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </template>
 
@@ -111,10 +115,7 @@ export default {
   color: black;
 }
 
-.sec > div {
-  max-width: 90%;
-  margin: 2% 5%;
-}
+
 
 .flex {
   display: flex;
