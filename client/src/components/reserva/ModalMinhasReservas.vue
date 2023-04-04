@@ -134,7 +134,14 @@ export default {
       comentarios: [],
       labelReserva: document.getElementById("lblReserva"),
       reservaId: "",
+      idUsuario: 14,
     };
+  },
+  created() {
+    
+    console.log("Created...");
+
+
   },
   methods: {
     abreModal() {
@@ -264,6 +271,7 @@ export default {
   },
   computed: {
     reservas() {
+
       // verifica campos na localStorage = Reserva_"X"
       let arrayReservas = [];
       let arrayAux = [];
@@ -294,6 +302,7 @@ export default {
     // esconde o painel de comentários...
     this.showHide(".painelComentarios", "add");
   },
+
 };
 
 // confirmação da reserva e display da modal de confirmação

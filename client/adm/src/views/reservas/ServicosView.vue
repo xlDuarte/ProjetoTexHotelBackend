@@ -16,9 +16,6 @@
             <label for="nome" class=" form-label fw-bold ">*Nome:</label>
             <input type="text" id="nome" v-model="nome" placeholder="Abreviação do serviço" class="form-control  w-100 " maxlength="45" />
             </div>
-          
-        
-
         
           <div class="col col-5 ms-4">
             <label for="descricao" class=" d-block fw-bold ">*Descriçao:</label>
