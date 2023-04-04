@@ -31,11 +31,16 @@ export class Reservas {
   valorTotalDesconto;
   valorTotalServicos;
   idCupom;
+  idUltimaReserva;
+  Servicos2;
+  arrayServicosSelecionados;
   storage = [];
 
   constructor(id) {
     !id ? (this.id = 0) : (this.id = id);
   }
+
+  // inicio rotina para persistir reserva no BD...
   salvar(
     idReservas,
     inputDataReserva,
@@ -56,8 +61,27 @@ export class Reservas {
     valorTotalDesconto,
     valorTotalServicos,
     itemArrayReservas,
-    itemArrayEdit
+    itemArrayEdit,
+    arrayServicosEscolhidos
   ) {
+    console.log("Calculos3...:", idReservas,inputDataReserva,inputQtdHospedesReserva,inputIdUsuario,inputIdAcomodacao);
+
+    // dataReserva,dataEntradaReserva,dataSaidaReserva,valorReserva,qtdHospedesReserva,idUsuario,
+    //       this.idAcomodacao,
+    //       this.acomodacaoTipo,
+    //       this.acomodacaoVlrDiaria,
+    //       this.qtDiarias,
+    //       this.statusReserva,
+    //       this.dataCancelamento,
+    //       this.motivoCancelamento,
+    //       this.cupom,
+    //       this.taxaDescontoCupom,
+    //       this.valorTotalDesconto,
+    //       this.valorTotalServicos,
+    //       this.itemArrayReservas,
+    //       this.itemArrayEdit
+    //     );
+
     // campos input - form
     this.idReservas = idReservas;
     this.dataReserva = inputDataReserva;
@@ -80,7 +104,8 @@ export class Reservas {
     this.valorTotalServicos = valorTotalServicos;
     this.itemArrayReservas = itemArrayReservas;
     this.itemArrayEdit = itemArrayEdit;
-
+    this.arrayServicosEscolhidos = arrayServicosEscolhidos;
+    this.servicosEscolhidos = localStorage.getItem("servicosEscolhidos");
     this.validacao = this.validarCampos(
       inputDataEntradaReserva,
       inputDataSaidaReserva,
@@ -98,21 +123,20 @@ export class Reservas {
 
     // verifica campos calculados - valorReserva, qtdade diarias, etc
     // rotina para tratar as datas de input
-    let dateStartAux, dateEndAux, dateStart, dateEnd, difDates;
+    let dateStartAux, dateEndAux, dateStart, dateEnd;
     dateStartAux = this.dataEntradaReserva.split("-");
     dateStart = new Date(dateStartAux[0], dateStartAux[1] - 1, dateStartAux[2]);
     dateEndAux = this.dataSaidaReserva.split("-");
     dateEnd = new Date(dateEndAux[0], dateEndAux[1] - 1, dateEndAux[2]);
-    difDates = Math.ceil(dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+    this.qtDiarias = Math.ceil(dateEnd - dateStart) / (1000 * 60 * 60 * 24);
 
     // calcula valor da reserva, sem servicos
     this.valorReserva =
-      parseFloat(difDates) *
+      parseFloat(this.qtDiarias) *
       parseFloat(this.qtdHospedesReserva) *
       parseFloat(this.acomodacaoVlrDiaria);
-    // console.log(
-    //   `Valor reserva: ${this.valorReserva} - ${difDates} - ${this.qtdHospedesReserva} - ${this.acomodacaoVlrDiaria}`
-    // );
+
+    console.log ("Calculos2...:",this.qtDiarias, this.valorReserva,this.idUsuario)
 
     // verifica se é uma edição, o tratamento é diferente...
     if (this.itemArrayEdit) {
@@ -138,7 +162,6 @@ export class Reservas {
           "Confirma cancelamento da reserva? Esta operação não poderá ser desfeita!"
         );
       }
-
       if (confirmaSalvar) {
         // grava dados da reserva editada...
         this.updateReservaBD();
@@ -148,9 +171,53 @@ export class Reservas {
       return true;
     }
 
-    // grava dados da nova reserva...
-    this.criaReservaBD();
-    return true;
+    return this.criaReservaBD();
+  }
+  // fim rotina persistencia reserva no BD...
+
+  salvarServicos(idUltimaReserva, arrayServicosSelecionados) {
+    let arrayServ = [];
+    console.log(
+      "Dados recebidos...",
+      idUltimaReserva,
+      arrayServicosSelecionados,
+      localStorage.getItem("servicosEscolhidos")
+    );
+
+    // verifica se existem serviços para salvar...
+    if (localStorage.getItem("servicosEscolhidos") !== null) {
+      arrayServ = JSON.parse(localStorage.getItem("servicosEscolhidos"));
+
+      // verifica serviços selecionados e persiste no BD...
+      console.log("Ultima reserva...", idUltimaReserva);
+      console.log("Servicos arrayServ...", arrayServ);
+
+      for (let i = 0; i < arrayServ.length; i++) {
+        console.log("verifica serviços selecionados");
+        // antes só grava os selecionados..ajustado para gravar todos...
+
+        let isSelected = "false";
+        if (arrayServ[i].isSelected) {
+          isSelected = "true";
+        }
+
+        let Reservas_idReservas = idUltimaReserva;
+        let servicos_idservicos = arrayServ[i].idServicos;
+        let nomeServico = arrayServ[i].nomeServico;
+        let descricaoServico = arrayServ[i].descricaoServico;
+        let vlrDiariaServico = arrayServ[i].vlrDiariaServico;
+
+        this.criaServicoReservaBD(
+          Reservas_idReservas,
+          servicos_idservicos,
+          nomeServico,
+          vlrDiariaServico,
+          descricaoServico,
+          isSelected
+        );
+      }
+      localStorage.removeItem("servicosEscolhidos");
+    }
   }
 
   excluir(idReservas) {
@@ -159,9 +226,18 @@ export class Reservas {
     return true;
   }
 
+  //   try {
+  //     const response = await axios.get(urlYandex);
+
+  //     return response.data.text[0];
+  // } catch(error) {
+  //     return error;
+  // }
+
   async criaReservaBD() {
+    let response = "";
     try {
-      await axios.post("http://localhost:5000/reserva", {
+      response = await axios.post("http://localhost:5000/reserva", {
         dataReserva: this.dataReserva,
         dataEntradaReserva: this.dataEntradaReserva,
         dataSaidaReserva: this.dataSaidaReserva,
@@ -183,27 +259,95 @@ export class Reservas {
     } catch (err) {
       console.log(err);
     }
+
+    let ultimaReserva = response.data[0]["LAST_INSERT_ID()"];
+    this.salvarServicos(ultimaReserva, this.arrayServicosEscolhidos);
     return true;
+    //return ultimaReserva;
   }
+
+  async criaServicoReservaBD(
+    Reservas_idReservas,
+    servicos_idservicos,
+    nomeServico,
+    vlrDiariaServico,
+    descricaoServico,
+    isSelected
+  ) {
+    let response = "";
+    try {
+      response = await axios.post("http://localhost:5000/servicoReserva", {
+        Reservas_idReservas,
+        servicos_idservicos,
+        nomeServico,
+        vlrDiariaServico,
+        descricaoServico,
+        isSelected,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    return response;
+  }
+
+  async excluiServicosReservaBD(
+    Reservas_idReservas,
+  ) {
+    let response = "";
+    console.log("Vou apagar...",Reservas_idReservas)
+    try {
+      // response = await axios.delete(
+      //   `http://localhost:5000/servicoReserva/1`,
+      //   {}
+      // );
+      response = await axios.delete(
+        `http://localhost:5000/servicoReserva/${Reservas_idReservas}`,
+        {}
+      );
+    } catch (err) {
+      console.log(err);
+    }
+    return response;
+  }
+
+  // async ultimaReservaCriada() {
+  //   console.log("ultimaReservaCriada");
+  //   let ultimaReserva = "";
+  //   try {
+  //     ultimaReserva = await axios.get(
+  //       `http://localhost:5000/reserva/ultima`,
+  //       {}
+  //     );
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   return ultimaReserva;
+  // }
 
   async updateReservaBD() {
     if (this.statusReserva === "Cancelada") {
       this.dataCancelamento = new Date().toISOString().substring(0, 10);
     }
     try {
+      console.log("update....:",this.idUsuario,this.idAcomodacao)
       await axios.put(`http://localhost:5000/reserva/${this.idReservas}`, {
         dataReserva: this.dataReserva,
         dataEntradaReserva: this.dataEntradaReserva,
         dataSaidaReserva: this.dataSaidaReserva,
         valorReserva: this.valorReserva,
         qtdHospedesReserva: this.qtdHospedesReserva,
-        idUsuario: this.idUsuario,
-        idAcomodacao: this.idAcomodacao,
+        usuario_idUsuario: this.idUsuario,
+        acomodacoes_idAcomodacao: this.idAcomodacao,
+        qtDiarias: this.qtDiarias,
         acomodacaoTipo: this.acomodacaoTipo,
         acomodacaoVlrDiaria: this.acomodacaoVlrDiaria,
         statusReserva: this.statusReserva,
         dataCancelamento: this.dataCancelamento,
         motivoCancelamento: this.motivoCancelamento,
+        cupom: this.cupom,
+        taxaDescontoCupom: this.taxaDescontoCupom,
+        valorTotalDesconto: this.valorTotalDesconto,
+        valorTotalServicos: this.valorTotalServicos,
       });
       this.dataReserva = "";
       this.dataEntradaReserva = "";

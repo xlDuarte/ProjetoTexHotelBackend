@@ -41,6 +41,18 @@ export const createReserva = (req, res) => {
   });
 };
 
+// retorna ultimo id de reserva criado, necessario para persistir os servicos na sequencia
+export const ultimoIdReserva = (req, res) => {
+  const data = req.body;
+  selectUltimoID(data, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
 // atualiza a reserva
 export const updateReserva = (req, res) => {
   const data = req.body;

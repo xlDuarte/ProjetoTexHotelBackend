@@ -166,7 +166,7 @@ export default {
       try {
         const response = await axios.get("http://localhost:5000/acomodacao");
         this.items = response.data;
-        console.log(this.items)
+        console.log("Array Acomodacoes items...",this.items)
       } catch (err) {
         console.log(err);
       }

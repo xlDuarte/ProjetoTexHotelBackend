@@ -15,6 +15,7 @@ export class Servicos {
   label;
   descricao;
   vlrDiaria;
+  isSelected;
   itemServico = [];
   storage = [];
 
@@ -27,6 +28,7 @@ export class Servicos {
     inputLabel,
     inputDescricao,
     inputVlrDiaria,
+    isSelected,
     itemArrayServicos,
     itemArrayEdit
   ) {
@@ -34,6 +36,7 @@ export class Servicos {
     this.label = inputLabel;
     this.descricao = inputDescricao;
     this.vlrDiaria = inputVlrDiaria;
+    this.isSelected = 0;
     this.itemArrayServicos = itemArrayServicos;
     this.itemArrayEdit = itemArrayEdit;
 
@@ -88,13 +91,14 @@ export class Servicos {
 
   async criaServicoBD() {
     console.log("entrei na gravação do registro...");
-    console.log(this.nome, this.descricao, this.label, this.vlrDiaria);
+    console.log(this.nome, this.descricao, this.label, this.vlrDiaria, this.isSelected);
     try {
       await axios.post("http://localhost:5000/servico", {
         nomeServico: this.nome,
         vlrDiariaServico: this.vlrDiaria,
         descricaoServico: this.descricao,
         labelServico: this.label,
+        isSelected: this.isSelected,
       });
       this.nome = "";
       this.vlrDiaria = "";
@@ -202,6 +206,39 @@ export class Servicos {
       );
       this.itemServico = response.data;
       console.log("Type Servicos - getServicosById", this.itemServico);
+      return response;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  }
+
+  // async testePromise(idReserva) {
+  //     new Promise((resolve, reject) => {
+  //       // This Promise is in a "pending" state
+  //       console.log("testePromise = ",idReserva)
+  //     })
+  //   // chatGPT  
+  //   const myPromise = new Promise((resolve, reject) => {
+  //     // This Promise is in a "pending" state
+  //   });
+  //   const myPromise = new Promise((resolve, reject) => {
+  //     resolve("Success!"); // This Promise is now "fulfilled"
+  //   });
+  //   myPromise.then((result) => {
+  //     console.log(result); // Output: "Success!"
+  //   });
+  //   // chatGPT fim
+  // }
+
+  // localiza servicos da Reserva pelo id
+  async getServicosByReservaId(idReserva) {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/servico/${idReserva}`
+      );
+      this.itemServicosReserva = response.data;
+      // console.log("Type Servicos - getServicosByReservaId", this.itemServicosReserva);
       return response;
     } catch (err) {
       console.log(err);

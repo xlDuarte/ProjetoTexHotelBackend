@@ -1,4 +1,80 @@
 ************************************************************************************************************
+FRC - 01/04 - Ajuste na view v_ConsultaReserva, faltava campo qtDiarias 
+************************************************************************************************************
+
+USE `hotelcnp`;
+CREATE 
+     OR REPLACE ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `v_ConsultaReserva` AS
+    SELECT 
+        `Reservas`.`idReservas` AS `idReservas`,
+        `Reservas`.`dataReserva` AS `dataReserva`,
+        `Reservas`.`dataEntradaReserva` AS `dataEntradaReserva`,
+        `Reservas`.`dataSaidaReserva` AS `dataSaidaReserva`,
+        `Reservas`.`valorReserva` AS `valorReserva`,
+        `Reservas`.`qtdHospedesReserva` AS `qtdHospedesReserva`,
+        `Reservas`.`usuario_idUsuario` AS `usuario_idUsuario`,
+        `usuario`.`nomeUsuario` AS `nomeUsuario`,
+        `Reservas`.`acomodacoes_idAcomodacao` AS `acomodacoes_idAcomodacao`,
+        `Reservas`.`qtDiarias` AS `qtDiarias`,        
+        `acomodacoes`.`nomeAcomodacao` AS `nomeAcomodacao`,
+        `acomodacoes`.`valorAcomodacao` AS `valorAcomodacao`,
+        `acomodacoes`.`numeroAcomodacao` AS `numeroAcomodacao`,
+        `Reservas`.`statusReserva` AS `statusReserva`,
+        `Reservas`.`dataCancelamento` AS `dataCancelamento`,
+        `Reservas`.`motivoCancelamento` AS `motivoCancelamento`,
+        `Reservas`.`cupom` AS `cupom`,
+        `Reservas`.`taxaDescontoCupom` AS `taxaDescontoCupom`,
+        `Reservas`.`valorTotalDesconto` AS `valorTotalDesconto`,
+        `Reservas`.`valorTotalServicos` AS `valorTotalServicos`
+    FROM
+        ((`Reservas`
+        JOIN `usuario` ON ((`Reservas`.`usuario_idUsuario` = `usuario`.`idUsuario`)))
+        JOIN `acomodacoes` ON ((`Reservas`.`acomodacoes_idAcomodacao` = `acomodacoes`.`idAcomodacao`)));
+
+************************************************************************************************************
+FRC - 01/04 - Ajuste campo valorReserva para Decimal com duas casas, padronizando com os demais.
+************************************************************************************************************
+
+ALTER TABLE `hotelcnp`.`Reservas` 
+CHANGE COLUMN `valorReserva` `valorReserva` DECIMAL(12,2) NOT NULL ;
+
+************************************************************************************************************
+FRC - 31/03 - Ajuste na tabela de servicos, para facilitar controle na modalServicos. 
+              Campo idServicoReserva como chave PK 
+              APAGAR TODOS OS REGISTROS ANTES DE EXECUTAR!!! E O CAMPO DEVE SER O PRIMEIRO NA LISTA, REORDERNAR
+              NO MEU CASO TIVE QUE EXECUTAR DOIS COMANDOS PELO MYSQL WORKBENCH
+************************************************************************************************************
+
+ALTER TABLE `hotelcnp`.`Reservas_has_servicos` 
+ADD COLUMN `idServicoReserva` INT NOT NULL FIRST,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`Reservas_idReservas`, `servicos_idservicos`, `idServicoReserva`);
+;
+
+ALTER TABLE `hotelcnp`.`Reservas_has_servicos` 
+CHANGE COLUMN `idServicoReserva` `idServicoReserva` INT NOT NULL AUTO_INCREMENT ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`idServicoReserva`, `Reservas_idReservas`, `servicos_idservicos`);
+;
+
+************************************************************************************************************
+FRC - 30/03 - Inclusão campo "isSelected" na tabela de servicos, para facilitar controle na modalServicos. 
+              Campo não obrigatório, false ou true
+************************************************************************************************************
+
+ALTER TABLE `hotelcnp`.`servicos` 
+CHANGE COLUMN `isSelected` `isSelected` VARCHAR(5) NULL DEFAULT NULL ;
+
+e 
+
+ALTER TABLE `hotelcnp`.`Reservas_has_servicos` 
+ADD COLUMN `isSelected` VARCHAR(5) NULL AFTER `descricaoServico`;
+
+
+************************************************************************************************************
 FRC - 11/02 - Remoção do NotNull do campo statusUsuario, provoca erro na inserção de um novo user...
 ************************************************************************************************************
 
@@ -6,7 +82,6 @@ ALTER TABLE `hotelcnp`.`usuario`
 CHANGE COLUMN `statusUsuario` `statusUsuario` VARCHAR(45) NULL ;
 
 ************************************************************************************************************
-
 FRC - 17/02 - Ajuste para incluir novos campos na tabela Reservas
 
 ALTER TABLE `hotelcnp`.`Reservas` 

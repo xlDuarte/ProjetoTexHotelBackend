@@ -37,12 +37,41 @@ export const getReservaById = (id, result) => {
 // insere uma reserva no banco
 export const insertReserva = (data, result) => {
   console.log("insertReserva", data);
-  db.query("INSERT INTO Reservas SET ?", [data], (err, results) => {
+  db.query(
+    "INSERT INTO Reservas SET ?",
+    [data],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        
+          db.query("select LAST_INSERT_ID()", (err, results) => {
+            if (err) {
+              console.log(err);
+              result(err, null);
+            } else {
+              console.log("Results...",results)
+              // localStorage.setItem("ReservaUltimID",JSON.stringify(results))
+              result(null, results);
+            }
+          });
+        
+        // result(null, results);
+      }
+    }
+  );
+};
+
+// retorna ultimo id de reserva criado, necessario para persistir os servicos na sequencia
+export const selectUltimoID = (result) => {
+  console.log("selectUltimID");
+  db.query("select LAST_INSERT_ID()", (err, results) => {
     if (err) {
       console.log(err);
       result(err, null);
     } else {
-      result(null, results);
+      result(null, results[0]);
     }
   });
 };
@@ -51,20 +80,25 @@ export const insertReserva = (data, result) => {
 export const updateReservaById = (data, id, result) => {
   console.log("updateReservaById", data);
   db.query(
-    "UPDATE Reservas SET dataReserva = ?, dataEntradaReserva = ?, dataSaidaReserva = ?, valorReserva = ?, qtdHospedesReserva = ?, usuario_idUsuario = ?, acomodacoes_idAcomodacao = ?, acomodacaoTipo=?, acomodacaoVlrDiaria = ?, statusReserva = ?, dataCancelamento = ?, motivoCancelamento = ? WHERE idReservas = ?",
+    "UPDATE Reservas SET dataReserva = ?, dataEntradaReserva = ?, dataSaidaReserva = ?, valorReserva = ?, qtdHospedesReserva = ?, usuario_idUsuario = ?, acomodacoes_idAcomodacao = ?, qtDiarias = ?, acomodacaoTipo=?, acomodacaoVlrDiaria = ?, statusReserva = ?, dataCancelamento = ?, motivoCancelamento = ?, cupom = ?, taxaDescontoCupom = ?, valorTotalDesconto = ?, valorTotalServicos = ? WHERE idReservas = ?",
     [
       data.dataReserva,
       data.dataEntradaReserva,
       data.dataSaidaReserva,
       data.valorReserva,
       data.qtdHospedesReserva,
-      data.idUsuario,
-      data.idAcomodacao,
+      data.usuario_idUsuario,
+      data.acomodacoes_idAcomodacao,
+      data.qtDiarias,
       data.acomodacaoTipo,
       data.acomodacaoVlrDiaria,
       data.statusReserva,
       data.dataCancelamento,
       data.motivoCancelamento,
+      data.cupom,
+      data.taxaDescontoCupom,
+      data.valorTotalDesconto,
+      data.valorTotalServicos,
       id,
     ],
     (err, results) => {
@@ -81,7 +115,7 @@ export const updateReservaById = (data, id, result) => {
 // deleta uma reserva no banco
 export const deleteReservaById = (id, result) => {
   db.query(
-    "DELETE FROM Reservas WHERE idReservas = ?",
+    "UPDATE Reservas SET statusReserva = 'Excluída' WHERE idReservas = ?",
     [id],
     (err, results) => {
       if (err) {
@@ -92,4 +126,16 @@ export const deleteReservaById = (id, result) => {
       }
     }
   );
+  // db.query(
+  //   "DELETE FROM Reservas WHERE idReservas = ?",
+  //   [id],
+  //   (err, results) => {
+  //     if (err) {
+  //       console.log(err);
+  //       result(err, null);
+  //     } else {
+  //       result(null, results);
+  //     }
+  //   }
+  // );
 };

@@ -19,6 +19,7 @@
     "jspdf": "^2.5.1",
     "moment": "^2.29.4",
     "vue": "^3.2.47",
+    "vue-currency-input": "^3.0.4",
     "vue-router": "^4.0.3",
     "vuex": "^4.1.0"
   },

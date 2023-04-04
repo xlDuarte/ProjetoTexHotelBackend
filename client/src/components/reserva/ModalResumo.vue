@@ -88,12 +88,10 @@ import { updateBindingForm } from "./FormReserva.vue";
 import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
 import { mapState } from "vuex";
 
-
 import moment from "moment";
-
 import jsPDF from 'jspdf';
 
-
+import logo from '@/assets/images/footer/logo_hotel.png'
 
 // gera cupom de desconto caso não exista nenhum. Se já houver a mensagem é que não podem ser gerados dois cupons no mesmo dia...
 cupomDesconto();
@@ -107,6 +105,7 @@ export default {
   props: {
     // properties que vem da view que irá chamar o componente...
     msg: String,
+    ultimaReserva: String
   },
   data() {
     return {
@@ -131,18 +130,15 @@ export default {
         localStorage.setItem("cupomDescontoValido", "NOK");
       }
 
+      // persiste reserva original...localStorage
       gravaReserva();
 
+      // instancia classe para gravar reserva no BD....
       let reserva = new Reservas();
 
-      // console.log(reserva.getReservasById("36"));
       //obtem dados da reserva feita pelo hospede da localStorage
       let reservaCriada = `Reserva_${localStorage.getItem("reservaId")}`;
       let arrayReservaCriada = JSON.parse(localStorage.getItem(reservaCriada));
-
-      // console.log("Reserva criada array...", arrayReservaCriada);
-      // console.log("Reserva criada array...", arrayReservaCriada[0].reservaId);
-      // console.log("Reserva criada array...", arrayReservaCriada[0].diarias);
 
       /*
       Você deve informar para o moment o formato de entrada, ou seja, como está a string com sua data antes de formatá-la pois internamente ele
@@ -154,17 +150,9 @@ export default {
       */
 
       let idReservas = "";
-      let dtReserva = moment(
-        arrayReservaCriada[0].dtReserva,
-        "DD/MM/YYYY"
-      ).format("YYYY-MM-DD");
-      let dtEntrada = moment(
-        arrayReservaCriada[0].dtEntrada,
-        "DD/MM/YYYY"
-      ).format("YYYY-MM-DD");
-      let dtSaida = moment(arrayReservaCriada[0].dtSaida, "DD/MM/YYYY").format(
-        "YYYY-MM-DD"
-      );
+      let dtReserva = moment(arrayReservaCriada[0].dtReserva,"DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtEntrada = moment(arrayReservaCriada[0].dtEntrada,"DD/MM/YYYY").format("YYYY-MM-DD");
+      let dtSaida = moment(arrayReservaCriada[0].dtSaida, "DD/MM/YYYY").format("YYYY-MM-DD");
       let vlrTotal = arrayReservaCriada[0].vlrTotal;
       let qtPessoas = arrayReservaCriada[0].qtPessoas;
       let idUsuario = arrayReservaCriada[0].idUsuario;
@@ -181,8 +169,13 @@ export default {
       let vlrTotalcomDesconto = arrayReservaCriada[0].vlrTotalcomDesconto;
       let itemArrayReservas = 0; // avaliar, não está mais sendo utilizado...
       let itemArrayEdit = false; //flag de controle se false é uma nova reserva...
+      let arrayServicos = [];
+      let arrayServicosEscolhidos = [];
 
-      reserva.salvar(
+     // salva a reserva e obtem o id para gravar os serviços
+
+     arrayServicosEscolhidos = this.Servicos2;
+     reserva.salvar(
         idReservas,
         dtReserva,
         dtEntrada,
@@ -202,8 +195,37 @@ export default {
         valorTotalServicos,
         vlrTotalcomDesconto,
         itemArrayReservas,
-        itemArrayEdit
+        itemArrayEdit,
+        arrayServicosEscolhidos,
       );
+      
+      // let ultimaReserva = localStorage.getItem("ultimaReserva");
+      // console.log("Ultima reserva ModalResumo..",ultimaReserva.data[0]["LAST_INSERT_ID()"]);
+      // console.log("Ultima reserva ModalResumo..",lastReserva);
+
+      // verifica serviços selecionados e persiste no BD...
+      // arrayServicos = this.Servicos2;
+      // for (let i = 0; i < arrayServicos.data.length; i++) {
+      //     console.log("verifica serviços selecionados")
+      //     // vou gravar esse aqui
+      //     if (arrayServicos.data[i].isSelected) {
+      //       console.log("Esse aqui eu vou gravar...",arrayServicos.data[i].nomeServico,arrayServicos.data[i].vlr)
+      //       let idServicos = arrayServicos.data[i].idServicos
+      //       let nomeServico = arrayServicos.data[i].nomeServico
+      //       let descricaoServico = arrayServicos.data[i].descricaoServico
+      //       let vlrDiariaServico = arrayServicos.data[i].vlrDiariaServico
+      //       console.log("Dados para gravar...",idServicos,nomeServico,descricaoServico,vlrDiariaServico)
+      //     }      
+      //     // console.log("Servicos ",arrayServicos.data[i].nomeServico, arrayServicos.data[i].isSelected);
+      //     // arrayServicos.data[i].isSelected = false;
+      // }      
+
+      // for (let i = 0; i < arrayServicosReservas.data.length; i++) {
+      //     console.log("Servicos ",arrayServicosReservas.data[i].nomeServico, arrayServicosReservas.data[i].isSelected);
+      // }
+      // servicosReserva.salvar(
+      //           idReservas,
+      // )
 
       let geraPDF = confirm("Quer gerar um PDF de sua reserva?");
       if (geraPDF) {
@@ -216,44 +238,175 @@ export default {
         "Sua reserva foi confirmada - você irá receber um email com a confirmação! Obrigado!"
       );
 
-      // verificar como limpar o selected de serviços para não vir flagado na próxima reserva!!!!
+      // limpeza dos componentes após confirmação...
+      // limpa serviços da localStorage...
+      //localStorage.removeItem("servicosEscolhidos");
       for (var i = 0; i < localStorage.length; i++) {
-        // console.log(
-        //   "Valor item localStorage...",
-        //   localStorage.getItem(localStorage.key(i))
-        // );
-        console.log("Item localStorage...", localStorage.key(i));
         if (localStorage.key(i).includes("idServicos")) {
           localStorage.removeItem(localStorage.key(i));
+
+          // remover aqui o array com todas os serviços...
+
         }
       }
 
-      // limpeza dos componentes após confirmação...
       // limpa selected dos serviços...
-      let arrayServicos = this.Servicos2;
+      arrayServicos = this.Servicos2;
       for (let i = 0; i < arrayServicos.data.length; i++) {
           console.log("Servicos ",arrayServicos.data[i].nomeServico, arrayServicos.data[i].isSelected);
           arrayServicos.data[i].isSelected = false;
       }
+
       // atualiza campo cupom da modal...
       this.cupomDescontoResumo = ref(localStorage.getItem("cupomDesconto"));
 
       updateBindingForm();
       window.$("#modalResumo").modal("hide");
     },
+
     gerarPDF() {
       const reserva = JSON.parse(localStorage.getItem(`Reserva_${localStorage.getItem("reservaId")}`));
       var doc = new jsPDF();
-      doc.text("Hotel Casa na Praia", doc.internal.pageSize.getWidth()/2, 10, {align: "center"});
-      doc.text(`Dados da Reserva`, 10, 25).setLineWidth(0.3).line(10,26,57,26)
-      doc.text(`Id do Cliente: ${reserva[0].idUsuario} `, 10, 40)
-      doc.text(`Titular: ${reserva[0].codCliente}`,10, 50)
-      doc.text(`Data de entrada: ${reserva[0].dtEntrada}`,10, 60)
-      doc.text(`Data de Saída: ${reserva[0].dtSaida}`,10, 70)
-      doc.text(`Tipo de Quarto: ${reserva[0].tipoApto}`,10,80)
-      doc.text(`Valor Total: R$${reserva[0].vlrTotal},00`, 10, 90)
+      const imgProps = doc.getImageProperties(logo);
+
+      
+      //trabalhando com a imagem
+      const imgWidth = 25
+      const imgHeight = (imgProps.height * imgWidth)/imgProps.width
+
+      const pageWidth = doc.internal.pageSize.getWidth(); // largura da página
+     // const pageHeight = doc.internal.pageSize.getHeight(); // altura da página
+      const xPos = (pageWidth - imgWidth) / 2; // posição x centralizada
+      //const yPos = (pageHeight - imgHeight) / 2; // posição y centralizada
+
+      //function para gerar a listagem
+      function addListBullet(doc, text, x, y) {
+        const fontSize = 12;
+        //const lineHeight = doc.getLineHeight();
+        const bulletRadius = 0.6;
+
+        // Define a posição da bolinha para ficar verticalmente centralizada em relação ao texto
+        const bulletX = x + bulletRadius;
+        const bulletY = y-1.5 ;
+
+        // Desenha a bolinha
+        doc.setFillColor(0, 0, 0);
+        doc.circle(bulletX, bulletY, bulletRadius, 'F');
+
+        // Adiciona o texto da lista
+        const textX = bulletX + bulletRadius * 2;
+        const textY = y;
+        doc.setFontSize(fontSize);
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(0,0,0)
+        doc.text(text, textX, textY);
+
+        // Desenha um sublinhado abaixo do texto
+        const lineWidth = doc.getStringUnitWidth(text) * fontSize / doc.internal.scaleFactor;
+        const lineX = textX;
+        const lineY = textY + 1; // adiciona uma pequena margem abaixo do texto
+        doc.line(lineX, lineY, lineX + lineWidth, lineY);
+      }
+
+      // Define o título do documento
+      doc.setProperties({
+        title: 'Resumo de Reserva - Hotel Casa na Praia'
+      });
+
+      // Define a fonte e tamanho do título
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+
+      // Adiciona a logo e título ao documento
+      doc.addImage(logo,'PNG', xPos, 0, imgWidth, imgHeight)
+      doc.text('RESUMO DE RESERVA - HOTEL CASA NA PRAIA', 105, 35, null, null, 'center')
+
+      // Define a fonte e tamanho do subtitulo
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+
+      // Adiciona o nome do hotel como subtitulo
+      doc.text(`Titular da Reserva: ${reserva[0].codCliente}`, 105, 45, null, null, 'center');
+
+
+      // Define a posição do primeiro campo
+      var x = 30;
+      var y = 60;
+
+      // Adiciona os campos de dados da reserva
+      
+      addListBullet(doc, "PERÍODO:", 25, 60)
+      y += 10;
+
+      // Define a fonte e tamanho do corpo do documento
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+
+      doc.text(`Data de entrada: ${reserva[0].dtEntrada}`,x, y)
+
+      y += 10;
+
+      doc.text(`Data de Saída: ${reserva[0].dtSaida}`,x,y)
+
+      y += 10;
+      
+      addListBullet(doc, "QUANTIDADE DE PESSOAS:", 25, y)
+      // Define a fonte e tamanho do corpo do documento
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.text(`${reserva[0].qtPessoas}`,86,y)
+      y+=10
+
+      addListBullet(doc, "OPÇÃO DE ACOMODAÇÃO:", 25, y)
+      // Define a fonte e tamanho do corpo do documento
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.text(`${reserva[0].tipoApto}`,85,y)
+      y+=10
+
+      addListBullet(doc, "VALOR TOTAL:", 25, y)
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.setTextColor('#B22222'); 
+      doc.text(`R$${reserva[0].vlrTotalcomDesconto},00`,59,y)
+
+      y+=10
+
+      addListBullet(doc, "SATUS DO PAGAMENTO:", 25, y)
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.setTextColor('#00FF00'); 
+      doc.text(`R$${reserva[0].vlrTotalcomDesconto},00(CONFIRMADO)`,80,y)
+
+
+      y=250
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(0,0,0)
+      doc.text(`Agradecemos a preferência!`,140,y,)
+      y+=5
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.text(`Grupo 3`,182,y,)
+      y+=5
+      doc.text(`Recepção & Reserva`,157,y,)
+      y+=20
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(`AV. XXXXXX-XXXXXX`,105,y, {align:"center"})
+      y+=5
+      doc.text(`Whatsapp: `,95,y, {align:"center"})
+      doc.setTextColor(24,77,117); 
+      doc.textWithLink('XXXX-XXXX', 104, y, {url: 'https://chat.whatsapp.com/KthRdCQBgphIxusvtrUFs7'}, {align: "center"});
+      y+=5
+      doc.setTextColor(0,0,0)
+      doc.text(`CNPJ: 74.656.453/0001-07`,105,y, {align:"center"})
+
+
+      //fundamental e inalterável
       return doc.output("blob");
-    },
+          },
     
   },
   computed: {

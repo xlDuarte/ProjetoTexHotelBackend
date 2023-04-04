@@ -8,6 +8,7 @@ import { createStore } from "vuex";
 
 import JokeNorris from "./modules/JokeNorris.js";
 import Servicos2 from "./modules/Servicos2";
+import ServicosReserva from "./modules/ServicosReserva";
 
 // import FormReserva from "@/components/reserva/FormReserva.vue";
 
@@ -15,9 +16,10 @@ export default createStore({
   modules: {
     Servicos2,
     JokeNorris,
+    ServicosReserva,
   },
   state: {
-    // dados para servicos
+    // dados para servicos - exemplo hardcode...
     servicos: [
       {
         id: "servico1",
@@ -121,29 +123,7 @@ export default createStore({
     // ],
 
     // servicos2: {
-    //   handler() {
-    //     let servAux = new Servicos();
-    //     servAux.getServicos();
-    //     //console.log("servArray", servArray.map);
-    //   },
-    // },
 
-    // [
-    //   {
-    //     id: "servico1",
-    //     nome: "servico1",
-    //     label: "cafeQuarto",
-    //     descricao: "serv 2 Cafe XXX da Manhã no Quarto",
-    //     vlrDiaria: 100,
-    //   },
-    //   {
-    //     id: "servico2",
-    //     nome: "servico2",
-    //     label: "5G",
-    //     descricao: "serv 2 Internet 5G",
-    //     vlrDiaria: 50,
-    //   },
-    // ],
 
     reservas2: {
       handler() {
@@ -226,33 +206,6 @@ export default createStore({
       return servicos_hotel;
     },
 
-    // servicos2: (state) => {
-    //   // let servAux = new Servicos();
-    //   // let servArray = servAux.getServicos();
-    //   // console.log("servArray",servArray.map)
-    //   console.log("servicos2...", state.servicos2);
-    //   let servicos_hotel = state.servicos2.map((item) => {
-    //     return {
-    //       id: item.idServicos,
-    //       nome: item.nomeServico,
-    //       label: item.labelServico,
-    //       descricao: item.descricaoServico,
-    //       vlrDiaria: item.vlrDiariaServico.toFixed(2),
-    //     };
-    //   });
-
-    // let servicos_hotel = state.servicos2.map((item) => {
-    //   return {
-    //     id: item.id,
-    //     nome: item.nome,
-    //     label: item.label,
-    //     descricao: item.descricao,
-    //     vlrDiaria: item.vlrDiaria.toFixed(2),
-    //   };
-    // });
-    //return servicos_hotel;
-    //},
-
     reservas: (state) => {
       let reservasAnteriores = state.reservas.map((item) => {
         return {
@@ -292,11 +245,3 @@ export default createStore({
     },
   },
 });
-
-// servicos: [
-//   { id: "1001", servico: "Regular", vlrServico: "Valor Servico" },
-//   { id: "1002", servico: "Regular", vlrServico: "Valor Servico" },
-//   { id: "1003", servico: "Regular", vlrServico: "Valor Servico" },
-//   { id: "1004", servico: "Regular", vlrServico: "Valor Servico" },
-//   { id: "1005", servico: "Regular", vlrServico: "Valor Servico" },
-// ],

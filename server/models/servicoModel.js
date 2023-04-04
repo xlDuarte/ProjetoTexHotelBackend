@@ -3,6 +3,7 @@ import db from "../config/database.js";
 
 // lista todos os servicos
 export const getServico = (result) => {
+  console.log("Executando getServico...");  
   db.query(
     "SELECT * FROM hotelcnp.servicos ORDER BY idServicos ASC",
     (err, results) => {
@@ -18,6 +19,7 @@ export const getServico = (result) => {
 
 // lista um servico
 export const getServicoById = (id, result) => {
+  console.log("Executando getServicoById...");
   db.query(
     "SELECT * FROM servicos WHERE idServicos = ?",
     [id],
@@ -47,6 +49,7 @@ export const insertServico = (data, result) => {
 
 // atualiza um servico no banco
 export const updateServicoById = (data, id, result) => {
+  console.log("Executando updateServicoById...");
   db.query(
     "UPDATE servicos SET nomeServico = ?, vlrDiariaServico = ?, descricaoServico = ?, labelServico = ?  WHERE idServicos = ?",
     [
@@ -67,7 +70,7 @@ export const updateServicoById = (data, id, result) => {
   );
 };
 
-// deleta um servicos no banco
+// deleta um servico no banco
 export const deleteServicoById = (id, result) => {
   db.query(
     "DELETE FROM servicos WHERE idServicos = ?",

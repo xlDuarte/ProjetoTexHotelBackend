@@ -26,11 +26,21 @@
               Adicionar serviços
             </button>
             <br />
-            <button type="button" class="button" id="btnMinhasReservas" ref="btnMinhasReservas">
+            <button
+              type="button"
+              class="button"
+              id="btnMinhasReservas"
+              ref="btnMinhasReservas"
+            >
               Minhas Reservas
             </button>
             <br />
-            <button type="button" class="button" id="btnResumoReserva" ref="btnResumoReserva">
+            <button
+              type="button"
+              class="button"
+              id="btnResumoReserva"
+              ref="btnResumoReserva"
+            >
               Confirmar
             </button>
           </form>
@@ -57,6 +67,12 @@ export default {
   props: {
     msg: String,
   },
+  data() {
+    // data
+    return {
+      userLogged: false,
+    };
+  },
   methods: {
     // força refresh do componente...
     // https://michaelnthiessen.com/force-re-render/
@@ -76,12 +92,16 @@ export default {
   },
   mounted() {
     // verifica se usuario esta logado para ativar botão "Minhas Reservas"
-    if (localStorage.getItem("loginStatus") != "") {
+    console.log("loginStatus...", localStorage.getItem("loginStatus") === null);
+    if (
+      localStorage.getItem("loginStatus") === null ||
+      localStorage.getItem("loginStatus") === ""
+    ) {
       //this.$refs.btnMinhasReservas.setAttribute("hidden", "false");
-      this.$refs.btnMinhasReservas.style.visibility = "visible";
+      this.$refs.btnMinhasReservas.style.visibility = "hidden";
     } else {
       //this.$refs.btnMinhasReservas.setAttribute("hidden", "true");
-      this.$refs.btnMinhasReservas.style.visibility = "hidden";
+      this.$refs.btnMinhasReservas.style.visibility = "visible";
     }
   },
 };
@@ -128,7 +148,7 @@ window.$().ready(function () {
   background-color: #f4f2e7;
 }
 
-.secResumo>div {
+.secResumo > div {
   max-width: 90%;
   margin: 2% 5%;
 }
@@ -162,7 +182,7 @@ img {
   margin: 0 5%;
 }
 
-.flex>div {
+.flex > div {
   flex: 1 1 420px;
   margin: 10px;
 }
