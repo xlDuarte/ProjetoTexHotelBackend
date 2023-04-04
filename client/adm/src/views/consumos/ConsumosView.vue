@@ -5,36 +5,38 @@
       <p>*Campos de preenchimento obrigatório.</p>
     </div>
     <AddConsumo @updateConsumo="getConsumo()" />
-    <table class="table">
-      <thead>
-        <th scope="col">Quarto</th>
-        <th scope="col">Local</th>
-        <th scope="col">Produto</th>
-        <th scope="col">Quantidade</th>
-        <th scope="col">Data</th>
-        <th scope="col">Valor</th>
-      </thead>
-      <tbody>
-        <tr scope="row" v-for="item in items" :key="item.idConsumo">
-          <td>{{ item.Reservas_idReservas }}</td>
-          <td>{{ item.nomeLocalConsumo }}</td>
-          <td>{{ item.nomeProdutos }}</td>
-          <td>{{ item.qtdConsumo }}</td>
-          <td>{{ item.dataFormatada }}</td>
-          <td>{{ item.valorProdutos * item.qtdConsumo }}</td>
-          <td>
-            <router-link :to="{ name: 'editConsumos', params: { id: item.idConsumo } }">
-              <button class="button">Editar</button></router-link>
+    <div class="table-responsive table-responsive-sm">
+      <table class="table table-striped ">
+        <thead >
+          <th scope="col">Quarto</th>
+          <th scope="col" class="text-center">Local</th>
+          <th scope="col">Produto</th>
+          <th scope="col">Quantidade</th>
+          <th scope="col" class="text-center">Data</th>
+          <th scope="col">Valor</th>
+        </thead>
+        <tbody>
+          <tr scope="row" v-for="item in items" :key="item.idConsumo">
+            <td>{{ item.Reservas_idReservas }}</td>
+            <td>{{ item.nomeLocalConsumo }}</td>
+            <td>{{ item.nomeProdutos }}</td>
+            <td>{{ item.qtdConsumo }}</td>
+            <td>{{ item.dataFormatada }}</td>
+            <td>{{ item.valorProdutos * item.qtdConsumo }}</td>
+            <td>
+              <router-link :to="{ name: 'editConsumos', params: { id: item.idConsumo } }">
+                <button class="button">Editar</button></router-link>
 
-          </td>
-          <td>
-            <button class="button" @click="deleteConsumos(item.idConsumo)">
-              Deletar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+            <td>
+              <button class="button" @click="deleteConsumos(item.idConsumo)">
+                Deletar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
   </div>
 </template>
 
