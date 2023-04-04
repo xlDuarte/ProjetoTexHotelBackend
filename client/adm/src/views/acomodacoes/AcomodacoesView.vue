@@ -5,31 +5,33 @@
       <p>*Campos de preenchimento obrigatório.</p>
     </div>
     <AddAcomodacao @updateList="getAcomodacao()" />
-    <table class="table table-responsive table-striped">
-      <thead>
-        <th scope="col">ID</th>
-        <th scope="col">Nome</th>
-        <th scope="col">Descrição</th>
-        <th scope="col">Valor</th>
-        <th scope="col">Tipo</th>
-      </thead>
-      <tbody>
-        <tr scope="row" v-for="item in items" :key="item.idAcomodacao">
-          <td>{{ item.idAcomodacao }}</td>
-          <td>{{ item.nomeAcomodacao }}</td>
-          <td>{{ item.descricaoAcomodacao }}</td>
-          <td>{{ item.valorAcomodacao }}</td>
-          <td>{{ item.tipoAcomodacao }}</td>
-          <td>
-            <router-link :to="{ name: 'editAcomodacao', params: { id: item.idAcomodacao } }">
-              <button class="button">Editar</button></router-link>
-          </td>
-          <td>
-            <button class="button" @click="deleteAcomodacao(item.idAcomodacao)">Deletar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive table-responsive-sm">
+      <table class="table table-striped">
+        <thead>
+          <th scope="col">ID</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Valor</th>
+          <th scope="col">Tipo</th>
+        </thead>
+        <tbody>
+          <tr scope="row" v-for="item in items" :key="item.idAcomodacao">
+            <td>{{ item.idAcomodacao }}</td>
+            <td>{{ item.nomeAcomodacao }}</td>
+            <td>{{ item.descricaoAcomodacao }}</td>
+            <td>{{ item.valorAcomodacao }}</td>
+            <td>{{ item.tipoAcomodacao }}</td>
+            <td>
+              <router-link :to="{ name: 'editAcomodacao', params: { id: item.idAcomodacao } }">
+                <button class="button">Editar</button></router-link>
+            </td>
+            <td>
+              <button class="button" @click="deleteAcomodacao(item.idAcomodacao)">Deletar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
