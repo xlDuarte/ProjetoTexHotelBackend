@@ -6,7 +6,7 @@ export const getReserva = (result) => {
   // DATE_FORMAT(date,'%d/%m/%Y') AS niceDate
   // db.query("SELECT * FROM Reservas ORDER BY idReservas ASC", (err, results) => {
   db.query(
-    "SELECT idReservas, usuario_idUsuario, DATE_FORMAT(dataReserva,'%d/%m/%y') as dataReserva, DATE_FORMAT(dataEntradaReserva,'%d/%m/%y') as dataEntradaReserva,DATE_FORMAT(dataSaidaReserva,'%d/%m/%y') as dataSaidaReserva,qtdHospedesReserva,valorReserva,statusReserva FROM Reservas ORDER BY idReservas ASC",
+    "SELECT idReservas, usuario_idUsuario, DATE_FORMAT(dataReserva,'%d/%m/%y') as dataReserva, DATE_FORMAT(dataEntradaReserva,'%d/%m/%y') as dataEntradaReserva,DATE_FORMAT(dataSaidaReserva,'%d/%m/%y') as dataSaidaReserva,qtdHospedesReserva,valorReserva,statusReserva,valorTotalDesconto,valorTotalServicos FROM Reservas ORDER BY idReservas ASC",
     (err, results) => {
       if (err) {
         console.log(err);
@@ -29,6 +29,22 @@ export const getReservaById = (id, result) => {
         result(err, null);
       } else {
         result(null, results[0]);
+      }
+    }
+  );
+};
+
+// lista uma reserva
+export const getReservaByUsuarioId = (id, result) => {
+  db.query(
+    "SELECT * FROM v_ConsultaReserva WHERE usuario_idUsuario = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results);
       }
     }
   );

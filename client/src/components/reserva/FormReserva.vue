@@ -508,16 +508,12 @@ export function preencheModalResumo() {
 
 export function createPara(conteudo) {
   var para = document.createElement("p");
-  // exemplo aplicado
-  // para.style.cssText = "background-color:pink;font-size:55px;border:2px dashed green;color:black;"
   para.style.cssText =
     "font-size:15px; color:black, line-height: 10px; margin-bottom: 10px;";
   para.innerHTML = conteudo;
   return para;
 }
 
-// line-height: 10px;   /* within paragraph */
-// margin-bottom: 5px; /* between paragraphs */
 export function cupomDesconto() {
   // verifica se cupom ainda pode ser gerado, persistena na localStorage
   let msgCupomDesconto="Sem desconto";
@@ -532,9 +528,9 @@ export function cupomDesconto() {
   return true;
 }
 
-export function aplicaDesconto() {
-  //
-}
+// export function aplicaDesconto() {
+//
+// }
 </script>
 
 <style scoped>
