@@ -4,6 +4,7 @@
             <h2>EDITAR REGISTRO DE USUARIO</h2>
             <p>Preencha todos os campos</p>
         </div>
+        
         <form>
         <div class="container bg-light rounded-3 p-4 my-5 w-50">
             <div class="field">
