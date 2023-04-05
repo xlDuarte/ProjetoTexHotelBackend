@@ -60,6 +60,8 @@ import ModalResumo from "./ModalResumo";
 import ModalMinhasReservas from "./ModalMinhasReservas.vue";
 import { confirmaReserva } from "./FormReserva.vue";
 import { preencheModalResumo } from "./FormReserva.vue";
+// import { mapState } from "vuex";
+import axios from "axios";
 
 export default {
   name: "PainelReserva",
@@ -71,9 +73,23 @@ export default {
     // data
     return {
       userLogged: false,
+      idUsuario:14
     };
   },
   methods: {
+    // localiza reservas do usuario pelo id
+    async getReservaUsuarioById(idUsuario) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/reservaUsuario/${idUsuario}`
+        );
+        //this.items = response.data;
+        console.log("getReservaUsuarioById", response.data);
+        return response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
     // força refresh do componente...
     // https://michaelnthiessen.com/force-re-render/
     methodThatForcesUpdate() {
@@ -122,6 +138,13 @@ window.$().ready(function () {
 // chama modal para display das reservas anteriores
 window.$().ready(function () {
   window.$("#btnMinhasReservas").click(function () {
+    // this.getReservaUsuarioById(this.idUsuario);
+    // try {
+    //     let idUsuario = "14";
+    //     this.$store.dispatch("ReservasUsuario/getData", { idUsuario: `${idUsuario}`,});
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
     window.$("#modalMinhasReservas").modal("show");
   });
 });

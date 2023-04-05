@@ -14,7 +14,8 @@
         </div>
         <div class="modal-body">
           <div>
-            <p>Mensagem sistema: {{ msg }}</p>
+            <!-- <p>Mensagem sistema: {{ msg }} - {{ qtDiarias }} - {{ valorTotalServicos }}</p> -->
+            <p>Mensagem sistema: {{ msg }} </p>
             <p>ID da Reserva: {{ idReservas }}</p>
             <!-- para avaliar os arrays sendo passados para a Modal-->
             <!-- 
@@ -63,9 +64,10 @@
             <input
               type="checkbox"
               v-model="item.isSelected"
+              @change="changeServico(item.isSelected,item)"
               :id="item.idServicos"
               :name="item.nomeServico"
-              :value="item.labelServico"
+              :value="item"
             />
             <label
               >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }},00
@@ -113,22 +115,23 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 const bootstrap = require("bootstrap");
 
-import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
+// import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
 // import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
 import { mapState } from "vuex";
-import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
 
 // import axios
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "ModalServicos2",
   props: {
     // properties que vem da view que irá chamar o componente...
     msg: String,
-    idReservas: String,
+    idReservas: [Number, String],
     arrayServicosBD: Object,
-    arrayServicosAux: Object,
+    // qtDiarias: String,
+    // valorTotalServicos: String,
+    // arrayServicosAux: Object,
     botaoModalServicos: Boolean,
   },
   data() {
@@ -153,6 +156,7 @@ export default {
     console.log("Created modalResumo2 - watch(): ");
   },
   methods: {
+
     abreModal() {
       var modal = new bootstrap.Modal(
         document.querySelector("#modalServicos2"),
@@ -166,9 +170,23 @@ export default {
       //
     },
 
+    changeServico(isSelected,item) {
+      // mudou o status do servico...
+      // console.log("Event...",isSelected,item);
+      let isSelectedAux="false";
+      if (isSelected) {
+        isSelectedAux = "true"
+        console.log("Mudou status do servico - selected...",this.idReservas, item.servicos_idservicos);
+      } else {
+        console.log("Mudou status do servico - unselected...",this.idReservas, item.servicos_idservicos);
+      }
+
+      // update servicos no banco - deleção de todos os regisotrs apresentou problemas, foi necessário atualizar um a um...
+      updateServicosById(this.idReservas, item.servicos_idservicos,isSelectedAux);
+
+    },
     confirmaServicos() {
       alert("Serviços adicionais incluídos! Obrigado!", this.arrayServicosBD);
-      console.log(mainFunc.teste());
       // let arrayServicos = this.Servicos2;
       let arrayServicos = this.arrayServicosBD;
       console.log("confirmaServicos...:", arrayServicos);
@@ -188,34 +206,12 @@ export default {
         // if (arrayServicos.data[i].isSelected) {
         arrayServicosEscolhidos.push(itemLocal);
         // }
-
-        // após confirmação dos serviços é necessário recalcular os valores da reserva...
-        
-
       }
       localStorage.setItem(
         "servicosEscolhidos",
         "[" + arrayServicosEscolhidos + "]"
       );
-      //grava servicos no BD
-      // instancia classe para gravar reserva no BD....
-      //let reserva = new Reservas();
-      // para não ocorrer erro de duplicacão das chaves, os dados dos serviços por reserva serão eliminados...
-      // teste(this.idServicos,this.arrayServicosBD);
-      deleteAndCreateRecords(this.idReservas, this.arrayServicosBD)
-         .then(() => {
-           console.log("Exclusão e inclusão com sucesso...");
-      })
-         .catch((error) => {
-           console.error(`Ocorreu um erro: ${error}`);
-      });
 
-      // só com isso não funcionou...Misericórdia, só por Jesus - mais de 3 horas pra chegar na solução, e nem sei se está 100%...vou testar...
-      // reserva.excluiServicosReservaBD(this.idReservas);
-      // reserva.salvarServicos(this.idReservas, this.arrayServicosBD);
-
-      // limpa servicos do array...
-      this.limpaServicos();
       window.$("#modalServicos2").modal("hide");
     },
 
@@ -224,10 +220,12 @@ export default {
       for (let i = 0; i < arrayServicos.data.length; i++) {
         console.log(
           "Servicos ",
+          arrayServicos.data[i].servicos_idservicos,
           arrayServicos.data[i].nomeServico,
           arrayServicos.data[i].isSelected
         );
         arrayServicos.data[i].isSelected = false;
+        updateServicosById(this.idReservas, arrayServicos.data[i].servicos_idservicos,"false");
       }
     },
 
@@ -253,33 +251,43 @@ export default {
   },
 };
 
+// update do serviço...
+async function updateServicosById(idReservas, servicos_idservicos,isSelected) {
+  console.log("updateServicosById...",idReservas, servicos_idservicos,isSelected);
+  try {
+    const response = await axios.put("http://localhost:5000/servicoReservaSelected/", {
+      isSelected: isSelected,
+      Reservas_idReservas: idReservas,
+      servicos_idservicos: servicos_idservicos,
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 // controla a exclusão e criação...
-async function deleteAndCreateRecords(idReserva,arrayServicosBD) {
-  console.log("Primeiro apagar");
-  await new Promise(resolve => {
-    deleteRecords(idReserva);
-    resolve();
-    console.log("Terminei de apagar");
-  }),
-  console.log("Agora vou criar...");
-  let criaReserva = new Reservas();
-  criaReserva.salvarServicos(idReserva, arrayServicosBD);
-}
+// async function deleteAndCreateRecords(idReserva,arrayServicosBD) {
+//   console.log("Primeiro exclui servicos...");
+//   await new Promise(resolve => {
+//     deleteRecords(idReserva);
+//     resolve();
+//     console.log("Finalizou exclusão...");
+//   }),
+//   console.log("Insere novamente...");
+//   let criaReserva = new Reservas();
+//   criaReserva.salvarServicos(idReserva, arrayServicosBD);
+// }
 
-// Function that takes some time to complete
-function deleteRecords(idReserva) {
-  return new Promise(resolve => {
-    let delReserva = new Reservas();
-    delReserva.excluiServicosReservaBD(idReserva);
-    console.log('deleteRecords finished',resolve);
-    resolve();
-    // setTimeout(() => {
-    //   console.log('myFunction finished');
-    //   resolve();
-    // }, 2000);
-  });
-}
+// leva um certo tempo para executar...
+// function deleteRecords(idReserva) {
+//   return new Promise(resolve => {
+//     let delReserva = new Reservas();
+//     delReserva.excluiServicosReservaBD(idReserva);
+//     console.log('deleteRecords finalizado',resolve);
+//     resolve();
+//   });
+// }
 
 </script>
 

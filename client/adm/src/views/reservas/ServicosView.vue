@@ -1,6 +1,7 @@
 <template>
   <div class="sec">
 
+<<<<<<< HEAD
 <div class="text-center">
   <h2>CADASTRO DE SERVIÇOS</h2>
   <p>*Campos de preenchimento obrigatório.</p>
@@ -17,6 +18,20 @@
             <label for="nome" class="form-label fw-bold">*Nome:</label>
             <input type="text" id="nome" v-model="nome" placeholder="Abreviação do serviço"
               class="form-control" maxlength="45" />
+=======
+        <div class="container">
+          <div class="row my-2">
+            
+            <div class="col col-5 me-5">
+            <label for="nome" class=" form-label fw-bold ">*Nome:</label>
+            <input type="text" id="nome" v-model="nome" placeholder="Abreviação do serviço" class="form-control  w-100 " maxlength="45" />
+            </div>
+        
+          <div class="col col-5 ms-4">
+            <label for="descricao" class=" d-block fw-bold ">*Descriçao:</label>
+            <input type="text" id="descricao" v-model="descricao" placeholder="Descrição do serviço" class="form-control w-100 "
+              maxlength="45" />
+>>>>>>> d157d34bebec4f8561e8705a89e985cfca1ed690
           </div>
 
           <div class="col-md-6 mt-3 mt-md-0">
