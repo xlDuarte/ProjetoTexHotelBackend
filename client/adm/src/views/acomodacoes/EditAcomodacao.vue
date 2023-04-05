@@ -1,5 +1,11 @@
 <template>
-    <div class="container">
+        <div class="text-center my-3">
+            <h2 class="mb-2">EDITAR REGISTRO DE ACOMODAÇÃO</h2>
+            <p class="mb-0">Preencha todos os campos</p>
+        </div>
+
+
+    <div class="container-fluid">
       <div class="row justify-content-center mt-5">
         <div class="col-12 col-md-8 col-lg-6">
           <div class="shadow bg-light rounded-3 p-4 my-5">
@@ -23,10 +29,10 @@
               </div>
               <div class="d-flex justify-content-center">
                 <div class="col-sm-6 mb-2">
-                  <button class="btn btn-success btn-block" @click="updateAcomodacao">UPDATE</button>
+                  <button class="btn btn-success btn-block mt-3" @click="updateAcomodacao">UPDATE</button>
                 </div>
                 <div class="col-sm-6 mb-2">
-                  <button class="btn btn-secondary btn-block" @click="returnPage">VOLTAR</button>
+                  <button class="btn btn-secondary btn-block mt-3" @click="returnPage">VOLTAR</button>
                 </div>
               </div>
             
