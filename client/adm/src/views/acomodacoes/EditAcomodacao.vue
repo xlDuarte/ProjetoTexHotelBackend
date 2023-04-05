@@ -1,47 +1,49 @@
 <template>
-    <div class="sec">
-        <div>
-            <h2>EDITAR REGISTRO DE ACOMODAÇÕES</h2>
-            <p>Preencha todos os campos</p>
+        <div class="text-center my-3">
+            <h2 class="mb-2">EDITAR REGISTRO DE ACOMODAÇÃO</h2>
+            <p class="mb-0">Preencha todos os campos</p>
         </div>
-        <div class="flex">
-            <div class="field">
+
+
+    <div class="container-fluid">
+      <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="shadow bg-light rounded-3 p-4 my-5">
+            <form>
+            <div class="row">
+              <div class="col-12 col-sm-6">
                 <label class="label">Nome da acomodação</label>
-                <div class="control">
-                    <input class="input" type="text" v-model="nomeAcomod" />
-                </div>
-            </div>
-            <div class="field">
+                <input class="form-control" type="text" v-model="nomeAcomod" />
+              </div>
+              <div class="col-12 col-sm-6">
                 <label class="label">Descrição da acomodação</label>
-                <div class="control">
-                    <input class="text" type="input" v-model="descAcomod" />
-                </div>
-            </div>
-            <div class="field">
+                <input class="form-control" type="input" v-model="descAcomod" />
+              </div>
+              <div class="col-12 col-sm-6">
                 <label class="label">Valor</label>
-                <div class="control">
-                    <input class="input" type="text" v-model="valorAcomod" />
-                </div>
-            </div>
-            <div class="field">
+                <input class="form-control" type="text" v-model="valorAcomod" />
+              </div>
+              <div class="col-12 col-sm-6">
                 <label class="label">Tipo de acomodação</label>
-                <div class="control">
-                    <input class="input" type="text" v-model="tipoAcomod" />
+                <input class="form-control" type="text" v-model="tipoAcomod" />
+              </div>
+              <div class="d-flex justify-content-center">
+                <div class="col-sm-6 mb-2">
+                  <button class="btn btn-success btn-block mt-3" @click="updateAcomodacao">UPDATE</button>
                 </div>
+                <div class="col-sm-6 mb-2">
+                  <button class="btn btn-secondary btn-block mt-3" @click="returnPage">VOLTAR</button>
+                </div>
+              </div>
+            
             </div>
+        </form>
+          </div>
         </div>
-        <div class="flex">
-            <div class="control">
-                <button class="button is-success" @click="updateAcomodacao">UPDATE</button>
-            </div>
-            <div class="control">
-                <button class="button" @click="returnPage">VOLTAR</button>
-            </div>
-        </div>
-
-
-    </div>
-</template>
+      </div>
+      </div>
+  </template>
+  
   
 <script>
 // import axios
