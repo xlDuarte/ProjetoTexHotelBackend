@@ -213,24 +213,6 @@ export class Servicos {
     }
   }
 
-  // async testePromise(idReserva) {
-  //     new Promise((resolve, reject) => {
-  //       // This Promise is in a "pending" state
-  //       console.log("testePromise = ",idReserva)
-  //     })
-  //   // chatGPT  
-  //   const myPromise = new Promise((resolve, reject) => {
-  //     // This Promise is in a "pending" state
-  //   });
-  //   const myPromise = new Promise((resolve, reject) => {
-  //     resolve("Success!"); // This Promise is now "fulfilled"
-  //   });
-  //   myPromise.then((result) => {
-  //     console.log(result); // Output: "Success!"
-  //   });
-  //   // chatGPT fim
-  // }
-
   // localiza servicos da Reserva pelo id
   async getServicosByReservaId(idReserva) {
     try {

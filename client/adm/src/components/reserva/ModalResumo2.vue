@@ -46,25 +46,9 @@
           <!-- Fim body Resumo-->
           <!-- Inicio body confirma-->
           <div id="bodyConfirma">
-            <h3>Confirme sua reserva</h3>
-            <h2>Seu cupom de desconto: {{ cupomDesconto }}</h2>
+            <h3>BLA BLA BLA</h3>
+            <h2>bla bla bla bla</h2>
             <div class="mt-2 pt-2 d-flex flex-start">
-              <label for="">Aplicar Cupom de Desconto: </label>
-              <input id="inputDesconto" class="w-50 inputPadrao bg-light px-3 text-uppercase fw-bold" type="text" />
-              <button id="btnCupom" type="button" class="btn btn-secondary">
-                Aplicar Cupom
-              </button>
-
-              <button class="btn btn-secondary" @click="confirmaReserva">
-                Confirma Reserva
-              </button>
-              <!-- <button
-                id="btnConfReserva"
-                type="button"
-                class="btn btn-secondary"
-              >
-                Confirma Reserva
-              </button> -->
             </div>
             <div id="geraPDF">
               <button class="btn btn-secondary" @click="geraPDF">

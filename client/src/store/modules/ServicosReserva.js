@@ -20,7 +20,6 @@ export default {
     async getData({ commit },payload) {
       // obtem parametro idReserva do payload enviado - se vazio não executa nada...
       let idReserva = payload.idReserva;
-
       // console.log("idReserva payload",(payload.idReserva === ""))
       // le tabela reservas_has_servicos
       const response = await axios.get(
@@ -43,6 +42,9 @@ export default {
           isEmptyObject(responseBD.data),
           responseBD
         );        
+        return responseBD;
+      } else {
+        return response;
       }
     }
 

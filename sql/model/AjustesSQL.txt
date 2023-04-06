@@ -1,4 +1,48 @@
 ************************************************************************************************************
+FRC - 05/04 - Ajuste na tabela Reservas, inclusão de quantidade max de hospedes da acomodação
+************************************************************************************************************
+ALTER TABLE `hotelcnp`.`Reservas` 
+ADD COLUMN `acomodacaoQtMaxPessoas` DECIMAL(2,0) NOT NULL AFTER `valorTotalServicos`;
+
+************************************************************************************************************
+FRC - 05/04 - Ajuste na view ,`v_ConsultaReserva` - inclusão de quantidade max de hospedes da acomodação
+************************************************************************************************************
+USE `hotelcnp`;
+CREATE 
+     OR REPLACE ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `v_ConsultaReserva` AS
+    SELECT 
+        `Reservas`.`idReservas` AS `idReservas`,
+        `Reservas`.`dataReserva` AS `dataReserva`,
+        `Reservas`.`dataEntradaReserva` AS `dataEntradaReserva`,
+        `Reservas`.`dataSaidaReserva` AS `dataSaidaReserva`,
+        `Reservas`.`valorReserva` AS `valorReserva`,
+        `Reservas`.`qtdHospedesReserva` AS `qtdHospedesReserva`,
+        `Reservas`.`usuario_idUsuario` AS `usuario_idUsuario`,
+        `usuario`.`nomeUsuario` AS `nomeUsuario`,
+        `Reservas`.`acomodacoes_idAcomodacao` AS `acomodacoes_idAcomodacao`,
+        `Reservas`.`qtDiarias` AS `qtDiarias`,
+        `acomodacoes`.`nomeAcomodacao` AS `nomeAcomodacao`,
+        `acomodacoes`.`valorAcomodacao` AS `valorAcomodacao`,
+        `acomodacoes`.`numeroAcomodacao` AS `numeroAcomodacao`,
+        `Reservas`.`statusReserva` AS `statusReserva`,
+        `Reservas`.`dataCancelamento` AS `dataCancelamento`,
+        `Reservas`.`motivoCancelamento` AS `motivoCancelamento`,
+        `Reservas`.`cupom` AS `cupom`,
+        `Reservas`.`taxaDescontoCupom` AS `taxaDescontoCupom`,
+        `Reservas`.`valorTotalDesconto` AS `valorTotalDesconto`,
+        `Reservas`.`valorTotalServicos` AS `valorTotalServicos`,
+        `Reservas`.`acomodacaoQtMaxPessoas` AS `acomodacaoQtMaxPessoas`
+    FROM
+        ((`Reservas`
+        JOIN `usuario` ON ((`Reservas`.`usuario_idUsuario` = `usuario`.`idUsuario`)))
+        JOIN `acomodacoes` ON ((`Reservas`.`acomodacoes_idAcomodacao` = `acomodacoes`.`idAcomodacao`)));
+
+
+
+************************************************************************************************************
 FRC - 01/04 - Ajuste na view v_ConsultaReserva, faltava campo qtDiarias 
 ************************************************************************************************************
 

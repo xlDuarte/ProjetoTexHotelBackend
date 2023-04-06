@@ -68,6 +68,7 @@
               :id="item.idServicos"
               :name="item.nomeServico"
               :value="item"
+              :disabled="servicosSelection"
             />
             <label
               >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }},00
@@ -133,6 +134,7 @@ export default {
     // valorTotalServicos: String,
     // arrayServicosAux: Object,
     botaoModalServicos: Boolean,
+    servicosSelection: Boolean,
   },
   data() {
     return {

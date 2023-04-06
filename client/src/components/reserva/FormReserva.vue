@@ -463,16 +463,18 @@ export function preencheModalResumo() {
   console.log("Atualiza div...", servicosEscolhidos)
   if (servicosEscolhidos !== "") {
     for (let i = 0; i < servicosEscolhidos.length; i++) {
-      vlrTotalServico = servicosEscolhidos[i].vlrDiariaServico * qtdDiarias;
-      vlrSomaServicos = vlrSomaServicos + vlrTotalServico;
-      paraTexto =
-        servicosEscolhidos[i].nomeServico +
-        " - Diária: " +
-        currencyFormat(servicosEscolhidos[i].vlrDiariaServico) +
-        " - Total: " +
-        currencyFormat(vlrTotalServico) +
-        "<br />";
-      document.getElementById("servicos").appendChild(createPara(paraTexto));
+      if (servicosEscolhidos[i].isSelected === true) {
+        vlrTotalServico = servicosEscolhidos[i].vlrDiariaServico * qtdDiarias;
+        vlrSomaServicos = vlrSomaServicos + vlrTotalServico;
+        paraTexto =
+          servicosEscolhidos[i].nomeServico +
+          " - Diária: " +
+          currencyFormat(servicosEscolhidos[i].vlrDiariaServico) +
+          " - Total: " +
+          currencyFormat(vlrTotalServico) +
+          "<br />";
+        document.getElementById("servicos").appendChild(createPara(paraTexto));
+      }
     }
     localStorage.setItem("valorTotalServicos", vlrSomaServicos);
   } else {
