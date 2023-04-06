@@ -28,6 +28,7 @@ export default {
       );
       commit("setData", response.data);
       console.log("Executei ReservasUsuario.js ...",idUsuario,response.data);
+      return response.data;
 
     }
 

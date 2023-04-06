@@ -6,7 +6,7 @@ export const getReserva = (result) => {
   // DATE_FORMAT(date,'%d/%m/%Y') AS niceDate
   // db.query("SELECT * FROM Reservas ORDER BY idReservas ASC", (err, results) => {
   db.query(
-    "SELECT idReservas, usuario_idUsuario, DATE_FORMAT(dataReserva,'%d/%m/%y') as dataReserva, DATE_FORMAT(dataEntradaReserva,'%d/%m/%y') as dataEntradaReserva,DATE_FORMAT(dataSaidaReserva,'%d/%m/%y') as dataSaidaReserva,qtdHospedesReserva,valorReserva,statusReserva,valorTotalDesconto,valorTotalServicos FROM Reservas ORDER BY idReservas ASC",
+    "SELECT idReservas, usuario_idUsuario, DATE_FORMAT(dataReserva,'%d/%m/%y') as dataReserva, DATE_FORMAT(dataEntradaReserva,'%d/%m/%y') as dataEntradaReserva,DATE_FORMAT(dataSaidaReserva,'%d/%m/%y') as dataSaidaReserva,qtdHospedesReserva,valorReserva,statusReserva,valorTotalDesconto,valorTotalServicos,acomodacaoQtMaxPessoas FROM Reservas ORDER BY idReservas ASC",
     (err, results) => {
       if (err) {
         console.log(err);

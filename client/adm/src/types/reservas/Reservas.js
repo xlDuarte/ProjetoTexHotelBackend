@@ -60,6 +60,7 @@ export class Reservas {
     taxaDescontoCupom,
     valorTotalDesconto,
     valorTotalServicos,
+    acomodacaoQtMaxPessoas,
     itemArrayReservas,
     itemArrayEdit,
     arrayServicosBD
@@ -84,21 +85,25 @@ export class Reservas {
     this.taxaDescontoCupom = taxaDescontoCupom;
     this.valorTotalDesconto = valorTotalDesconto;
     this.valorTotalServicos = valorTotalServicos;
+    this.acomodacaoQtMaxPessoas = acomodacaoQtMaxPessoas;
     this.itemArrayReservas = itemArrayReservas;
     this.itemArrayEdit = itemArrayEdit;
     this.arrayServicosBD = arrayServicosBD;
-    this.servicosEscolhidos = JSON.parse(localStorage.getItem("servicosEscolhidos"));
+    this.servicosEscolhidos = JSON.parse(
+      localStorage.getItem("servicosEscolhidos")
+    );
 
     console.log(
-      "Preparar calculos finais...campos this...:",
-      this.qtDiarias,
-      this.valorReserva,
-      this.acomodacaoVlrDiaria,
-      this.qtdHospedesReserva,
-      this.taxaDescontoCupom,
-      this.valorTotalDesconto,
-      this.valorTotalServicos,
-      this.arrayServicosBD
+       "Reservas.js salvar...Preparar calculos finais...:",
+       this.qtDiarias,
+       this.valorReserva,
+       this.acomodacaoVlrDiaria,
+       this.qtdHospedesReserva,
+       this.taxaDescontoCupom,
+       this.valorTotalDesconto,
+       this.valorTotalServicos,
+       this.arrayServicosBD,
+       this.servicosEscolhidos
     );
 
     // verifica campos calculados - valorReserva, qtdade diarias, etc
@@ -111,11 +116,19 @@ export class Reservas {
     this.qtDiarias = Math.ceil(dateEnd - dateStart) / (1000 * 60 * 60 * 24);
 
     // calcula valor da reserva, sem servicos
-    this.valorReserva = parseFloat(this.qtDiarias) * parseFloat(this.qtdHospedesReserva) * parseFloat(this.acomodacaoVlrDiaria);
+    this.valorReserva =
+      parseFloat(this.qtDiarias) *
+      parseFloat(this.qtdHospedesReserva) *
+      parseFloat(this.acomodacaoVlrDiaria);
     let vlrServicos = 0;
     // vlrDiarias = this.acomodacaoVlrDiaria * this.qtDiarias * this.qtdHospedesReserva;
     // this.servicosEscolhidos = this.arrayServicosBD;
-    console.log("comparando arrays....",this.servicosEscolhidos,this.arrayServicosBD);
+
+    console.log(
+      "comparando arrays....",
+      this.servicosEscolhidos,
+      this.arrayServicosBD
+    );
     if (this.servicosEscolhidos && Array.isArray(this.servicosEscolhidos)) {
       console.log(
         "Teste Array !!!!! array com servicos existe e é um array",
@@ -127,23 +140,21 @@ export class Reservas {
           vlrServicos =
             vlrServicos +
             this.servicosEscolhidos[i].vlrDiariaServico * this.qtDiarias;
-            console.log("Somando serviços...",this.servicosEscolhidos[i].idServicos,this.servicosEscolhidos[i].isSelected,vlrServicos);
+          console.log(
+            "Somando serviços...",
+            this.servicosEscolhidos[i].idServicos,
+            this.servicosEscolhidos[i].isSelected,
+            vlrServicos
+          );
         }
       }
     }
     // this.valorReserva = vlrDiarias;
     this.valorTotalServicos = vlrServicos;
     this.valorTotalDesconto = this.valorReserva + vlrServicos;
-        console.log(
-          "valores...",
-          this.valorReserva,
-          this.valorTotalServicos,
-          this.valorTotalDesconto,
-          this.taxaDescontoCupom,this.cupom
-        );
 
-    if (this.cupom !== "Sem desconto" && this.cupom !== "")  {
-      this.taxaDescontoCupom=10;
+    if (this.cupom !== "Sem desconto" && this.cupom !== "") {
+      this.taxaDescontoCupom = 10;
       this.valorTotalDesconto =
         this.valorTotalDesconto * (1 - this.taxaDescontoCupom / 100);
     }
@@ -151,11 +162,10 @@ export class Reservas {
       "valores...",
       this.valorReserva,
       this.valorTotalServicos,
-      this.valorTotalDesconto
+      this.valorTotalDesconto,
+      this.taxaDescontoCupom,
+      this.cupom
     );
-
-    // limpa dados da localStorage que não serão mais utilizados...
-    localStorage.removeItem("servicosEscolhidos");
 
     // verifica se é uma edição, o tratamento é diferente...
     if (this.itemArrayEdit) {
@@ -169,68 +179,19 @@ export class Reservas {
       if (confirmaSalvar) {
         // grava dados da reserva editada...
         this.updateReservaBD();
+        // limpa dados da localStorage que não serão mais utilizados...
+        // localStorage.removeItem("servicosEscolhidos");
       }
       this.itemArrayEdit = false;
+      // this.
       //this.getReservas();
       return true;
     }
 
+    // localStorage.removeItem("servicosEscolhidos");
     return this.criaReservaBD();
   }
   // fim rotina persistencia reserva no BD...
-
-  salvarServicos(idUltimaReserva, arrayServicosSelecionados) {
-    let arrayServ = [];
-    console.log(
-      "Dados recebidos...",
-      idUltimaReserva,
-      arrayServicosSelecionados,
-      localStorage.getItem("servicosEscolhidos")
-    );
-
-    // verifica se existem serviços para salvar...
-
-    if (localStorage.getItem("servicosEscolhidos") !== null) {
-      // para manter compatibilidade com o frontend, dados são persistidos na localStorage tb para o backend antes de serem gravados no banco...
-      arrayServ = JSON.parse(localStorage.getItem("servicosEscolhidos"));
-
-      // verifica serviços selecionados e persiste no BD...
-      // console.log("Ultima reserva...", idUltimaReserva);
-      // console.log("Servicos arrayServ...", arrayServ);
-
-      for (let i = 0; i < arrayServ.length; i++) {
-        console.log("verifica serviços selecionados");
-
-        // antes só grava os selecionados..ajustado para gravar todos...
-        let isSelected = "false";
-        if (arrayServ[i].isSelected) {
-          isSelected = "true";
-        }
-
-        let Reservas_idReservas = idUltimaReserva;
-        let servicos_idservicos = arrayServ[i].idServicos;
-        let nomeServico = arrayServ[i].nomeServico;
-        let descricaoServico = arrayServ[i].descricaoServico;
-        let vlrDiariaServico = arrayServ[i].vlrDiariaServico;
-
-        this.criaServicoReservaBD(
-          Reservas_idReservas,
-          servicos_idservicos,
-          nomeServico,
-          vlrDiariaServico,
-          descricaoServico,
-          isSelected
-        );
-      }
-      localStorage.removeItem("servicosEscolhidos");
-    }
-  }
-
-  excluir(idReservas) {
-    console.log("Rotina excluir()...", idReservas);
-    this.excluirReservaBD(idReservas);
-    return true;
-  }
 
   async criaReservaBD() {
     let response = "";
@@ -253,17 +214,62 @@ export class Reservas {
         taxaDescontoCupom: this.taxaDescontoCupom,
         valorTotalDesconto: this.valorTotalDesconto,
         valorTotalServicos: this.valorTotalServicos,
+        acomodacaoQtMaxPessoas: this.acomodacaoQtMaxPessoas,
       });
     } catch (err) {
       console.log(err);
     }
 
     let ultimaReserva = response.data[0]["LAST_INSERT_ID()"];
-    this.salvarServicos(ultimaReserva, this.arrayServicosEscolhidos);
+    // this.salvarServicos(ultimaReserva, this.arrayServicosBD);
+    this.salvarServicos(ultimaReserva);    
     return true;
     //return ultimaReserva;
   }
 
+  // salvarServicos(idUltimaReserva, arrayServicosSelecionados) {
+  salvarServicos(idUltimaReserva) {
+    console.log("Vou salvar os servicos...")
+    let arrayServ = [];
+
+    // verifica se existem serviços para salvar...
+    if (localStorage.getItem("servicosEscolhidos") !== null) {
+      // para manter compatibilidade com o frontend, dados são persistidos na localStorage tb para o backend antes de serem gravados no banco...
+      arrayServ = JSON.parse(localStorage.getItem("servicosEscolhidos"));
+      // verifica serviços selecionados e persiste no BD...
+      // console.log("Ultima reserva...", idUltimaReserva);
+      console.log("Servicos arrayServ...", arrayServ);
+      for (let i = 0; i < arrayServ.length; i++) {
+        // antes só grava os selecionados..ajustado para gravar todos...
+        let isSelected = "false";
+        if (arrayServ[i].isSelected) {
+          isSelected = "true";
+        }
+        let Reservas_idReservas = idUltimaReserva;
+        let servicos_idservicos = arrayServ[i].idServicos;
+        let nomeServico = arrayServ[i].nomeServico;
+        let descricaoServico = arrayServ[i].descricaoServico;
+        let vlrDiariaServico = arrayServ[i].vlrDiariaServico;
+        console.log("vou enviar para criar a reserva...",Reservas_idReservas,servicos_idservicos,nomeServico,descricaoServico,vlrDiariaServico);
+        this.criaServicoReservaBD(
+          Reservas_idReservas,
+          servicos_idservicos,
+          nomeServico,
+          vlrDiariaServico,
+          descricaoServico,
+          isSelected
+        );
+      }
+    }
+    localStorage.removeItem("servicosEscolhidos");
+  }
+
+  excluir(idReservas) {
+    console.log("Rotina excluir()...", idReservas);
+    this.excluirReservaBD(idReservas);
+    return true;
+  }
+  
   async criaServicoReservaBD(
     Reservas_idReservas,
     servicos_idservicos,
@@ -375,25 +381,6 @@ export class Reservas {
       console.log(err);
     }
   }
-
- // localiza servicos da reserva pelo idReserva...rotina está duplicada pois tb existe na store...
- // verifica existencias de resgitros de servicos para a reserva, caso não haja carrega servicos da tabela servicos
-//  async getServicosReservaById(idReserva) {
-//       try {
-//         const response = await axios.get(`http://localhost:5000/servicoReserva/${idReserva}`);
-//         console.log("getServicosReservaById idReserva... ", idReserva,response.data);
-//         //console.log("getServicosById", this.itemServico);
-//         if (isEmptyObject(response.data)) {
-//           // le tabela servicos - será a matriz...
-//           const responseBD = await axios.get("http://localhost:5000/servico");
-//           console.log("Executei getServicosReservaById.js table Servicos...",idReserva,isEmptyObject(responseBD.data),responseBD.data);
-//           return responseBD.data;
-//         }
-//         return response.data;
-//       } catch (err) {
-//         console.log(err);
-//       } 
-//   }
 
   // localiza reserva pelo id
   async getReservasById(idReservas) {

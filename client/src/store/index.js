@@ -9,6 +9,7 @@ import { createStore } from "vuex";
 import JokeNorris from "./modules/JokeNorris.js";
 import Servicos2 from "./modules/Servicos2";
 import ServicosReserva from "./modules/ServicosReserva";
+import ReservasUsuario from "./modules/ReservasUsuario.js";
 
 // import FormReserva from "@/components/reserva/FormReserva.vue";
 
@@ -17,46 +18,47 @@ export default createStore({
     Servicos2,
     JokeNorris,
     ServicosReserva,
+    ReservasUsuario
   },
   state: {
     // dados para servicos - exemplo hardcode...
-    servicos: [
-      {
-        id: "servico1",
-        nome: "servico1",
-        label: "cafeQuarto",
-        descricao: "Cafe da Manhã no Quarto",
-        vlrDiaria: 100,
-      },
-      {
-        id: "servico2",
-        nome: "servico2",
-        label: "5G",
-        descricao: "Internet 5G",
-        vlrDiaria: 50,
-      },
-      {
-        id: "servico3",
-        nome: "servico3",
-        label: "massagem",
-        descricao: "Massagem Terapéutica",
-        vlrDiaria: 150,
-      },
-      {
-        id: "servico4",
-        nome: "servico4",
-        label: "children",
-        descricao: "Serviços ChildrenCare",
-        vlrDiaria: 200,
-      },
-      {
-        id: "servico5",
-        nome: "servico5",
-        label: "pet",
-        descricao: "Serviços PetCare",
-        vlrDiaria: 100,
-      },
-    ],
+    // servicos: [
+    //   {
+    //     id: "servico1",
+    //     nome: "servico1",
+    //     label: "cafeQuarto",
+    //     descricao: "Cafe da Manhã no Quarto",
+    //     vlrDiaria: 100,
+    //   },
+    //   {
+    //     id: "servico2",
+    //     nome: "servico2",
+    //     label: "5G",
+    //     descricao: "Internet 5G",
+    //     vlrDiaria: 50,
+    //   },
+    //   {
+    //     id: "servico3",
+    //     nome: "servico3",
+    //     label: "massagem",
+    //     descricao: "Massagem Terapéutica",
+    //     vlrDiaria: 150,
+    //   },
+    //   {
+    //     id: "servico4",
+    //     nome: "servico4",
+    //     label: "children",
+    //     descricao: "Serviços ChildrenCare",
+    //     vlrDiaria: 200,
+    //   },
+    //   {
+    //     id: "servico5",
+    //     nome: "servico5",
+    //     label: "pet",
+    //     descricao: "Serviços PetCare",
+    //     vlrDiaria: 100,
+    //   },
+    // ],
 
     // dados para acomodações
     acomodacoes: [
@@ -143,24 +145,11 @@ export default createStore({
         }
       }
 
-      // for (var i=0;i < quartos_hotel.length; i++) {
-      //   // console.log("getters =>",Object.entries(quartos_hotel))
-      //   console.log("getters =>", JSON.stringify(quartos_hotel));
-      // }
-      // teste com ordenação...
-      //let roomSelected = "family"
-      // replace não funcionou pois só atua no campo que está sendo analisado...
-      // let objStr = JSON.stringify(quartos_hotel, function replacer(key, value) {
-      //   if (key == "id" && value == "family") {
-      //     return "TESTE"; // define nr de ordem para 0
-      //   }
-      //   return value;
-      // });
-
       //console.log("getters =>", objStr);
       let objJson = JSON.parse(objStr);
       return objJson;
     },
+
     servicos: (state) => {
       console.log("servicos1...", state.servicos);
       let servicos_hotel = state.servicos.map((item) => {
@@ -188,6 +177,8 @@ export default createStore({
       console.log("gettters reservasAnteriores", reservasAnteriores);
       return reservasAnteriores;
     },
+
+
   },
   mutations: {
     // methods - alteração dos dados - exemplo:

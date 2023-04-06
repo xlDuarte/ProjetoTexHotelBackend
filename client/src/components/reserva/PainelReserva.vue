@@ -2,7 +2,7 @@
   <div>
     <ModalServicos />
     <ModalResumo />
-    <ModalMinhasReservas />
+    <ModalMinhasReservas :msgUser="msgUser"/>
     <div class="secResumo">
       <div>
         <h3>Resumo da reserva</h3>
@@ -73,7 +73,8 @@ export default {
     // data
     return {
       userLogged: false,
-      idUsuario:14
+      idUsuario: 14,
+      msgUser: "Você ganhou um desconto de 10% em sua próxima reserva!"
     };
   },
   methods: {
@@ -138,13 +139,6 @@ window.$().ready(function () {
 // chama modal para display das reservas anteriores
 window.$().ready(function () {
   window.$("#btnMinhasReservas").click(function () {
-    // this.getReservaUsuarioById(this.idUsuario);
-    // try {
-    //     let idUsuario = "14";
-    //     this.$store.dispatch("ReservasUsuario/getData", { idUsuario: `${idUsuario}`,});
-    //     } catch (err) {
-    //       console.log(err);
-    //     }
     window.$("#modalMinhasReservas").modal("show");
   });
 });
