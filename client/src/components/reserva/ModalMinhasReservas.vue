@@ -200,12 +200,15 @@ export default {
       this.comentarios.push({
         dtReserva: this.dadosReserva.dtReserva,
         idReserva: this.dadosReserva.reservaId,
-        nome: this.userLoged,
+        idreserva: this.reservaId,
+        idUsuario: this.idUsuario,
+        usuarioLogado: this.userLoged,
+        nomeComentario: this.inputNome,
         comentario: this.txtMensagem,
         tipo: this.dadosReserva.tipoApto,
         nota: avaliacao,
       });
-      // console.log("DadosReserva:", this.dadosReserva);
+      console.log("DadosReserva:", this.dadosReserva,this.comentarios);
       localStorage.setItem(
         `Coment_${this.dadosReserva.idReservas}`,
         JSON.stringify(this.comentarios)

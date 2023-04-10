@@ -47,13 +47,6 @@ const routes = [
   },
 
   {
-    path: "/ReservasAdmTab",
-    name: "reservasAdmTab",
-    component: () =>
-      import("../../adm/src/views/reservas/ReservasViewTab.vue"),
-  },
-
-  {
     path: "/Usuarios",
     name: "usuarios",
     component: () => import("../../adm/src/views/usuarios/UsuariosView.vue"),

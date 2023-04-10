@@ -1,28 +1,5 @@
 <template>
   <div class="main">
-    <!-- para substituir as modals por tabs, ficaria melhor - testar caso haja tempo -->
-    <!-- <div class="tabs">
-      <v-card>
-        <v-tabs v-model="tab" bg-color="primary">
-          <v-tab value="reserva">Reserva</v-tab>
-          <v-tab value="servicos">Servicos</v-tab>
-          <v-tab value="resumo">Resumo</v-tab>
-        </v-tabs>
-        <v-card-text>
-          <v-window v-model="tab">
-            <v-window-item value="reserva">
-              <TabViewReserva msg="Tab Reserva!" />
-            </v-window-item>
-            <v-window-item value="servicos">
-              <TabViewServicos msg="Welcome to Your TabView02 Tab!" />
-            </v-window-item>
-            <v-window-item value="resumo">
-              <TabViewResumo msg="Welcome to Your TabView03 Tab!" />
-            </v-window-item>
-          </v-window>
-        </v-card-text>
-      </v-card>
-    </div> -->
 
     <div class="modalServicos2">
       <ModalServicos2
@@ -38,8 +15,14 @@
         :msg="msgModalResumo"
         :idReservas="idReservasModalResumo"
         :itemReservas="itemReservaModalResumo"
+        :arrayServicosBD="arrayServicosBD"
+        :servicosSelection="servicosSelection"
       />
     </div>
+    <div class="modalUsuarios">
+      <ModalUsuarios :msg="msgModalUsuarios" :items="listClientes" />
+    </div>
+
     <div class="sec">
       <div class="text-center">
         <h2>CADASTRO DE RESERVAS</h2>
@@ -178,9 +161,9 @@
             <div class="container">
               <div class="row my-2 mt-3">
                 <div class="col col-5 me-5">
-                  <label for="idUsuario" class="d-block fw-bold"
-                    >ID Usuario</label
-                  >
+                  <label for="idUsuario" class="d-block fw-bold" @click="handleClick('usuarios')">ID Usuario - clique para consulta</label>
+                  <!-- <a href="#" class="d-block fw-bold" @click="handleClick('usuarios')">ID Usuários</a> -->
+                  <i class="fa fa-search" aria-hidden="true"></i>
                   <input
                     type="number"
                     id="idUsuario"
@@ -189,6 +172,7 @@
                     class="form-control"
                     @change="changeUserId"
                     :disabled="campoAtivoIdUsuario"
+                    style="display: inline-block"
                   />
                   <input
                     type="text"
@@ -272,7 +256,7 @@
                     placeholder="Valor Total Reserva"
                     class="form-control"
                     :disabled="true"
-                  />                  
+                  />
                   <label for="cupom" class="d-block fw-bold"
                     >Cupom Desconto</label
                   >
@@ -285,9 +269,7 @@
                     :disabled="true"
                   />
                 </div>
-
-                <div class="col col-5 me-5">
-                </div>
+                <div class="col col-5 me-5"></div>
               </div>
             </div>
           </div>
@@ -327,6 +309,15 @@
               :disabled="camposAtivos"
             >
               Excluir Reserva
+            </button>
+            <button
+              v-if="showModalServicos"
+              @click="handleClick('usuarios')"
+              id="btnUsuarios"
+              class="button mt-2"
+              type="button"
+            >
+              Usuários
             </button>
             <button
               v-if="showModalServicos"
@@ -426,8 +417,8 @@ import axios from "axios";
 import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
 import ModalServicos2 from "@/../adm/src/components/reserva/ModalServicos2";
 import ModalResumo2 from "@/../adm/src/components/reserva/ModalResumo2";
+import ModalUsuarios from "@/../adm/src/components/reserva/ModalUsuarios";
 import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
-// import { currencyFormat } from "@/../adm/src/types/reservas/MainFunctions.js";
 
 // testar currency via import VueCurrencyInput from 'vue-currency-input';
 // site https://vue-currency-input-v1.netlify.app/guide/#installation
@@ -436,10 +427,6 @@ import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
 
 import { mapState } from "vuex";
 
-// tabs
-// import TabViewReserva from "@/../adm/src/components/reserva/TabViewServicos.vue";
-// import TabViewServicos from "@/../adm/src/components/reserva/TabViewServicos.vue";
-// import TabViewResumo from "@/../adm/src/components/reserva/TabViewServicos.vue";
 
 export default {
   name: "ReservasView.view",
@@ -447,9 +434,8 @@ export default {
     // components....
     ModalServicos2,
     ModalResumo2,
-    // TabViewReserva,
-    // TabViewServicos,
-    // TabViewResumo
+    ModalUsuarios,
+
   },
   data() {
     // data
@@ -467,8 +453,9 @@ export default {
       arrayServicosBD: [],
       arrayServicosAux: [],
       msgModalResumo: "",
+      msgModalUsuarios: "",
       idReservasModalResumo: "",
-      itemReservaModalResumo: "",
+      itemReservaModalResumo: [],
       dataReserva: new Date().toISOString().substring(0, 10),
       dataEntradaReserva: new Date().toISOString().substring(0, 10),
       dataSaidaReserva: new Date().toISOString().substring(0, 10),
@@ -508,6 +495,7 @@ export default {
       showModalResumo: false,
       showGerarCupomButton: false,
       servicosSelection: false,
+      listClientes:"",
     };
   },
 
@@ -583,6 +571,18 @@ export default {
       }
     },
 
+    // carrega lista de usuarios clientes
+    async getUsersCliente() {
+      try {
+        const response = await axios.get("http://localhost:5000/usuario/cliente");
+        console.log("getUsersCliente", response);
+        this.listClientes = response.data;
+        return response;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
     // verificar acomodação  pelo id
     async validaAcomodacaoById(idAcomodacao) {
       try {
@@ -594,7 +594,12 @@ export default {
           this.acomodacaoTipo = response.data.tipoAcomodacao;
           this.acomodacaoVlrDiaria = response.data.valorAcomodacao;
           this.acomodacaoQtMaxPessoas = response.data.qtMaxPessoas;
-          console.log("Dados acomodação...",idAcomodacao,this.acomodacaoTipo,this.acomodacaoQtMaxPessoas)
+          console.log(
+            "Dados acomodação...",
+            idAcomodacao,
+            this.acomodacaoTipo,
+            this.acomodacaoQtMaxPessoas
+          );
         } else {
           this.acomodacaoTipo = "Acomodação inválida - Verificar!!";
           this.acomodacaoVlrDiaria = 0;
@@ -662,7 +667,7 @@ export default {
         ) {
           this.camposAtivos = true;
           this.botaoModalServicos = true;
-          
+
           // desativa seleção de serviços na modal de serviços...
           this.servicosSelection = true;
           alert(
@@ -695,8 +700,17 @@ export default {
         // this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
 
         // executa validação dos campos...
-        let validadorDados,dadosOk,msgRetorno;
-        validadorDados = checkInfo(this.idUsuario,this.idAcomodacao,this.dataReserva,this.dataEntradaReserva,this.dataSaidaReserva,this.qtdHospedesReserva,this.acomodacaoTipo,this.acomodacaoQtMaxPessoas);
+        let validadorDados, dadosOk, msgRetorno;
+        validadorDados = checkInfo(
+          this.idUsuario,
+          this.idAcomodacao,
+          this.dataReserva,
+          this.dataEntradaReserva,
+          this.dataSaidaReserva,
+          this.qtdHospedesReserva,
+          this.acomodacaoTipo,
+          this.acomodacaoQtMaxPessoas
+        );
         dadosOk = validadorDados[0];
         msgRetorno = validadorDados[1];
 
@@ -707,13 +721,13 @@ export default {
         }
 
         this.getServicosByReservaId(this.idReservas)
-          .then(response => {
-              console.log("teste",response.data[0]);
-              this.arrayServicosBD = response.data
+          .then((response) => {
+            console.log("teste", response.data[0]);
+            this.arrayServicosBD = response.data;
           })
-          .catch(error => {
-              console.log(error);
-              // Handle error here
+          .catch((error) => {
+            console.log(error);
+            // Handle error here
           });
 
         let reserva = new Reservas();
@@ -747,7 +761,6 @@ export default {
         this.getReservas();
         // força atualização pela segunda vez, no caso de edição não está atualizando com um unica chamada, checar...
         this.getReservas();
-
       }
 
       if (action == "excluir") {
@@ -766,22 +779,39 @@ export default {
       }
 
       if (action == "servicos") {
-        // console.log("vou mostrar modal de servicos2", this.idReservas);
         this.arrayServicosBD = this.ServicosReserva;
         window.$("#modalServicos2").modal("show");
         this.msgModalServicos2 =
           "Baixa utilizaçao serviço 5G - ofereça desconto na reserva";
-        this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` });
+        this.$store.dispatch("ServicosReserva/getData", {
+          idReserva: `${this.idReservas}`,
+        });
         this.campoAtivoIdUsuario = true;
         return true;
       }
 
       if (action == "resumo") {
-        console.log("vou mostrar modal de resumo2", this.idReservas);
+        this.$store.dispatch("ServicosReserva/getData", {
+          idReserva: `${this.idReservas}`,
+        });
+        this.arrayServicosBD = this.ServicosReserva;
         this.idReservasModalResumo = this.idReservas;
         this.itemReservaModalResumo = this.item;
-        this.msgModalResumo = "Área de mensagens...ModalResumo2";
+        this.servicosSelection = true;
+        this.msgModalResumo = "Área de mensagens...sem mensagens no momento.";
+        // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` });
         window.$("#modalResumo2").modal("show");
+        this.campoAtivoIdUsuario = true;
+        return true;
+      }
+
+      if (action == "usuarios") {
+        // this.arrayServicosBD = this.ServicosReserva;
+        this.getUsersCliente();
+        window.$("#modalUsuarios").modal("show");
+        // this.msgModalServicos2 =
+        //   "Baixa utilizaçao serviço 5G - ofereça desconto na reserva";
+        // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` });
         this.campoAtivoIdUsuario = true;
         return true;
       }
@@ -817,8 +847,8 @@ export default {
 
       if (action == "cancelar") {
         //this.msg1 = "Cliquei handleClick sair tela edição";
-        console.log("Cliquei handleClick sair tela edição...",action);
-        console.log("Testando mainFunc...:",mainFunc.currencyFormat("2000"));
+        console.log("Cliquei handleClick sair tela edição...", action);
+        console.log("Testando mainFunc...:", mainFunc.currencyFormat("2000"));
         // atualiza campos do formulário / tela
         // this.getReservasById(this.idReservas);
         // this.itemArrayEdit = false;
@@ -828,10 +858,9 @@ export default {
         // this.showExcluirButton = false;
         //this.showModalServicos = false;
         //this.showModalResumo = false;
-        this.campoAtivoIdUsuario= false;
+        this.campoAtivoIdUsuario = false;
         this.camposAtivos = false;
         // return true;
-
       }
 
       // após inclusão, limpa campos do form...
@@ -854,7 +883,7 @@ export default {
         (this.taxaDescontoCupom = 0),
         (this.valorTotalDesconto = 0),
         (this.valorTotalServicos = 0),
-      // retorna status dos botões...
+        // retorna status dos botões...
         (this.showSalvarButton = true);
       this.showCancelarButton = false;
       this.showCancelarReservaButton = false;
@@ -863,7 +892,7 @@ export default {
       this.showModalResumo = false;
       this.showGerarCupomButton = false;
       this.itemArrayEdit = false;
-      this.campoAtivoIdUsuario= false;
+      this.campoAtivoIdUsuario = false;
       this.camposAtivos = false;
 
       this.getReservas();
@@ -874,7 +903,7 @@ export default {
       console.log("Entrei no handleItem");
       if (action == "editar") {
         this.msg1 = "Cliquei HandleItem edit";
-        console.log("Entrei no handleItem...",action);
+        console.log("Entrei no handleItem...", action);
         this.campoAtivoIdUsuario = true;
         this.getReservasById(idReservas);
         this.itemArrayEdit = true;
@@ -887,15 +916,15 @@ export default {
         this.showModalResumo = true;
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
         this.arrayServicosBD = this.ServicosReserva;
-        // console.log("handleItem edit...",this.arrayServicosBD);  
-        
+        // console.log("handleItem edit...",this.arrayServicosBD);
+
         // checar controle  aqui
         this.showGerarCupomButton = true;
         // checar controle  aqui
       }
       if (action == "excluir") {
         // this.msg1 = "Cliquei HandleItem excluir";
-        console.log("Entrei no handleItem...",action);
+        console.log("Entrei no handleItem...", action);
         // atualiza campos do formulário
         this.getReservasById(idReservas);
         this.itemArrayEdit = false;
@@ -909,7 +938,7 @@ export default {
       }
       if (action == "cancelar") {
         this.msg1 = "Cliquei HandleItem cancelar reserva";
-        console.log("Entrei no handleItem...",action);
+        console.log("Entrei no handleItem...", action);
         // atualiza campos do formulário
         this.getReservasById(idReservas);
         this.itemArrayEdit = false;
@@ -921,13 +950,12 @@ export default {
         this.showModalServicos = false;
         this.showModalResumo = false;
         this.showModalServicos = false;
-        this.campoAtivoIdUsuario= false;
+        this.campoAtivoIdUsuario = false;
         return true;
       }
 
       this.msg2 = `idReservas ${idReservas}`;
       //this.campoAtivoIdUsuario = true;
-
     },
   },
   watch: {
@@ -940,39 +968,62 @@ export default {
     // incluir funções...
     ...mapState(["Servicos2"]),
     ...mapState(["ServicosReserva"]),
-
   },
   mounted() {
     // funções mounted...
     console.log("Passando pelo mounted...");
     this.$store.dispatch("Servicos2/getData");
-
   },
 };
 
-export function checkInfo(idUsuario,idAcomodacao,dataReserva,dtEntrada, dtSaida, qtdHospedesReserva,acomodacaoTipo,acomodacaoQtMaxPessoas) {
-
+export function checkInfo(
+  idUsuario,
+  idAcomodacao,
+  dataReserva,
+  dtEntrada,
+  dtSaida,
+  qtdHospedesReserva,
+  acomodacaoTipo,
+  acomodacaoQtMaxPessoas
+) {
   let msgReturn;
   msgReturn = [true, "Dados OK!"];
-  console.log(idUsuario,idAcomodacao,dataReserva,dtEntrada, dtSaida, qtdHospedesReserva,acomodacaoTipo,acomodacaoQtMaxPessoas);
+  console.log(
+    idUsuario,
+    idAcomodacao,
+    dataReserva,
+    dtEntrada,
+    dtSaida,
+    qtdHospedesReserva,
+    acomodacaoTipo,
+    acomodacaoQtMaxPessoas
+  );
 
-  if (idUsuario === "" ) {
+  if (idUsuario === "") {
     msgReturn = [false, "Usuario inválido"];
     return msgReturn;
   }
 
-  if (idAcomodacao === "" ) {
+  if (idAcomodacao === "") {
     msgReturn = [false, "Acomodação inválida"];
     return msgReturn;
   }
 
-  if ( dtEntrada < dataReserva || dtEntrada == "" || dtSaida == "" || dtSaida <= dtEntrada) {
-     msgReturn = [false, "Datas de entrada e/ou saída inválidas"];
-     return msgReturn;
+  if (
+    dtEntrada < dataReserva ||
+    dtEntrada == "" ||
+    dtSaida == "" ||
+    dtSaida <= dtEntrada
+  ) {
+    msgReturn = [false, "Datas de entrada e/ou saída inválidas"];
+    return msgReturn;
   }
 
   if (qtdHospedesReserva == 0 || qtdHospedesReserva > acomodacaoQtMaxPessoas) {
-    msgReturn = [false, `Quantidade hóspedes inválida - suite ${acomodacaoTipo} suporta no máximo ${acomodacaoQtMaxPessoas} pessoas.`];
+    msgReturn = [
+      false,
+      `Quantidade hóspedes inválida - suite ${acomodacaoTipo} suporta no máximo ${acomodacaoQtMaxPessoas} pessoas.`,
+    ];
     return msgReturn;
   }
 
@@ -980,7 +1031,6 @@ export function checkInfo(idUsuario,idAcomodacao,dataReserva,dtEntrada, dtSaida,
 
   return msgReturn;
 }
-
 </script>
 
 <style scoped>
@@ -997,6 +1047,10 @@ export function checkInfo(idUsuario,idAcomodacao,dataReserva,dtEntrada, dtSaida,
 .column {
   float: left;
   width: 50%;
+}
+
+.inline-link {
+    display: inline-block;
 }
 
 /* Clear floats after the columns */
