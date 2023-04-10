@@ -74,6 +74,11 @@ import {
   resetPassword, updatePassword,
 } from "../controller/forgot.js";
 
+import { 
+  createComentario,
+  showComentarios 
+} from "../controller/comentarios.js";
+
 // init express router
 const router = express.Router();
 
@@ -209,6 +214,10 @@ router.put("/acomodacao/:id", updateAcomodacao);
 
 // rota para deletar uma acomodacao
 router.delete("/acomodacao/:id", deleteAcomodacao);
+
+router.get("/comentarios", showComentarios);
+
+router.post("/novoComentario", createComentario)
 
 // export do router
 export default router;
