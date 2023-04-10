@@ -5,14 +5,27 @@
       <p>Forneça a data de entrada, saída e quantidade de pessoas.</p>
       <p id="msgAlerta"></p>
     </div>
-    <div class="flex minhaReserva" id="formDadosReserva">
-      <div>
-        <label for="dtEntrada">Entrada</label>
-        <input type="date" id="dtEntrada" name="dtEntrada" v-model="dtEntrada" />
-        <label for="dtSaida">Saida</label>
-        <input type="date" id="dtSaida" name="dtSaida" v-model="dtSaida" />
-        <label for="qtPessoas">Quantidade Pessoas</label>
-        <input type="number" id="qtPessoas" name="qtPessoas" value="1" />
+    <div class="row minhaReserva" id="formDadosReserva">
+      <div class="col-md-4">
+        <div class="form-group mx-3">
+          <label for="dtEntrada">Entrada</label>
+          <input type="date" id="dtEntrada" name="dtEntrada" v-model="dtEntrada" class="form-control form-control-lg" />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group mx-3">
+          <label for="dtSaida">Saida</label>
+          <input type="date" id="dtSaida" name="dtSaida" v-model="dtSaida" class="form-control form-control-lg" />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group mx-3">
+          <label for="qtPessoas">Quantidade Pessoas</label>
+          <input type="number" id="qtPessoas" name="qtPessoas" value="1" class="form-control" style="text-align: center;" />
+
+        </div>
+      </div>
+      <div class="col-md-12">
         <button type="button" class="button" id="btnResumo">
           Fechar reserva!
         </button>
@@ -20,6 +33,17 @@
     </div>
   </div>
 </template>
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
 // import { json } from "body-parser";
@@ -602,7 +626,8 @@ img {
   border-radius: 50px;
   cursor: pointer;
   overflow: hidden;
-  font-size: 1.5em;
+  font-size: 1.0em;
+  margin-top: 10px;
 }
 
 .flex>div>button {
@@ -629,4 +654,15 @@ img {
   border-radius: 50px;
   padding: 0.4em;
 }
+
+  .minhaReserva {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-control {
+  font-size: 1.2em;
+}
+
+
 </style>
