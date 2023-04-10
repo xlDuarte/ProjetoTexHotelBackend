@@ -809,10 +809,7 @@ export default {
         // this.arrayServicosBD = this.ServicosReserva;
         this.getUsersCliente();
         window.$("#modalUsuarios").modal("show");
-        // this.msgModalServicos2 =
-        //   "Baixa utilizaçao serviço 5G - ofereça desconto na reserva";
-        // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` });
-        this.campoAtivoIdUsuario = true;
+        this.campoAtivoIdUsuario = false;
         return true;
       }
 
