@@ -2,6 +2,7 @@
 import {
   getUsuario,
   getUsuarioById,
+  getUsuarioCliente,
   insertUsuario,
   updateUsuarioById,
   deleteUsuarioById,
@@ -10,6 +11,17 @@ import {
 // lista todos os usuarios
 export const showUsuario = (req, res) => {
   getUsuario((err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+// lista todos os usuarios
+export const showUsuarioCliente = (req, res) => {
+  getUsuarioCliente((err, results) => {
     if (err) {
       res.send(err);
     } else {

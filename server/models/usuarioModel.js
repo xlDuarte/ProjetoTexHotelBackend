@@ -13,6 +13,20 @@ export const getUsuario = (result) => {
   });
 };
 
+// lista todos os usuarios hospede4s
+export const getUsuarioCliente = (result) => {
+  db.query(
+    "SELECT * FROM hotelcnp.usuario WHERE tipoUsuario = 'cliente' ORDER BY nomeUsuario",(err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results);
+      }
+    }
+  );
+};
+
 // lista um usuario
 export const getUsuarioById = (id, result) => {
   db.query(

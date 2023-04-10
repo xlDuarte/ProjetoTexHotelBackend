@@ -14,48 +14,13 @@
         </div>
         <div class="modal-body">
           <div>
-            <!-- <p>Mensagem sistema: {{ msg }} - {{ qtDiarias }} - {{ valorTotalServicos }}</p> -->
             <p>Mensagem sistema: {{ msg }} </p>
             <p>ID da Reserva: {{ idReservas }}</p>
-            <!-- para avaliar os arrays sendo passados para a Modal-->
-            <!-- 
-            <p>arrayServicosBD: {{ arrayServicosBD }}</p>
-            <p>arrayServicosAux: {{ arrayServicosAux }}</p>
-            -->
             <hr />
-            <!-- Incluido para teste !!!-->
-            <!-- <button @click="JokeData">Chuck Norris</button>
-            <div v-if="JokeNorris.data">
-              <p>{{ JokeNorris.data.value }}</p>
-            </div> -->
           </div>
-          <!-- Incluido para teste !!!-->
-          <!-- <div>
-            <button @click="Servicos2Data">Servicos2</button>
-            <div v-if="Servicos2.data">
-              <p>{{ Servicos2.data.value }}</p>
-            </div>
-          </div> -->
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
           <h2>Manutenção Serviços - Selecione serviços para a reserva</h2>
           <hr />
-          <!-- <div
-            class="painelServicos"
-            v-for="item in Servicos2.data"
-            :key="item"
-          >
-            <input
-              type="checkbox"
-              v-model="item.isSelected"
-              :id="item.idServicos"
-              :name="item.nomeServico"
-              :value="item.labelServico"
-            />
-            <label
-              >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }}
-            </label>
-            <br />
-          </div> -->
           <div
             class="painelServicos"
             v-for="item in this.arrayServicosBD.data"
@@ -117,7 +82,6 @@ import "bootstrap/dist/js/bootstrap.js";
 const bootstrap = require("bootstrap");
 
 // import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
-// import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
 import { mapState } from "vuex";
 
 // import axios
@@ -130,9 +94,6 @@ export default {
     msg: String,
     idReservas: [Number, String],
     arrayServicosBD: Object,
-    // qtDiarias: String,
-    // valorTotalServicos: String,
-    // arrayServicosAux: Object,
     botaoModalServicos: Boolean,
     servicosSelection: Boolean,
   },
@@ -160,6 +121,7 @@ export default {
   methods: {
 
     abreModal() {
+      console.log("abreModal modalResumo2 ");
       var modal = new bootstrap.Modal(
         document.querySelector("#modalServicos2"),
         {
@@ -174,13 +136,12 @@ export default {
 
     changeServico(isSelected,item) {
       // mudou o status do servico...
-      // console.log("Event...",isSelected,item);
       let isSelectedAux="false";
       if (isSelected) {
         isSelectedAux = "true"
-        console.log("Mudou status do servico - selected...",this.idReservas, item.servicos_idservicos);
+        // console.log("Mudou status do servico - selected...",this.idReservas, item.servicos_idservicos);
       } else {
-        console.log("Mudou status do servico - unselected...",this.idReservas, item.servicos_idservicos);
+        // console.log("Mudou status do servico - unselected...",this.idReservas, item.servicos_idservicos);
       }
 
       // update servicos no banco - deleção de todos os regisotrs apresentou problemas, foi necessário atualizar um a um...
@@ -189,9 +150,8 @@ export default {
     },
     confirmaServicos() {
       alert("Serviços adicionais incluídos! Obrigado!", this.arrayServicosBD);
-      // let arrayServicos = this.Servicos2;
       let arrayServicos = this.arrayServicosBD;
-      console.log("confirmaServicos...:", arrayServicos);
+      // console.log("confirmaServicos...:", arrayServicos);
       let arrayServicosEscolhidos = [];
       for (let i = 0; i < arrayServicos.data.length; i++) {
         // define idServico e demais dados do servico,
@@ -232,9 +192,9 @@ export default {
     },
 
     // somente para teste da store...
-    JokeData() {
-      this.$store.dispatch("JokeNorris/getData");
-    },
+    // JokeData() {
+    //   this.$store.dispatch("JokeNorris/getData");
+    // },
 
     // somente para teste...
     Servicos2Data() {

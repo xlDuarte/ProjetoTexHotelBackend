@@ -6,6 +6,7 @@ import express from "express";
 import {
   showUsuario,
   showUsuarioById,
+  showUsuarioCliente,
   deleteUsuario,
   updateUsuario,
 } from "../controller/usuarios.js";
@@ -96,6 +97,9 @@ router.post('/resetpwd/:token', updatePassword);
 //Usuarios
 // rota para listar todos os usuarios
 router.get("/usuario", showUsuario);
+
+// rota para listar todos os usuarios tipo cliente
+router.get("/usuario/cliente", showUsuarioCliente);
 
 // rota para listar um usuario
 router.get("/usuario/:id", showUsuarioById);
