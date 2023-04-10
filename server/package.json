@@ -6,7 +6,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
     "swagger-autogen": "node swagger.js"
   },
   "keywords": [],
@@ -24,6 +23,7 @@
     "express-validator": "^6.15.0",
     "jsonwebtoken": "^9.0.0",
     "method-override": "^3.0.0",
+    "mongoose": "^7.0.3",
     "mysql2": "^3.1.2",
     "nodemailer": "^6.9.1",
     "rand-token": "^1.0.1",

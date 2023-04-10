@@ -8,9 +8,24 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import swaggerUI from "swagger-ui-express";
 import swaggerFile from "./swagger/swagger_output.json" assert{type: 'json'};//import do arquivo contendo os endpoint gerados pelo autogen
+import mongoose from "mongoose";
 
 // iniciando o express
 const app = express();
+
+mongoose.connect("mongodb://0.0.0.0:27017/hotelcnp",
+{
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+
+mongoose.connection.on("connected",()=>{
+  console.log("conectado ao banco")
+})
+
+mongoose.connection.on("error", (err) => {
+  console.log("Database error"+err);
+});
 
 const port = 5000;
 const dia = 1000 * 60 * 60 * 1; //1 horas em milisegundos

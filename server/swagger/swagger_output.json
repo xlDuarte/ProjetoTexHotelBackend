@@ -1,15 +1,14 @@
-{ 
+{
   "swagger": "2.0",
   "info": {
-    "version": "1.0.48",
-    "title": "HOTELCNP API",
-    "description": "Endpoints da API criada para o projeto final do curso TEX Fullstack JavaScript Developer."
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
   },
   "host": "localhost:5000",
   "basePath": "/",
   "schemes": [
-    "http",
-    "https"
+    "http"
   ],
   "paths": {
     "/login": {
@@ -368,6 +367,24 @@
         }
       }
     },
+    "/servicoReservaSelected/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/Consumo": {
       "get": {
         "description": "",
@@ -639,6 +656,50 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/comentarios": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/novoComentario": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "comentario": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
