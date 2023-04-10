@@ -1,23 +1,37 @@
 <template>
   <!-- Inicio Modal Resummo2 -->
-  <div class="modal fade" id="modalResumo2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+  <div
+    class="modal fade"
+    id="modalResumo2"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <!-- INÍCIO DO CONTEÚDO -->
           <!-- inicio div Resumo -->
           <div id="bodyResumo">
-            <h3>Veja o resumo de sua solicitação! {{ msg }}</h3>
+            <h3>Resumo da solicitação {{ msg }}</h3>
+            <p></p>
             <p>ID da Reserva: {{ idReservas }}</p>
+            <p>Status Reserva: {{ itemReservas.statusReserva }}</p>
             <hr />
             <p>Dados Reserva</p>
+            <p>{{ itemReservas.data }}</p>
             <p>
-              Nome Hóspede: {{ itemReservas.nomeUsuario }} ID:
+              Nome Hóspede: {{ itemReservas.nomeUsuario }} - ID:
               {{ itemReservas.usuario_idUsuario }}
             </p>
             <p>
@@ -30,54 +44,53 @@
               Acomodação: {{ itemReservas.valorAcomodacao }} Qt Hóspedes:
               {{ itemReservas.qtdHospedesReserva }}
             </p>
-            <p>Status Reserva: {{ itemReservas.statusReserva }}</p>
             <p></p>
             <!-- <h2>Diárias</h2> -->
             <div id="diarias"></div>
             <hr />
             <h2>Servicos Adicionais</h2>
-            <div id="servicos"></div>
+            <div
+              class="painelServicos"
+              v-for="item in this.arrayServicosBD.data"
+              :key="item"
+            >
+              <input
+                type="checkbox"
+                v-model="item.isSelected"
+                @change="changeServico(item.isSelected, item)"
+                :id="item.idServicos"
+                :name="item.nomeServico"
+                :value="item"
+                :disabled="servicosSelection"
+              />
+              <label
+                >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }},00
+              </label>
+              <br />
+            </div>
             <hr />
-            <h2>Total</h2>
-            <p>Valor Reserva: {{ itemReservas.valorReserva }}</p>
-            <div id="total"></div>
+            <div id="total">
+              <h2>Resumo Valores</h2>
+              <p>Valor Reserva: {{ itemReservas.valorReserva }}</p>
+              <p></p>
+              <p>Valor Serviços: {{ itemReservas.valorTotalServico }}</p>
+              <p></p>
+              <p>Valor Total Geral: {{ itemReservas.valorTotalDesconto }}</p>
+            </div>
             <hr />
           </div>
-          <!-- Fim body Resumo-->
           <!-- Inicio body confirma-->
-          <div id="bodyConfirma">
-            <h3>Confirme sua reserva</h3>
-            <h2>Seu cupom de desconto: {{ cupomDesconto }}</h2>
-            <div class="mt-2 pt-2 d-flex flex-start">
-              <label for="">Aplicar Cupom de Desconto: </label>
-              <input id="inputDesconto" class="w-50 inputPadrao bg-light px-3 text-uppercase fw-bold" type="text" />
-              <button id="btnCupom" type="button" class="btn btn-secondary">
-                Aplicar Cupom
-              </button>
-
-              <button class="btn btn-secondary" @click="confirmaReserva">
-                Confirma Reserva
-              </button>
-              <!-- <button
-                id="btnConfReserva"
-                type="button"
-                class="btn btn-secondary"
-              >
-                Confirma Reserva
+          <div id="footer">
+            <div class="mt-2 pt-2 d-flex flex-start"></div>
+            <div id="geraPDF">
+              <!-- <button class="btn btn-secondary" @click="geraPDF">
+                Gera PDF
               </button> -->
             </div>
-            <div id="geraPDF">
-              <button class="btn btn-secondary" @click="geraPDF">
-                Gera PDF
-              </button>
-            </div>
-            <hr />
-            <p id="totalDesconto"></p>
             <hr />
           </div>
         </div>
-        <!-- fim body confirma -->
-      </div>
+      </div>          <!-- Fim body Resumo-->
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fechar
@@ -104,15 +117,10 @@ const bootstrap = require("bootstrap");
 // import { gravaReserva } from "../src/components/reserva/FormReserva.vue";
 // import { updateBindingForm } from "../src/components/reserva/FormReserva.vue";
 
-// gera cupom de desconto caso não exista nenhum. Se já houver a mensagem é que não podem ser gerados dois cupons no mesmo dia...
-let msgCupomDesconto = "Lamento, um cupom de desconto já foi utilizado hoje...";
-if (localStorage.getItem("cupomDesconto") != "") {
-  //localStorage.setItem("cupomDesconto", cupomDesconto());
-  localStorage.setItem("cupomDesconto", "XPTO");
-  msgCupomDesconto = localStorage.getItem("cupomDesconto");
-} else {
-  localStorage.setItem("cupomDesconto", msgCupomDesconto);
-}
+import { mapState } from "vuex";
+
+// import axios
+// import axios from "axios";
 
 var jQuery = require("jquery");
 window.jQuery = jQuery;
@@ -123,7 +131,13 @@ export default {
   // props: {
   //   msg: String, idReserva: Array,
   // },
-  props: ["msg", "idReservas", "itemReservas"], //msg generica, id da reserva e array com todos os dados da reserva
+  props: {
+    msg: String,
+    idReservas: String,
+    itemReservas: Array,
+    arrayServicosBD: Object,
+    servicosSelection: Boolean,
+  },
   data() {
     return {
       // informações que podem ser utilizadas no template...
@@ -142,22 +156,6 @@ export default {
     },
     confirmaReserva() {
       console.log("Cliquei na confirmação...");
-      console.log(
-        "Teste...",
-        localStorage.getItem("valorTotalGeral") !==
-        localStorage.getItem("vlrTotalDesconto")
-      );
-      console.log(
-        "Teste2",
-        localStorage.getItem("valorTotalGeral"),
-        localStorage.getItem("vlrTotalDesconto")
-      );
-      if (
-        localStorage.getItem("valorTotalGeral") !==
-        localStorage.getItem("vlrTotalDesconto")
-      ) {
-        localStorage.setItem("cupomDescontoValido", "NOK");
-      }
       alert(
         "Sua reserva foi confirmada - você irá receber um email com a confirmação! Obrigado!"
       );
@@ -166,7 +164,9 @@ export default {
       window.$("#modalResumo").modal("hide");
     },
   },
-  computed: {},
+  computed: {
+    ...mapState(["Servicos2"]),
+  },
   mounted() {
     // atualiza dados da modalResumo2
   },

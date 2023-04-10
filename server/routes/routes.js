@@ -6,6 +6,7 @@ import express from "express";
 import {
   showUsuario,
   showUsuarioById,
+  showUsuarioCliente,
   deleteUsuario,
   updateUsuario,
 } from "../controller/usuarios.js";
@@ -66,6 +67,7 @@ import {
   ultimoIdReserva,
   deleteReserva,
   updateReserva,
+  showReservaByUsuarioId,
 } from "../controller/reservas.js";
 
 import { 
@@ -100,6 +102,9 @@ router.post('/resetpwd/:token', updatePassword);
 //Usuarios
 // rota para listar todos os usuarios
 router.get("/usuario", showUsuario);
+
+// rota para listar todos os usuarios tipo cliente
+router.get("/usuario/cliente", showUsuarioCliente);
 
 // rota para listar um usuario
 router.get("/usuario/:id", showUsuarioById);
@@ -140,7 +145,7 @@ router.post("/servicoReserva", createServicoReserva);
 router.put("/servicoReserva/:id", updateServicoReserva);
 
 // rota para atualizar o campo selected de servico
-router.put("/servicoReservaSelected/:id", updateSelectedServicoReserva);
+router.put("/servicoReservaSelected/", updateSelectedServicoReserva);
 
 // rota para deletar um servico
 router.delete("/servicoReserva/:id", deleteServicoReserva);
@@ -176,6 +181,9 @@ router.get("/reserva", showReserva);
 
 // rota para listar uma reserva
 router.get("/reserva/:id", showReservaById);
+
+// rota para listar reservas de um usuario
+router.get("/reservaUsuario/:id", showReservaByUsuarioId);    
 
 // rota para criar uma reserva
 router.post("/reserva", createReserva);

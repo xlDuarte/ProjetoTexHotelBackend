@@ -5,6 +5,8 @@ import {
   insertReserva,
   updateReservaById,
   deleteReservaById,
+  getReservaByUsuarioId,
+  
 } from "../models/reservaModel.js";
 
 // lista todas as reervas
@@ -28,6 +30,18 @@ export const showReservaById = (req, res) => {
     }
   });
 };
+
+// lista reservas de um usuario
+export const showReservaByUsuarioId = (req, res) => {
+  getReservaByUsuarioId(req.params.id, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
 
 // cria uma novo reserva
 export const createReserva = (req, res) => {

@@ -51,12 +51,13 @@ export const insertServico = (data, result) => {
 export const updateServicoById = (data, id, result) => {
   console.log("Executando updateServicoById...");
   db.query(
-    "UPDATE servicos SET nomeServico = ?, vlrDiariaServico = ?, descricaoServico = ?, labelServico = ?  WHERE idServicos = ?",
+    "UPDATE servicos SET nomeServico = ?, vlrDiariaServico = ?, descricaoServico = ?, labelServico = ?, isSelected = ?  WHERE idServicos = ?",
     [
       data.nomeServico,
       data.vlrDiariaServico,
       data.descricaoServico,
       data.labelServico,
+      data.isSelected,
       id,
     ],
     (err, results) => {

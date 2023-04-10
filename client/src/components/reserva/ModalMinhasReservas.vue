@@ -2,7 +2,7 @@
   <!-- Modal MinhasReservas -->
   <!-- <ModalMeusComentarios /> -->
   <div class="modal" tabindex="-1" id="modalMinhasReservas">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
@@ -10,11 +10,16 @@
         </div>
         <div class="modal-body">
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
-          <h4>Suas ultimas reservas, {{ userLoged }}</h4>
+          <h4>Suas últimas reservas, {{ userLoged }}. Será sempre bem-vindo! </h4>
+          <h5>{{ msgUser }}</h5>
           <div class="ultimasReservas">
             <table class="tableReserva">
               <thead>
                 <tr>
+                  <th data-type="text-short">
+                    id Reserva <span class="resize-handle"></span>
+                  </th>                  
+                  
                   <th data-type="text-long">
                     Data Reserva <span class="resize-handle"></span>
                   </th>
@@ -30,15 +35,20 @@
                   <th data-type="text-long">
                     Vlr Total <span class="resize-handle"></span>
                   </th>
+                  <th data-type="text-short">
+                    Status <span class="resize-handle"></span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="ultimasReservas" v-for="item in reservas" :key="item">
-                  <td>{{ item.dtReserva }}</td>
-                  <td>{{ item.dtCheckIn }}</td>
-                  <td>{{ item.dtCheckOut }}</td>
-                  <td>{{ item.qtPessoas }}</td>
-                  <td>{{ item.vlrTotal }}</td>
+                  <td>{{ item.idReservas }}</td>
+                  <td>{{ formatDate(item.dataReserva) }}</td>
+                  <td>{{ formatDate(item.dataEntradaReserva) }}</td>
+                  <td>{{ formatDate(item.dataSaidaReserva) }}</td>
+                  <td>{{ item.qtdHospedesReserva }}</td>
+                  <td>{{ item.valorTotalDesconto }}</td>
+                  <td>{{ item.statusReserva }}</td>
                   <td>
                     <!-- <a id="comentario" class="button" href="">Comentário</a> -->
                     <button type="button" @click="abreComentario(item)" class="btn btn-dark" id="btnAbreComentario">
@@ -109,6 +119,9 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 const bootstrap = require("bootstrap");
 
+import { mapState } from "vuex";
+// import moment from 'moment';
+
 // import ModalMeusComentarios from "./ModalMeusComentarios.vue";
 
 var jQuery = require("jquery");
@@ -123,18 +136,23 @@ export default {
   props: {
     // properties que vem da view que irá chamar o componente...
     msg: String,
+    msgUser: String,
   },
   data() {
     return {
       // informações que podem ser utilizadas no template...
       dadosReserva: [],
       userLoged: localStorage.getItem("loged"),
+      idUsuario: localStorage.getItem("userId"),
       inputNome: "",
       txtMensagem: "",
       comentarios: [],
       labelReserva: document.getElementById("lblReserva"),
       reservaId: "",
     };
+  },
+  created() {
+    console.log("Created...");
   },
   methods: {
     abreModal() {
@@ -152,16 +170,17 @@ export default {
       this.dadosReserva = item;
       // verifica se comentário já foi feito para a reserva selecionada, apresenta mensagem de editar se positivo
       console.log(
-        `Coment_${this.dadosReserva.reservaId}`,
+        `Coment_${this.dadosReserva.idReservas}`,
         localStorage.getItem(`Coment_${this.dadosReserva.reservaId}`)
       );
+
       if (localStorage.getItem(`Coment_${this.dadosReserva.reservaId}`)) {
         alert(
           `Comentário já realizado para a reserva ${this.dadosReserva.reservaId}`
         );
       }
       this.showHide(".painelComentarios", "remove");
-      this.reservaId = this.dadosReserva.reservaId;
+      this.reservaId = this.dadosReserva.idReservas;
       console.log("thisReservaId", this.reservaId);
     },
 
@@ -181,14 +200,17 @@ export default {
       this.comentarios.push({
         dtReserva: this.dadosReserva.dtReserva,
         idReserva: this.dadosReserva.reservaId,
-        nome: this.userLoged,
+        idreserva: this.reservaId,
+        idUsuario: this.idUsuario,
+        usuarioLogado: this.userLoged,
+        nomeComentario: this.inputNome,
         comentario: this.txtMensagem,
         tipo: this.dadosReserva.tipoApto,
         nota: avaliacao,
       });
-      // console.log("DadosReserva:", this.dadosReserva);
+      console.log("DadosReserva:", this.dadosReserva,this.comentarios);
       localStorage.setItem(
-        `Coment_${this.dadosReserva.reservaId}`,
+        `Coment_${this.dadosReserva.idReservas}`,
         JSON.stringify(this.comentarios)
       );
       avaliacao = 0;
@@ -254,6 +276,12 @@ export default {
 
       document.getElementById("rating").innerHTML = avaliacao;
     },
+
+    ReservasUsuarioData() {
+      // this.$store.dispatch("ReservasUsuario/getData");
+      this.$store.dispatch("ReservasUsuario/getData", { idUsuario: `${this.idUsuario}` });
+    },
+
     // força refresh do componente...
     // https://michaelnthiessen.com/force-re-render/
     methodThatForcesUpdate() {
@@ -261,39 +289,60 @@ export default {
       this.$forceUpdate(); // Notice we have to use a $ here
       // ...
     },
+
+    // formatDate(value) {
+    //   if (value) {
+    //     return moment(String(value)).format('MM/DD/YYYY hh:mm')
+    //   }
+    // },
+
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      // Then specify how you want your dates to be formatted
+      return new Intl.DateTimeFormat('default', {dateStyle: 'long'}).format(date);
+    }
+
   },
   computed: {
+    ...mapState(["ReservasUsuario"]),
+
     reservas() {
+
+      let arrayReservas = this.ReservasUsuario.data;
+      console.log("ModalMinhasReservas computed reservas()...", this.ReservasUsuario,arrayReservas );
+
       // verifica campos na localStorage = Reserva_"X"
-      let arrayReservas = [];
-      let arrayAux = [];
-      let el = "";
-      let i = 0;
-      for (i = 0; i < localStorage.length; i++) {
-        // verifica reservas anteriores...
-        // if (localStorage.key(i).includes("Reserva_",0)) {
-        if (localStorage.key(i).substring(0, 8) === "Reserva_") {
-          arrayAux = JSON.parse(localStorage.getItem(localStorage.key(i)));
-          (el = {
-            reservaId: `${arrayAux[0].reservaId}`,
-            dtReserva: `${arrayAux[0].dtReserva}`,
-            codCliente: `${arrayAux[0].codCliente}`,
-            dtCheckIn: `${arrayAux[0].dtEntrada}`,
-            dtCheckOut: `${arrayAux[0].dtSaida}`,
-            qtPessoas: `${arrayAux[0].qtPessoas}`,
-            tipoApto: `${arrayAux[0].tipoApto}`,
-            vlrTotal: `${arrayAux[0].vlrTotalcomDesconto}`,
-          }),
-            arrayReservas.push(el);
-        }
-      }
+      // let arrayReservas = [];
+      // let arrayAux = [];
+      // let el = "";
+      // let i = 0;
+      // for (i = 0; i < localStorage.length; i++) {
+      //   // verifica reservas anteriores...
+      //   // if (localStorage.key(i).includes("Reserva_",0)) {
+      //   if (localStorage.key(i).substring(0, 8) === "Reserva_") {
+      //     arrayAux = JSON.parse(localStorage.getItem(localStorage.key(i)));
+      //     (el = {
+      //       reservaId: `${arrayAux[0].reservaId}`,
+      //       dtReserva: `${arrayAux[0].dtReserva}`,
+      //       codCliente: `${arrayAux[0].codCliente}`,
+      //       dtCheckIn: `${arrayAux[0].dtEntrada}`,
+      //       dtCheckOut: `${arrayAux[0].dtSaida}`,
+      //       qtPessoas: `${arrayAux[0].qtPessoas}`,
+      //       tipoApto: `${arrayAux[0].tipoApto}`,
+      //       vlrTotal: `${arrayAux[0].vlrTotalcomDesconto}`,
+      //     }),
+      //       arrayReservas.push(el);
+      //   }
+      // }
       return arrayReservas;
     },
   },
   mounted() {
     // esconde o painel de comentários...
     this.showHide(".painelComentarios", "add");
+    this.ReservasUsuarioData();
   },
+
 };
 
 // confirmação da reserva e display da modal de confirmação
@@ -379,21 +428,3 @@ td {
 }
 </style>
 
-<!-- // exemplo de utilização de arrays / json usando localStorage
-// https://stackoverflow.com/questions/29123251/how-to-store-and-fetch-data-from-array-using-localstorage-in-javascript/29123824#29123824
-var existingArray = [
-  { id: 1, country: "Country1", url: "example.com" },
-  { id: 2, country: "Country2", url: "example2.com" },
-];
-
-localStorage.setItem("myEventsArray", JSON.stringify(existingArray));
-
-/* on pageLoad */
-var pageLoadArray = [];
-var storedString = localStorage.getItem("myEventsArray");
-if (storedString) {
-  pageLoadArray = JSON.parse(storedString);
-  if (pageLoadArray.length) {
-    console.log("pageLoadArray", pageLoadArray, pageLoadArray[0].country);
-  }
-} -->

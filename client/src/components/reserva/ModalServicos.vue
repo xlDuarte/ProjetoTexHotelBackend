@@ -86,6 +86,7 @@ export default {
     Servicos2Data() {
       this.$store.dispatch("Servicos2/getData");
     },
+
     confirmaServicos() {
       alert("Serviços adicionais incluídos! Obrigado!");
       let arrayServicos = this.Servicos2;
@@ -122,25 +123,7 @@ export default {
       }
     }
     
-    // teste para entender store + checkbox...
-    //
-    // essa parte vai no template...
-    //     <div id="tmp">
-    //   <input type="checkbox" name="js" ref="theCheckbox" />
-    //   <label for="js"> JavaScript </label>
-    //   <br />
-    //   <button @click="handleClick">Done</button>
-    //   <p v-if="message">{{ message }}</p>
-    // </div>
-    // essa parte é aqui mesmo, no script...
-    // handleClick() {
-    //   // Access ref with "$refs" property
-    //   if (this.$refs.theCheckbox.checked) {
-    //     this.message = "You know JS";
-    //   } else {
-    //     this.message = "You don't know JS";
-    //   }
-    // },
+   
   },
   computed: {
     ...mapState(["Servicos2"]),

@@ -1,50 +1,43 @@
 <template>
-  <div class="sec">
-    <div>
-      <h2>EDITAR REGISTRO DE CONSUMO</h2>
-      <p>Preencha todos os campos</p>
-    </div>
-    <div class="flex">
-      <div class="field">
-        <label class="label">Quarto</label>
-        <div class="control">
-          <input class="input" type="text" v-model="quarto" />
+  <div class="container-fluid">
+  <div class="text-center mb-2">
+    <h2>EDITAR REGISTRO DE CONSUMO</h2>
+    <p>Preencha todos os campos</p>
+  </div>
+  <div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="shadow bg-light rounded-3 p-4 my-5">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Quarto</label>
+            <input class="form-control" type="text" v-model="quarto" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Local</label>
+            <input class="form-control" type="text" v-model="localConsumo" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Produto</label>
+            <input class="form-control" type="text" v-model="idProduto" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Quantidade</label>
+            <input class="form-control" type="text" v-model="quantidade" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Data</label>
+            <input class="form-control" type="datetime-local" v-model="dateConsumo" />
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Local</label>
-        <div class="control">
-          <input class="input" type="text" v-model="localConsumo" />
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-success mt-4 me-3" @click="updateConsumo">UPDATE</button>
+          <button class="btn mt-4" @click="returnPage">VOLTAR</button>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Produto</label>
-        <div class="control">
-          <input class="input" type="text" v-model="idProduto" />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Quantidade</label>
-        <div class="control">
-          <input class="input" type="text" v-model="quantidade" />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Data</label>
-        <div class="control">
-          <input class="input" type="datetime-local" v-model="dateConsumo" />
-        </div>
-      </div>
-    </div>
-    <div class="flex">
-      <div class="control">
-        <button class="button is-success" @click="updateConsumo">UPDATE</button>
-      </div>
-      <div class="control">
-        <button class="button" @click="returnPage">VOLTAR</button>
       </div>
     </div>
   </div>
+</div>
+
 </template>
 
 <script>

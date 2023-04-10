@@ -6,7 +6,7 @@
 
     <!-- mostra painel a partir da store...-->
     <!-- a ordem é mostrar primeiro a acomodação selecionada IMPLEMENTAR!!! -->
-    <div class="flex" v-for="item in acomodacoes" :key="item">
+    <div class="flex" v-for="item in acomodacoes" :key="item" :class="{'flex-column': isMobile}">
       <div>
         <input class="inputRadio" type="radio" id="tipoApto" name="tipoApto" v-bind:value="item.id"
           :checked="item.ordem == 1" />
@@ -23,11 +23,13 @@
   </div>
 </template>
 
+
 <script>
 export default {
   name: "PainelAcomodacoes",
   props: {
     msg: String,
+    isMobile: Boolean,
   },
   computed: {
     acomodacoes() {
@@ -50,6 +52,7 @@ export default {
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
 
 .secAcomodacoes {
   position: relative;
@@ -94,7 +97,7 @@ img {
 
 .flex>div {
   flex: 1 1 420px;
-  margin: 10px;
+  margin: 0px;
 }
 
 .inputRadio {
@@ -103,4 +106,22 @@ img {
   margin-right: 5px;
 
 }
+
+@media (max-width: 768px) {
+  .flex {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .flex div:first-child {
+    margin-bottom: 0px; /* ajuste o valor aqui para diminuir ou aumentar a distância */
+  }
+  img {
+    border-radius: 0;
+  }
+}
+
+
+
+
 </style>

@@ -17,80 +17,37 @@ export default {
   },
   actions: {
     
-    // montar aqui a rotina para ler tanto os serviços da tabela servicos quanto os servicos da tabela de Reservas_has_servicos, para devolver de uma só vez...
-
     async getData({ commit },payload) {
       // obtem parametro idReserva do payload enviado - se vazio não executa nada...
       let idReserva = payload.idReserva;
-
       // console.log("idReserva payload",(payload.idReserva === ""))
       // le tabela reservas_has_servicos
       const response = await axios.get(
         `http://localhost:5000/servicoReserva/${idReserva}`
       );
       commit("setData", response.data);
+      console.log(
+        "Executei servicosReserva.js table ReservasServicos...",
+        idReserva,
+        isEmptyObject(response.data),
+        response
+      );
       if (isEmptyObject(response.data)) {
         // le tabela servicos - será a matriz...
         const responseBD = await axios.get("http://localhost:5000/servico");
         commit("setData", responseBD.data);
+        console.log(
+          "Executei servicosReserva.js table Servicos...",
+          idReserva,
+          isEmptyObject(responseBD.data),
+          responseBD
+        );        
+        return responseBD;
+      } else {
+        return response;
       }
-      console.log("Executei servicosReserva.js ...",idReserva,isEmptyObject(response.data));
-      //   arrayServicosReserva,
-      //   arrayServicosAux
-      // );
-
-      // let arrayServicosReserva = response.data;
-      // // le tabela servicos - será a matriz...
-      // const responseBD = await axios.get("http://localhost:5000/servico");
-      // commit("setData", responseBD.data);
-      // let arrayServicosAux = responseBD.data;
-
-      // console.log(
-      //   "Executei api servicosReserva...",
-      //   idReserva,
-      //   arrayServicosReserva,
-      //   arrayServicosAux
-      // );
-      // let servData = "";
-      // for (let i = 0; i < arrayServicosAux.length; i++) {
-      //   servData = `"idServicos":"${arrayServicosAux[i].idServicos}","nomeServico":"${arrayServicosAux[i].nomeServico}","descricaoServico":"${arrayServicosAux[i].descricaoServico}","vlrDiariaServico":${arrayServicosAux[i].vlrDiariaServico},`;
-      //   let idAux = parseInt(arrayServicosAux[i].idServicos);
-
-      //   for (let j=0; j < arrayServicosReserva.length; j++) {
-      //     if (idAux === arrayServicosReserva[j].idServicos) {
-      //         console.log("idAux,result...:",idAux,arrayServicosReserva[j].idServicos);
-      //     }
-      //   }
-      // console.log("idAux,result...:",idAux,));
-      // if (result === idAux) {
-      //   servData = servData + '"isSelected":"true"'
-      // } else {
-      //   servData = servData + '"isSelected":"false"';
-      // }
     }
 
-      // let idAux="";
-      // let result="";
-      // let newArray[];
-      // for (let i = 0; i < arrayServicosAux.length; i++) {
-      //   console.log("arrayServicosAux", i, arrayServicosAux[i].idServicos);
-
-      //   idAux = arrayServicosAux[i].idServicos;
-      //   result = arrayServicosReserva.find((item) => item.servicos_idservicos === idAux);
-      //   if (result === idAux) {
-      //   }
-      // }
-      
-
-    //},
-
-    // async getData({ commit }) {
-    //   //const data = await fetch("https://api.chucknorris.io/jokes/random");
-    //   const data = await fetch("http://localhost:5000/servico");
-    //   console.log("Data:",data)
-    //   commit("setData", await data.json());
-    //   console.log("Executei api getServicos...",data);
-    // },
   },
     myAction(context,payload) {
       console.log(payload.myParam) //logs 'hello'

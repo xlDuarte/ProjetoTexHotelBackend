@@ -1,82 +1,105 @@
 <template>
   <div class="sec">
-    
-    <div class="text-center">
-      <h2>CADASTRO DE SERVIÇOS</h2>
-      <p>*Campos de preenchimento obrigatório.</p>
-    </div>
-  <div class="d-flex flex-wrap align-items-start ">
-    <div class="shadow mx-auto bg-light rounded-3 p-4 my-5 w-50">
-      <form class="formServicos" action="" @submit.prevent>
 
-        <div class="container">
-          <div class="row my-2">
-            
-            <div class="col col-5 me-5">
-            <label for="nome" class=" form-label fw-bold ">*Nome:</label>
-            <input type="text" id="nome" v-model="nome" placeholder="Abreviação do serviço" class="form-control  w-100 " maxlength="45" />
-            </div>
-          
-        
+<div class="text-center">
+  <h2>CADASTRO DE SERVIÇOS</h2>
+  <p>*Campos de preenchimento obrigatório.</p>
+</div>
 
-        
-          <div class="col col-5 ms-4">
-            <label for="descricao" class=" d-block fw-bold ">*Descriçao:</label>
-            <input type="text" id="descricao" v-model="descricao" placeholder="Descrição do serviço" class="form-control w-100 "
-              maxlength="45" />
+<div class="d-flex flex-wrap justify-content-center">
+  <div class="shadow bg-light rounded-3 p-4 my-5 col-md-8 col-lg-6">
+    <form class="formServicos" action="" @submit.prevent>
+
+      <div class="container">
+        <div class="row my-2">
+
+          <div class="col-md-6">
+            <label for="nome" class="form-label fw-bold">*Nome:</label>
+            <input type="text" id="nome" v-model="nome" placeholder="Abreviação do serviço"
+              class="form-control" maxlength="45" />
           </div>
-          
-        
 
-        <div class="col col-5 me-5">
-          <label for="label" class="d-block fw-bold mt-3">*Label do serviço</label>
-          <input type="text" id="label" v-model="label" placeholder="Label de tela do serviço" class="form-control w-100"
-            maxlength="45" />
-        </div>
+          <div class="col-md-6 mt-3 mt-md-0">
+            <label for="descricao" class="form-label fw-bold">*Descriçao:</label>
+            <input type="text" id="descricao" v-model="descricao" placeholder="Descrição do serviço"
+              class="form-control" maxlength="45" />
+          </div>
 
-        <div class="col col-5 ms-4">
-          <label for="vlrDiaria" class="d-block fw-bold mt-3">*Valor</label>
-          <input type="number" id="vlrDiaria" v-model.number="vlrDiaria" placeholder="Valor da Diária do Serviço"
-            class="form-control w-100" />
-        </div>
+          <div class="col-md-6 mt-3">
+            <label for="label" class="form-label fw-bold">*Label do serviço</label>
+            <input type="text" id="label" v-model="label" placeholder="Label de tela do serviço"
+              class="form-control" maxlength="45" />
+          </div>
 
-        <div class="formServicosButtons">
-          <button v-if="showSalvarButton" @click="handleClick('salvar')"
-            class="button mt-3">
-            Cadastrar
-          </button>
-          <button v-if="showExcluirButton" @click="handleClick('excluir')" id="btnExcluir"
-            class="btn btn-danger my-3 fw-bold text-uppercase text-red" type="button">
-            Excluir
-          </button>
-          <button v-if="showCancelarButton" @click="handleClick('cancelar')" id="btnCancelar"
-            class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
-            Cancelar
-          </button>
+          <div class="col-md-6 mt-3">
+            <label for="vlrDiaria" class="form-label fw-bold">*Valor</label>
+            <input type="number" id="vlrDiaria" v-model.number="vlrDiaria" placeholder="Valor da Diária do Serviço"
+              class="form-control" />
+          </div>
+
+          <div class="col-12 d-flex justify-content-center mt-4">
+            <div class="formServicosButtons">
+              <button v-if="showSalvarButton" @click="handleClick('salvar')" class="btn btn-primary mx-2">
+                Cadastrar
+              </button>
+              <button v-if="showExcluirButton" @click="handleClick('excluir')" id="btnExcluir"
+                class="btn btn-danger mx-2 fw-bold text-uppercase text-red" type="button">
+                Excluir
+              </button>
+              <button v-if="showCancelarButton" @click="handleClick('cancelar')" id="btnCancelar"
+                class="btn btn-warning mx-2 fw-bold text-uppercase text-white" type="button">
+                Cancelar
+              </button>
+            </div>
+          </div>
+
         </div>
-        </div>
-        </div>
-      </form>
-      
-    </div>
+      </div>
+
+    </form>
   </div>
-    <div class="listServicos">
-      <table class="table">
-        <thead>
-          <th scope="col">ID</th>
-          <th scope="col">Serviço</th>
-          <th scope="col">Descrição</th>
-          <th scope="col">Label</th>
-          <th scope="col">Vlr Diaria</th>
-        </thead>
-        <tbody>
-          <tr scope="row" v-for="item in items" :key="item.idServicos">
-            <td>{{ item.idServicos }}</td>
-            <td>{{ item.nomeServico }}</td>
-            <td>{{ item.descricaoServico }}</td>
-            <td>{{ item.labelServico }}</td>
-            <td>{{ item.vlrDiariaServico }}</td>
-            <!-- <td>
+</div>
+
+
+
+<div class="listServicos">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <th scope="col">ID</th>
+        <th scope="col">Serviço</th>
+        <th scope="col">Descrição</th>
+        <th scope="col">Label</th>
+        <th scope="col">Vlr Diaria</th>
+      </thead>
+      <tbody>
+        <tr scope="row" v-for="item in items" :key="item.idServicos">
+          <td>{{ item.idServicos }}</td>
+          <td>{{ item.nomeServico }}</td>
+          <td>{{ item.descricaoServico }}</td>
+          <td>{{ item.labelServico }}</td>
+          <td>{{ item.vlrDiariaServico }}</td>
+          <td>
+            <div class="handleItem w-30 border px-3">
+              <button @click="handleItem('editar', item.idServicos)" id="btnEditar"
+                class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
+                Editar
+              </button>
+              <button @click="handleItem('excluir', item.idServicos)" id="btnEditar"
+                class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
+                Excluir
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</template>
+
+<!-- <td>
               <router-link
                 :to="{ name: 'editServicos', params: { id: item.idServicos } }"
               >
@@ -88,22 +111,6 @@
                 Deletar
               </button>
             </td> -->
-            <div class="handleItem w-30 border px-3">
-              <button @click="handleItem('editar', item.idServicos)" id="btnEditar"
-                class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
-                Editar
-              </button>
-              <button @click="handleItem('excluir', item.idServicos)" id="btnEditar"
-                class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
-                Excluir
-              </button>
-            </div>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</template>
 
 <script>
 import axios from "axios";

@@ -2,53 +2,62 @@
   <div>
     <ModalServicos />
     <ModalResumo />
-    <ModalMinhasReservas />
-    <div class="secResumo">
-      <div>
-        <h3>Resumo da reserva</h3>
-      </div>
-      <div class="flex">
-        <div class="form">
-          <form action="">
-            <h4>Apartamento:</h4>
-            <p id="tipoAcomodacao">tipoApto</p>
-            <br />
-            <h4>Checkin:</h4>
-            <p id="dtCheckin">dtCheckin</p>
-            <br />
-            <h4>Checkout:</h4>
-            <p id="dtCheckout">dtCheckout</p>
-            <br />
-            <h4>Pessoas</h4>
-            <p id="qtHospedes">qtHospedes</p>
-            <br />
-            <button type="button" class="button" id="btnServicos">
-              Adicionar serviços
-            </button>
-            <br />
-            <button
-              type="button"
-              class="button"
-              id="btnMinhasReservas"
-              ref="btnMinhasReservas"
-            >
-              Minhas Reservas
-            </button>
-            <br />
-            <button
-              type="button"
-              class="button"
-              id="btnResumoReserva"
-              ref="btnResumoReserva"
-            >
-              Confirmar
-            </button>
-          </form>
+    <ModalMinhasReservas :msgUser="msgUser"/>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="secResumo">
+            <div>
+              <h3>Resumo da reserva</h3>
+            </div>
+            <div class="flex">
+              <div class="col-md-6">
+                <form action="">
+                  <div class="form-group">
+                    <h4>Apartamento:</h4>
+                    <p id="tipoAcomodacao">tipoApto</p>
+                  </div>
+                  <div class="form-group">
+                    <h4>Checkin:</h4>
+                    <p id="dtCheckin">dtCheckin</p>
+                  </div>
+                  <div class="form-group">
+                    <h4>Checkout:</h4>
+                    <p id="dtCheckout">dtCheckout</p>
+                  </div>
+                  <div class="form-group">
+                    <h4>Pessoas</h4>
+                    <p id="qtHospedes">qtHospedes</p>
+                  </div>
+                  <button type="button" class="button" id="btnServicos">
+                    Adicionar serviços
+                  </button>
+                  <button
+                    type="button"
+                    class="button"
+                    id="btnMinhasReservas"
+                    ref="btnMinhasReservas"
+                  >
+                    Minhas Reservas
+                  </button>
+                  <button
+                    type="button"
+                    class="button"
+                    id="btnResumoReserva"
+                    ref="btnResumoReserva"
+                  >
+                    Confirmar
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 var jQuery = require("jquery");
@@ -60,6 +69,8 @@ import ModalResumo from "./ModalResumo";
 import ModalMinhasReservas from "./ModalMinhasReservas.vue";
 import { confirmaReserva } from "./FormReserva.vue";
 import { preencheModalResumo } from "./FormReserva.vue";
+// import { mapState } from "vuex";
+import axios from "axios";
 
 export default {
   name: "PainelReserva",
@@ -71,9 +82,24 @@ export default {
     // data
     return {
       userLogged: false,
+      idUsuario: 14,
+      msgUser: "Você ganhou um desconto de 10% em sua próxima reserva!"
     };
   },
   methods: {
+    // localiza reservas do usuario pelo id
+    async getReservaUsuarioById(idUsuario) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/reservaUsuario/${idUsuario}`
+        );
+        //this.items = response.data;
+        console.log("getReservaUsuarioById", response.data);
+        return response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
     // força refresh do componente...
     // https://michaelnthiessen.com/force-re-render/
     methodThatForcesUpdate() {

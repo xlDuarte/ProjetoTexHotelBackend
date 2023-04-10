@@ -3,6 +3,7 @@ import {
   getServicoReserva,
   getServicoByIdReserva,
   insertServicoReserva,
+  updateSelectedServicoByIdReserva,
   updateServicoByIdReserva,
   deleteServicoByIdReserva,
 } from "../models/servicoReservaModel.js";
@@ -57,9 +58,10 @@ export const updateServicoReserva = (req, res) => {
 // atualiza o selected do servico
 export const updateSelectedServicoReserva = (req, res) => {
   const data = req.body;
-  const idReserva = req.params.idReserva;
-  const idServico = req.params.idServico;
-  updateSelectedServicoByIdReserva(data, idReserva,idServico, (err, results) => {
+  // const idReserva = req.params.idReserva;
+  // const idServico = req.params.idServico;
+  
+  updateSelectedServicoByIdReserva(data, (err, results) => {
     if (err) {
       res.send(err);
     } else {

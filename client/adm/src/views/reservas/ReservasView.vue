@@ -1,36 +1,13 @@
 <template>
   <div class="main">
-    <!-- para substituir as modals por tabs, ficaria melhor - testar caso haja tempo -->
-    <!-- <div class="tabs">
-      <v-card>
-        <v-tabs v-model="tab" bg-color="primary">
-          <v-tab value="reserva">Reserva</v-tab>
-          <v-tab value="servicos">Servicos</v-tab>
-          <v-tab value="resumo">Resumo</v-tab>
-        </v-tabs>
-        <v-card-text>
-          <v-window v-model="tab">
-            <v-window-item value="reserva">
-              <TabViewReserva msg="Tab Reserva!" />
-            </v-window-item>
-            <v-window-item value="servicos">
-              <TabViewServicos msg="Welcome to Your TabView02 Tab!" />
-            </v-window-item>
-            <v-window-item value="resumo">
-              <TabViewResumo msg="Welcome to Your TabView03 Tab!" />
-            </v-window-item>
-          </v-window>
-        </v-card-text>
-      </v-card>
-    </div> -->
 
     <div class="modalServicos2">
       <ModalServicos2
         :msg="msgModalServicos2"
-        :idReservas="idReservasModalServicos2"
+        :idReservas="this.item.idReservas"
         :arrayServicosBD="arrayServicosBD"
-        :arrayServicosAux="arrayServicosAux"
         :botaoModalServicos="botaoModalServicos"
+        :servicosSelection="servicosSelection"
       />
     </div>
     <div class="modalResumo2">
@@ -38,8 +15,14 @@
         :msg="msgModalResumo"
         :idReservas="idReservasModalResumo"
         :itemReservas="itemReservaModalResumo"
+        :arrayServicosBD="arrayServicosBD"
+        :servicosSelection="servicosSelection"
       />
     </div>
+    <div class="modalUsuarios">
+      <ModalUsuarios :msg="msgModalUsuarios" :items="listClientes" />
+    </div>
+
     <div class="sec">
       <div class="text-center">
         <h2>CADASTRO DE RESERVAS</h2>
@@ -101,7 +84,7 @@
                   v-model.number="qtdHospedesReserva"
                   placeholder="Qtd Hospedes"
                   class="form-control w-75 ms-1"
-                  min="0"
+                  min="1"
                   :disabled="camposAtivos"
                 />
               </div>
@@ -178,9 +161,9 @@
             <div class="container">
               <div class="row my-2 mt-3">
                 <div class="col col-5 me-5">
-                  <label for="idUsuario" class="d-block fw-bold"
-                    >ID Usuario</label
-                  >
+                  <label for="idUsuario" class="d-block fw-bold" @click="handleClick('usuarios')">ID Usuario - clique para consulta</label>
+                  <!-- <a href="#" class="d-block fw-bold" @click="handleClick('usuarios')">ID Usuários</a> -->
+                  <i class="fa fa-search" aria-hidden="true"></i>
                   <input
                     type="number"
                     id="idUsuario"
@@ -189,6 +172,7 @@
                     class="form-control"
                     @change="changeUserId"
                     :disabled="campoAtivoIdUsuario"
+                    style="display: inline-block"
                   />
                   <input
                     type="text"
@@ -198,8 +182,7 @@
                     class="form-control"
                     :disabled="true"
                   />
-                </div>
-                <div class="col col-5 mx-auto">
+
                   <label for="idAcomodacao" class="d-block fw-bold"
                     >ID Acomodacao</label
                   >
@@ -228,6 +211,8 @@
                     class="form-control"
                     :disabled="true"
                   />
+                </div>
+                <div class="col col-5 mx-auto">
                   <label for="qtDiarias" class="d-block fw-bold"
                     >Qtdade Diarias</label
                   >
@@ -238,22 +223,7 @@
                     placeholder="Qtdade Diarias"
                     class="form-control"
                     :disabled="true"
-                  /> 
-                  <label for="cupom" class="d-block fw-bold"
-                    >Cupom Desconto</label
-                  >
-                  <input
-                    type="text"
-                    id="cupom"
-                    v-model="cupom"
-                    placeholder="Cupom desconto"
-                    class="form-control"
-                    :disabled="true"
                   />
-                
-                </div>
-
-                <div class="col col-5 me-5">
                   <label for="valorReserva" class="d-block fw-bold"
                     >Valor Total Diarias</label
                   >
@@ -264,7 +234,7 @@
                     placeholder="Valor das Diarias"
                     class="form-control"
                     :disabled="true"
-                  />                  
+                  />
                   <label for="valorTotalServicos" class="d-block fw-bold"
                     >Valor Total Serviços</label
                   >
@@ -287,8 +257,19 @@
                     class="form-control"
                     :disabled="true"
                   />
-
+                  <label for="cupom" class="d-block fw-bold"
+                    >Cupom Desconto</label
+                  >
+                  <input
+                    type="text"
+                    id="cupom"
+                    v-model="cupom"
+                    placeholder="Cupom desconto"
+                    class="form-control"
+                    :disabled="true"
+                  />
                 </div>
+                <div class="col col-5 me-5"></div>
               </div>
             </div>
           </div>
@@ -328,6 +309,15 @@
               :disabled="camposAtivos"
             >
               Excluir Reserva
+            </button>
+            <button
+              v-if="showModalServicos"
+              @click="handleClick('usuarios')"
+              id="btnUsuarios"
+              class="button mt-2"
+              type="button"
+            >
+              Usuários
             </button>
             <button
               v-if="showModalServicos"
@@ -379,7 +369,7 @@
               <td>{{ item.dataEntradaReserva }}</td>
               <td>{{ item.dataSaidaReserva }}</td>
               <td>{{ item.qtdHospedesReserva }}</td>
-              <td>{{ item.valorReserva }}</td>
+              <td>{{ item.valorTotalDesconto }}</td>
               <td>{{ item.statusReserva }}</td>
               <div class="handleItem w-30 border px-3">
                 <button
@@ -391,15 +381,6 @@
                 >
                   Editar
                 </button>
-                <!-- <button
-                @click="handleItem('cancelar', item.idReservas)"
-                id="btnEditar"
-                class="btn btn-warning my-3 fw-bold text-uppercase text-red"
-                type="button"
-                title="Cancela a reserva"
-              >
-                Cancelar
-              </button> -->
                 <button
                   @click="handleItem('excluir', item.idReservas)"
                   id="btnEditar"
@@ -432,12 +413,11 @@ window.$ = jQuery;
 //import "bootstrap/dist/js/bootstrap.js";
 //const bootstrap = require("bootstrap");
 
-//import { ref } from "vue";
 import axios from "axios";
 import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
-//import { Servicos } from "@/../adm/src/types/reservas/Servicos.js";
 import ModalServicos2 from "@/../adm/src/components/reserva/ModalServicos2";
 import ModalResumo2 from "@/../adm/src/components/reserva/ModalResumo2";
+import ModalUsuarios from "@/../adm/src/components/reserva/ModalUsuarios";
 import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
 
 // testar currency via import VueCurrencyInput from 'vue-currency-input';
@@ -447,10 +427,6 @@ import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
 
 import { mapState } from "vuex";
 
-// tabs
-// import TabViewReserva from "@/../adm/src/components/reserva/TabViewServicos.vue";
-// import TabViewServicos from "@/../adm/src/components/reserva/TabViewServicos.vue";
-// import TabViewResumo from "@/../adm/src/components/reserva/TabViewServicos.vue";
 
 export default {
   name: "ReservasView.view",
@@ -458,34 +434,33 @@ export default {
     // components....
     ModalServicos2,
     ModalResumo2,
-    // TabViewReserva,
-    // TabViewServicos,
-    // TabViewResumo
+    ModalUsuarios,
+
   },
   data() {
     // data
     return {
       message: "TabTest",
       tab: null,
-      msg1: "msg1",
-      msg2: "msg2",
+      // msg1: "msg1",
+      // msg2: "msg2",
       inputValue: "Teste",
       msgAlerta: "Mensagens do sistema",
       flagSalvarOk: true, // flag para controle de inclusão e alteração registros
       idReservas: "",
       msgModalServicos2: "",
-      idReservasModalServicos2: "",
       arrayServicosReserva: [],
       arrayServicosBD: [],
       arrayServicosAux: [],
       msgModalResumo: "",
+      msgModalUsuarios: "",
       idReservasModalResumo: "",
-      itemReservaModalResumo: "",
+      itemReservaModalResumo: [],
       dataReserva: new Date().toISOString().substring(0, 10),
       dataEntradaReserva: new Date().toISOString().substring(0, 10),
       dataSaidaReserva: new Date().toISOString().substring(0, 10),
       valorReserva: "",
-      qtdHospedesReserva: "",
+      qtdHospedesReserva: 1,
       idUsuario: "",
       nomeUsuario: "",
       idAcomodacao: "",
@@ -499,7 +474,7 @@ export default {
       cupom: "",
       taxaDescontoCupom: 10,
       valorTotalDesconto: 0,
-      valorTotalServico: 0,
+      valorTotalServicos: 0,
       item: [],
       items: [],
       itemServico: [],
@@ -519,6 +494,8 @@ export default {
       showModalServicos: false,
       showModalResumo: false,
       showGerarCupomButton: false,
+      servicosSelection: false,
+      listClientes:"",
     };
   },
 
@@ -561,37 +538,6 @@ export default {
       this.validaUsuariosById(this.idUsuario);
     },
 
-    // localiza servico pelo id, para verificação na tela...
-    async getServicosById(idServico) {
-      console.log("idServico = ", idServico);
-      //let id = document.getElementById("idUsuario").value;
-      //console.log("Mudou id Usuario", id);
-      //console.log(this.itemUsuario);
-
-      // somente para testes...incluir no local correto para checar id de servicos
-      //let serv = new Servicos();
-      //this.itemServico = serv.getServicosById(18);
-      // this.getServicosById(18);
-      // console.log(this.itemServico);
-      // console.log(this.idServico);
-      // console.log(this.nomeServico);
-      // this.nomeUsuario
-      // validaUsuario(id);
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/servico/${idServico}`
-        );
-        this.itemServico = response.data;
-        this.idServico = response.data.idServicos;
-        this.nomeServico = response.data.nomeServico;
-        this.nomeUsuario = response.data.nomeServico;
-        //console.log("getServicosById", this.itemServico);
-        return response;
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
     changeAcomodacaoId() {
       // mudou o id do usuario, dispara api para checar validade...
       this.validaAcomodacaoById(this.idAcomodacao);
@@ -625,7 +571,19 @@ export default {
       }
     },
 
-    // verificar usuario pelo id
+    // carrega lista de usuarios clientes
+    async getUsersCliente() {
+      try {
+        const response = await axios.get("http://localhost:5000/usuario/cliente");
+        console.log("getUsersCliente", response);
+        this.listClientes = response.data;
+        return response;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // verificar acomodação  pelo id
     async validaAcomodacaoById(idAcomodacao) {
       try {
         const response = await axios.get(
@@ -633,9 +591,15 @@ export default {
         );
         this.itemAcomodacao = response.data;
         if (idAcomodacao === response.data.idAcomodacao) {
-          this.acomodacaoTipo = response.data.nomeAcomodacao;
+          this.acomodacaoTipo = response.data.tipoAcomodacao;
           this.acomodacaoVlrDiaria = response.data.valorAcomodacao;
           this.acomodacaoQtMaxPessoas = response.data.qtMaxPessoas;
+          console.log(
+            "Dados acomodação...",
+            idAcomodacao,
+            this.acomodacaoTipo,
+            this.acomodacaoQtMaxPessoas
+          );
         } else {
           this.acomodacaoTipo = "Acomodação inválida - Verificar!!";
           this.acomodacaoVlrDiaria = 0;
@@ -657,20 +621,6 @@ export default {
         return response.data;
       } catch (err) {
         console.log(err);
-      }
-    },
-
-    // localiza servicos da Reserva pelo id
-    async getServicosByReservaId(idReserva) {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/servicoReserva/${idReserva}`
-        );
-        console.log("Type Servicos - getServicosByReservaId");
-        return response;
-      } catch (err) {
-        console.log(err);
-        return [];
       }
     },
 
@@ -698,11 +648,13 @@ export default {
         this.valorTotalDesconto = this.item.valorTotalDesconto;
         this.qtDiarias = this.item.qtDiarias;
         this.cupom = this.item.cupom;
+        this.taxaDescontoCupom = this.item.taxaDescontoCupom;
         this.idUsuario = this.item.usuario_idUsuario;
         this.nomeUsuario = this.item.nomeUsuario;
         this.idAcomodacao = this.item.acomodacoes_idAcomodacao;
         this.acomodacaoTipo = this.item.nomeAcomodacao;
         this.acomodacaoVlrDiaria = this.item.valorAcomodacao;
+        this.acomodacaoQtMaxPessoas = this.item.valorAcomodacao;
         this.statusReserva = this.item.statusReserva;
         this.dataCancelamento = new Date(this.item.dataCancelamento)
           .toISOString()
@@ -715,12 +667,16 @@ export default {
         ) {
           this.camposAtivos = true;
           this.botaoModalServicos = true;
+
+          // desativa seleção de serviços na modal de serviços...
+          this.servicosSelection = true;
           alert(
             "O status desta reserva não permite mais edição ou exclusão! Para reativar a reserva entre em contato com o gerente do Hotel"
           );
         } else {
           this.camposAtivos = false;
           this.botaoModalServicos = false;
+          this.servicosSelection = false;
         }
         console.log(
           "this.acomodacaoTipo",
@@ -734,26 +690,48 @@ export default {
       }
     },
 
+    getServicosByReservaId(idReservas) {
+      return axios.get(`http://localhost:5000/servicoReserva/${idReservas}`);
+    },
+
     handleClick(action) {
       if (action == "salvar") {
-        this.msg1 = "Cliquei handleClick salvar...";
-        this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
+        // this.msg1 = "Cliquei handleClick salvar...";
+        // this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
 
-        // campos calculados...
-        // // calcula quantidade de diarias
-        // let dateStartAux = this.dataEntradaReserva.split("-");
-        // //console.log("dataemtradaaux", dateStartAux);
-        // let dateStart = new Date(dateStartAux[0], dateStartAux[1] - 1, dateStartAux[2]);
-        // let dateEndAux = this.dataSaidaReserva.split("-");
-        // let dateEnd = new Date(dateEndAux[0], dateEndAux[1] - 1, dateEndAux[2]);
+        // executa validação dos campos...
+        let validadorDados, dadosOk, msgRetorno;
+        validadorDados = checkInfo(
+          this.idUsuario,
+          this.idAcomodacao,
+          this.dataReserva,
+          this.dataEntradaReserva,
+          this.dataSaidaReserva,
+          this.qtdHospedesReserva,
+          this.acomodacaoTipo,
+          this.acomodacaoQtMaxPessoas
+        );
+        dadosOk = validadorDados[0];
+        msgRetorno = validadorDados[1];
 
-        // this.qtDiarias = Math.ceil(dateEnd - dateStart) / (1000 * 60 * 60 * 24);
-        // console.log("Calculos1...",this.idUsuario,this.qtDiarias,this.dataSaidaReserva,this.dataEntradaReserva)
+        // exibe mensagem de erro se necessário, aborta persistência...
+        if (dadosOk == false) {
+          this.msgAlerta = `${msgRetorno}`;
+          return false;
+        }
+
+        this.getServicosByReservaId(this.idReservas)
+          .then((response) => {
+            console.log("teste", response.data[0]);
+            this.arrayServicosBD = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+            // Handle error here
+          });
 
         let reserva = new Reservas();
-        // força calculo antes de salvar...
-        this.arrayServicosBD = this.ServicosReserva;
-        this.calculaReserva();
+
         reserva.salvar(
           this.idReservas,
           this.dataReserva,
@@ -773,8 +751,10 @@ export default {
           this.taxaDescontoCupom,
           this.valorTotalDesconto,
           this.valorTotalServicos,
+          this.acomodacaoQtMaxPessoas,
           this.itemArrayReservas,
-          this.itemArrayEdit
+          this.itemArrayEdit,
+          this.arrayServicosBD
         );
 
         // recarrega lista de serviços
@@ -783,20 +763,10 @@ export default {
         this.getReservas();
       }
 
-      if (action == "cancelar") {
-        this.camposAtivos = false;
-      }
-
-      if (action == "cancelarReserva") {
-        // chama rotina de exclusão, desabilita o botão e limpa os campos na rotina que já está abaixo...
-        console.log("Entrei no handleClick - cancelarReserva");
-        this.getReservas();
-      }
-
       if (action == "excluir") {
         // chama rotina de exclusão, desabilita o botão e limpa os campos na rotina que já está abaixo...
-        this.msg1 = "Cliquei handleClick excluir...";
-        this.msg2 = `this.idReservas=${this.idReservas}`;
+        // this.msg1 = "Cliquei handleClick excluir...";
+        // this.msg2 = `this.idReservas=${this.idReservas}`;
         let conf = confirm(
           "Confirma exclusão da reserva? Esta operação não poderá ser desfeita!"
         );
@@ -807,47 +777,60 @@ export default {
           this.getReservas();
         }
       }
+
       if (action == "servicos") {
-        console.log("vou mostrar modal de servicos2", this.idReservas);
         this.arrayServicosBD = this.ServicosReserva;
-        console.log(
-          "action Servicos arrayServicosBD e arrayServicosAux",
-          this.arrayServicosBD,
-          " - ",
-          this.arrayServicosAux
-        );
         window.$("#modalServicos2").modal("show");
         this.msgModalServicos2 =
           "Baixa utilizaçao serviço 5G - ofereça desconto na reserva";
-        this.idReservasModalServicos2 = this.idReservas.toString();
+        this.$store.dispatch("ServicosReserva/getData", {
+          idReserva: `${this.idReservas}`,
+        });
+        this.campoAtivoIdUsuario = true;
+        return true;
       }
 
       if (action == "resumo") {
-        console.log("vou mostrar modal de resumo2", this.idReservas);
+        this.$store.dispatch("ServicosReserva/getData", {
+          idReserva: `${this.idReservas}`,
+        });
+        this.arrayServicosBD = this.ServicosReserva;
         this.idReservasModalResumo = this.idReservas;
         this.itemReservaModalResumo = this.item;
-        this.msgModalResumo = "Área de mensagens...ModalResumo2";
+        this.servicosSelection = true;
+        this.msgModalResumo = "Área de mensagens...sem mensagens no momento.";
+        // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` });
         window.$("#modalResumo2").modal("show");
-        // window.$().ready(function () {
-        //   window.$("#btnServicos").click(function () {
-        //     window.$("#modalServicos2").modal("show");
-        //   });
-        //});
+        this.campoAtivoIdUsuario = true;
+        return true;
+      }
+
+      if (action == "usuarios") {
+        // this.arrayServicosBD = this.ServicosReserva;
+        this.getUsersCliente();
+        window.$("#modalUsuarios").modal("show");
+        this.campoAtivoIdUsuario = false;
+        return true;
       }
 
       if (action == "gerarCupom") {
-        if (this.cupom === "") {
+        if (this.cupom === "" || this.cupom == "Sem desconto") {
           let conf = confirm("Confirma geração de cupom?");
           console.log("Conf...:", conf);
           if (conf === true) {
             this.cupom = mainFunc.geraCupomDesconto();
+            this.taxaDescontoCupom = 10;
             console.log("Vou gerar cupom", this.cupom);
-            let conf = confirm(`Cupom gerado e autorizado - ${this.cupom} - deseja aplicar o mesmo na reserva?\nApós o desconto alterações nos dados da reserva requerem atenção!`);
+            let conf = confirm(
+              `Cupom gerado e autorizado - ${this.cupom} - deseja aplicar o mesmo na reserva?\nApós o desconto alterações nos dados da reserva requerem atenção!`
+            );
             if (conf === true) {
               // força calculo antes de salvar...
               this.arrayServicosBD = this.ServicosReserva;
-              this.calculaReserva();
+              // this.calculaReserva();
               this.handleClick("salvar");
+            } else {
+              this.cupom = "";
             }
           }
         } else {
@@ -856,9 +839,29 @@ export default {
             ? (this.showGerarCupomButton = true)
             : (this.showGerarCupomButton = false);
         }
+        return true;
+      }
+
+      if (action == "cancelar") {
+        //this.msg1 = "Cliquei handleClick sair tela edição";
+        console.log("Cliquei handleClick sair tela edição...", action);
+        console.log("Testando mainFunc...:", mainFunc.currencyFormat("2000"));
+        // atualiza campos do formulário / tela
+        // this.getReservasById(this.idReservas);
+        // this.itemArrayEdit = false;
+        //this.showSalvarButton = true;
+        //this.showCancelarButton = false;
+        //this.showCancelarReservaButton = false;
+        // this.showExcluirButton = false;
+        //this.showModalServicos = false;
+        //this.showModalResumo = false;
+        this.campoAtivoIdUsuario = false;
+        this.camposAtivos = false;
+        // return true;
       }
 
       // após inclusão, limpa campos do form...
+      this.msgAlerta = "Mensagens do sistema";
       this.dataReserva = new Date().toISOString().substring(0, 10);
       this.dataEntradaReserva = new Date().toISOString().substring(0, 10);
       this.dataSaidaReserva = new Date().toISOString().substring(0, 10);
@@ -886,16 +889,19 @@ export default {
       this.showModalResumo = false;
       this.showGerarCupomButton = false;
       this.itemArrayEdit = false;
+      this.campoAtivoIdUsuario = false;
+      this.camposAtivos = false;
+
       this.getReservas();
       return true;
     },
 
     handleItem(action, idReservas) {
-      // console.log("Entrei no handleItem");
-      // let storageServico = new StorageServico(document.querySelector("form"));
+      console.log("Entrei no handleItem");
       if (action == "editar") {
         this.msg1 = "Cliquei HandleItem edit";
-        this.campoAtivoIdUsuario = false;
+        console.log("Entrei no handleItem...", action);
+        this.campoAtivoIdUsuario = true;
         this.getReservasById(idReservas);
         this.itemArrayEdit = true;
         // contorle de edição do user
@@ -906,25 +912,20 @@ export default {
         this.showModalServicos = true;
         this.showModalResumo = true;
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
+        this.arrayServicosBD = this.ServicosReserva;
+        // console.log("handleItem edit...",this.arrayServicosBD);
 
-        // botão de gerar cupom só renderiza após segundo click...
-        // requer outra abordagem...
-
-        try {
-          // this.$store.dispatch("Servicos2/getData");
-          this.$store.dispatch("ServicosReserva/getData", { idReserva: `${idReservas}`,});
-        } catch (err) {
-          console.log(err);
-        }
-        // this.cupom === "" ? (this.showGerarCupomButton = true) : (this.showGerarCupomButton = false);
-        this.showGerarCupomButton = true
+        // checar controle  aqui
+        this.showGerarCupomButton = true;
+        // checar controle  aqui
       }
       if (action == "excluir") {
-        this.msg1 = "Cliquei HandleItem excluir";
+        // this.msg1 = "Cliquei HandleItem excluir";
+        console.log("Entrei no handleItem...", action);
         // atualiza campos do formulário
         this.getReservasById(idReservas);
         this.itemArrayEdit = false;
-        this.campoAtivoIdUsuario = false;
+        this.campoAtivoIdUsuario = true;
         this.showSalvarButton = false;
         this.showCancelarButton = true;
         this.showCancelarReservaButton = false;
@@ -934,6 +935,7 @@ export default {
       }
       if (action == "cancelar") {
         this.msg1 = "Cliquei HandleItem cancelar reserva";
+        console.log("Entrei no handleItem...", action);
         // atualiza campos do formulário
         this.getReservasById(idReservas);
         this.itemArrayEdit = false;
@@ -945,36 +947,13 @@ export default {
         this.showModalServicos = false;
         this.showModalResumo = false;
         this.showModalServicos = false;
+        this.campoAtivoIdUsuario = false;
+        return true;
       }
+
       this.msg2 = `idReservas ${idReservas}`;
-      this.campoAtivoIdUsuario = true;
+      //this.campoAtivoIdUsuario = true;
     },
-
-    calculaReserva() {
-      console.log("Entrei no calculo...",this.arrayServicosBD,this.qtDiarias);
-      let vlrDiarias = 0;
-      let vlrServicos = 0;
-      let vlrTotalDesconto = 0;
-      console.log(this.acomodacaoVlrDiaria,this.qtDiarias);
-
-      vlrDiarias = this.acomodacaoVlrDiaria * this.qtDiarias * this.qtdHospedesReserva;
-
-      for (let i = 0; i < this.arrayServicosBD.data.length; i++) {
-        if (this.arrayServicosBD.data[i].isSelected) {
-          vlrServicos = vlrServicos + ((this.arrayServicosBD.data[i].vlrDiariaServico) * this.qtDiarias)
-        }
-      }
-      this.valorReserva = vlrDiarias;
-      this.valorTotalServicos = vlrServicos;
-      vlrTotalDesconto = vlrDiarias + vlrServicos;
-      this.valorTotalDesconto = vlrTotalDesconto;
-      console.log("valores...",vlrDiarias, vlrServicos, vlrTotalDesconto)
-
-      if (this.cupom !== "") {
-        this.valorTotalDesconto = vlrTotalDesconto * (1 - this.taxaDescontoCupom/100)
-      }
-    },
-
   },
   watch: {
     // isso funciona, mas executa a cada novo caracter, e não somente depois de um tab ou enter...
@@ -991,28 +970,63 @@ export default {
     // funções mounted...
     console.log("Passando pelo mounted...");
     this.$store.dispatch("Servicos2/getData");
-
-    // não executar update de ServicosReserva pois ainda não existe uma reserva selecionada...
-    // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` } );
   },
 };
 
-export function formataData(dataUTC) {
-  let dateAux, dateConv;
-  console.log("Data no padrão UTC...", dataUTC),
-    // converte UTC para YYYY-MM-DD
-    (dateAux = dataUTC.split("-")),
-    // (dateConv = new Date(dateAux[0], dateAux[1] - 1, dateAux[2]));
-    (dateConv = new Date("2023", "02", "17")),
-    console.log(
-      "Data ajustada",
-      dateAux,
-      dateAux[0],
-      dateAux[1] - 1,
-      dateAux[2],
-      dateConv
-    );
-  return dateConv;
+export function checkInfo(
+  idUsuario,
+  idAcomodacao,
+  dataReserva,
+  dtEntrada,
+  dtSaida,
+  qtdHospedesReserva,
+  acomodacaoTipo,
+  acomodacaoQtMaxPessoas
+) {
+  let msgReturn;
+  msgReturn = [true, "Dados OK!"];
+  console.log(
+    idUsuario,
+    idAcomodacao,
+    dataReserva,
+    dtEntrada,
+    dtSaida,
+    qtdHospedesReserva,
+    acomodacaoTipo,
+    acomodacaoQtMaxPessoas
+  );
+
+  if (idUsuario === "") {
+    msgReturn = [false, "Usuario inválido"];
+    return msgReturn;
+  }
+
+  if (idAcomodacao === "") {
+    msgReturn = [false, "Acomodação inválida"];
+    return msgReturn;
+  }
+
+  if (
+    dtEntrada < dataReserva ||
+    dtEntrada == "" ||
+    dtSaida == "" ||
+    dtSaida <= dtEntrada
+  ) {
+    msgReturn = [false, "Datas de entrada e/ou saída inválidas"];
+    return msgReturn;
+  }
+
+  if (qtdHospedesReserva == 0 || qtdHospedesReserva > acomodacaoQtMaxPessoas) {
+    msgReturn = [
+      false,
+      `Quantidade hóspedes inválida - suite ${acomodacaoTipo} suporta no máximo ${acomodacaoQtMaxPessoas} pessoas.`,
+    ];
+    return msgReturn;
+  }
+
+  // console.log("msgReturn...",msgReturn)
+
+  return msgReturn;
 }
 </script>
 
@@ -1030,6 +1044,10 @@ export function formataData(dataUTC) {
 .column {
   float: left;
   width: 50%;
+}
+
+.inline-link {
+    display: inline-block;
 }
 
 /* Clear floats after the columns */

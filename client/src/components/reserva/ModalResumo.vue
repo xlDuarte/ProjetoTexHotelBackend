@@ -167,6 +167,7 @@ export default {
       let taxaDescontoCupom = arrayReservaCriada[0].taxaDescontoCupom;
       let valorTotalServicos = localStorage.getItem("valorTotalServicos");
       let vlrTotalcomDesconto = arrayReservaCriada[0].vlrTotalcomDesconto;
+      let acomodacaoQtMaxPessoas = arrayReservaCriada[0].qtPessoas;
       let itemArrayReservas = 0; // avaliar, não está mais sendo utilizado...
       let itemArrayEdit = false; //flag de controle se false é uma nova reserva...
       let arrayServicos = [];
@@ -175,6 +176,7 @@ export default {
      // salva a reserva e obtem o id para gravar os serviços
 
      arrayServicosEscolhidos = this.Servicos2;
+     
      reserva.salvar(
         idReservas,
         dtReserva,
@@ -192,8 +194,9 @@ export default {
         motivoCancelamento,
         cupom,
         taxaDescontoCupom,
-        valorTotalServicos,
         vlrTotalcomDesconto,
+        valorTotalServicos,
+        acomodacaoQtMaxPessoas,
         itemArrayReservas,
         itemArrayEdit,
         arrayServicosEscolhidos,

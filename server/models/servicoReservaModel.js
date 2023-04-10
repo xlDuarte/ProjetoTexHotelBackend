@@ -51,16 +51,13 @@ export const insertServicoReserva = (data, result) => {
 };
 
 // atualiza um servico no banco
-export const updateSelectedServicoByIdReserva = (data, idReserva,idServico, result) => {
+export const updateSelectedServicoByIdReserva = (data, result) => {
   db.query(
     "UPDATE Reservas_has_servicos SET isSelected = ? WHERE Reservas_idReservas = ? AND servicos_idservicos = ?",
-    [
-      data.isSelected,
-      idReserva,
-      idServico,
-    ],
+    [data.isSelected, data.Reservas_idReservas, data.servicos_idservicos],
     (err, results) => {
       if (err) {
+        console.log("data...", data);
         console.log(err);
         result(err, null);
       } else {

@@ -1,93 +1,57 @@
 <template>
-    <div class="sec">
-        <div>
-            <h2>EDITAR REGISTRO DE USUARIO</h2>
-            <p>Preencha todos os campos</p>
-        </div>
+    <div class="container-fluid my-3">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="text-center mb-3">
+        <h2>EDITAR REGISTRO DE USUÁRIO</h2>
+        <p>Preencha todos os campos</p>
+      </div>
+      <div class="shadow bg-light rounded-3 p-4">
         <form>
-        <div class="container bg-light rounded-3 p-4 my-5 w-50">
-            <div class="field">
-                <label class="label">Nome</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="nomeUser"
-                    />
-                </div>
+          <div class="row mb-3">
+            <div class="col-12 col-sm-6">
+              <label class="form-label">Nome</label>
+              <input class="form-control" type="text" v-model="nomeUser">
             </div>      
-            <div class="field">
-                <label class="label">E-mail</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="emailUser"
-                    />
-                </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label">E-mail</label>
+              <input class="form-control" type="text" v-model="emailUser">
             </div>
-            <div class="field">
-                <label class="label">CPF</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="cpfUser"
-                    />
-                </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label">CPF</label>
+              <input class="form-control" type="text" v-model="cpfUser">
             </div>
-            <div class="field">
-                <label class="label">Endereço</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="endUser"
-                    />
-                </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label">Endereço</label>
+              <input class="form-control" type="text" v-model="endUser">
             </div>
-            <div class="field">
-                <label class="label">Tipo</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="tipoUser"
-                    />
-                </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label">Tipo</label>
+              <input class="form-control" type="text" v-model="tipoUser">
             </div>
-            <div class="field">
-                <label class="label">Telefone</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="telefoneUser"
-                    />
-                </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label">Telefone</label>
+              <input class="form-control" type="text" v-model="telefoneUser">
             </div>
-            <div class="field">
-                <label class="label">Senha</label>
-                <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="senhaUser"
-                    />
-                </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label">Senha</label>
+              <input class="form-control" type="text" v-model="senhaUser">
             </div>
-        </div>
-        <div class="flex">
-            <div class="control">
-                <button class="button is-success" @click="updateUsuario">UPDATE</button>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-sm-6 mb-2">
+              <button class="btn btn-success btn-block" @click="updateUsuario">UPDATE</button>
             </div>
-            <div class="control">
-                <button class="button" @click="returnPage">VOLTAR</button>
+            <div class="col-sm-6 mb-2">
+              <button class="btn btn-secondary btn-block" @click="returnPage">VOLTAR</button>
             </div>
-        </div>
+          </div>
         </form>
-        
+      </div>
     </div>
+  </div>
+</div>
+
 </template>
   
 <script>
