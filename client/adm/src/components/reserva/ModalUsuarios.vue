@@ -59,7 +59,7 @@ export default {
   props: {
     // properties que vem da view que irá chamar o componente...
     msg: String,
-    items: Object,
+    items: [String,Object],
   },
   data() {
     return {

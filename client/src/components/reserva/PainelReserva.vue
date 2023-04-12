@@ -2,7 +2,7 @@
   <div>
     <ModalServicos />
     <ModalResumo />
-    <ModalMinhasReservas :msgUser="msgUser"/>
+    <ModalMinhasReservas :msgUser="msgUser" />
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -43,8 +43,8 @@
                   <button
                     type="button"
                     class="button"
-                    id="btnResumoReserva"
-                    ref="btnResumoReserva"
+                    id="btnConfirma"
+                    ref="btnConfirma"
                   >
                     Confirmar
                   </button>
@@ -58,7 +58,6 @@
   </div>
 </template>
 
-
 <script>
 var jQuery = require("jquery");
 window.jQuery = jQuery;
@@ -69,8 +68,6 @@ import ModalResumo from "./ModalResumo";
 import ModalMinhasReservas from "./ModalMinhasReservas.vue";
 import { confirmaReserva } from "./FormReserva.vue";
 import { preencheModalResumo } from "./FormReserva.vue";
-// import { mapState } from "vuex";
-import axios from "axios";
 
 export default {
   name: "PainelReserva",
@@ -83,30 +80,11 @@ export default {
     return {
       userLogged: false,
       idUsuario: 14,
-      msgUser: "Você ganhou um desconto de 10% em sua próxima reserva!"
+      msgUser: "Você ganhou um desconto de 10% em sua próxima reserva!",
     };
   },
   methods: {
-    // localiza reservas do usuario pelo id
-    async getReservaUsuarioById(idUsuario) {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/reservaUsuario/${idUsuario}`
-        );
-        //this.items = response.data;
-        console.log("getReservaUsuarioById", response.data);
-        return response.data;
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    // força refresh do componente...
-    // https://michaelnthiessen.com/force-re-render/
-    methodThatForcesUpdate() {
-      // ...
-      this.$forceUpdate(); // Notice we have to use a $ here
-      // ...
-    },
+    // inserir funções...
   },
   computed: {
     reservas() {
@@ -115,26 +93,49 @@ export default {
     servicos() {
       return this.$store.getters.servicos;
     },
+    //...mapState(["ReservasUsuario"]),
   },
   mounted() {
     // verifica se usuario esta logado para ativar botão "Minhas Reservas"
-    console.log("loginStatus...", localStorage.getItem("loginStatus") === null);
-    if (
-      localStorage.getItem("loginStatus") === null ||
-      localStorage.getItem("loginStatus") === ""
-    ) {
-      //this.$refs.btnMinhasReservas.setAttribute("hidden", "false");
-      this.$refs.btnMinhasReservas.style.visibility = "hidden";
-    } else {
-      //this.$refs.btnMinhasReservas.setAttribute("hidden", "true");
-      this.$refs.btnMinhasReservas.style.visibility = "visible";
-    }
+    // console.log("loginStatus...", localStorage.getItem("loginStatus") === null);
+    // if (
+    //   localStorage.getItem("loginStatus") === null ||
+    //   localStorage.getItem("loginStatus") === ""
+    // ) {
+    //   //this.$refs.btnMinhasReservas.setAttribute("hidden", "false");
+    //   //this.$refs.btnMinhasReservas.style.visibility = "hidden";
+    // } else {
+    //   //this.$refs.btnMinhasReservas.setAttribute("hidden", "true");
+    //   //this.$refs.btnMinhasReservas.style.visibility = "visible";
+    // }
   },
 };
 
-// confirmação da reserva e display da modal de confirmação
+// chama modal para display das reservas anteriores
 window.$().ready(function () {
-  window.$("#btnResumoReserva").click(function () {
+  window.$("#btnMinhasReservas").click(function () {
+    if (localStorage.getItem("loged") === null) {
+      alert("Por favor, faça o login em nosso site!");
+      window.$("#modalMinhasReservas").modal("hide");
+      return true
+    }
+    window.$("#modalMinhasReservas").modal("show");
+  });
+});
+
+// chama modal para display dos serviços
+window.$().ready(function () {
+  window.$("#btnServicos").click(function () {
+    window.$("#modalServicos").modal("show");
+  });
+});
+
+window.$().ready(function () {
+  window.$("#btnConfirma").click(function () {
+    if (localStorage.getItem("loginStatus") != "cliente") {
+      alert("Você precisa estar logado para concluir a reserva!");
+      return true;
+    }
     let check = false;
     // executa function para checar dados da reserva...
     check = confirmaReserva();
@@ -142,13 +143,6 @@ window.$().ready(function () {
       window.$("#modalResumo").modal("show");
       preencheModalResumo();
     }
-  });
-});
-
-// chama modal para display das reservas anteriores
-window.$().ready(function () {
-  window.$("#btnMinhasReservas").click(function () {
-    window.$("#modalMinhasReservas").modal("show");
   });
 });
 </script>

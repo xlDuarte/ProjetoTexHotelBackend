@@ -29,16 +29,14 @@
             <p>Status Reserva: {{ itemReservas.statusReserva }}</p>
             <hr />
             <p>Dados Reserva</p>
-            <p>{{ itemReservas.data }}</p>
             <p>
               Nome Hóspede: {{ itemReservas.nomeUsuario }} - ID:
               {{ itemReservas.usuario_idUsuario }}
             </p>
-            <p>
-              Data Reserva: {{ itemReservas.dataReserva }} Checkin:
-              {{ itemReservas.dataEntradaReserva }} Checkout:
-              {{ itemReservas.dataSaidaReserva }}
-            </p>
+            <p>Data Reserva: {{ itemReservas.dataReserva }} </p>
+            <p>Data Reserva: {{ formatDataReserva }} </p>
+            <p>Checkin: {{ formatDataEntrada }} </p>
+            <p>Checkout: {{ formatDataSaida }}  </p>
             <p>
               Acomodação: {{ itemReservas.nomeAcomodacao }} Vlr Diaria
               Acomodação: {{ itemReservas.valorAcomodacao }} Qt Hóspedes:
@@ -117,6 +115,7 @@ const bootstrap = require("bootstrap");
 // import { gravaReserva } from "../src/components/reserva/FormReserva.vue";
 // import { updateBindingForm } from "../src/components/reserva/FormReserva.vue";
 
+import moment from "moment";
 import { mapState } from "vuex";
 
 // import axios
@@ -126,6 +125,12 @@ var jQuery = require("jquery");
 window.jQuery = jQuery;
 window.$ = jQuery;
 
+
+// let dtReserva = moment(arrayReservaCriada[0].dtReserva,"DD/MM/YYYY").format("YYYY-MM-DD");
+// let dtEntrada = moment(arrayReservaCriada[0].dtEntrada,"DD/MM/YYYY").format("YYYY-MM-DD");
+// let dtSaida = moment(arrayReservaCriada[0].dtSaida, "DD/MM/YYYY").format("YYYY-MM-DD");
+
+
 export default {
   name: "ModalResumo2",
   // props: {
@@ -133,8 +138,8 @@ export default {
   // },
   props: {
     msg: String,
-    idReservas: String,
-    itemReservas: Array,
+    idReservas: [String,Number],
+    itemReservas: [Array,Object],
     arrayServicosBD: Object,
     servicosSelection: Boolean,
   },
@@ -147,6 +152,9 @@ export default {
     };
   },
   methods: {
+    formatData(data) {
+      return moment(data,"DD/MM/YYYY").format("DD-MM-YYYY");
+    },
     abreModal() {
       // console.log("Abre Modal Item: ", this.item);
       var modal = new bootstrap.Modal(document.querySelector("#modalResumo2"), {
@@ -164,9 +172,23 @@ export default {
       window.$("#modalResumo").modal("hide");
     },
   },
+
   computed: {
     ...mapState(["Servicos2"]),
+    formatDataReserva() {
+      const dateObj = new Date(this.itemReservas.dataReserva);
+      return this.formatData(dateObj);
+    },
+    formatDataEntrada() {
+      const dateObj = new Date(this.itemReservas.dataEntradaReserva);
+      return this.formatData(dateObj);
+    },
+    formatDataSaida() {
+      const dateObj = new Date(this.itemReservas.dataSaidaReserva);
+      return this.formatData(dateObj);
+    },    
   },
+
   mounted() {
     // atualiza dados da modalResumo2
   },

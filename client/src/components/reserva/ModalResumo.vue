@@ -17,7 +17,7 @@
             <h2>Diárias</h2>
             <div id="diarias"></div>
             <hr />
-            <h2>Servicos Adicionais</h2>
+            <h2>Serviços Adicionais</h2>
             <div id="servicos"></div>
             <hr />
             <h2>Total</h2>

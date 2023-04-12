@@ -95,7 +95,16 @@ export default {
         // persiste status do checkbox (servico) na localStorage...
         // define idServico = "servico"+id e demais dados do servico
         let servId = `idServicos_${arrayServicos.data[i].idServicos}`;
-        let servData = `"idServicos":"${arrayServicos.data[i].idServicos}","nomeServico":"${arrayServicos.data[i].nomeServico}","descricaoServico":"${arrayServicos.data[i].descricaoServico}","vlrDiariaServico":${arrayServicos.data[i].vlrDiariaServico},"isSelected":${arrayServicos.data[i].isSelected}`;
+        // trata campo isSelected boolean como string para equalizar com BD
+        let strIsSelected = "";
+        console.log("arrayServicos.data[i].isSelected...",arrayServicos.data[i].isSelected);
+        if (arrayServicos.data[i].isSelected === true) {
+            strIsSelected = "true"
+        } else {
+           strIsSelected = "false"
+        }
+        let servData = `"idServicos":"${arrayServicos.data[i].idServicos}","nomeServico":"${arrayServicos.data[i].nomeServico}","descricaoServico":"${arrayServicos.data[i].descricaoServico}","vlrDiariaServico":${arrayServicos.data[i].vlrDiariaServico},"isSelected":"${strIsSelected}"`;
+        // let servData = `"idServicos":"${arrayServicos.data[i].idServicos}","nomeServico":"${arrayServicos.data[i].nomeServico}","descricaoServico":"${arrayServicos.data[i].descricaoServico}","vlrDiariaServico":${arrayServicos.data[i].vlrDiariaServico},"isSelected":${arrayServicos.data[i].isSelected}`;
         let itemLocal = "{" + servData + "}";
         // localStorage.setItem(nomeServico, arrayServicos.data[i].isSelected);
         localStorage.setItem(servId, itemLocal);
