@@ -6,11 +6,18 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title"></h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <!-- INÍCIO DO CONTEÚDO ajustado para trazer da store...-->
-          <h4>Suas últimas reservas, {{ userLoged }}. Será sempre bem-vindo! </h4>
+          <h4>
+            Suas últimas reservas, {{ userLoged }}. Será sempre bem-vindo!
+          </h4>
           <h5>{{ msgUser }}</h5>
           <div class="ultimasReservas">
             <table class="tableReserva">
@@ -18,8 +25,8 @@
                 <tr>
                   <th data-type="text-short">
                     id Reserva <span class="resize-handle"></span>
-                  </th>                  
-                  
+                  </th>
+
                   <th data-type="text-long">
                     Data Reserva <span class="resize-handle"></span>
                   </th>
@@ -41,7 +48,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="ultimasReservas" v-for="item in reservas" :key="item">
+                <tr
+                  class="ultimasReservas"
+                  v-for="item in reservas"
+                  :key="item"
+                >
                   <td>{{ item.idReservas }}</td>
                   <td>{{ formatDate(item.dataReserva) }}</td>
                   <td>{{ formatDate(item.dataEntradaReserva) }}</td>
@@ -51,7 +62,12 @@
                   <td>{{ item.statusReserva }}</td>
                   <td>
                     <!-- <a id="comentario" class="button" href="">Comentário</a> -->
-                    <button type="button" @click="abreComentario(item)" class="btn btn-dark" id="btnAbreComentario">
+                    <button
+                      type="button"
+                      @click="abreComentario(item)"
+                      class="btn btn-dark"
+                      id="btnAbreComentario"
+                    >
                       Inserir comentário
                     </button>
                   </td>
@@ -68,33 +84,61 @@
             </p>
             <p id="lblReserva">Reserva: {{ reservaId }}</p>
             <form>
-              <input class="inputPadrao p-1 mtb-1 border textBold" type="text" placeholder="Nome" id="inputNome"
-                v-model="inputNome" name="nome" />
-              <textarea class="form-control inputPadrao p-1 mtb-1 border textBold" name="mensagem" id="txtMensagem"
-                v-model="txtMensagem" rows="5" placeholder="Comentários"></textarea>
+              <input
+                class="inputPadrao p-1 mtb-1 border textBold"
+                type="text"
+                placeholder="Nome"
+                id="inputNome"
+                v-model="inputNome"
+                name="nome"
+              />
+              <textarea
+                class="form-control inputPadrao p-1 mtb-1 border textBold"
+                name="mensagem"
+                id="txtMensagem"
+                v-model="txtMensagem"
+                rows="5"
+                placeholder="Comentários"
+              ></textarea>
               <a href="javascript:void(0)" @click="Avaliar(1)">
-                <img src="@/assets/images/star0.png" id="s1" /></a>
+                <img src="@/assets/images/star0.png" id="s1"
+              /></a>
 
               <a href="javascript:void(0)" @click="Avaliar(2)">
-                <img src="@/assets/images/star0.png" id="s2" /></a>
+                <img src="@/assets/images/star0.png" id="s2"
+              /></a>
 
               <a href="javascript:void(0)" @click="Avaliar(3)">
-                <img src="@/assets/images/star0.png" id="s3" /></a>
+                <img src="@/assets/images/star0.png" id="s3"
+              /></a>
 
               <a href="javascript:void(0)" @click="Avaliar(4)">
-                <img src="@/assets/images/star0.png" id="s4" /></a>
+                <img src="@/assets/images/star0.png" id="s4"
+              /></a>
 
               <a href="javascript:void(0)" @click="Avaliar(5)">
-                <img src="@/assets/images/star0.png" id="s5" /></a>
+                <img src="@/assets/images/star0.png" id="s5"
+              /></a>
               <p id="rating"></p>
 
-              <button type="button" @click="adComentario" class="btn btn-dark" id="btnComentario">
+              <button
+                type="button"
+                @click="adComentario"
+                class="btn btn-dark"
+                id="btnComentario"
+              >
                 Confirmar
               </button>
             </form>
             <div class="my-5">
-              <div class="border p-3 my-2" v-for="(coment, n) in comentarios" :key="coment">
-                <span class="autor"><strong>Nome: </strong>{{ coment.nome }}</span>
+              <div
+                class="border p-3 my-2"
+                v-for="(coment, n) in comentarios"
+                :key="coment"
+              >
+                <span class="autor"
+                  ><strong>Nome: </strong>{{ coment.nome }}</span
+                >
                 <p class="my-4" id="mensagem">{{ coment.comentario }}</p>
                 <a href="#" @click.prevent="excluir(n)">Excluir</a>
               </div>
@@ -120,15 +164,16 @@ import "bootstrap/dist/js/bootstrap.js";
 const bootstrap = require("bootstrap");
 
 import { mapState } from "vuex";
-// import moment from 'moment';
+import moment from 'moment';
 
-// import ModalMeusComentarios from "./ModalMeusComentarios.vue";
+// import axios
+import axios from "axios";
 
 var jQuery = require("jquery");
 window.jQuery = jQuery;
 window.$ = jQuery;
 
-var avaliacao = 0;
+// var avaliacao = 0;
 
 export default {
   name: "ModalView",
@@ -149,10 +194,12 @@ export default {
       comentarios: [],
       labelReserva: document.getElementById("lblReserva"),
       reservaId: "",
+      avaliacao: 0,
+      dtComentario: "",
     };
   },
   created() {
-    console.log("Created...");
+    // console.log("Created...");
   },
   methods: {
     abreModal() {
@@ -166,14 +213,8 @@ export default {
     },
 
     abreComentario(item) {
-      // console.log("Cliquei no abre comentário...ID da reserva:", item);
       this.dadosReserva = item;
       // verifica se comentário já foi feito para a reserva selecionada, apresenta mensagem de editar se positivo
-      console.log(
-        `Coment_${this.dadosReserva.idReservas}`,
-        localStorage.getItem(`Coment_${this.dadosReserva.reservaId}`)
-      );
-
       if (localStorage.getItem(`Coment_${this.dadosReserva.reservaId}`)) {
         alert(
           `Comentário já realizado para a reserva ${this.dadosReserva.reservaId}`
@@ -197,8 +238,10 @@ export default {
       //document.getElementById("inputNome").innerHTML = "Reserva_X";
       if (this.txtMensagem.trim() === "") return;
       if (this.inputNome.trim() === "") this.inputNome = "Usuário Anônimo";
+      this.dtComentario = moment(new Date(),"DD/MM/YYYY").format("DD-MM-YYYY"),
       this.comentarios.push({
         dtReserva: this.dadosReserva.dtReserva,
+        dtComentario: this.dtComentario,
         idReserva: this.dadosReserva.reservaId,
         idreserva: this.reservaId,
         idUsuario: this.idUsuario,
@@ -206,18 +249,43 @@ export default {
         nomeComentario: this.inputNome,
         comentario: this.txtMensagem,
         tipo: this.dadosReserva.tipoApto,
-        nota: avaliacao,
+        nota: this.avaliacao,
       });
-      console.log("DadosReserva:", this.dadosReserva,this.comentarios);
       localStorage.setItem(
         `Coment_${this.dadosReserva.idReservas}`,
         JSON.stringify(this.comentarios)
       );
-      avaliacao = 0;
+
+      // gravar no MongoDB...
+      this.criaComentariosMongoBD();
+
+      this.avaliacao = 0;
       this.inputNome = "";
       this.txtMensagem = "";
       this.showHide(".painelComentarios", "add");
     },
+
+      // http://localhost:5000/novoComentario
+    async criaComentariosMongoBD() {
+      try {
+        await axios.post("http://localhost:5000/novoComentario", {
+          comentario: this.txtMensagem,
+          contatoComentario: this.inputNome,
+          idUsuario: this.idUsuario,
+          idReserva: this.reservaId,
+          nome: this.userLoged,
+          nota: this.avaliacao,
+          dataComentario: this.dtComentario,
+          statusComentario: "pendente",
+          publicarDe: "",
+          publicarAte:""          
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      return true;
+    },
+
     excluir(n) {
       this.comentarios.splice(n, 1);
     },
@@ -231,7 +299,7 @@ export default {
         document.getElementById("s3").src = urlStar1;
         document.getElementById("s4").src = urlStar1;
         document.getElementById("s5").src = urlStar1;
-        avaliacao = 5;
+        this.avaliacao = 5;
       }
 
       //ESTRELA 4
@@ -241,7 +309,7 @@ export default {
         document.getElementById("s3").src = urlStar1;
         document.getElementById("s4").src = urlStar1;
         document.getElementById("s5").src = urlStar0;
-        avaliacao = 4;
+        this.avaliacao = 4;
       }
 
       //ESTRELA 3
@@ -251,7 +319,7 @@ export default {
         document.getElementById("s3").src = urlStar1;
         document.getElementById("s4").src = urlStar0;
         document.getElementById("s5").src = urlStar0;
-        avaliacao = 3;
+        this.avaliacao = 3;
       }
 
       //ESTRELA 2
@@ -261,7 +329,7 @@ export default {
         document.getElementById("s3").src = urlStar0;
         document.getElementById("s4").src = urlStar0;
         document.getElementById("s5").src = urlStar0;
-        avaliacao = 2;
+        this.avaliacao = 2;
       }
 
       //ESTRELA 1
@@ -271,30 +339,15 @@ export default {
         document.getElementById("s3").src = urlStar0;
         document.getElementById("s4").src = urlStar0;
         document.getElementById("s5").src = urlStar0;
-        avaliacao = 1;
+        this.avaliacao = 1;
       }
 
-      document.getElementById("rating").innerHTML = avaliacao;
+      document.getElementById("rating").innerHTML = this.avaliacao;
     },
 
     ReservasUsuarioData() {
-      // this.$store.dispatch("ReservasUsuario/getData");
       this.$store.dispatch("ReservasUsuario/getData", { idUsuario: `${this.idUsuario}` });
     },
-
-    // força refresh do componente...
-    // https://michaelnthiessen.com/force-re-render/
-    methodThatForcesUpdate() {
-      // ...
-      this.$forceUpdate(); // Notice we have to use a $ here
-      // ...
-    },
-
-    // formatDate(value) {
-    //   if (value) {
-    //     return moment(String(value)).format('MM/DD/YYYY hh:mm')
-    //   }
-    // },
 
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -307,36 +360,11 @@ export default {
     ...mapState(["ReservasUsuario"]),
 
     reservas() {
-
       let arrayReservas = this.ReservasUsuario.data;
-      console.log("ModalMinhasReservas computed reservas()...", this.ReservasUsuario,arrayReservas );
-
-      // verifica campos na localStorage = Reserva_"X"
-      // let arrayReservas = [];
-      // let arrayAux = [];
-      // let el = "";
-      // let i = 0;
-      // for (i = 0; i < localStorage.length; i++) {
-      //   // verifica reservas anteriores...
-      //   // if (localStorage.key(i).includes("Reserva_",0)) {
-      //   if (localStorage.key(i).substring(0, 8) === "Reserva_") {
-      //     arrayAux = JSON.parse(localStorage.getItem(localStorage.key(i)));
-      //     (el = {
-      //       reservaId: `${arrayAux[0].reservaId}`,
-      //       dtReserva: `${arrayAux[0].dtReserva}`,
-      //       codCliente: `${arrayAux[0].codCliente}`,
-      //       dtCheckIn: `${arrayAux[0].dtEntrada}`,
-      //       dtCheckOut: `${arrayAux[0].dtSaida}`,
-      //       qtPessoas: `${arrayAux[0].qtPessoas}`,
-      //       tipoApto: `${arrayAux[0].tipoApto}`,
-      //       vlrTotal: `${arrayAux[0].vlrTotalcomDesconto}`,
-      //     }),
-      //       arrayReservas.push(el);
-      //   }
-      // }
       return arrayReservas;
     },
   },
+  
   mounted() {
     // esconde o painel de comentários...
     this.showHide(".painelComentarios", "add");
@@ -346,14 +374,14 @@ export default {
 };
 
 // confirmação da reserva e display da modal de confirmação
-window.$().ready(function () {
-  window.$("#comentario").click(function () {
-    console.log("Cliquei em comentario");
-    //this.showHide(".painelComentarios", "remove");
-    console.log("Cliquei em comentario pós remove...");
-    //window.$("#modalMeusComentarios").modal("show");
-  });
-});
+// window.$().ready(function () {
+//   window.$("#comentario").click(function () {
+//     console.log("Cliquei em comentario");
+//     //this.showHide(".painelComentarios", "remove");
+//     console.log("Cliquei em comentario pós remove...");
+//     //window.$("#modalMeusComentarios").modal("show");
+//   });
+// });
 </script>
 
 <style scoped>
@@ -364,6 +392,7 @@ window.$().ready(function () {
 .tableReserva * {
   box-sizing: border-box;
   font-size: 0.8rem;
+  font-weight: bold;
 }
 
 .tableReserva html,
@@ -385,8 +414,10 @@ body {
   display: grid;
   border-collapse: collapse;
   /* These are just initial values which are overriden using JavaScript when a column is resized */
-  grid-template-columns:
-    minmax(auto, auto) minmax(auto, auto) minmax(auto, auto) minmax(auto, auto) minmax(auto, auto);
+  grid-template-columns: minmax(auto, auto) minmax(auto, auto) minmax(
+      auto,
+      auto
+    ) minmax(auto, auto) minmax(auto, auto);
 }
 
 .tableReserva th,
@@ -427,4 +458,3 @@ td {
   padding: 0.4em;
 }
 </style>
-

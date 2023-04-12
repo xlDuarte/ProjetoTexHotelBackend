@@ -73,6 +73,12 @@ const routes = [
       import("../../adm/src/views/acomodacoes/AcomodacoesView.vue"),
   },
   {
+    path: "/ComentariosAdm",
+    name: "comentariosAdm",
+    component: () =>
+      import("../../adm/src/views/reservas/ComentariosView.vue"),
+  },
+  {
     path: "/edit/:id",
     name: "editAcomodacao",
     component: () =>

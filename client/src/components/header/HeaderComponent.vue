@@ -19,6 +19,7 @@
               <div><router-link to="/ReservasAdm">Reservas</router-link></div>
               <div><router-link to="/ServicosAdm">Serviços</router-link></div>
               <div><router-link to="/Consumos">Consumo</router-link></div>
+              <div><router-link to="/ComentariosAdm">Comentarios</router-link></div>              
               <div><router-link to="/Usuarios">Usuarios</router-link></div>
             </div>
             <form class="campologin" v-show="showLogin" action="post">
@@ -59,6 +60,7 @@
             <div><router-link to="/ReservasAdm">Reservas</router-link></div>
             <div><router-link to="/ServicosAdm">Serviços</router-link></div>
             <div><router-link to="/Consumos">Consumo</router-link></div>
+            <div><router-link to="/ComentariosAdm">Comentários</router-link></div>            
             <div><router-link to="/Usuarios">Usuarios</router-link></div>
           </div>
         </div>
@@ -185,11 +187,14 @@ export default {
       this.showLogOut = false
       this.showLogin = true
       this.invisivel = false,
-        this.visivel = true
+      this.visivel = true
       localStorage.setItem("loginStatus", logedOut);
       localStorage.removeItem("loged");
       localStorage.removeItem("userId")
       localStorage.removeItem("loginStatus");
+      
+      // validar!! - FRC 
+      localStorage.clear();
       document.getElementById("login").value = "";
       document.getElementById("password").value = "";
       this.logedin = localStorage.getItem("logedOut");
@@ -360,7 +365,7 @@ a {
 .banner img {
   display: block;
   object-fit: cover;
-  width: 100%;
+  width: 25%;
   object-position: center;
 }
 

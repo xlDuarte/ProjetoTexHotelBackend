@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-
     <div class="modalServicos2">
       <ModalServicos2
         :msg="msgModalServicos2"
@@ -161,8 +160,14 @@
             <div class="container">
               <div class="row my-2 mt-3">
                 <div class="col col-5 me-5">
-                  <label for="idUsuario" class="d-block fw-bold" @click="handleClick('usuarios')">ID Usuario - clique para consulta</label>
-                  <!-- <a href="#" class="d-block fw-bold" @click="handleClick('usuarios')">ID Usuários</a> -->
+                  <!-- <label for="idUsuario" class="d-block fw-bold" @click="handleClick('usuarios')">ID Usuario - clique para consulta</label> -->
+                  <span><b>ID Usuario - clique para consulta </b></span
+                  ><img
+                    src="../../assets/search-persons.png"
+                    alt="Pesquisa clientes"
+                    style="width: 25px; height: 30px"
+                    @click="handleClick('usuarios')"
+                  />
                   <i class="fa fa-search" aria-hidden="true"></i>
                   <input
                     type="number"
@@ -310,7 +315,7 @@
             >
               Excluir Reserva
             </button>
-            <button
+            <!-- <button
               v-if="showModalServicos"
               @click="handleClick('usuarios')"
               id="btnUsuarios"
@@ -318,7 +323,7 @@
               type="button"
             >
               Usuários
-            </button>
+            </button> -->
             <button
               v-if="showModalServicos"
               @click="handleClick('servicos')"
@@ -451,7 +456,6 @@ export default {
       msgModalServicos2: "",
       arrayServicosReserva: [],
       arrayServicosBD: [],
-      arrayServicosAux: [],
       msgModalResumo: "",
       msgModalUsuarios: "",
       idReservasModalResumo: "",
@@ -583,7 +587,7 @@ export default {
       }
     },
 
-    // verificar acomodação  pelo id
+    // verificar acomodação  pelo id - ok!
     async validaAcomodacaoById(idAcomodacao) {
       try {
         const response = await axios.get(
@@ -594,26 +598,20 @@ export default {
           this.acomodacaoTipo = response.data.tipoAcomodacao;
           this.acomodacaoVlrDiaria = response.data.valorAcomodacao;
           this.acomodacaoQtMaxPessoas = response.data.qtMaxPessoas;
-          console.log(
-            "Dados acomodação...",
-            idAcomodacao,
-            this.acomodacaoTipo,
-            this.acomodacaoQtMaxPessoas
-          );
         } else {
           this.acomodacaoTipo = "Acomodação inválida - Verificar!!";
           this.acomodacaoVlrDiaria = 0;
           this.acomodacaoQtMaxPessoas = 0;
         }
-        //console.log("getServicosById", this.itemServico);
         return response;
       } catch (err) {
         console.log(err);
       }
     },
 
-    // Lista todas as reservas
+    // Lista todas as reservas - ok!
     async getReservas() {
+      console.log("ReservasView...getReservas()")
       try {
         const response = await axios.get("http://localhost:5000/reserva");
         this.items = response.data;
@@ -690,12 +688,27 @@ export default {
       }
     },
 
-    getServicosByReservaId(idReservas) {
-      return axios.get(`http://localhost:5000/servicoReserva/${idReservas}`);
-    },
+    // carrega lista de usuarios clientes
+    // async getBosta() {
+    //   try {
+    //     const response = await axios.get(`http://localhost:5000/servicoReserva/${this.idReservas}`);
+    //     console.log("getBosta", this.idReservas,response.data);
+    //     // this.arrayServicosReserva = response.data;
+    //     return response.data;
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // },
+
+    // getServicosByReservaId(idReservas) {
+    //   console.log("ReservasView...getServicosByReservaId()")
+    //   console.log("Etapa 3 - checar servicos pela reserva");
+    //   return axios.get(`http://localhost:5000/servicoReserva/${idReservas}`);
+    // },
 
     handleClick(action) {
       if (action == "salvar") {
+        console.log("Etapa 1 - click Cadastrar");
         // this.msg1 = "Cliquei handleClick salvar...";
         // this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
 
@@ -720,16 +733,30 @@ export default {
           return false;
         }
 
-        this.getServicosByReservaId(this.idReservas)
-          .then((response) => {
-            console.log("teste", response.data[0]);
-            this.arrayServicosBD = response.data;
-          })
-          .catch((error) => {
-            console.log(error);
-            // Handle error here
-          });
+        // this.getServicosByReservaId(this.idReservas)
+        //   .then((response) => {
+        //     //console.log("teste", response.data[0]);
+        //     this.arrayServicosBD = response.data;
+        //     console.log("Etapa 3.1 - arrayServicosBD",this.arrayServicosBD.length,this.arrayServicosBD)
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //     // Handle error here
+        //   });
 
+        //this.arrayServicosBD = this.getBosta();
+        //console.log("Etapa 3.1 - arrayServicosBD",this.arrayServicosBD.length,this.arrayServicosBD);
+
+        // verifica se existiam registros de servicos por reserva, caso não existam inicializa arrayServicosBD com serviços da table
+        // if (this.arrayServicosBD.length == 0) {
+        //   this.arrayServicosBD = this.Servicos2;
+        //   console.log("Etapa 3.2 - arrayServicosBD",this.arrayServicosBD.length,this.Servicos2);
+
+        // }
+        this.arrayServicos = this.Servicos2.data;
+        console.log("Etapa 3.1 - this.arrayServicos",this.arrayServicos.length,this.Servicos2);
+        
+        // console.log("Etapa 3.2 - arrayServicosBD",this.arrayServicosBD);
         let reserva = new Reservas();
 
         reserva.salvar(
@@ -754,13 +781,17 @@ export default {
           this.acomodacaoQtMaxPessoas,
           this.itemArrayReservas,
           this.itemArrayEdit,
-          this.arrayServicosBD
+          this.arrayServicosBD,
+          this.arrayServicos
         );
 
         // recarrega lista de serviços
         this.getReservas();
         // força atualização pela segunda vez, no caso de edição não está atualizando com um unica chamada, checar...
         this.getReservas();
+        console.log("Etapa 4 - limpar a localStorage");
+        localStorage.removeItem("servicosEscolhidos");
+
       }
 
       if (action == "excluir") {
@@ -806,10 +837,12 @@ export default {
       }
 
       if (action == "usuarios") {
-        // this.arrayServicosBD = this.ServicosReserva;
-        this.getUsersCliente();
-        window.$("#modalUsuarios").modal("show");
-        this.campoAtivoIdUsuario = false;
+        if (this.campoAtivoIdUsuario !== true) {
+          // this.arrayServicosBD = this.ServicosReserva;
+          this.getUsersCliente();
+          window.$("#modalUsuarios").modal("show");
+          this.campoAtivoIdUsuario = false;
+        }
         return true;
       }
 
@@ -914,7 +947,6 @@ export default {
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
         this.arrayServicosBD = this.ServicosReserva;
         // console.log("handleItem edit...",this.arrayServicosBD);
-
         // checar controle  aqui
         this.showGerarCupomButton = true;
         // checar controle  aqui
@@ -1025,7 +1057,7 @@ export function checkInfo(
   }
 
   // console.log("msgReturn...",msgReturn)
-
+  console.log("Etapa 2 - checar dados da reserva");
   return msgReturn;
 }
 </script>
@@ -1047,7 +1079,7 @@ export function checkInfo(
 }
 
 .inline-link {
-    display: inline-block;
+  display: inline-block;
 }
 
 /* Clear floats after the columns */
@@ -1097,33 +1129,3 @@ export function checkInfo(
 }
 </style>
 
-<!-- verificar se é possível simplificar o formulário usando o conceito abaixo, o form atual tem muitos campos 
-e fica complicado de tratar entre as funções -->
-
-<!-- <template>
-    <form>
-        <input v-model="form.first_name"/>
-        <input v-model="form.last_name"/>
-        <input v-model="form.email"/>
-    </form> 
-</template>
-
-<script>
-    const defaultForm = {
-        first_name: '',
-        last_name: '',
-        email: '',
-    }  
-    export default {
-      data () {
-        return {
-            form: defaultForm
-        }
-      },
-      computed: {
-        hasChanged () {
-          return Object.keys(this.form).some(field => this.form[field] !== defaultForm[field])
-        }
-      }
-    }
-</script> -->

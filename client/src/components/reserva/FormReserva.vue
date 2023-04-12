@@ -9,20 +9,38 @@
       <div class="col-md-4">
         <div class="form-group mx-3">
           <label for="dtEntrada">Entrada</label>
-          <input type="date" id="dtEntrada" name="dtEntrada" v-model="dtEntrada" class="form-control form-control-lg" />
+          <input
+            type="date"
+            id="dtEntrada"
+            name="dtEntrada"
+            v-model="dtEntrada"
+            class="form-control form-control-lg"
+          />
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group mx-3">
           <label for="dtSaida">Saida</label>
-          <input type="date" id="dtSaida" name="dtSaida" v-model="dtSaida" class="form-control form-control-lg" />
+          <input
+            type="date"
+            id="dtSaida"
+            name="dtSaida"
+            v-model="dtSaida"
+            class="form-control form-control-lg"
+          />
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group mx-3">
           <label for="qtPessoas">Quantidade Pessoas</label>
-          <input type="number" id="qtPessoas" name="qtPessoas" value="1" class="form-control" style="text-align: center;" />
-
+          <input
+            type="number"
+            id="qtPessoas"
+            name="qtPessoas"
+            value="1"
+            class="form-control"
+            style="text-align: center"
+          />
         </div>
       </div>
       <div class="col-md-12">
@@ -33,17 +51,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-
 
 <script>
 // import { json } from "body-parser";
@@ -74,15 +81,7 @@ export default {
     //   el.dispatchEvent(new Event("input"));
     // },
   },
-  computed: {
-    // produtos() {
-    //   return this.$store.$state.produtos.pratosQuentes;
-    // },
-    // loja() {
-    //   console.log(this.tipo);
-    //   return this.$store.getters.loja(this.tipo);
-    // },
-  },
+  computed: {},
   mounted() {
     // força primeira atualização da localStorage
     atualizaLocalStorage();
@@ -90,34 +89,28 @@ export default {
     // jquery criado antes que identifica mudanças no form e atualiza localStorage e tela
     // deve ter um outro jeito em VUEX...
     window.$("#dtEntrada").change(function () {
-      //console.log("mudou dt entrada");
       atualizaLocalStorage();
     });
 
     window.$("#dtSaida").change(function () {
-      //console.log("mudou dt saida");
       atualizaLocalStorage();
     });
 
     window.$("#qtPessoas").change(function () {
-      //console.log("mudou qt pessoas");
       atualizaLocalStorage();
     });
 
     window.$("input[type=radio][name=tipoApto]").change(function () {
-      if (this.value == "Master") {
-        //console.log("Selecionou Master");
-      } else if (this.value == "Family") {
-        //console.log("Selecionou Family");
-      } else {
-        //console.log("Selecionou Comfort");
-      }
       atualizaLocalStorage();
     });
 
     // confirmação da reserva e display da modal de confirmação
     window.$().ready(function () {
       window.$("#btnResumo").click(function () {
+        if (localStorage.getItem("loginStatus") != "cliente") {
+          alert("Você precisa estar logado para concluir a reserva!");
+          return true;
+        }
         let check = false;
         // executa function para checar dados da reserva...
         check = confirmaReserva();
@@ -127,14 +120,38 @@ export default {
         }
       });
     });
+
     window.$().ready(function () {
       window.$("#btnServicos").click(function () {
         window.$("#modalServicos").modal("show");
       });
     });
+
+    window.$().ready(function () {
+       window.$("#btnMinhasReservas").click(function () {
+        if (localStorage.getItem("loged") === null) {
+          return true;
+        }
+        window.$("#modalMinhasReservas").modal("show");
+      });
+    });
+
+    // window.$().ready(function () {
+    //   window.$("#btnConfirma").click(function () {
+    //     window.$("#modalConfirma").modal("show");
+    //   });
+    // });
+    // confirmação da reserva e display da modal de confirmação
+
     window.$().ready(function () {
       window.$("#btnConfirma").click(function () {
-        window.$("#modalConfirma").modal("show");
+        let check = false;
+        // executa function para checar dados da reserva...
+        check = confirmaReserva();
+        if (check) {
+          window.$("#modalResumo").modal("show");
+          preencheModalResumo();
+        }
       });
     });
   },
@@ -177,7 +194,6 @@ export function atualizaLocalStorage() {
 
   // inicializa localStorage - datas
   dateStartAux = dtEntrada.split("-");
-  //console.log("dataemtradaaux", dateStartAux);
   dateStart = new Date(dateStartAux[0], dateStartAux[1] - 1, dateStartAux[2]);
   localStorage.setItem("dtEntrada", formatDate(dateStart));
   dateEndAux = dtSaida.split("-");
@@ -239,7 +255,6 @@ export function formatDate(inputDate) {
 
   date = date.toString().padStart(2, "0");
   month = month.toString().padStart(2, "0");
-  // console.log(inputDate, `${date}/${month}/${year}`);
   return `${date}/${month}/${year}`;
 }
 
@@ -252,10 +267,11 @@ export function checkInfo() {
   qtPessoas = localStorage.getItem("qtPessoas");
   tipoApto = localStorage.getItem("tipoapto");
 
-  if (localStorage.getItem("loginStatus") != "cliente") {
-    alert("Você precisa estar logado para concluir a reserva!");
-    msgReturn = [false, "Você precisa estar logado para concluir a reserva!"];
-  }
+  // if (localStorage.getItem("loginStatus") != "cliente") {
+  //   alert("Você precisa estar logado para concluir a reserva!");
+  //   msgReturn = [false, "Você precisa estar logado para concluir a reserva!"];
+  //   return msgReturn;
+  // }
 
   if (checkData(dtEntrada) || checkData(dtSaida)) {
     msgReturn = [false, "Datas de entrada e/ou saída inválidas"];
@@ -379,7 +395,7 @@ export function gravaReserva() {
       vlrTotal: `${vlrTotal}`,
       vlrTotalcomDesconto: `${vlrTotalcomDesconto}`,
       cupom: `${cupom}`,
-      taxaDescontoCupom: `${taxaDescontoCupom}`
+      taxaDescontoCupom: `${taxaDescontoCupom}`,
     },
   ];
   localStorage.setItem(`Reserva_${novoId}`, JSON.stringify(ReservaAux));
@@ -390,8 +406,8 @@ export function gravaReserva() {
 
 export function limpaLocalStorage() {
   // força geração cupom...
-  cupomDesconto()
-  
+  cupomDesconto();
+
   // zera servicos...
   localStorage.setItem("dtEntrada", "");
   localStorage.setItem("dtSaida", "");
@@ -418,17 +434,14 @@ export function currencyFormat(strVlr) {
 
 export function preencheModalResumo() {
   const divServicos = document.getElementById("servicos");
-  //console.log("Entrei na preenche modal resumo.;;;", divServicos);
   const divDiarias = document.getElementById("diarias");
-  //console.log("Entrei na preenche modal resumo.;;;", divDiarias);
   const divTotal = document.getElementById("total");
-  const divTotalDesconto = document.getElementById("totalDesconto");  
+  const divTotalDesconto = document.getElementById("totalDesconto");
 
   let servicosEscolhidos = "";
   if (localStorage.getItem("servicosEscolhidos") != null) {
     //let arrayServicosEscolhidos = JSON.parse(localStorage.getItem("servicosEscolhidos"));
     let arrayServicosEscolhidos = localStorage.getItem("servicosEscolhidos");
-    console.log("PreencheModalResumo...", arrayServicosEscolhidos);
     servicosEscolhidos = JSON.parse(arrayServicosEscolhidos);
   }
 
@@ -484,10 +497,9 @@ export function preencheModalResumo() {
   document.getElementById("diarias").appendChild(createPara(paraTexto));
 
   // atualiza div servicos se houver...
-  console.log("Atualiza div...", servicosEscolhidos)
   if (servicosEscolhidos !== "") {
     for (let i = 0; i < servicosEscolhidos.length; i++) {
-      if (servicosEscolhidos[i].isSelected === true) {
+      if (servicosEscolhidos[i].isSelected === "true") {
         vlrTotalServico = servicosEscolhidos[i].vlrDiariaServico * qtdDiarias;
         vlrSomaServicos = vlrSomaServicos + vlrTotalServico;
         paraTexto =
@@ -509,7 +521,8 @@ export function preencheModalResumo() {
     localStorage.setItem("valorTotalServicos", 0);
   }
 
-  let valorTotalGeral = vlrSomaServicos + parseFloat(localStorage.getItem("valorTotalDiarias"));
+  let valorTotalGeral =
+    vlrSomaServicos + parseFloat(localStorage.getItem("valorTotalDiarias"));
 
   // grava valor geral
   localStorage.setItem("valorTotalGeral", valorTotalGeral);
@@ -518,15 +531,21 @@ export function preencheModalResumo() {
 
   // atualiza div total
   paraTexto =
-    "Total diarias: " + currencyFormat(localStorage.getItem("valorTotalDiarias")) + "<br />";
+    "Total diarias: " +
+    currencyFormat(localStorage.getItem("valorTotalDiarias")) +
+    "<br />";
   document.getElementById("total").appendChild(createPara(paraTexto));
 
   paraTexto =
-    "Total servicos: " + currencyFormat(localStorage.getItem("valorTotalServicos")) + "<br />";
+    "Total servicos: " +
+    currencyFormat(localStorage.getItem("valorTotalServicos")) +
+    "<br />";
   document.getElementById("total").appendChild(createPara(paraTexto));
 
   paraTexto =
-    "Total geral: " + currencyFormat(localStorage.getItem("valorTotalGeral")) + "<br />";
+    "Total geral: " +
+    currencyFormat(localStorage.getItem("valorTotalGeral")) +
+    "<br />";
   document.getElementById("total").appendChild(createPara(paraTexto));
 
   return true;
@@ -542,15 +561,14 @@ export function createPara(conteudo) {
 
 export function cupomDesconto() {
   // verifica se cupom ainda pode ser gerado, persistena na localStorage
-  let msgCupomDesconto="Sem desconto";
+  let msgCupomDesconto = "Sem desconto";
   let dtCupomDesconto = new Date().toISOString().substring(0, 10);
   if (localStorage.getItem("cupomDescontoValido") != "NOK") {
     let cupom = Math.random().toString(36).substring(2, 9);
     msgCupomDesconto = cupom;
-  } 
-  localStorage.setItem("cupomDesconto",msgCupomDesconto);
-  localStorage.setItem("dtCupomDesconto",dtCupomDesconto);
-  console.log("Gerando cupom...",`${localStorage.getItem("cupomDescontoValido")} - ${msgCupomDesconto} - ${dtCupomDesconto}`)
+  }
+  localStorage.setItem("cupomDesconto", msgCupomDesconto);
+  localStorage.setItem("dtCupomDesconto", dtCupomDesconto);
   return true;
 }
 
@@ -577,7 +595,7 @@ export function cupomDesconto() {
   color: black;
 }
 
-.sec>div {
+.sec > div {
   max-width: 90%;
   margin: 2% 5%;
 }
@@ -614,7 +632,7 @@ img {
   margin: 0 5%;
 }
 
-.flex>div {
+.flex > div {
   flex: 1 1 420px;
   margin: 10px;
 }
@@ -626,19 +644,19 @@ img {
   border-radius: 50px;
   cursor: pointer;
   overflow: hidden;
-  font-size: 1.0em;
+  font-size: 1em;
   margin-top: 10px;
 }
 
-.flex>div>button {
+.flex > div > button {
   margin-right: 10px;
 }
 
-.flex>div>label {
+.flex > div > label {
   margin-right: 10px;
 }
 
-.flex>div>input {
+.flex > div > input {
   max-width: 125px;
   margin-right: 10px;
 }
@@ -655,14 +673,12 @@ img {
   padding: 0.4em;
 }
 
-  .minhaReserva {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .form-control {
-  font-size: 1.2em;
+.minhaReserva {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
-
+.form-control {
+  font-size: 1.2em;
+}
 </style>
