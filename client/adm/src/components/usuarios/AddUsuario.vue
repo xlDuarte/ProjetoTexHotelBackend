@@ -15,7 +15,7 @@
             </div>
             <div class="form-group col-12 col-sm-6">
               <label for="cpf" class="mt-3 mb-0 form-label fw-bold">*CPF:</label>
-              <input type="text" v-model="cpfUser" class="form-control" />
+              <input type="text" v-model="cpfUSer" class="form-control" />
             </div>
             <div class="form-group col-12 col-sm-6">
               <label for="endereco" class="mt-3 mb-0 form-label fw-bold">*Endereço:</label>
@@ -65,11 +65,12 @@
    methods: {
      // cria novo usuario
      async saveUsuario() {
+        console.log("save usuario...",this.nomeUser, this.cpfUSer)
        try {
          await axios.post("http://localhost:5000/register", {
            nomeUsuario: this.nomeUser,
            emailUsuario: this.emailUser,
-           cpfUSuario: this.cpfUSer,
+           cpfUsuario: this.cpfUSer,
            endUsuario: this.endUser,
            telefoneUsuario: this.telefoneUser,
            tipoUsuario: this.tipoUser,
