@@ -29,7 +29,7 @@
       </div>
 
       <div class="shadow container bg-light rounded-3 p-4 mx-auto my-5 w-50">
-        <p id="msgAlerta">{{ msgAlerta }}</p>
+        <p class="msgAlerta" id="msgAlerta" v-bind:style="{ 'color': msgAlertaColor }">{{ msgAlerta }}</p>
         <hr />
         <form class="formReservas" action="" @submit.prevent>
           <div class="container">
@@ -451,6 +451,7 @@ export default {
       // msg2: "msg2",
       inputValue: "Teste",
       msgAlerta: "Mensagens do sistema",
+      msgAlertaColor: "green", //  cor inicial da mensagem - sera trocar por red em caso de erros...
       flagSalvarOk: true, // flag para controle de inclusão e alteração registros
       idReservas: "",
       msgModalServicos2: "",
@@ -518,12 +519,6 @@ export default {
   },
 
   methods: {
-    // abreTab() {
-    //   var tab = new bootstrap.Tab(document.querySelector("#nav-tabs"), {
-    //     keyboard: false,
-    //   });
-    //   return tab;
-    // },
 
     checkLogin() {
       if (localStorage.getItem("loginStatus")) {
@@ -730,6 +725,7 @@ export default {
         // exibe mensagem de erro se necessário, aborta persistência...
         if (dadosOk == false) {
           this.msgAlerta = `${msgRetorno}`;
+          this.msgAlertaColor = "red";
           return false;
         }
 
@@ -828,8 +824,9 @@ export default {
         this.arrayServicosBD = this.ServicosReserva;
         this.idReservasModalResumo = this.idReservas;
         this.itemReservaModalResumo = this.item;
+        console.log("Resumo",this.itemReservaModalResumo)
         this.servicosSelection = true;
-        this.msgModalResumo = "Área de mensagens...sem mensagens no momento.";
+        this.msgModalResumo = "Sem mensagens no momento.";
         // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` });
         window.$("#modalResumo2").modal("show");
         this.campoAtivoIdUsuario = true;
@@ -895,6 +892,7 @@ export default {
 
       // após inclusão, limpa campos do form...
       this.msgAlerta = "Mensagens do sistema";
+      this.msgAlertaColor = "green";
       this.dataReserva = new Date().toISOString().substring(0, 10);
       this.dataEntradaReserva = new Date().toISOString().substring(0, 10);
       this.dataSaidaReserva = new Date().toISOString().substring(0, 10);
@@ -997,6 +995,12 @@ export default {
     // incluir funções...
     ...mapState(["Servicos2"]),
     ...mapState(["ServicosReserva"]),
+
+    changeBackground(color) {
+      document.body.style.background = color;
+      return true;
+    },
+
   },
   mounted() {
     // funções mounted...
@@ -1127,5 +1131,6 @@ export function checkInfo(
   border-radius: 50px;
   padding: 5px;
 }
+
 </style>
 

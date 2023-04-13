@@ -29,6 +29,7 @@ export class Servicos {
     inputDescricao,
     inputVlrDiaria,
     isSelected,
+    inputStatus,
     itemArrayServicos,
     itemArrayEdit
   ) {
@@ -37,6 +38,7 @@ export class Servicos {
     this.descricao = inputDescricao;
     this.vlrDiaria = inputVlrDiaria;
     this.isSelected = 0;
+    this.inputStatus = inputStatus;
     this.itemArrayServicos = itemArrayServicos;
     this.itemArrayEdit = itemArrayEdit;
 
@@ -99,6 +101,7 @@ export class Servicos {
         descricaoServico: this.descricao,
         labelServico: this.label,
         isSelected: this.isSelected,
+        status: "ativado",
       });
       this.nome = "";
       this.vlrDiaria = "";
@@ -157,6 +160,7 @@ export class Servicos {
     servico.label = this.label;
     servico.descricao = this.descricao;
     servico.vlrDiaria = this.vlrDiaria;
+    servico.status = this.status;
     return servico;
   }
 

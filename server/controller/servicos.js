@@ -1,6 +1,7 @@
 // Import das funcs do models
 import {
   getServico,
+  getServicoAdm,
   getServicoById,
   insertServico,
   updateServicoById,
@@ -10,6 +11,17 @@ import {
 // lista todos os servicos
 export const showServico = (req, res) => {
   getServico((err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+// lista todos os servicos
+export const showServicoAdm = (req, res) => {
+  getServicoAdm((err, results) => {
     if (err) {
       res.send(err);
     } else {

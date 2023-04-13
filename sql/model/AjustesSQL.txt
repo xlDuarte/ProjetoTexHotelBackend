@@ -1,4 +1,12 @@
 ************************************************************************************************************
+FRC - 13/04 - Ajuste na tabela Servicos, inclusão de campo status para controle de serviço ativo / desativado
+************************************************************************************************************
+
+ALTER TABLE `hotelcnp`.`servicos` 
+ADD COLUMN `status` VARCHAR(10) NULL AFTER `isSelected`;
+
+
+************************************************************************************************************
 FRC - 05/04 - Ajuste na tabela Reservas, inclusão de quantidade max de hospedes da acomodação
 ************************************************************************************************************
 ALTER TABLE `hotelcnp`.`Reservas` 

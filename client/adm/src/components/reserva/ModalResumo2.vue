@@ -23,30 +23,29 @@
           <!-- INÍCIO DO CONTEÚDO -->
           <!-- inicio div Resumo -->
           <div id="bodyResumo">
-            <h3>Resumo da solicitação {{ msg }}</h3>
+            <h1>Resumo da solicitação</h1>
+            <h4>Mensagens do sistema: {{ msg }}</h4>
             <p></p>
-            <p>ID da Reserva: {{ idReservas }}</p>
-            <p>Status Reserva: {{ itemReservas.statusReserva }}</p>
+            <h2>ID da Reserva: {{ idReservas }}</h2>
+            <h2>Status Reserva: {{ itemReservas.statusReserva }}</h2>
             <hr />
-            <p>Dados Reserva</p>
+            <h3>Dados Reserva</h3>
             <p>
               Nome Hóspede: {{ itemReservas.nomeUsuario }} - ID:
               {{ itemReservas.usuario_idUsuario }}
             </p>
-            <p>Data Reserva: {{ itemReservas.dataReserva }} </p>
             <p>Data Reserva: {{ formatDataReserva }} </p>
             <p>Checkin: {{ formatDataEntrada }} </p>
             <p>Checkout: {{ formatDataSaida }}  </p>
-            <p>
-              Acomodação: {{ itemReservas.nomeAcomodacao }} Vlr Diaria
-              Acomodação: {{ itemReservas.valorAcomodacao }} Qt Hóspedes:
-              {{ itemReservas.qtdHospedesReserva }}
-            </p>
+            <p>Acomodação: {{ itemReservas.nomeAcomodacao }} </p>
+            <p>Vlr Diaria: {{ itemReservas.valorAcomodacao }} </p>
+            <p>Qt Hóspedes: {{ itemReservas.qtdHospedesReserva }} </p>
+            <p><b>Qt Diárias: {{ itemReservas.qtDiarias }} </b></p>
             <p></p>
             <!-- <h2>Diárias</h2> -->
             <div id="diarias"></div>
             <hr />
-            <h2>Servicos Adicionais</h2>
+            <h3>Serviços Adicionais</h3>
             <div
               class="painelServicos"
               v-for="item in this.arrayServicosBD.data"
@@ -68,37 +67,31 @@
             </div>
             <hr />
             <div id="total">
-              <h2>Resumo Valores</h2>
+              <h3>Resumo Valores</h3>
               <p>Valor Reserva: {{ itemReservas.valorReserva }}</p>
               <p></p>
-              <p>Valor Serviços: {{ itemReservas.valorTotalServico }}</p>
+              <p>Valor Serviços: {{ itemReservas.valorTotalServicos }}</p>
               <p></p>
-              <p>Valor Total Geral: {{ itemReservas.valorTotalDesconto }}</p>
+              <p><b>Valor Total Geral: {{ formatValorTotalDesconto }}</b></p>
             </div>
             <hr />
           </div>
-          <!-- Inicio body confirma-->
-          <div id="footer">
+          <!-- Inicio area de botões -->
+          <!-- <div id="footer">
             <div class="mt-2 pt-2 d-flex flex-start"></div>
             <div id="geraPDF">
-              <!-- <button class="btn btn-secondary" @click="geraPDF">
+              <button class="btn btn-secondary" @click="geraPDF">
                 Gera PDF
-              </button> -->
+              </button>
             </div>
             <hr />
-          </div>
+          </div> -->
         </div>
       </div>          <!-- Fim body Resumo-->
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fechar
         </button>
-        <!-- <button type="button" id="btnConfirma" class="btn btn-secondary">
-          Confirma!
-        </button> -->
-        <!-- <a data-dismiss="modal" data-toggle="modal" href="#modalConfirma"
-          >Click</a
-        > -->
       </div>
       <!-- fim modal -->
     </div>
@@ -125,12 +118,6 @@ var jQuery = require("jquery");
 window.jQuery = jQuery;
 window.$ = jQuery;
 
-
-// let dtReserva = moment(arrayReservaCriada[0].dtReserva,"DD/MM/YYYY").format("YYYY-MM-DD");
-// let dtEntrada = moment(arrayReservaCriada[0].dtEntrada,"DD/MM/YYYY").format("YYYY-MM-DD");
-// let dtSaida = moment(arrayReservaCriada[0].dtSaida, "DD/MM/YYYY").format("YYYY-MM-DD");
-
-
 export default {
   name: "ModalResumo2",
   // props: {
@@ -155,21 +142,17 @@ export default {
     formatData(data) {
       return moment(data,"DD/MM/YYYY").format("DD-MM-YYYY");
     },
+
+    formatCurrency(dateObj) {
+      return `R$ ${dateObj}`;
+    },
+
     abreModal() {
       // console.log("Abre Modal Item: ", this.item);
       var modal = new bootstrap.Modal(document.querySelector("#modalResumo2"), {
         keyboard: false,
       });
       return modal;
-    },
-    confirmaReserva() {
-      console.log("Cliquei na confirmação...");
-      alert(
-        "Sua reserva foi confirmada - você irá receber um email com a confirmação! Obrigado!"
-      );
-      // gravaReserva();
-      // updateBindingForm();
-      window.$("#modalResumo").modal("hide");
     },
   },
 
@@ -186,7 +169,11 @@ export default {
     formatDataSaida() {
       const dateObj = new Date(this.itemReservas.dataSaidaReserva);
       return this.formatData(dateObj);
-    },    
+    },
+    formatValorTotalDesconto() {
+      const dateObj = this.itemReservas.valorTotalDesconto;
+      return this.formatCurrency(dateObj);
+    },
   },
 
   mounted() {
@@ -194,53 +181,6 @@ export default {
   },
 };
 
-window.$().ready(function () {
-  // confirmação da reserva...
-  window.$("#btnConfReserva").click(function () {
-    console.log("Cliquei na confirmação...");
-    console.log("Teste...");
-    // verifica se desconto foi utilizado, para mudar flag de aplicar desconto...
-    if (
-      localStorage.getItem("vlrTotalGeral") !=
-      localStorage.getItem("vlrTotalDesconto")
-    ) {
-      localStorage.setItem("cupomDescontoValido", "NOK");
-    } else {
-      localStorage.setItem("cupomDescontoValido", "OK");
-    }
-  });
-
-  // aplica cupom...
-  window.$("#btnCupom").click(function () {
-    let cupomEntry = document
-      .querySelector("#inputDesconto")
-      .value.toLowerCase();
-    let cupomStorage = localStorage.getItem("cupomDesconto");
-    let vlrTotalGeral = localStorage.getItem("valorTotalGeral").split("$");
-    let percDesc = 1;
-    let msg = "Total Reserva....: R$ "; //${localStorage.getItem("valorTotalGeral")}`;
-
-    if (localStorage.getItem("cupomDescontoValido") == "OK") {
-      // tem direito a usar o cupom...
-      if (cupomEntry == cupomStorage) {
-        percDesc = 0.9;
-        msg = "Total Reserva com desconto....: R$ ";
-      } else {
-        alert("Cupom inválido");
-        document.getElementById("inputDesconto").value = "";
-      }
-    } else {
-      // não pode mais usar o cupom...
-      alert("Este cupom já foi utilizado ou não é mais válido...");
-    }
-
-    let desconto = parseFloat(vlrTotalGeral[1].replace(".", "")) * percDesc;
-    console.log("VlrTotalDesconto", desconto);
-    localStorage.setItem("vlrTotalDesconto", `R$ ${desconto.toFixed(2)}`);
-    let msg2 = `${msg} ${desconto.toFixed(2)}`;
-    document.getElementById("totalDesconto").innerText = msg2;
-  });
-});
 </script>
 
 <style scoped>
@@ -248,15 +188,28 @@ window.$().ready(function () {
   color: black;
 }
 
-h3 {
-  font-size: 20px;
+h1 {
+  font-size: 50px;
   margin: 20px 0 0;
-  color: red;
+  color: rgb(51, 2, 246);
 }
 
 h2 {
-  font-size: 15px;
+  font-size: 30px;
   margin: 20px 0 0;
+  color: rgb(51, 2, 246);
+}
+
+h3 {
+  font-size: 25px;
+  margin: 20px 0 0;
+  color: rgb(51, 2, 246);
+}
+
+h4 {
+  font-size: 20px;
+  margin: 20px 0 0;
+  color: rgb(246, 2, 63);  
 }
 
 ul {
@@ -274,11 +227,11 @@ a {
 }
 
 p {
-  color: brown;
-  line-height: 10px;
+  color: rgb(6, 6, 6);
+  line-height: 15px;
   /* within paragraph */
   margin-bottom: 10px;
   /* between paragraphs */
-  font-size: 15px;
+  font-size: 20px;
 }
 </style>

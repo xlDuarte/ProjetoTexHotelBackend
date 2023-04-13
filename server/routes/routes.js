@@ -14,6 +14,7 @@ import {
 //import Serviços
 import {
   showServico,
+  showServicoAdm,
   showServicoById,
   createServico,
   deleteServico,
@@ -118,6 +119,9 @@ router.delete("/usuario/:id", deleteUsuario);
 // Servicos
 // rota para listar todos os servicos
 router.get("/servico", showServico);
+
+// rota para listar todos os servicos - adm
+router.get("/servicoAdm", showServicoAdm);
 
 // rota para listar um servico
 router.get("/servico/:id", showServicoById);
