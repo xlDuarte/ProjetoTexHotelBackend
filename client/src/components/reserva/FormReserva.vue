@@ -128,7 +128,7 @@ export default {
     });
 
     window.$().ready(function () {
-       window.$("#btnMinhasReservas").click(function () {
+      window.$("#btnMinhasReservas").click(function () {
         if (localStorage.getItem("loged") === null) {
           return true;
         }
@@ -288,6 +288,7 @@ export function checkInfo() {
     msgReturn = [false, "Datas de entrada e/ou saída inválidas"];
   }
 
+  // checar qtdade maxima de pessoas...qtMaxPessoas
   if (qtPessoas == 0) {
     msgReturn = [false, "Quantidade de pessoas inválido"];
   }

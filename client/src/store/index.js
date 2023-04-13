@@ -70,7 +70,7 @@ export default createStore({
         descricaoBreve:
           "Cama estilo queen-size com 05 funções de massagem, uma TV 4K de 50''com programação livre (NetFlix, Prime e canais abertos). Sala com sofá grande e uma poltrona de leitura, e uma TV de 45'', dispositivo Alexa, video-game (PS4 ou XBox) com jogos instalados. Mesa para notebook e cozinha funcional (mini-fogão elétrico, micro-ondas, cafeteira e utensílios básicos).",
         imgURL: require("/src/assets/images/reservas/room01_master.jpg"),
-        qtPessoas: 6,
+        qtPessoas: 4,
         vlrDiaria: 600,
       },
       {
