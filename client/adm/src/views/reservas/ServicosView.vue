@@ -71,6 +71,7 @@
         <th scope="col">Descrição</th>
         <th scope="col">Label</th>
         <th scope="col">Vlr Diaria</th>
+        <th scope="col">Status</th>
       </thead>
       <tbody>
         <tr scope="row" v-for="item in items" :key="item.idServicos">
@@ -79,6 +80,7 @@
           <td>{{ item.descricaoServico }}</td>
           <td>{{ item.labelServico }}</td>
           <td>{{ item.vlrDiariaServico }}</td>
+          <td>{{ item.status }}</td>
           <td>
             <div class="handleItem w-30 border px-3">
               <button @click="handleItem('editar', item.idServicos)" id="btnEditar"
@@ -127,6 +129,7 @@ export default {
       descricao: "",
       label: "",
       vlrDiaria: 0,
+      status: "",
       item: [],
       items: [],
       itemArrayServicos: 0,
@@ -141,7 +144,7 @@ export default {
     console.log(this.checkLogin())
   },
   created() {
-    this.getServicos();
+    this.getServicosAdm();
   },
   setup() {
     // setup...
@@ -170,9 +173,9 @@ export default {
       this.msg2 = msg2;
     },
     // Lista todos os servicos
-    async getServicos() {
+    async getServicosAdm() {
       try {
-        const response = await axios.get("http://localhost:5000/servico");
+        const response = await axios.get("http://localhost:5000/servicoAdm");
         this.items = response.data;
         // console.log("getServicos", this.items);
         return response.data;
@@ -207,6 +210,7 @@ export default {
           this.label,
           this.descricao,
           this.vlrDiaria,
+          this.status,
           this.itemArrayServicos,
           this.itemArrayEdit
         );

@@ -5,6 +5,22 @@ import db from "../config/database.js";
 export const getServico = (result) => {
   console.log("Executando getServico...");  
   db.query(
+    "SELECT * FROM hotelcnp.servicos WHERE status = 'ativo' ORDER BY idServicos ASC",
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results);
+      }
+    }
+  );
+};
+
+// lista todos os servicos - adm
+export const getServicoAdm = (result) => {
+  console.log("Executando getServico...");  
+  db.query(
     "SELECT * FROM hotelcnp.servicos ORDER BY idServicos ASC",
     (err, results) => {
       if (err) {
@@ -71,11 +87,14 @@ export const updateServicoById = (data, id, result) => {
   );
 };
 
-// deleta um servico no banco
+// atualiza um servico no banco
 export const deleteServicoById = (id, result) => {
+  console.log("Executando new delete...");
   db.query(
-    "DELETE FROM servicos WHERE idServicos = ?",
-    [id],
+    "UPDATE servicos SET status = 'desativado' WHERE idServicos = ?",
+    [
+      id,
+    ],
     (err, results) => {
       if (err) {
         console.log(err);
@@ -86,3 +105,19 @@ export const deleteServicoById = (id, result) => {
     }
   );
 };
+
+// // deleta um servico no banco
+// export const deleteServicoById = (id, result) => {
+//   db.query(
+//     "DELETE FROM servicos WHERE idServicos = ?",
+//     [id],
+//     (err, results) => {
+//       if (err) {
+//         console.log(err);
+//         result(err, null);
+//       } else {
+//         result(null, results);
+//       }
+//     }
+//   );
+// };
