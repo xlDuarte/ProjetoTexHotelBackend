@@ -29,7 +29,13 @@
       </div>
 
       <div class="shadow container bg-light rounded-3 p-4 mx-auto my-5 w-50">
-        <p class="msgAlerta" id="msgAlerta" v-bind:style="{ 'color': msgAlertaColor }">{{ msgAlerta }}</p>
+        <p
+          class="msgAlerta"
+          id="msgAlerta"
+          v-bind:style="{ color: msgAlertaColor }"
+        >
+          {{ msgAlerta }}
+        </p>
         <hr />
         <form class="formReservas" action="" @submit.prevent>
           <div class="container">
@@ -432,7 +438,6 @@ import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
 
 import { mapState } from "vuex";
 
-
 export default {
   name: "ReservasView.view",
   components: {
@@ -440,7 +445,6 @@ export default {
     ModalServicos2,
     ModalResumo2,
     ModalUsuarios,
-
   },
   data() {
     // data
@@ -500,7 +504,7 @@ export default {
       showModalResumo: false,
       showGerarCupomButton: false,
       servicosSelection: false,
-      listClientes:"",
+      listClientes: "",
     };
   },
 
@@ -519,7 +523,6 @@ export default {
   },
 
   methods: {
-
     checkLogin() {
       if (localStorage.getItem("loginStatus")) {
         if (localStorage.getItem("loginStatus") == "admin") return true;
@@ -573,7 +576,9 @@ export default {
     // carrega lista de usuarios clientes
     async getUsersCliente() {
       try {
-        const response = await axios.get("http://localhost:5000/usuario/cliente");
+        const response = await axios.get(
+          "http://localhost:5000/usuario/cliente"
+        );
         console.log("getUsersCliente", response);
         this.listClientes = response.data;
         return response;
@@ -606,7 +611,7 @@ export default {
 
     // Lista todas as reservas - ok!
     async getReservas() {
-      console.log("ReservasView...getReservas()")
+      console.log("ReservasView...getReservas()");
       try {
         const response = await axios.get("http://localhost:5000/reserva");
         this.items = response.data;
@@ -683,24 +688,6 @@ export default {
       }
     },
 
-    // carrega lista de usuarios clientes
-    // async getBosta() {
-    //   try {
-    //     const response = await axios.get(`http://localhost:5000/servicoReserva/${this.idReservas}`);
-    //     console.log("getBosta", this.idReservas,response.data);
-    //     // this.arrayServicosReserva = response.data;
-    //     return response.data;
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },
-
-    // getServicosByReservaId(idReservas) {
-    //   console.log("ReservasView...getServicosByReservaId()")
-    //   console.log("Etapa 3 - checar servicos pela reserva");
-    //   return axios.get(`http://localhost:5000/servicoReserva/${idReservas}`);
-    // },
-
     handleClick(action) {
       if (action == "salvar") {
         console.log("Etapa 1 - click Cadastrar");
@@ -729,29 +716,16 @@ export default {
           return false;
         }
 
-        // this.getServicosByReservaId(this.idReservas)
-        //   .then((response) => {
-        //     //console.log("teste", response.data[0]);
-        //     this.arrayServicosBD = response.data;
-        //     console.log("Etapa 3.1 - arrayServicosBD",this.arrayServicosBD.length,this.arrayServicosBD)
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //     // Handle error here
-        //   });
+        if (this.itemArrayEdit == true) {
+          this.arrayServicos = this.arrayServicosBD;
+          console.log("Etapa 3.1 - this.arrayServicos de arrayServicosBD",this.arrayServicos);
+        } else {
+          this.arrayServicos = this.Servicos2.data;
+          console.log("Etapa 3.1 - this.arrayServicos de Servicos2.data",this.arrayServicos);
+        }
 
-        //this.arrayServicosBD = this.getBosta();
-        //console.log("Etapa 3.1 - arrayServicosBD",this.arrayServicosBD.length,this.arrayServicosBD);
 
-        // verifica se existiam registros de servicos por reserva, caso não existam inicializa arrayServicosBD com serviços da table
-        // if (this.arrayServicosBD.length == 0) {
-        //   this.arrayServicosBD = this.Servicos2;
-        //   console.log("Etapa 3.2 - arrayServicosBD",this.arrayServicosBD.length,this.Servicos2);
 
-        // }
-        this.arrayServicos = this.Servicos2.data;
-        console.log("Etapa 3.1 - this.arrayServicos",this.arrayServicos.length,this.Servicos2);
-        
         // console.log("Etapa 3.2 - arrayServicosBD",this.arrayServicosBD);
         let reserva = new Reservas();
 
@@ -787,7 +761,6 @@ export default {
         this.getReservas();
         console.log("Etapa 4 - limpar a localStorage");
         localStorage.removeItem("servicosEscolhidos");
-
       }
 
       if (action == "excluir") {
@@ -824,7 +797,7 @@ export default {
         this.arrayServicosBD = this.ServicosReserva;
         this.idReservasModalResumo = this.idReservas;
         this.itemReservaModalResumo = this.item;
-        console.log("Resumo",this.itemReservaModalResumo)
+        console.log("Resumo", this.itemReservaModalResumo);
         this.servicosSelection = true;
         this.msgModalResumo = "Sem mensagens no momento.";
         // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` });
@@ -944,7 +917,7 @@ export default {
         this.showModalResumo = true;
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
         this.arrayServicosBD = this.ServicosReserva;
-        // console.log("handleItem edit...",this.arrayServicosBD);
+        console.log("handleItem edit...", this.arrayServicosBD);
         // checar controle  aqui
         this.showGerarCupomButton = true;
         // checar controle  aqui
@@ -1000,7 +973,6 @@ export default {
       document.body.style.background = color;
       return true;
     },
-
   },
   mounted() {
     // funções mounted...
@@ -1131,6 +1103,4 @@ export function checkInfo(
   border-radius: 50px;
   padding: 5px;
 }
-
 </style>
-

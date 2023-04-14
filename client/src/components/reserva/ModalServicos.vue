@@ -97,7 +97,6 @@ export default {
         let servId = `idServicos_${arrayServicos.data[i].idServicos}`;
         // trata campo isSelected boolean como string para equalizar com BD
         let strIsSelected = "";
-        console.log("arrayServicos.data[i].isSelected...",arrayServicos.data[i].isSelected);
         if (arrayServicos.data[i].isSelected === true) {
             strIsSelected = "true"
         } else {

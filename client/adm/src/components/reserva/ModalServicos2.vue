@@ -161,7 +161,13 @@ export default {
         if (typeof servId === "undefined") {
           servId = arrayServicos.data[i].idServicos;
         }
-        let servData = `"idServicos":"${servId}","nomeServico":"${arrayServicos.data[i].nomeServico}","descricaoServico":"${arrayServicos.data[i].descricaoServico}","vlrDiariaServico":${arrayServicos.data[i].vlrDiariaServico},"isSelected":${arrayServicos.data[i].isSelected}`;
+        let strIsSelected = "";
+        if (arrayServicos.data[i].isSelected === "true") {
+            strIsSelected = "true"
+        } else {
+           strIsSelected = "false"
+        }
+        let servData = `"idServicos":"${servId}","nomeServico":"${arrayServicos.data[i].nomeServico}","descricaoServico":"${arrayServicos.data[i].descricaoServico}","vlrDiariaServico":${arrayServicos.data[i].vlrDiariaServico},"isSelected":"${strIsSelected}"`;
         console.log("confirmaServicos...:", servId, servData);
         let itemLocal = "{" + servData + "}";
         // só deveria gravar os selecionados, porém para facilitar esta gravando todos

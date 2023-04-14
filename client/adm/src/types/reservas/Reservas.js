@@ -66,7 +66,7 @@ export class Reservas {
     arrayServicosBD,
     arrayServicos
   ) {
-    // campos input - form
+    // campos input e de controle
     this.idReservas = idReservas;
     this.dataReserva = inputDataReserva;
     this.dataEntradaReserva = inputDataEntradaReserva;
@@ -91,9 +91,13 @@ export class Reservas {
     this.itemArrayEdit = itemArrayEdit;
     this.arrayServicosBD = arrayServicosBD;
     this.arrayServicos = arrayServicos;
-    this.servicosEscolhidos = JSON.parse(
-      localStorage.getItem("servicosEscolhidos")
-    );
+    if (localStorage.getItem("servicosEscolhidos") !== null) {
+      this.servicosEscolhidos = JSON.parse(localStorage.getItem("servicosEscolhidos"));
+      console.log("cARAALHO ENTREI AQUI localStorage", this.servicosEscolhidos);
+    } else {
+      this.servicosEscolhidos = this.arrayServicos.data;
+      console.log("cARAALHO ENTREI AQUI arrayServicos", this.servicosEscolhidos);      
+    }
 
     console.log("Etapa 4 - calculando...");
     // verifica campos calculados - valorReserva, qtdade diarias, etc
@@ -111,31 +115,17 @@ export class Reservas {
       parseFloat(this.qtdHospedesReserva) *
       parseFloat(this.acomodacaoVlrDiaria);
     let vlrServicos = 0;
-    // vlrDiarias = this.acomodacaoVlrDiaria * this.qtDiarias * this.qtdHospedesReserva;
-    // this.servicosEscolhidos = this.arrayServicosBD;
-
-    // console.log(
-    //   "comparando arrays....",
-    //   this.servicosEscolhidos,
-    //   this.arrayServicosBD
-    // );
     if (this.servicosEscolhidos && Array.isArray(this.servicosEscolhidos)) {
-      // console.log(
-      //   "Teste Array !!!!! array com servicos existe e é um array",
-      //   this.servicosEscolhidos.length,
-      //   this.servicosEscolhidos[0].idServicos
-      // );
+      console.log(
+        "Teste Array !!!!! array com servicos existe e é um array",
+        this.servicosEscolhidos.length,
+        this.servicosEscolhidos[0].idServicos
+      );
       for (let i = 0; i < this.servicosEscolhidos.length; i++) {
-        if (this.servicosEscolhidos[i].isSelected) {
+        if (this.servicosEscolhidos[i].isSelected === "true") {
           vlrServicos =
             vlrServicos +
             this.servicosEscolhidos[i].vlrDiariaServico * this.qtDiarias;
-          // console.log(
-          //   "Somando serviços...",
-          //   this.servicosEscolhidos[i].idServicos,
-          //   this.servicosEscolhidos[i].isSelected,
-          //   vlrServicos
-          // );
         }
       }
     }

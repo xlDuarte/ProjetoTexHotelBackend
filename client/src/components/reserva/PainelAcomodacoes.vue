@@ -13,7 +13,7 @@
         <label for="suiteMaster">
           <h2>{{ item.nome }}</h2>
         </label>
-        <p>{{ item.descricaoBreve }}</p>
+        <p>{{ item.descricaoBreve }}</p><span><h5>Ocupação: {{ item.qtPessoas}}</h5></span>
         <h3>R$ {{ item.vlrDiaria }}</h3>
       </div>
       <div>
