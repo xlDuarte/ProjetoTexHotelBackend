@@ -21,46 +21,7 @@ export default createStore({
     ReservasUsuario
   },
   state: {
-    // dados para servicos - exemplo hardcode...
-    // servicos: [
-    //   {
-    //     id: "servico1",
-    //     nome: "servico1",
-    //     label: "cafeQuarto",
-    //     descricao: "Cafe da Manhã no Quarto",
-    //     vlrDiaria: 100,
-    //   },
-    //   {
-    //     id: "servico2",
-    //     nome: "servico2",
-    //     label: "5G",
-    //     descricao: "Internet 5G",
-    //     vlrDiaria: 50,
-    //   },
-    //   {
-    //     id: "servico3",
-    //     nome: "servico3",
-    //     label: "massagem",
-    //     descricao: "Massagem Terapéutica",
-    //     vlrDiaria: 150,
-    //   },
-    //   {
-    //     id: "servico4",
-    //     nome: "servico4",
-    //     label: "children",
-    //     descricao: "Serviços ChildrenCare",
-    //     vlrDiaria: 200,
-    //   },
-    //   {
-    //     id: "servico5",
-    //     nome: "servico5",
-    //     label: "pet",
-    //     descricao: "Serviços PetCare",
-    //     vlrDiaria: 100,
-    //   },
-    // ],
-
-    // dados para acomodações
+    // dados para acomodações - converter para BD assim que possível...
     acomodacoes: [
       {
         ordem: 1,

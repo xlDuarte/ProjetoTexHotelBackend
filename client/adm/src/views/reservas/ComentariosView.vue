@@ -227,29 +227,16 @@ export default {
     //   this.itemArrayEdit = false;
     //   return true;
     // },
-    // handleItem(action, idServico) {
-    //   console.log("Entrei no handleItem");
-    //   // let storageServico = new StorageServico(document.querySelector("form"));
-    //   if (action == "editar") {
-    //     this.name = "Cliquei HandleItem edit";
-    //     // atualiza campos do formulário
-    //     this.getServicosById(idServico);
-    //     this.itemArrayEdit = true;
-    //     this.showSalvarButton = true;
-    //     this.showCancelarButton = true;
-    //     this.showExcluirButton = false;
-    //   }
-    //   if (action == "excluir") {
-    //     this.name = "Cliquei HandleItem excluir";
-    //     // atualiza campos do formulário
-    //     this.getServicosById(idServico);
-    //     this.itemArrayEdit = false;
-    //     this.showSalvarButton = false;
-    //     this.showCancelarButton = true;
-    //     this.showExcluirButton = true;
-    //   }
-    //   this.msg2 = `idServico ${idServico}`;
-    // },
+    handleItem(action) {
+      console.log("Entrei no handleItem");
+      // let storageServico = new StorageServico(document.querySelector("form"));
+      if (action == "editar") {
+        alert("Funcionalidade em desenvolvimento - Release 2");
+      }
+      if (action == "excluir") {
+        alert("Funcionalidade em desenvolvimento - Release 2");
+      }
+    },
   },
   computed: {
     // incluir funções...

@@ -53,7 +53,6 @@
 </template>
 
 <script>
-// import { json } from "body-parser";
 
 var jQuery = require("jquery");
 window.jQuery = jQuery;
@@ -267,12 +266,6 @@ export function checkInfo() {
   qtPessoas = localStorage.getItem("qtPessoas");
   tipoApto = localStorage.getItem("tipoapto");
 
-  // if (localStorage.getItem("loginStatus") != "cliente") {
-  //   alert("Você precisa estar logado para concluir a reserva!");
-  //   msgReturn = [false, "Você precisa estar logado para concluir a reserva!"];
-  //   return msgReturn;
-  // }
-
   if (checkData(dtEntrada) || checkData(dtSaida)) {
     msgReturn = [false, "Datas de entrada e/ou saída inválidas"];
   }
@@ -289,9 +282,16 @@ export function checkInfo() {
   }
 
   // checar qtdade maxima de pessoas...qtMaxPessoas
+  const qtMaxPessoas = parseInt(localStorage.getItem("qtMaxPessoas"));
+
   if (qtPessoas == 0) {
-    msgReturn = [false, "Quantidade de pessoas inválido"];
+    msgReturn = [false, "Quantidade de pessoas inválida"];
+  } else { if (qtPessoas > qtMaxPessoas) {
+      msgReturn = [false, "Quantidade de pessoas maior que a capacidade da acomodação"];
+    }
   }
+  
+  console.log("Tipo apto...",qtPessoas,qtMaxPessoas,((qtPessoas === 0) || (qtPessoas > qtMaxPessoas)),msgReturn);
 
   if (tipoApto == "") {
     msgReturn = [false, "Tipo de apartamento não selecionado"];
@@ -315,17 +315,32 @@ export function confirmaReserva() {
     dadosOk,
     qtdDiarias,
     vlrDiaria,
+    qtMaxPessoas,
     valorTotalDiarias,
     msgRetorno;
 
   // define dados dos quartos... REVER - TEM QUE VIR DO BANCO!!!!
   const dadosQuartos = [
-    { tipo: "master", diaria: 600, ocupacao: 6 },
-    { tipo: "family", diaria: 400, ocupacao: 4 },
-    { tipo: "comfort", diaria: 200, ocupacao: 1 },
+    { tipo: "master", diaria: 600, ocupacao: 4 },
+    { tipo: "family", diaria: 400, ocupacao: 6 },
+    { tipo: "comfort", diaria: 200, ocupacao: 2 },
   ];
 
+  // obter dados do array de aptos...REVER - TEM QUE VIR DO BANCO!!!!
+  qtMaxPessoas = 0;
+  vlrDiaria = 0;
+  dadosQuartos.some(function (entry) {
+    if (entry.tipo == localStorage.getItem("tipoApto")) {
+      qtMaxPessoas = entry.ocupacao;
+      vlrDiaria = entry.diaria;
+    }
+  });
+  
+  localStorage.setItem("valorDiaria", vlrDiaria);
+  localStorage.setItem("qtMaxPessoas", qtMaxPessoas);
+
   validadorDados = checkInfo();
+
   dadosOk = validadorDados[0];
   msgRetorno = validadorDados[1];
 
@@ -341,21 +356,21 @@ export function confirmaReserva() {
   atualizaLocalStorage();
 
   qtdDiarias = localStorage.getItem("difDates"); // recupera diferença dos dias da localStorage
-  vlrDiaria = 0;
 
   //obter vlrDiaria do array de aptos...REVER - TEM QUE VIR DO BANCO!!!!
-  dadosQuartos.some(function (entry) {
-    if (entry.tipo == localStorage.getItem("tipoApto")) {
-      vlrDiaria = entry.diaria;
-    }
-  });
-  localStorage.setItem("valorDiaria", vlrDiaria);
+  // dadosQuartos.some(function (entry) {
+  //   if (entry.tipo == localStorage.getItem("tipoApto")) {
+  //     vlrDiaria = entry.diaria;
+  //   }
+  // });
+  // localStorage.setItem("valorDiaria", vlrDiaria);
 
   valorTotalDiarias =
     qtdDiarias * vlrDiaria * localStorage.getItem("qtPessoas");
   localStorage.setItem("valorTotalDiarias", valorTotalDiarias);
 
   return true;
+
 }
 
 export function gravaReserva() {
