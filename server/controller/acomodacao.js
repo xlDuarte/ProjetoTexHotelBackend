@@ -32,7 +32,12 @@ export const showAcomodacaoById = (req, res) => {
 // cria um novo Acomodacao
 export const createAcomodacao = (req, res) => {
   const data = req.body;
-  insertAcomodacao(data, (err, results) => {
+  insertAcomodacao([
+    data.nomeAcomodacao,
+    data.valorAcomodacao,
+    data.descricaoAcomodacao,
+    data.tipoAcomodacao,
+  ], (err, results) => {
     if (err) {
       res.send(err);
     } else {
@@ -45,7 +50,13 @@ export const createAcomodacao = (req, res) => {
 export const updateAcomodacao = (req, res) => {
   const data = req.body;
   const id = req.params.id;
-  updateAcomodacaoById(data, id, (err, results) => {
+  updateAcomodacaoById([
+    data.nomeAcomodacao,
+    data.valorAcomodacao,
+    data.descricaoAcomodacao,
+    data.tipoAcomodacao,
+    id
+  ], (err, results) => {
     if (err) {
       res.send(err);
     } else {

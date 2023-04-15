@@ -3,6 +3,9 @@
   <div>
     <ModalSenha />
     <header class="header">
+      <div class="logo">
+        <img src="@/components/header/images/logo_hotel.png" alt="">
+      </div>
       <nav>
         <div class="navigation-drop">
           <input class="dropbtn" type="checkbox" id="Menu" />
@@ -30,6 +33,7 @@
                 <input class="box1 pswd" type="password" name="password" id="passworddrop" v-model="pswd"
                   autocomplete="on" />
               </div>
+              
               <div>
                 <input class="btnLogin" @click="validate" type="button" value="OK" id="btnLogindrop" />
                 <br>
@@ -38,7 +42,8 @@
                 <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>
               </div>
             </form>
-            <div class="logedin" v-show="showLogOut">
+            
+            <div class="logedindrop" v-show="showLogOut">
               <div>
                 <p id="userdrop"></p>
                 <div>
@@ -71,13 +76,13 @@
           <input class="box1 login" type="email" name="login" id="login" v-model="login" autocomplete="on" />
           <label for="password"><strong>SENHA</strong></label>
           <input class="box1 pswd" type="password" name="password" id="password" v-model="pswd" autocomplete="on" />
-        </div>
-        <div>
           <input class="btnLogin" @click="validate" type="button" value="OK" id="btnLogin" />
+        </div>
+        <div>          
           <a href=""><router-link to="/Cadastro">Cadastre-se!</router-link></a>
           <a class="" data-bs-toggle="modal" href="#modalSenhaToggle" role="button">Esqueceu sua senha?</a>
         </div>
-      </form>
+      </form>      
       <div class="logedin" v-show="showLogOut">
         <div>
           <p id="user"></p>
@@ -87,9 +92,7 @@
         </div>
       </div>
     </header>
-    <div class="banner ">
-      <img alt="" src="@/assets/BANNER-CASANAPRAIA.png">
-    </div>
+    
   </div>
 </template>
 
@@ -280,14 +283,25 @@ a {
 
 .header {
   width: 100%;
-  position: absolute;
-  background: transparent;
+  position: relative;
+  background: #FC7138;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: center;
-  padding: 20px;
+  align-items: center;  
   z-index: 9999;
+}
+
+.logo{
+  margin:  5px;
+  width: 130px;
+  height: 120px;
+  box-shadow: 10px #FC7138;
+}
+
+.logo > img{
+  width: 100%;
+  height: 100%;
 }
 
 .menu {
@@ -375,22 +389,21 @@ a {
   display: none;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 768px) {
 
   .navigation,
   .campologin,
-  .loged,
+  .logedin,
   .banner {
     display: none;
   }
 
   .header {
     position: inherit;
-    background-image: url(@/assets/footerborder.png);
+    background: #FC7138;
     display: flex;
-    height: 80px;
-    justify-content: left;
-    align-items: center;
+    height: 140px;
+    justify-content: space-around;
     padding: 10px;
     z-index: 9998;
   }
@@ -471,11 +484,11 @@ a {
 }
 
 
-@media (max-width: 980px) and (orientation: portrait) {
+@media (max-width:768px){
 
   .navigation,
   .campologin,
-  .loged {
+  .logedin {
     display: none;
   }
 

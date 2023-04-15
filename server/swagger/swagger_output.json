@@ -1,18 +1,66 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "API Hotel Casa na Praia",
+    "description": "Este Projeto foi desenvolvida como projeto final para o curso Fullstack Javascript Developer(Turma Agosto/2022) da escola de tecnologia T.EX Technology Experts. Descubra mais sobre a T.EX em [https://texperts.com.br/sobre-nos/]().\n\nAPI para gestão de hoteis desenvolvida com:\nNode.js [https://nodejs.org/en/about]() \nExpress [https://expressjs.com/pt-br/]() \nbcrypt [https://www.npmjs.com/package/bcrypt]() \nmysql [https://dev.mysql.com/doc/]()\nmongodb [https://www.mongodb.com/docs/guides/]()\nmongoose [https://mongoosejs.com/docs/guide.html]() \nnodemailer [https://nodemailer.com/about/]() \nrand-token [https://www.npmjs.com/package/rand-token]()\ndocumentada com OpenAPI(antigo Swagger) [https://swagger.io]().",
+    "contact": {
+      "email": "andersonlimam.al@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "GitHub do projeto",
+    "url": "https://github.com/xlDuarte/ProjetoTexHotelBackend"
   },
   "host": "localhost:5000",
   "basePath": "/",
   "schemes": [
     "http"
   ],
+  "tags": [
+    {
+      "name": "Autenticação",
+      "description": "Controle de autenticação, cadastro de usuarios e reset de senha",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Usuario",
+      "description": "Gestão de usuarios",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Acomodação",
+      "description": "Controle de acomodações do hotel"
+    },
+    {
+      "name": "Serviço",
+      "description": "Controle de serviços do hotel"
+    },
+    {
+      "name": "Reserva",
+      "description": "Controle de Reservas do hotel"
+    },
+    {
+      "name": "Consumo",
+      "description": "Controle de consumo dos clientes"
+    },
+    {
+      "name": "Comentarios",
+      "description": "Controle de comentarios dos clientes"
+    }
+  ],
   "paths": {
     "/login": {
       "post": {
+        "tags": [
+          "Autenticação"
+        ],
         "description": "",
         "parameters": [
           {
@@ -46,6 +94,9 @@
     },
     "/logout": {
       "get": {
+        "tags": [
+          "Autenticação"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -57,6 +108,9 @@
     },
     "/register": {
       "post": {
+        "tags": [
+          "Autenticação"
+        ],
         "description": "",
         "parameters": [
           {
@@ -105,6 +159,9 @@
     },
     "/get-user": {
       "get": {
+        "tags": [
+          "Autenticação"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -122,13 +179,16 @@
     },
     "/resetpwd-email": {
       "post": {
+        "tags": [
+          "Autenticação"
+        ],
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
+              "type": "string",
               "properties": {
                 "emailUsuario": {
                   "example": "any"
@@ -137,11 +197,27 @@
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/resetpwd/{token}": {
       "post": {
+        "tags": [
+          "Autenticação"
+        ],
         "description": "",
         "parameters": [
           {
@@ -163,11 +239,41 @@
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/usuario": {
       "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/usuario/cliente": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -179,6 +285,9 @@
     },
     "/usuario/{id}": {
       "get": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -195,6 +304,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -202,6 +314,36 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nomeUsuario": {
+                  "example": "any"
+                },
+                "emailUsuario": {
+                  "example": "any"
+                },
+                "cpfUsuario": {
+                  "example": "any"
+                },
+                "endUsuario": {
+                  "example": "any"
+                },
+                "senhaUsuario": {
+                  "example": "any"
+                },
+                "tipoUsuario": {
+                  "example": "any"
+                },
+                "telefoneUsuario": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -211,6 +353,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -229,6 +374,9 @@
     },
     "/servico": {
       "get": {
+        "tags": [
+          "Serviço"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -238,6 +386,45 @@
         }
       },
       "post": {
+        "tags": [
+          "Serviço"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nomeServico": {
+                  "example": "any"
+                },
+                "vlrDiariaServico": {
+                  "example": "any"
+                },
+                "descricaoServico": {
+                  "example": "any"
+                },
+                "labelServico": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/servicoAdm": {
+      "get": {
+        "tags": [
+          "Serviço"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -249,6 +436,9 @@
     },
     "/servico/{id}": {
       "get": {
+        "tags": [
+          "Serviço"
+        ],
         "description": "",
         "parameters": [
           {
@@ -265,6 +455,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Serviço"
+        ],
         "description": "",
         "parameters": [
           {
@@ -272,6 +465,30 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nomeServico": {
+                  "example": "any"
+                },
+                "vlrDiariaServico": {
+                  "example": "any"
+                },
+                "descricaoServico": {
+                  "example": "any"
+                },
+                "labelServico": {
+                  "example": "any"
+                },
+                "statusServico": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -281,94 +498,9 @@
         }
       },
       "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+        "tags": [
+          "Serviço"
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/servicoReserva": {
-      "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/servicoReserva/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/servicoReservaSelected/{id}": {
-      "put": {
         "description": "",
         "parameters": [
           {
@@ -387,6 +519,9 @@
     },
     "/Consumo": {
       "get": {
+        "tags": [
+          "Consumo"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -396,8 +531,36 @@
         }
       },
       "post": {
+        "tags": [
+          "Consumo"
+        ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "dataConsumo": {
+                  "example": "any"
+                },
+                "Reservas_idReservas": {
+                  "example": "any"
+                },
+                "qtdConsumo": {
+                  "example": "any"
+                },
+                "produtos_idprodutos": {
+                  "example": "any"
+                },
+                "localConsumo_idLocalConsumo": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -407,6 +570,9 @@
     },
     "/Consumo/{id}": {
       "get": {
+        "tags": [
+          "Consumo"
+        ],
         "description": "",
         "parameters": [
           {
@@ -423,6 +589,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Consumo"
+        ],
         "description": "",
         "parameters": [
           {
@@ -439,6 +608,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Consumo"
+        ],
         "description": "",
         "parameters": [
           {
@@ -457,42 +629,9 @@
     },
     "/localConsumo/{id}": {
       "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+        "tags": [
+          "Consumo"
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/produto/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/valorProduto/{id}": {
-      "get": {
         "description": "",
         "parameters": [
           {
@@ -511,6 +650,9 @@
     },
     "/reserva": {
       "get": {
+        "tags": [
+          "Reserva"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -520,8 +662,57 @@
         }
       },
       "post": {
+        "tags": [
+          "Reserva"
+        ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "dataReserva": {
+                  "example": "2023-01-01"
+                },
+                "dataEntradaReserva": {
+                  "example": "2023-01-01"
+                },
+                "dataSaidaReserva": {
+                  "example": "2023-01-01"
+                },
+                "valorReserva": {
+                  "example": "1500.00"
+                },
+                "usuario_idUsuario": {
+                  "example": "1"
+                },
+                "acomodacoes_idAcomodacao": {
+                  "example": "6"
+                },
+                "qtdHospedesReserva": {
+                  "example": "1"
+                },
+                "statusReserva": {
+                  "example": "Registrada"
+                },
+                "qtDiarias": {
+                  "example": "1"
+                },
+                "acomodacaoTipo": {
+                  "example": "Recanto das Cegonhas"
+                },
+                "acomodacaoVlrDiaria": {
+                  "example": "800"
+                },
+                "acomodacaoQtMaxPessoas": {
+                  "example": "1"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -531,6 +722,9 @@
     },
     "/reserva/{id}": {
       "get": {
+        "tags": [
+          "Reserva"
+        ],
         "description": "",
         "parameters": [
           {
@@ -547,6 +741,79 @@
         }
       },
       "put": {
+        "tags": [
+          "Reserva"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "dataReserva": {
+                  "example": "2023-01-01"
+                },
+                "dataEntradaReserva": {
+                  "example": "2023-01-01"
+                },
+                "dataSaidaReserva": {
+                  "example": "2023-01-01"
+                },
+                "valorReserva": {
+                  "example": "1500.00"
+                },
+                "usuario_idUsuario": {
+                  "example": "1"
+                },
+                "acomodacoes_idAcomodacao": {
+                  "example": "6"
+                },
+                "qtdHospedesReserva": {
+                  "example": "1"
+                },
+                "statusReserva": {
+                  "example": "Registrada"
+                },
+                "qtDiarias": {
+                  "example": "1"
+                },
+                "acomodacaoTipo": {
+                  "example": "Recanto das Cegonhas"
+                },
+                "acomodacaoVlrDiaria": {
+                  "example": "800"
+                },
+                "motivoCancelamento": {
+                  "example": ""
+                },
+                "dataCancelamento": {
+                  "example": ""
+                },
+                "acomodacaoQtMaxPessoas": {
+                  "example": "1"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reserva"
+        ],
         "description": "",
         "parameters": [
           {
@@ -561,8 +828,13 @@
             "description": "OK"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/reservaUsuario/{id}": {
+      "get": {
+        "tags": [
+          "Reserva"
+        ],
         "description": "",
         "parameters": [
           {
@@ -581,6 +853,9 @@
     },
     "/reserva/ultima": {
       "post": {
+        "tags": [
+          "Reserva"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -592,6 +867,9 @@
     },
     "/acomodacao": {
       "get": {
+        "tags": [
+          "Acomodação"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -601,8 +879,36 @@
         }
       },
       "post": {
+        "tags": [
+          "Acomodação"
+        ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nomeAcomodacao": {
+                  "example": "any"
+                },
+                "valorAcomodacao": {
+                  "example": "any"
+                },
+                "descricaoAcomodacao": {
+                  "example": "any"
+                },
+                "tipoAcomodacao": {
+                  "example": "any"
+                },
+                "numeroAcomodacao": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -612,6 +918,9 @@
     },
     "/acomodacao/{id}": {
       "get": {
+        "tags": [
+          "Acomodação"
+        ],
         "description": "",
         "parameters": [
           {
@@ -628,6 +937,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Acomodação"
+        ],
         "description": "",
         "parameters": [
           {
@@ -635,6 +947,30 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nomeAcomodacao": {
+                  "example": "any"
+                },
+                "valorAcomodacao": {
+                  "example": "any"
+                },
+                "descricaoAcomodacao": {
+                  "example": "any"
+                },
+                "tipoAcomodacao": {
+                  "example": "any"
+                },
+                "numeroAcomodacao": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -644,6 +980,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Acomodação"
+        ],
         "description": "",
         "parameters": [
           {
@@ -662,6 +1001,9 @@
     },
     "/comentarios": {
       "get": {
+        "tags": [
+          "Comentarios"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -676,6 +1018,9 @@
     },
     "/novoComentario": {
       "post": {
+        "tags": [
+          "Comentarios"
+        ],
         "description": "",
         "parameters": [
           {
@@ -688,6 +1033,30 @@
                   "example": "any"
                 },
                 "comentario": {
+                  "example": "any"
+                },
+                "contatoComentario": {
+                  "example": "any"
+                },
+                "idReserva": {
+                  "example": "any"
+                },
+                "idUsuario": {
+                  "example": "any"
+                },
+                "nota": {
+                  "example": "any"
+                },
+                "dataComentario": {
+                  "example": "any"
+                },
+                "statusComentario": {
+                  "example": "any"
+                },
+                "publicarDe": {
+                  "example": "any"
+                },
+                "publicarAte": {
                   "example": "any"
                 }
               }
