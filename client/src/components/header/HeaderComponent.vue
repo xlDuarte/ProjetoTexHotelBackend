@@ -9,7 +9,7 @@
       <nav>
         <div class="navigation-drop">
           <input class="dropbtn" type="checkbox" id="Menu" />
-          <label class="navigation-drop-btn" for="Menu">Menu</label>
+          <label class="navigation-drop-btn" for="Menu"><font-awesome-icon :icon="faBars" size="2x" /></label>
           <div class="navigation-drop-content">
             <div class="pub menu" v-show="visivel">
               <div><router-link to="/">Home</router-link></div>
@@ -99,11 +99,16 @@
 <script>
 import axios from "axios"
 import ModalSenha from '../home/ModalSenha';
+import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+
 
 export default {
   name: "HeaderComponent",
   components: {
-    ModalSenha
+    ModalSenha,
+    FontAwesomeIcon
   },
 
   data() {
@@ -116,9 +121,11 @@ export default {
       visivel: true,
       invisivel: false,
       showLogin: true,
-      showLogOut: false
+      showLogOut: false,
+      faBars
     };
   },
+  
   methods: {
     async validate() {
       if (this.login != "" && this.pswd != "") {
@@ -284,7 +291,8 @@ a {
 .header {
   width: 100%;
   position: relative;
-  background: #FC7138;
+  background-image: url('./images/background.jpg');
+  /*background: #FC7138;*/
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -294,8 +302,8 @@ a {
 
 .logo{
   margin:  5px;
-  width: 130px;
-  height: 120px;
+  width: 150px;
+  height: 110px;
   box-shadow: 10px #FC7138;
 }
 
@@ -400,7 +408,7 @@ a {
 
   .header {
     position: inherit;
-    background: #FC7138;
+    background-image: url('./images/background.jpg');
     display: flex;
     height: 140px;
     justify-content: space-around;
@@ -564,6 +572,10 @@ a {
 
   .navigation-drop .menu {
     display: block;
+  }
+  .logo {
+    position: relative;
+    left: 0px; /* Ajuste o valor conforme necessário */
   }
 }
 </style>
