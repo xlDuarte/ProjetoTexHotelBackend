@@ -29,10 +29,10 @@
               </div>
               <div class="d-flex justify-content-center">
                 <div class="col-sm-6 mb-2">
-                  <button class="btn btn-success btn-block mt-3" @click="updateAcomodacao">UPDATE</button>
+                  <button class="button mt-4" @click="updateAcomodacao">UPDATE</button>
                 </div>
                 <div class="col-sm-6 mb-2">
-                  <button class="btn btn-secondary btn-block mt-3" @click="returnPage">VOLTAR</button>
+                  <button class="button mt-4" @click="returnPage">VOLTAR</button>
                 </div>
               </div>
             

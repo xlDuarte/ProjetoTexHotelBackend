@@ -30,8 +30,8 @@
           </div>
         </div>
         <div class="d-flex justify-content-center">
-          <button class="btn btn-success mt-4 me-3" @click="updateConsumo">UPDATE</button>
-          <button class="btn mt-4" @click="returnPage">VOLTAR</button>
+          <button class="button mt-4" @click="updateConsumo">UPDATE</button>
+          <button class="button mt-4" @click="returnPage">VOLTAR</button>
         </div>
       </div>
     </div>
