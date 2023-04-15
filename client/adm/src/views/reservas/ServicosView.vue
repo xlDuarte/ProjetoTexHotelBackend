@@ -39,15 +39,15 @@
 
           <div class="col-12 d-flex justify-content-center mt-4">
             <div class="formServicosButtons">
-              <button v-if="showSalvarButton" @click="handleClick('salvar')" class="btn btn-primary mx-2">
+              <button v-if="showSalvarButton" @click="handleClick('salvar')" class="button mt-4">
                 Cadastrar
               </button>
               <button v-if="showExcluirButton" @click="handleClick('excluir')" id="btnExcluir"
-                class="btn btn-danger mx-2 fw-bold text-uppercase text-red" type="button">
+                class="button mt-4" type="button">
                 Excluir
               </button>
               <button v-if="showCancelarButton" @click="handleClick('cancelar')" id="btnCancelar"
-                class="btn btn-warning mx-2 fw-bold text-uppercase text-white" type="button">
+                class="button mt-4" type="button">
                 Cancelar
               </button>
             </div>
@@ -84,11 +84,11 @@
           <td>
             <div class="handleItem w-30 border px-3">
               <button @click="handleItem('editar', item.idServicos)" id="btnEditar"
-                class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
+                class="button mt-4" type="button">
                 Editar
               </button>
               <button @click="handleItem('excluir', item.idServicos)" id="btnEditar"
-                class="btn btn-warning my-3 fw-bold text-uppercase text-white" type="button">
+                class="button mt-4" type="button">
                 Excluir
               </button>
             </div>

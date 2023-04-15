@@ -36,7 +36,7 @@
                 </div>
               </div>
             </form>
-            <button class="btn btn-primary mt-3" @click="saveConsumo">
+            <button class="button mt-4" @click="saveConsumo">
               Cadastrar
             </button>
           </div>
