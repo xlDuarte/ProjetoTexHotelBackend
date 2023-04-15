@@ -63,7 +63,7 @@ export class Reservas {
     acomodacaoQtMaxPessoas,
     itemArrayReservas,
     itemArrayEdit,
-    arrayServicosBD,
+    // arrayServicosBD,
     arrayServicos
   ) {
     // campos input e de controle
@@ -89,17 +89,24 @@ export class Reservas {
     this.acomodacaoQtMaxPessoas = acomodacaoQtMaxPessoas;
     this.itemArrayReservas = itemArrayReservas;
     this.itemArrayEdit = itemArrayEdit;
-    this.arrayServicosBD = arrayServicosBD;
+    // this.arrayServicosBD = arrayServicosBD; // excluir
     this.arrayServicos = arrayServicos;
+    console.log(
+      "Etapa 4 - arrayServicos...",
+      arrayServicos,
+      localStorage.getItem("servicosEscolhidos")
+    );
     if (localStorage.getItem("servicosEscolhidos") !== null) {
-      this.servicosEscolhidos = JSON.parse(localStorage.getItem("servicosEscolhidos"));
-      console.log("cARAALHO ENTREI AQUI localStorage", this.servicosEscolhidos);
+      this.servicosEscolhidos = JSON.parse(
+        localStorage.getItem("servicosEscolhidos")
+      );
     } else {
       this.servicosEscolhidos = this.arrayServicos.data;
-      console.log("cARAALHO ENTREI AQUI arrayServicos", this.servicosEscolhidos);      
     }
-
-    console.log("Etapa 4 - calculando...");
+    console.log(
+      "Etapa 4.4 - this.servicosEscolhidos ...",
+      this.servicosEscolhidos
+    );
     // verifica campos calculados - valorReserva, qtdade diarias, etc
     // rotina para tratar as datas de input
     let dateStartAux, dateEndAux, dateStart, dateEnd;
@@ -117,11 +124,15 @@ export class Reservas {
     let vlrServicos = 0;
     if (this.servicosEscolhidos && Array.isArray(this.servicosEscolhidos)) {
       console.log(
-        "Teste Array !!!!! array com servicos existe e é um array",
-        this.servicosEscolhidos.length,
-        this.servicosEscolhidos[0].idServicos
+        "Calculando total de servicos...",
+        this.servicosEscolhidos,
+        this.servicosEscolhidos.length
       );
       for (let i = 0; i < this.servicosEscolhidos.length; i++) {
+        console.log(
+          "Calculo...",
+          this.servicosEscolhidos[i].nomeServico,this.servicosEscolhidos[i]
+            .isSelected,this.servicosEscolhidos[i].vlrDiariaServico);
         if (this.servicosEscolhidos[i].isSelected === "true") {
           vlrServicos =
             vlrServicos +
@@ -194,7 +205,6 @@ export class Reservas {
     }
 
     let ultimaReserva = response.data[0]["LAST_INSERT_ID()"];
-    // this.salvarServicos(ultimaReserva, this.arrayServicosBD);
     this.salvarServicos(ultimaReserva);
     return true;
     //return ultimaReserva;
@@ -205,19 +215,31 @@ export class Reservas {
     console.log(
       "Etapa 6 - verificando serviços LS, Table ReservasServicos ou somente servicos..."
     );
+    console.log(
+      "Etapa 6.1 - checando arrays...",
+      this.arrayServicos,
+      this.servicosEscolhidos
+    );
     let arrayServ = [];
     // verifica se existem serviços na LS para salvar...para manter compatibilidade com o frontend,
     if (localStorage.getItem("servicosEscolhidos") !== null) {
       arrayServ = JSON.parse(localStorage.getItem("servicosEscolhidos"));
     } else {
       // Ls não existe, então é necessário cadastrar todos os serviços para esta reserva, com idSelected = false...
-      // utiliza array com serviços existentes para inicializar a reserva...
-      console.log(
-        "Etapa 6.1 - arrayServicosBDarrayServ = this.arrayServicosBD..."
-      );
+      // utiliza array arrayServicos do backend ou
+      // array do frontend servicosEscolhidos...
+
+      // if (this.arrayServicos.length !== 0) {
+      //   // backend
+      //   arrayServ = this.arrayServicos;
+      // } else {
+      //   // frontend
+      //   arrayServ = this.servicosEscolhidos;
+      // }
       arrayServ = this.arrayServicos;
+      console.log("Etapa 6.2 - LS não existe...",this.arrayServicos,this.servicosEscolhidos,arrayServ);
+      // arrayServ = this.servicosEscolhidos;
     }
-    console.log("Etapa 6 - arrayServ...", arrayServ);
     // verifica serviços selecionados e persiste no BD...
     // console.log("Ultima reserva...", idUltimaReserva);
     // console.log("Servicos arrayServ...", arrayServ);
