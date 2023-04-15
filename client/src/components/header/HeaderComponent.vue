@@ -16,7 +16,7 @@
               <div><router-link to="/Acomodacoes">Acomodações</router-link></div>
               <div><router-link to="/Reservas">Reservas</router-link></div>
             </div>
-            <div class="adm menudrop" v-show="invisivel">
+            <div class="adm menu" v-show="invisivel">
               <div><router-link to="/HomeAdm">Home</router-link></div>
               <div><router-link to="/AcomodacaoAdm">Acomodações</router-link></div>
               <div><router-link to="/ReservasAdm">Reservas</router-link></div>
@@ -134,7 +134,7 @@ export default {
             emailUsuario: this.login,
             senhaUsuario: this.pswd,
           });
-          this.x = response.data.sessionUser.cookie
+          this.x = response.data.sessionId
           this.items = response.data.data
           console.log(this.items)
           console.log(response.data)

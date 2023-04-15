@@ -39,7 +39,7 @@ import {
   logOut,
   resetPassword, 
   updatePassword,
-} from "../controller/autenticantion.js";
+} from "../controller/autentication.js";
 
 //import Acomodações
 import {

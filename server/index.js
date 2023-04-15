@@ -28,7 +28,7 @@ mongoose.connection.on("error", (err) => {
 });
 
 const port = 5000;
-const dia = 1000 * 60 * 60 * 1; //1 horas em milisegundos
+const dia = 3600000; //1 horas em milisegundos
 
 app.use('/docs',swaggerUI.serve, swaggerUI.setup(swaggerFile))//motagem da UI do swagger e como parametro o arquivo swagger.json gerado pelo autogen
 app.use(cookieParser());

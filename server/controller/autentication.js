@@ -5,6 +5,7 @@ import randtoken from "rand-token";
 
 let sessionUser;
 let userId;
+let sessionId;
 
 //send email
 function sendEmail(email, token) {
@@ -164,6 +165,7 @@ export const registerValidation = (req, res, next) => {
               });
             } else {
               // se o email estiver disponivel
+              var token = randtoken.generate(20)
               bcrypt.hash(req.body.senhaUsuario, 10, (err, hash) => {
                 if (err) {
                   return res.status(500).send({
@@ -172,7 +174,7 @@ export const registerValidation = (req, res, next) => {
                 } else {
                   // encripta o password => adiciona ao db
                   db.query(
-                    `INSERT INTO usuario SET nomeUsuario = ?, emailUsuario = ?, cpfUsuario = ?, endUsuario = ?, senhaUsuario = ?, telefoneUsuario = ?`,
+                    `INSERT INTO usuario SET nomeUsuario = ?, emailUsuario = ?, cpfUsuario = ?, endUsuario = ?, senhaUsuario = ?, telefoneUsuario = ?, token = ?`,
                     [
                       req.body.nomeUsuario,
                       req.body.emailUsuario,
@@ -180,6 +182,7 @@ export const registerValidation = (req, res, next) => {
                       req.body.endUsuario,
                       hash,
                       req.body.telefoneUsuario,
+                      token
                     ],
                     (err, result) => {
                       if (err) {
@@ -234,16 +237,17 @@ export const loginValidation = (req, res, next) => {
           }
           if (bResult) {
             //const token = jwt.sign({id:result[0].idUsuario},'the-super-strong-secrect',{ expiresIn: '1h' });
-            sessionUser = req.session;
-            userId = result[0].idUsuario;
-            console.log(sessionUser);
+            req.session.user = result[0].token
+            sessionId = req.session.user;
+            console.log(sessionId);
+            console.log(result[0])
             db.query(
               `UPDATE usuario SET ultimoLogin = now() WHERE idUsuario = ?`,
               [result[0].idUsuario]
             );
             return res.status(200).send({
               msg: "Logado!",
-              sessionUser,
+              sessionId,
               data: result[0],
             });
           }
@@ -258,12 +262,12 @@ export const loginValidation = (req, res, next) => {
 };
 
 export const signupValidation = (req, res) => {
-  sessionUser = req.session
-  console.log("signupValidation", userId);
-  if(userId) {
+  console.log("signupValidation", sessionId);
+  console.log("signupValidation", req.session);
+  if(sessionId) {
     db.query(
-      "SELECT * FROM usuario where idUsuario=?",
-      userId,
+      "SELECT * FROM usuario where token=?",
+      sessionId,
       (err, results) => {
         if (err) {
           return res.status(400).send({
@@ -273,7 +277,7 @@ export const signupValidation = (req, res) => {
         return res.send({ data: results[0], msg: "Logado!" });
       }
     );
-  } else if(!userId) {
+  } else{
     return res.status(422).json({
       msg: "sessão expirou! Faça login novamente.",
     });
@@ -281,8 +285,10 @@ export const signupValidation = (req, res) => {
 };
 
 export const logOut = (req, res) => {
+  req.session.user = null
+  sessionId = null
   req.session.destroy();
-  sessionUser = null;
-  userId = null;
-  res.json({ data: !sessionUser });
+  console.log("LogOut", req.session);
+  console.log("LogOut", sessionId);
+  res.json({ data: !req.session });
 };

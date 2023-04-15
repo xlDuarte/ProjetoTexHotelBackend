@@ -27,7 +27,7 @@
         <p>*Campos de preenchimento obrigatório.</p>
       </div>
 
-      <div class="shadow container bg-light rounded-3 p-4 mx-auto my-5 w-50">
+      <div class="shadow bg-light rounded-3 p-4 my-5 ">
         <p
           class="msgAlerta"
           id="msgAlerta"
@@ -359,8 +359,8 @@
           </div>
         </form>
       </div>
-      <div class="listReservas">
-        <table class="table">
+      <div class="listReservas table-responsive table-responsive-sm">
+        <table class="table table-striped">
           <thead>
             <th scope="col">ID</th>
             <th scope="col">Id User</th>
@@ -1089,6 +1089,7 @@ export function checkInfo(
   border-radius: 50px;
   cursor: pointer;
   overflow: hidden;
+  margin: 5px;
 }
 
 .button:hover {

@@ -222,6 +222,7 @@ a {
   overflow: hidden;
   font-size: 1.5em;
   margin-top: 10px;
+  margin-left: 5px;
 }
 
 .button:hover {
