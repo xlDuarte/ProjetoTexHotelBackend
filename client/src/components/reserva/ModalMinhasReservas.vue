@@ -360,8 +360,9 @@ export default {
     ...mapState(["ReservasUsuario"]),
 
     reservas() {
-      let arrayReservas = this.ReservasUsuario.data;
-      return arrayReservas;
+       console.log("computed Reservas()")
+       let arrayReservas = this.ReservasUsuario.data;
+       return arrayReservas;
     },
   },
   
@@ -385,6 +386,10 @@ export default {
 </script>
 
 <style scoped>
+
+.modal-dialog {
+  margin: 10vh auto 0px auto
+}
 .modal-body {
   color: black;
 }

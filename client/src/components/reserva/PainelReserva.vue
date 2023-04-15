@@ -96,18 +96,8 @@ export default {
     //...mapState(["ReservasUsuario"]),
   },
   mounted() {
-    // verifica se usuario esta logado para ativar botão "Minhas Reservas"
-    // console.log("loginStatus...", localStorage.getItem("loginStatus") === null);
-    // if (
-    //   localStorage.getItem("loginStatus") === null ||
-    //   localStorage.getItem("loginStatus") === ""
-    // ) {
-    //   //this.$refs.btnMinhasReservas.setAttribute("hidden", "false");
-    //   //this.$refs.btnMinhasReservas.style.visibility = "hidden";
-    // } else {
-    //   //this.$refs.btnMinhasReservas.setAttribute("hidden", "true");
-    //   //this.$refs.btnMinhasReservas.style.visibility = "visible";
-    // }
+    // funções mountes...
+
   },
 };
 
@@ -135,13 +125,14 @@ window.$().ready(function () {
     if (localStorage.getItem("loginStatus") != "cliente") {
       alert("Você precisa estar logado para concluir a reserva!");
       return true;
-    }
-    let check = false;
-    // executa function para checar dados da reserva...
-    check = confirmaReserva();
-    if (check) {
-      window.$("#modalResumo").modal("show");
-      preencheModalResumo();
+    } else {
+      let check = false;
+      // executa function para checar dados da reserva...
+      check = confirmaReserva();
+      if (check) {
+        window.$("#modalResumo").modal("show");
+        preencheModalResumo();
+      }
     }
   });
 });

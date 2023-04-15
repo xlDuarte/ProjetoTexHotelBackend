@@ -15,7 +15,6 @@
         :idReservas="idReservasModalResumo"
         :itemReservas="itemReservaModalResumo"
         :arrayServicosBD="arrayServicosBD"
-        :servicosSelection="servicosSelection"
       />
     </div>
     <div class="modalUsuarios">
@@ -475,7 +474,7 @@ export default {
       idAcomodacao: "",
       acomodacaoTipo: "",
       acomodacaoVlrDiaria: 0,
-      acomodacaoQtMaxPessoas: 0,
+      acomodacaoQtMaxPessoas: 1,
       qtDiarias: 0,
       statusReserva: "Registrada",
       dataCancelamento: new Date().toISOString().substring(0, 10),
@@ -601,7 +600,7 @@ export default {
         } else {
           this.acomodacaoTipo = "Acomodação inválida - Verificar!!";
           this.acomodacaoVlrDiaria = 0;
-          this.acomodacaoQtMaxPessoas = 0;
+          this.acomodacaoQtMaxPessoas = 1;
         }
         return response;
       } catch (err) {
@@ -724,9 +723,7 @@ export default {
           console.log("Etapa 3.1 - this.arrayServicos de Servicos2.data",this.arrayServicos);
         }
 
-
-
-        // console.log("Etapa 3.2 - arrayServicosBD",this.arrayServicosBD);
+        console.log("Etapa 3.2 - arrayServicos",this.arrayServicos);
         let reserva = new Reservas();
 
         reserva.salvar(
@@ -751,7 +748,7 @@ export default {
           this.acomodacaoQtMaxPessoas,
           this.itemArrayReservas,
           this.itemArrayEdit,
-          this.arrayServicosBD,
+          // this.arrayServicosBD, // checar e excluir
           this.arrayServicos
         );
 
@@ -798,7 +795,6 @@ export default {
         this.idReservasModalResumo = this.idReservas;
         this.itemReservaModalResumo = this.item;
         console.log("Resumo", this.itemReservaModalResumo);
-        this.servicosSelection = true;
         this.msgModalResumo = "Sem mensagens no momento.";
         // this.$store.dispatch("ServicosReserva/getData", { idReserva: `${this.idReservas}` });
         window.$("#modalResumo2").modal("show");
@@ -808,7 +804,6 @@ export default {
 
       if (action == "usuarios") {
         if (this.campoAtivoIdUsuario !== true) {
-          // this.arrayServicosBD = this.ServicosReserva;
           this.getUsersCliente();
           window.$("#modalUsuarios").modal("show");
           this.campoAtivoIdUsuario = false;
@@ -917,7 +912,6 @@ export default {
         this.showModalResumo = true;
         this.msg2 = `Status itemArrayEdit=${this.itemArrayEdit}`;
         this.arrayServicosBD = this.ServicosReserva;
-        console.log("handleItem edit...", this.arrayServicosBD);
         // checar controle  aqui
         this.showGerarCupomButton = true;
         // checar controle  aqui

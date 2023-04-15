@@ -34,13 +34,15 @@
               Nome Hóspede: {{ itemReservas.nomeUsuario }} - ID:
               {{ itemReservas.usuario_idUsuario }}
             </p>
-            <p>Data Reserva: {{ formatDataReserva }} </p>
-            <p>Checkin: {{ formatDataEntrada }} </p>
-            <p>Checkout: {{ formatDataSaida }}  </p>
-            <p>Acomodação: {{ itemReservas.nomeAcomodacao }} </p>
-            <p>Vlr Diaria: {{ itemReservas.valorAcomodacao }} </p>
-            <p>Qt Hóspedes: {{ itemReservas.qtdHospedesReserva }} </p>
-            <p><b>Qt Diárias: {{ itemReservas.qtDiarias }} </b></p>
+            <p>Data Reserva: {{ formatDataReserva }}</p>
+            <p>Checkin: {{ formatDataEntrada }}</p>
+            <p>Checkout: {{ formatDataSaida }}</p>
+            <p>Acomodação: {{ itemReservas.nomeAcomodacao }}</p>
+            <p>Vlr Diaria: {{ itemReservas.valorAcomodacao }}</p>
+            <p>Qt Hóspedes: {{ itemReservas.qtdHospedesReserva }}</p>
+            <p>
+              <b>Qt Diárias: {{ itemReservas.qtDiarias }} </b>
+            </p>
             <p></p>
             <!-- <h2>Diárias</h2> -->
             <div id="diarias"></div>
@@ -58,7 +60,7 @@
                 :id="item.idServicos"
                 :name="item.nomeServico"
                 :value="item"
-                :disabled="servicosSelection"
+                :disabled="true"
               />
               <label
                 >{{ item.descricaoServico }} - R$ {{ item.vlrDiariaServico }},00
@@ -72,7 +74,9 @@
               <p></p>
               <p>Valor Serviços: {{ itemReservas.valorTotalServicos }}</p>
               <p></p>
-              <p><b>Valor Total Geral: {{ formatValorTotalDesconto }}</b></p>
+              <p>
+                <b>Valor Total Geral: {{ formatValorTotalDesconto }}</b>
+              </p>
             </div>
             <hr />
           </div>
@@ -87,7 +91,8 @@
             <hr />
           </div> -->
         </div>
-      </div>          <!-- Fim body Resumo-->
+      </div>
+      <!-- Fim body Resumo-->
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fechar
@@ -125,10 +130,9 @@ export default {
   // },
   props: {
     msg: String,
-    idReservas: [String,Number],
-    itemReservas: [Array,Object],
+    idReservas: [String, Number],
+    itemReservas: [Array, Object],
     arrayServicosBD: Object,
-    servicosSelection: Boolean,
   },
   data() {
     return {
@@ -140,7 +144,7 @@ export default {
   },
   methods: {
     formatData(data) {
-      return moment(data,"DD/MM/YYYY").format("DD-MM-YYYY");
+      return moment(data, "DD/MM/YYYY").format("DD-MM-YYYY");
     },
 
     formatCurrency(dateObj) {
@@ -180,10 +184,13 @@ export default {
     // atualiza dados da modalResumo2
   },
 };
-
 </script>
 
 <style scoped>
+.modal-dialog {
+  margin: 10vh auto 0px auto;
+}
+
 * {
   color: black;
 }
@@ -209,7 +216,7 @@ h3 {
 h4 {
   font-size: 20px;
   margin: 20px 0 0;
-  color: rgb(246, 2, 63);  
+  color: rgb(246, 2, 63);
 }
 
 ul {

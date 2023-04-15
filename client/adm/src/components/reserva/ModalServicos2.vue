@@ -175,10 +175,7 @@ export default {
         arrayServicosEscolhidos.push(itemLocal);
         // }
       }
-      localStorage.setItem(
-        "servicosEscolhidos",
-        "[" + arrayServicosEscolhidos + "]"
-      );
+      //localStorage.setItem("servicosEscolhidos","[" + arrayServicosEscolhidos + "]");
 
       window.$("#modalServicos2").modal("hide");
     },
@@ -234,32 +231,13 @@ async function updateServicosById(idReservas, servicos_idservicos,isSelected) {
   }
 }
 
-// controla a exclusão e criação...
-// async function deleteAndCreateRecords(idReserva,arrayServicosBD) {
-//   console.log("Primeiro exclui servicos...");
-//   await new Promise(resolve => {
-//     deleteRecords(idReserva);
-//     resolve();
-//     console.log("Finalizou exclusão...");
-//   }),
-//   console.log("Insere novamente...");
-//   let criaReserva = new Reservas();
-//   criaReserva.salvarServicos(idReserva, arrayServicosBD);
-// }
-
-// leva um certo tempo para executar...
-// function deleteRecords(idReserva) {
-//   return new Promise(resolve => {
-//     let delReserva = new Reservas();
-//     delReserva.excluiServicosReservaBD(idReserva);
-//     console.log('deleteRecords finalizado',resolve);
-//     resolve();
-//   });
-// }
 
 </script>
 
 <style scoped>
+.modal-dialog {
+  margin: 10vh auto 0px auto
+}
 .modal-body {
   color: black;
 }
