@@ -36,8 +36,10 @@ import {
   loginValidation,
   signupValidation,
   registerValidation,
-  logOut
-} from "../controller/logins.js";
+  logOut,
+  resetPassword, 
+  updatePassword,
+} from "../controller/autenticantion.js";
 
 //import Acomodações
 import {
@@ -70,10 +72,6 @@ import {
   updateReserva,
   showReservaByUsuarioId,
 } from "../controller/reservas.js";
-
-import { 
-  resetPassword, updatePassword,
-} from "../controller/forgot.js";
 
 import { 
   createComentario,

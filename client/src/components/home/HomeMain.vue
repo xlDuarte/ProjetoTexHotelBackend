@@ -1,5 +1,8 @@
 <template>
   <main>
+    <div class="banner">
+      <img alt="" src="@/assets/BANNER-CASANAPRAIA.png">
+    </div>
     <router-link to="/Reservas"><button class="botaoreserva"> Reserve já ! </button> </router-link>
     <section class="sec">
       <div>
@@ -284,7 +287,17 @@ img {
   transition: all 0.3s ease-out;
 }
 
+.banner > img{
+  width: 100%;
+  height: 10%;
+  border-radius: 0px;
+}
+
 @media screen and (max-width: 720px) {
+  .banner{
+    display: none;
+  }
+
   img {
     max-width: 320px;
     max-height: 160px;

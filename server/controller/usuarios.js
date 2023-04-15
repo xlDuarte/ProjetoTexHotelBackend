@@ -44,7 +44,15 @@ export const showUsuarioById = (req, res) => {
 // cria um novo usuario
 export const createUsuario = (req, res) => {
   const data = req.body;
-  insertUsuario(data, (err, results) => {
+  insertUsuario([
+    data.nomeUsuario,
+    data.emailUsuario,
+    data.cpfUsuario,
+    data.endUsuario,
+    data.senhaUsuario,
+    data.tipoUsuario,
+    data.telefoneUsuario,
+  ], (err, results) => {
     if (err) {
       res.send(err);
     } else {
@@ -57,7 +65,17 @@ export const createUsuario = (req, res) => {
 export const updateUsuario = (req, res) => {
   const data = req.body;
   const id = req.params.id;
-  updateUsuarioById(data, id, (err, results) => {
+  updateUsuarioById([
+    data.nomeUsuario,
+    data.emailUsuario,
+    data.cpfUsuario,
+    data.endUsuario,
+    data.senhaUsuario,
+    data.tipoUsuario,
+    data.telefoneUsuario,
+    id,
+
+  ], id, (err, results) => {
     if (err) {
       res.send(err);
     } else {

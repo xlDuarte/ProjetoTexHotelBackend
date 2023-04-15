@@ -1,0 +1,1231 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API Hotel Casa na Praia",
+    "description": "Este Projeto foi desenvolvida como projeto final para o curso Fullstack Javascript Developer(Turma Agosto/2022) da escola de tecnologia T.EX Technology Experts. Descubra mais sobre a T.EX em [https://texperts.com.br/sobre-nos/]().\n\nAPI para gestão de hoteis desenvolvida com:\nNode.js [https://nodejs.org/en/about]() \nExpress [https://expressjs.com/pt-br/]() \nbcrypt [https://www.npmjs.com/package/bcrypt]() \nmysql [https://dev.mysql.com/doc/]()\nmongodb [https://www.mongodb.com/docs/guides/]()\nmongoose [https://mongoosejs.com/docs/guide.html]() \nnodemailer [https://nodemailer.com/about/]() \nrand-token [https://www.npmjs.com/package/rand-token]()\ndocumentada com OpenAPI(antigo Swagger) [https://swagger.io]().",
+    "contact": {
+      "email": "andersonlimam.al@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "GitHub do projeto",
+    "url": "https://github.com/xlDuarte/ProjetoTexHotelBackend"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Autenticação",
+      "description": "Controle de autenticação, cadastro de usuarios e reset de senha",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Usuario",
+      "description": "Gestão de usuarios",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Acomodação",
+      "description": "Controle de acomodações do hotel"
+    },
+    {
+      "name": "Serviço",
+      "description": "Controle de serviços do hotel"
+    },
+    {
+      "name": "Reserva",
+      "description": "Controle de Reservas do hotel"
+    },
+    {
+      "name": "Consumo",
+      "description": "Controle de consumo dos clientes"
+    },
+    {
+      "name": "Comentarios",
+      "description": "Controle de comentarios dos clientes"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "emailUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "senhaUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "Autenticação"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "emailUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "cpfUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "senhaUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "nomeUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "endUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "telefoneUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/get-user": {
+      "get": {
+        "tags": [
+          "Autenticação"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/resetpwd-email": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "string",
+                "properties": {
+                  "emailUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/resetpwd/{token}": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "senhaUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/usuario": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/usuario/cliente": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/usuario/{id}": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Usuario"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nomeUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "emailUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "cpfUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "endUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "senhaUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "tipoUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "telefoneUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      },
+      "delete": {
+        "tags": [
+          "Usuario"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/servico": {
+      "get": {
+        "tags": [
+          "Serviço"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Serviço"
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nomeServico": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "vlrDiariaServico": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "descricaoServico": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "labelServico": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/servicoAdm": {
+      "get": {
+        "tags": [
+          "Serviço"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/servico/{id}": {
+      "get": {
+        "tags": [
+          "Serviço"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Serviço"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nomeServico": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "vlrDiariaServico": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "descricaoServico": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "labelServico": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "statusServico": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      },
+      "delete": {
+        "tags": [
+          "Serviço"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/Consumo": {
+      "get": {
+        "tags": [
+          "Consumo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Consumo"
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataConsumo": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "Reservas_idReservas": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "qtdConsumo": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "produtos_idprodutos": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "localConsumo_idLocalConsumo": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/Consumo/{id}": {
+      "get": {
+        "tags": [
+          "Consumo"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Consumo"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Consumo"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/localConsumo/{id}": {
+      "get": {
+        "tags": [
+          "Consumo"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/reserva": {
+      "get": {
+        "tags": [
+          "Reserva"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reserva"
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataReserva": {
+                    "type": "object",
+                    "example": "2023-01-01T00:00:00.000Z"
+                  },
+                  "dataEntradaReserva": {
+                    "type": "object",
+                    "example": "2023-01-01T00:00:00.000Z"
+                  },
+                  "dataSaidaReserva": {
+                    "type": "object",
+                    "example": "2023-01-01T00:00:00.000Z"
+                  },
+                  "valorReserva": {
+                    "type": "object",
+                    "example": "1500.00"
+                  },
+                  "usuario_idUsuario": {
+                    "type": "object",
+                    "example": "1"
+                  },
+                  "acomodacoes_idAcomodacao": {
+                    "type": "object",
+                    "example": "6"
+                  },
+                  "qtdHospedesReserva": {
+                    "type": "object",
+                    "example": "1"
+                  },
+                  "statusReserva": {
+                    "type": "object",
+                    "example": "Registrada"
+                  },
+                  "qtDiarias": {
+                    "type": "object",
+                    "example": "1"
+                  },
+                  "acomodacaoTipo": {
+                    "type": "object",
+                    "example": "Recanto das Cegonhas"
+                  },
+                  "acomodacaoVlrDiaria": {
+                    "type": "object",
+                    "example": "800"
+                  },
+                  "acomodacaoQtMaxPessoas": {
+                    "type": "object",
+                    "example": "1"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/reserva/{id}": {
+      "get": {
+        "tags": [
+          "Reserva"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Reserva"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataReserva": {
+                    "type": "object",
+                    "example": "2023-01-01T00:00:00.000Z"
+                  },
+                  "dataEntradaReserva": {
+                    "type": "object",
+                    "example": "2023-01-01T00:00:00.000Z"
+                  },
+                  "dataSaidaReserva": {
+                    "type": "object",
+                    "example": "2023-01-01T00:00:00.000Z"
+                  },
+                  "valorReserva": {
+                    "type": "object",
+                    "example": "1500.00"
+                  },
+                  "usuario_idUsuario": {
+                    "type": "object",
+                    "example": "1"
+                  },
+                  "acomodacoes_idAcomodacao": {
+                    "type": "object",
+                    "example": "6"
+                  },
+                  "qtdHospedesReserva": {
+                    "type": "object",
+                    "example": "1"
+                  },
+                  "statusReserva": {
+                    "type": "object",
+                    "example": "Registrada"
+                  },
+                  "qtDiarias": {
+                    "type": "object",
+                    "example": "1"
+                  },
+                  "acomodacaoTipo": {
+                    "type": "object",
+                    "example": "Recanto das Cegonhas"
+                  },
+                  "acomodacaoVlrDiaria": {
+                    "type": "object",
+                    "example": "800"
+                  },
+                  "motivoCancelamento": {
+                    "type": "object",
+                    "example": ""
+                  },
+                  "dataCancelamento": {
+                    "type": "object",
+                    "example": ""
+                  },
+                  "acomodacaoQtMaxPessoas": {
+                    "type": "object",
+                    "example": "1"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      },
+      "delete": {
+        "tags": [
+          "Reserva"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/reservaUsuario/{id}": {
+      "get": {
+        "tags": [
+          "Reserva"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/reserva/ultima": {
+      "post": {
+        "tags": [
+          "Reserva"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/acomodacao": {
+      "get": {
+        "tags": [
+          "Acomodação"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Acomodação"
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nomeAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "valorAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "descricaoAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "tipoAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "numeroAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/acomodacao/{id}": {
+      "get": {
+        "tags": [
+          "Acomodação"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Acomodação"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nomeAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "valorAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "descricaoAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "tipoAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "numeroAcomodacao": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      },
+      "delete": {
+        "tags": [
+          "Acomodação"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/comentarios": {
+      "get": {
+        "tags": [
+          "Comentarios"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/novoComentario": {
+      "post": {
+        "tags": [
+          "Comentarios"
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "comentario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "contatoComentario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "idReserva": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "idUsuario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "nota": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "dataComentario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "statusComentario": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "publicarDe": {
+                    "type": "object",
+                    "example": "any"
+                  },
+                  "publicarAte": {
+                    "type": "object",
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    }
+  },
+  "components": {}
+}
