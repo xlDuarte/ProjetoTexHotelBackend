@@ -175,8 +175,8 @@ export default {
 
      // salva a reserva e obtem o id para gravar os serviços
 
-     arrayServicosEscolhidos = this.Servicos2;
-     
+     arrayServicosEscolhidos = this.Servicos2.data;
+     console.log("Array servicos",arrayServicosEscolhidos,this.Servicos2);
      reserva.salvar(
         idReservas,
         dtReserva,
@@ -199,6 +199,7 @@ export default {
         acomodacaoQtMaxPessoas,
         itemArrayReservas,
         itemArrayEdit,
+        // arrayServicosEscolhidos,
         arrayServicosEscolhidos,
       );
       
@@ -477,6 +478,11 @@ window.$().ready(function () {
 </script>
 
 <style scoped>
+
+.modal-dialog {
+  margin: 10vh auto 0px auto
+}
+
 * {
   color: black;
 }

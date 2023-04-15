@@ -374,6 +374,7 @@ export function confirmaReserva() {
 }
 
 export function gravaReserva() {
+
   let idUsuario = localStorage.getItem("userId");
   let dateStart = localStorage.getItem("dtEntrada");
   let dateEnd = localStorage.getItem("dtSaida");
@@ -415,6 +416,7 @@ export function gravaReserva() {
     },
   ];
   localStorage.setItem(`Reserva_${novoId}`, JSON.stringify(ReservaAux));
+
   limpaLocalStorage();
 
   return true;

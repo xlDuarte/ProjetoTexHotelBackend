@@ -115,10 +115,10 @@ export default {
         // }
 
       }
-      console.log("Servicos escolhidos...", arrayServicosEscolhidos);
+      // console.log("Servicos escolhidos...", arrayServicosEscolhidos);
       // localStorage.setItem('servicosEscolhidos',JSON.stringify("["+arrayServicosEscolhidos+"]"));
       localStorage.setItem('servicosEscolhidos', "[" + arrayServicosEscolhidos + "]");
-      console.log("Servicos escolhidos localStorage...", localStorage.getItem('servicosEscolhidos'));
+      // console.log("Servicos escolhidos localStorage...", localStorage.getItem('servicosEscolhidos'));
       window.$("#modalServicos").modal("hide");
     },
 
@@ -153,4 +153,9 @@ export default {
 .modal-body {
   color: black;
 }
+
+.modal-dialog {
+  margin: 10vh auto 0px auto
+}
+
 </style>
