@@ -151,7 +151,6 @@ export default {
     confirmaServicos() {
       alert("Serviços adicionais incluídos! Obrigado!", this.arrayServicosBD);
       let arrayServicos = this.arrayServicosBD;
-      // console.log("confirmaServicos...:", arrayServicos);
       let arrayServicosEscolhidos = [];
       for (let i = 0; i < arrayServicos.data.length; i++) {
         // define idServico e demais dados do servico,
@@ -168,7 +167,7 @@ export default {
            strIsSelected = "false"
         }
         let servData = `"idServicos":"${servId}","nomeServico":"${arrayServicos.data[i].nomeServico}","descricaoServico":"${arrayServicos.data[i].descricaoServico}","vlrDiariaServico":${arrayServicos.data[i].vlrDiariaServico},"isSelected":"${strIsSelected}"`;
-        console.log("confirmaServicos...:", servId, servData);
+        // console.log("confirmaServicos...:", servId, servData);
         let itemLocal = "{" + servData + "}";
         // só deveria gravar os selecionados, porém para facilitar esta gravando todos
         // if (arrayServicos.data[i].isSelected) {
