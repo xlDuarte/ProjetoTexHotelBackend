@@ -21,9 +21,21 @@
           <h2>Clientes registrados no hotel</h2>
           <hr />
           <div class="grid-container">
-            <div v-for="(item, index) in items" :key="index" class="grid-item">
-              <h4><b>ID Usuário: {{ item.idUsuario }} </b> - {{ item.nomeUsuario }}</h4>
-              <p><b>eMail: {{ item.emailUsuario }} Telefone: {{ item.telefoneUsuario }} </b> - Status: {{ item.statusUsuario }}</p>
+            <div v-for="(item, index) in items" :key="index" class="grid-item" @click="selecionaUser(item.idUsuario,item)" >
+              <h4>
+                <b>ID Usuário: {{ item.idUsuario }} </b> -
+                {{ item.nomeUsuario }}
+              </h4>
+              <p>
+                <b
+                  >eMail: {{ item.emailUsuario }} Telefone:
+                  {{ item.telefoneUsuario }}
+                </b>
+                - Status: {{ item.statusUsuario }}
+              </p>
+              <button class="btn btn-secondary" @click="selecionaUser(item.idUsuario,item)">
+                Seleciona
+              </button>
             </div>
           </div>
         </div>
@@ -59,7 +71,7 @@ export default {
   props: {
     // properties que vem da view que irá chamar o componente...
     msg: String,
-    items: [String,Object],
+    items: [String, Object],
   },
   data() {
     return {
@@ -115,6 +127,11 @@ export default {
     console.log("Created modalUsuarios - watch(): ");
   },
   methods: {
+    selecionaUser(idUsuario,item) {
+      console.log("Selecionei este hospede",idUsuario,item);
+      this.idUsuario = idUsuario;
+      window.$("#modalUsuarios").modal("hide");
+    },
     abreModal() {
       console.log("abreModal modalUsuarios ");
       var modal = new bootstrap.Modal(
@@ -167,5 +184,4 @@ export default {
   border: 1px solid #ccc;
   padding: 20px;
 }
-
 </style>
