@@ -2,11 +2,9 @@ import db from "../config/database.js";
 import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
 import randtoken from "rand-token";
+import jwt from "jsonwebtoken"
 
-let sessionUser;
-let userId;
-let sessionId;
-
+let jwtToken;
 //send email
 function sendEmail(email, token) {
   var email = email;
@@ -39,7 +37,6 @@ function sendEmail(email, token) {
 /* send reset password link in email */
 export const resetPassword = (req, res) => {
   var email = req.body.emailUsuario;
-  //console.log(sendEmail(email, fullUrl));
   db.query(
     'SELECT * FROM usuario WHERE emailUsuario = ?',
     [email],
@@ -73,7 +70,6 @@ export const resetPassword = (req, res) => {
             msg: "Algo deu errado",
           });
         }
-        console.log(msg);
       } else {
         console.log("2");
         return res.status(401).send({
@@ -135,7 +131,7 @@ export const updatePassword = (req, res, next) => {
   );
 };
 
-export const registerValidation = (req, res, next) => {
+export const userSignup = (req, res, next) => {
   db.query(
     `SELECT * FROM usuario WHERE emailUsuario = ?`,
     [req.body.emailUsuario],
@@ -165,7 +161,7 @@ export const registerValidation = (req, res, next) => {
               });
             } else {
               // se o email estiver disponivel
-              var token = randtoken.generate(20)
+              var token = randtoken.generate(20)              
               bcrypt.hash(req.body.senhaUsuario, 10, (err, hash) => {
                 if (err) {
                   return res.status(500).send({
@@ -207,7 +203,7 @@ export const registerValidation = (req, res, next) => {
   );
 };
 
-export const loginValidation = (req, res, next) => {
+export const userLogin = (req, res, next) => {
   db.query(
     `SELECT * FROM usuario WHERE emailUsuario = ?`,
     [req.body.emailUsuario],
@@ -236,10 +232,8 @@ export const loginValidation = (req, res, next) => {
             });
           }
           if (bResult) {
-            //const token = jwt.sign({id:result[0].idUsuario},'the-super-strong-secrect',{ expiresIn: '1h' });
-            req.session.user = result[0].token
-            sessionId = req.session.user;
-            console.log(sessionId);
+            jwtToken = jwt.sign({id:result[0].idUsuario, role:result[0].tipoUsuario},'the-super-strong-secrect',{ expiresIn: '2h' });
+            console.log(jwtToken);
             console.log(result[0])
             db.query(
               `UPDATE usuario SET ultimoLogin = now() WHERE idUsuario = ?`,
@@ -247,7 +241,7 @@ export const loginValidation = (req, res, next) => {
             );
             return res.status(200).send({
               msg: "Logado!",
-              sessionId,
+              jwtToken,
               data: result[0],
             });
           }
@@ -261,13 +255,14 @@ export const loginValidation = (req, res, next) => {
   );
 };
 
-export const signupValidation = (req, res) => {
-  console.log("signupValidation", sessionId);
-  console.log("signupValidation", req.session);
-  if(sessionId) {
+export const userSignin = (req, res) => {
+  console.log("signupValidation", jwtToken);
+  let jToken = jwtToken
+  const decoded = jwt.verify(jToken, 'the-super-strong-secrect');
+  if(decoded) {
     db.query(
-      "SELECT * FROM usuario where token=?",
-      sessionId,
+      "SELECT * FROM usuario where idUsuario=?",
+      decoded.id,
       (err, results) => {
         if (err) {
           return res.status(400).send({
@@ -285,10 +280,7 @@ export const signupValidation = (req, res) => {
 };
 
 export const logOut = (req, res) => {
-  req.session.user = null
-  sessionId = null
   req.session.destroy();
-  console.log("LogOut", req.session);
-  console.log("LogOut", sessionId);
+  jwtToken = null
   res.json({ data: !req.session });
 };

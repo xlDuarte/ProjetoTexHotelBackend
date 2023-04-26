@@ -45,12 +45,13 @@ export const insertAcomodacao = (data, result) => {
 // atualiza um Acomodacao no banco
 export const updateAcomodacaoById = (data, id, result) => {
   db.query(
-    "UPDATE acomodacoes SET nomeAcomodacao = ?, descricaoAcomodacao = ?, valorAcomodacao = ?, tipoAcomodacao = ? WHERE idAcomodacao = ?",
+    "UPDATE acomodacoes SET nomeAcomodacao = ?, descricaoAcomodacao = ?, valorAcomodacao = ?, tipoAcomodacao = ?, qtMaxPessoas = ? WHERE idAcomodacao = ?",
     [
       data.nomeAcomodacao,
       data.descricaoAcomodacao,
       data.valorAcomodacao,
       data.tipoAcomodacao,
+      data.qtMaxPessoas,
       id,
     ],
     (err, results) => {

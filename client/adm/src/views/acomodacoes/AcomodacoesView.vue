@@ -4,7 +4,7 @@
       <h2>CADASTRO DE ACOMODAÇÕES</h2>
       <p>*Campos de preenchimento obrigatório.</p>
     </div>
-    <AddAcomodacao @updateList="getAcomodacao()" />
+    <AddAcomodacao @updateAcomList="getAcomodacao()" />
     <div class="table-responsive table-responsive-sm">
       <table class="table table-striped">
         <thead>
@@ -70,8 +70,12 @@ export default {
     },
     // Lista todos os usuarios
     async getAcomodacao() {
+      const token = sessionStorage.getItem('token');
       try {
-        const response = await axios.get("http://localhost:5000/acomodacao");
+        const response = await axios.get("http://localhost:5000/acomodacao", {
+          headers:{
+            'Authorization': `Bearer ${token}`
+          }});
         this.items = response.data;
       } catch (err) {
         console.log(err);
@@ -80,8 +84,12 @@ export default {
 
     // Delete Usuario
     async deleteAcomodacao(id) {
+      const token = sessionStorage.getItem('token');
       try {
-        await axios.delete(`http://localhost:5000/acomodacao/${id}`);
+        await axios.delete(`http://localhost:5000/acomodacao/${id}`, {
+          headers:{
+            'Authorization': `Bearer ${token}`
+          }});
         this.getAcomodacao();
       } catch (err) {
         console.log(err);

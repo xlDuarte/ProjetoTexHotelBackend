@@ -65,16 +65,20 @@
    methods: {
      // cria novo usuario
      async saveUsuario() {
+        const token = sessionStorage.getItem('token');
         console.log("save usuario...",this.nomeUser, this.cpfUSer)
        try {
          await axios.post("http://localhost:5000/register", {
-           nomeUsuario: this.nomeUser,
-           emailUsuario: this.emailUser,
-           cpfUsuario: this.cpfUSer,
-           endUsuario: this.endUser,
-           telefoneUsuario: this.telefoneUser,
-           tipoUsuario: this.tipoUser,
-           senhaUsuario: this.senhaUser
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          nomeUsuario: this.nomeUser,
+          emailUsuario: this.emailUser,
+          cpfUsuario: this.cpfUSer,
+          endUsuario: this.endUser,
+          telefoneUsuario: this.telefoneUser,
+          tipoUsuario: this.tipoUser,
+          senhaUsuario: this.senhaUser
          });
          this.nomeUser = "";
          this.emailUser = "";

@@ -215,7 +215,7 @@ export default {
           this.itemArrayEdit
         );
         // recarrega lista de serviços
-        this.getServicos();
+        this.getServicosAdm();
       }
       if (action == "cancelar") {
         // não faz nada, a rotina de edição está no "servico.salvar" só desabilita o botão e limpa os campos na rotina que já está abaixo...
@@ -232,7 +232,7 @@ export default {
           let servico = new Servicos();
           servico.excluir(this.idServico);
           // recarrega lista de serviços
-          this.getServicos();
+          this.getServicosAdm();
         }
       }
       // após inclusão, limpa campos do form...

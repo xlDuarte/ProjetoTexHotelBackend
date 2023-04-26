@@ -27,6 +27,10 @@
                 <label class="label">Tipo de acomodação</label>
                 <input class="form-control" type="text" v-model="tipoAcomod" />
               </div>
+              <div class="col-12 col-sm-6">
+                <label class="label">Quantidade maxima de pessoas</label>
+                <input class="form-control" type="text" v-model="qtMax" />
+              </div>
               <div class="d-flex justify-content-center">
                 <div class="col-sm-6 mb-2">
                   <button class="button mt-4" @click="updateAcomodacao">UPDATE</button>
@@ -57,9 +61,10 @@ export default {
             descAcomod: "",
             valorAcomod: "",
             tipoAcomod: "",
+            qtMax: "",
         };
     },
-    created: function () {
+    created() {
         this.getAcomodacaoById();
         this.checkLogin();
     },
@@ -79,13 +84,17 @@ export default {
         // lista usuario por id
         async getAcomodacaoById() {
             try {
+                const token = sessionStorage.getItem('token');
                 const response = await axios.get(
-                    `http://localhost:5000/acomodacao/${this.$route.params.id}`
-                );
+                    `http://localhost:5000/acomodacao/${this.$route.params.id}`, {
+                headers:{
+                  'Authorization': `Bearer ${token}`
+                }});
                 this.nomeAcomod = response.data.nomeAcomodacao;
                 this.descAcomod = response.data.descricaoAcomodacao;
                 this.valorAcomod = response.data.valorAcomodacao;
                 this.tipoAcomod = response.data.tipoAcomodacao;
+                this.qtMax = response.data.qtMaxPessoas;
             } catch (err) {
                 console.log(err);
             }
@@ -97,20 +106,26 @@ export default {
 
         // atualiza o usuario
         async updateAcomodacao() {
+            const token = sessionStorage.getItem('token');
             try {
                 await axios.put(
                     `http://localhost:5000/acomodacao/${this.$route.params.id}`,
-                    {
+                    {   
+                        headers: {
+                        'Authorization': `Bearer ${token}`
+                        },
                         nomeAcomodacao: this.nomeAcomod,
                         descricaoAcomodacao: this.descAcomod,
                         valorAcomodacao: this.valorAcomod,
                         tipoAcomodacao: this.tipoAcomod,
+                        qtMaxPessoas: this.qtMax
                     }
                 );
                 this.nomeAcomod = "";
                 this.descAcomod = "";
                 this.valorAcomod = "";
                 this.tipoAcomod = "";
+                this.qtMax = "";
                 this.$router.push("/AcomodacaoAdm");
             } catch (err) {
                 console.log(err);

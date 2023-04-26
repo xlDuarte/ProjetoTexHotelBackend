@@ -41,6 +41,11 @@ const routes = [
     component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
   },
   {
+    path: "/editServico/:id",
+    name: "EditServicos",
+    component: () => import("../../adm/src/views/reservas/ServicosView.vue"),
+  },
+  {
     path: "/ReservasAdm",
     name: "reservasAdm",
     component: () => import("../../adm/src/views/reservas/ReservasView.vue"),
@@ -52,7 +57,7 @@ const routes = [
     component: () => import("../../adm/src/views/usuarios/UsuariosView.vue"),
   },
   {
-    path: "/edit/:id",
+    path: "/editUsuario/:id",
     name: "editUsuarios",
     component: () => import("../../adm/src/views/usuarios/EditUsuario.vue"),
   },
@@ -79,7 +84,7 @@ const routes = [
       import("../../adm/src/views/reservas/ComentariosView.vue"),
   },
   {
-    path: "/edit/:id",
+    path: "/editAcomodacao/:id",
     name: "editAcomodacao",
     component: () =>
       import("../../adm/src/views/acomodacoes/EditAcomodacao.vue"),

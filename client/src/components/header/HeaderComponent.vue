@@ -134,18 +134,19 @@ export default {
             emailUsuario: this.login,
             senhaUsuario: this.pswd,
           });
-          this.x = response.data.sessionId
           this.items = response.data.data
           console.log(this.items)
-          console.log(response.data)
-          console.log(response.data.sessionUser)
-          if (this.x) {
+          console.log(response.data.jwtToken)
+          if (this.items) {
             let loged = this.items.nomeUsuario;
             let logedOn = this.items.tipoUsuario;
             let idUser = this.items.idUsuario;
+            let jToken = response.data.jwtToken
+            console.log(jToken)
             this.logedin = true
             this.showLogOut = true
             this.showLogin = false
+            sessionStorage.setItem('token', jToken)
             console.log(this.items.nomeUsuario)
             console.log('ok')
             if (logedOn == 'cliente') {

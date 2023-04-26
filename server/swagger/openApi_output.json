@@ -55,6 +55,15 @@
       "description": "Controle de comentarios dos clientes"
     }
   ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
   "paths": {
     "/login": {
       "post": {
@@ -63,7 +72,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -118,7 +127,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -201,7 +210,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "string",
                 "properties": {
@@ -253,7 +262,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -298,7 +307,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/usuario/cliente": {
@@ -311,7 +325,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/usuario/{id}": {
@@ -334,7 +353,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -352,7 +376,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json":{
               "schema": {
                 "type": "object",
                 "properties": {
@@ -396,6 +420,11 @@
             "content": {}
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "x-codegen-request-body-name": "body"
       },
       "delete": {
@@ -417,7 +446,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/servico": {
@@ -438,7 +472,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -470,6 +504,11 @@
             "content": {}
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "x-codegen-request-body-name": "body"
       }
     },
@@ -483,7 +522,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/servico/{id}": {
@@ -506,7 +550,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -524,7 +573,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -560,6 +609,11 @@
             "content": {}
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "x-codegen-request-body-name": "body"
       },
       "delete": {
@@ -581,7 +635,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/Consumo": {
@@ -594,7 +653,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -602,7 +666,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -638,6 +702,11 @@
             "content": {}
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "x-codegen-request-body-name": "body"
       }
     },
@@ -661,7 +730,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -682,7 +756,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -703,7 +782,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/localConsumo/{id}": {
@@ -726,7 +810,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/reserva": {
@@ -739,7 +828,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -747,7 +841,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -811,6 +905,11 @@
             "content": {}
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "x-codegen-request-body-name": "body"
       }
     },
@@ -834,7 +933,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -852,7 +956,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -924,6 +1028,11 @@
             "content": {}
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "x-codegen-request-body-name": "body"
       },
       "delete": {
@@ -945,7 +1054,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/reservaUsuario/{id}": {
@@ -968,7 +1082,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/reserva/ultima": {
@@ -1002,7 +1121,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -1025,6 +1144,10 @@
                   "numeroAcomodacao": {
                     "type": "object",
                     "example": "any"
+                  },
+                  "qtMaxPessoas": {
+                    "type": "object",
+                    "example": "any"
                   }
                 }
               }
@@ -1038,6 +1161,11 @@
             "content": {}
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "x-codegen-request-body-name": "body"
       }
     },
@@ -1061,7 +1189,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -1073,13 +1206,13 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "object"
             }
           }
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -1098,10 +1231,6 @@
                   "tipoAcomodacao": {
                     "type": "object",
                     "example": "any"
-                  },
-                  "numeroAcomodacao": {
-                    "type": "object",
-                    "example": "any"
                   }
                 }
               }
@@ -1115,6 +1244,11 @@
             "content": {}
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "x-codegen-request-body-name": "body"
       },
       "delete": {
@@ -1136,7 +1270,12 @@
             "description": "OK",
             "content": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/comentarios": {
@@ -1163,7 +1302,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -1226,6 +1365,5 @@
         "x-codegen-request-body-name": "body"
       }
     }
-  },
-  "components": {}
+  }
 }

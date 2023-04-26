@@ -1,5 +1,7 @@
 // import express
 import express from "express";
+import checkTokenAdm from "../middleware/auth.check.adm.js";
+import checkToken from "../middleware/auth.check.js";
 
 // import das funcs do controller
 //import Usuarios
@@ -33,9 +35,9 @@ import {
 
 //import Login
 import { 
-  loginValidation,
-  signupValidation,
-  registerValidation,
+  userLogin,
+  userSignin,
+  userSignup,
   logOut,
   resetPassword, 
   updatePassword,
@@ -77,22 +79,21 @@ import {
   createComentario,
   showComentarios 
 } from "../controller/comentarios.js";
-
 // init express router
 const router = express.Router();
 
 //Login e Autenticação
 // rota para captura do login
-router.post('/login', loginValidation);
+router.post('/login', userLogin);
 
 //rota para deslogar e destruir seção
 router.get('/logout', logOut);
 
 //rota para registrar o usuario
-router.post('/register', registerValidation);
+router.post('/register', userSignup);
 
 //rota para checar se logdado
-router.get('/get-user', signupValidation);
+router.get('/get-user', userSignin);
 
 router.post('/resetpwd-email', resetPassword);
 
@@ -154,28 +155,28 @@ router.delete("/servicoReserva/:id", deleteServicoReserva);
 
 // Consumos
 // rota para listar todos os Consumos
-router.get("/Consumo", showConsumo);
+router.get("/Consumo", checkTokenAdm, showConsumo);
 
 // rota para listar um Consumo
-router.get("/Consumo/:id", showConsumoById);
+router.get("/Consumo/:id", checkTokenAdm, showConsumoById);
 
 // rota para listar um local de consumo
-router.get("/localConsumo/:id", showlocalConsumoById);
+router.get("/localConsumo/:id", checkTokenAdm, showlocalConsumoById);
 
 // rota para listar um produto
-router.get("/produto/:id", showProdutoById);
+router.get("/produto/:id", checkTokenAdm, showProdutoById);
 
 // rota para listar um valor do produto
-router.get("/valorProduto/:id", showValorProdutoById);
+router.get("/valorProduto/:id", checkTokenAdm, showValorProdutoById);
 
 // rota para criar um Consumo
-router.post("/Consumo", createConsumo);
+router.post("/Consumo", checkTokenAdm, createConsumo);
 
 // rota para atualizar um Consumo
-router.put("/Consumo/:id", updateConsumo);
+router.put("/Consumo/:id", checkTokenAdm, updateConsumo);
 
 // rota para deletar um Consumo
-router.delete("/Consumo/:id", deleteConsumo);
+router.delete("/Consumo/:id", checkTokenAdm, deleteConsumo);
 
 // Reservas
 // rota para listar todas as reservas
@@ -191,7 +192,7 @@ router.get("/reservaUsuario/:id", showReservaByUsuarioId);
 router.post("/reserva", createReserva);
 
 // rota para obter ultimo idReserva criado, para utilizar na persistencia dos serviços
-router.post("/reserva/ultima", ultimoIdReserva);
+router.post("/reserva/ultima",  ultimoIdReserva);
 
 // rota para atualizar uma reserva
 router.put("/reserva/:id", updateReserva);
