@@ -555,10 +555,13 @@ export default {
 
     // verificar usuario pelo id
     async validaUsuariosById(idUsuario) {
+      const token = sessionStorage.getItem('token');
       try {
         const response = await axios.get(
-          `http://localhost:5000/usuario/${idUsuario}`
-        );
+          `http://localhost:5000/usuario/${idUsuario}`,{
+          headers: {
+          'Authorization': `Bearer ${token}`
+        }});
         this.itemUsuario = response.data;
         if (idUsuario === response.data.idUsuario) {
           this.nomeUsuario = response.data.nomeUsuario;
@@ -574,10 +577,13 @@ export default {
 
     // carrega lista de usuarios clientes
     async getUsersCliente() {
+      const token = sessionStorage.getItem('token');
       try {
         const response = await axios.get(
-          "http://localhost:5000/usuario/cliente"
-        );
+          "http://localhost:5000/usuario/cliente",{
+          headers: {
+          'Authorization': `Bearer ${token}`
+        }});
         console.log("getUsersCliente", response);
         this.listClientes = response.data;
         return response;
@@ -588,10 +594,13 @@ export default {
 
     // verificar acomodação  pelo id - ok!
     async validaAcomodacaoById(idAcomodacao) {
+      const token = sessionStorage.getItem('token');
       try {
         const response = await axios.get(
-          `http://localhost:5000/acomodacao/${idAcomodacao}`
-        );
+          `http://localhost:5000/acomodacao/${idAcomodacao}`,{
+          headers: {
+          'Authorization': `Bearer ${token}`
+        }});
         this.itemAcomodacao = response.data;
         if (idAcomodacao === response.data.idAcomodacao) {
           this.acomodacaoTipo = response.data.tipoAcomodacao;
@@ -611,8 +620,12 @@ export default {
     // Lista todas as reservas - ok!
     async getReservas() {
       console.log("ReservasView...getReservas()");
+      const token = sessionStorage.getItem('token');
       try {
-        const response = await axios.get("http://localhost:5000/reserva");
+        const response = await axios.get("http://localhost:5000/reserva" ,{
+          headers:{
+            'Authorization': `Bearer ${token}`
+          }});
         this.items = response.data;
         // console.log("getReservas - atualizando itens da lista", this.items);
         return response.data;
@@ -624,10 +637,13 @@ export default {
     // localiza servico pelo id
     async getReservasById(idReservas) {
       console.log("idReservas = ", idReservas);
+      const token = sessionStorage.getItem('token');
       try {
         const response = await axios.get(
-          `http://localhost:5000/reserva/${idReservas}`
-        );
+          `http://localhost:5000/reserva/${idReservas}`,{
+          headers:{
+            'Authorization': `Bearer ${token}`
+          }});
         this.item = response.data;
         this.idReservas = this.item.idReservas;
         this.dataReserva = new Date(this.item.dataReserva)

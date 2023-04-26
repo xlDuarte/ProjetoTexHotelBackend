@@ -22,6 +22,7 @@
     "moment": "^2.29.4",
     "swagger-autogen": "^2.23.1",
     "swagger-ui-express": "^4.6.2",
+    "tempusdominus": "^5.16.0",
     "vue": "^3.2.47",
     "vue-currency-input": "^3.0.4",
     "vue-router": "^4.0.3",

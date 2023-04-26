@@ -7,7 +7,7 @@ import Router from "./routes/routes.js";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import swaggerUI from "swagger-ui-express";
-import swaggerFile from "./swagger/swagger_output.json" assert{type: 'json'};//import do arquivo contendo os endpoint gerados pelo autogen
+import swaggerFile from "./swagger/openapi_output.json" assert{type: 'json'};//import do arquivo contendo os endpoint gerados pelo autogen
 import mongoose from "mongoose";
 
 // iniciando o express

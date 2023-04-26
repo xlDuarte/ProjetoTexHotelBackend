@@ -114,6 +114,13 @@
         "description": "",
         "parameters": [
           {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT access token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "schema": {
@@ -154,7 +161,8 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [ { "bearerAuth": [] } ]
       }
     },
     "/get-user": {
@@ -260,6 +268,11 @@
         "tags": [
           "Usuario"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -274,6 +287,11 @@
         "tags": [
           "Usuario"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -287,6 +305,11 @@
       "get": {
         "tags": [
           "Usuario"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "description": "",
         "parameters": [

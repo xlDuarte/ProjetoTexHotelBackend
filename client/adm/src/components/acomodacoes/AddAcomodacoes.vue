@@ -7,19 +7,23 @@
           <div class="row">
             <div class="col-12 col-sm-6">
               <label for="nome" class="form-label fw-bold">*Nome:</label>
-              <input type="text" v-model="nomeAcomod" placeholder="Abreviação do serviço" class="form-control" maxlength="45">
+              <input type="text" v-model="nomeAcomod" placeholder="Nome da Acomodação" class="form-control" maxlength="45">
             </div>
             <div class="col-12 col-sm-6">
               <label for="descrição" class="form-label fw-bold">*Descrição:</label>
-              <input type="text" v-model="descAcomod" placeholder="Abreviação do serviço" class="form-control" maxlength="45">
+              <input type="text" v-model="descAcomod" placeholder="Descrição da acomodação" class="form-control" maxlength="45">
             </div>
             <div class="col-12 col-sm-6">
               <label for="valor" class="form-label fw-bold mt-3">*Valor:</label>
-              <input type="text" v-model="valorAcomod" placeholder="Abreviação do serviço" class="form-control" maxlength="45">
+              <input type="text" v-model="valorAcomod" placeholder="ex: 100" class="form-control" maxlength="45">
             </div>
             <div class="col-12 col-sm-6">
               <label for="tipo" class="form-label fw-bold mt-3">*Tipo de acomodação:</label>
-              <input type="text" v-model="tipoAcomod" placeholder="Abreviação do serviço" class="form-control" maxlength="45">
+              <input type="text" v-model="tipoAcomod" placeholder="Master, Confort ou Family " class="form-control" maxlength="45">
+            </div>
+            <div class="col-12 col-sm-6">
+              <label for="tipo" class="form-label fw-bold mt-3">*Numero maximo de pessoas:</label>
+              <input type="text" v-model="qtMax" placeholder="Master, Confort ou Family " class="form-control" maxlength="45">
             </div>
           </div>
           <div class="d-flex justify-content-center">
@@ -31,10 +35,6 @@
   </div>
 </div>
 </template>
-
-
-
-  
 <script>
 // import axios
 import axios from "axios";
@@ -46,24 +46,31 @@ export default {
       nomeAcomod: "",
       descAcomod: "",
       valorAcomod: "",
-      tipoAcomod: ""
+      tipoAcomod: "",
+      qtMax:"",
     };
   },
   methods: {
     // cria novo usuario
     async saveAcomodacao() {
+      /*const token = sessionStorage.getItem('token');*/
       try {
         await axios.post("http://localhost:5000/acomodacao", {
+          /*headers: {
+            'Authorization': `Bearer ${token}`
+          },*/
           nomeAcomodacao: this.nomeAcomod,
           descricaoAcomodacao: this.descAcomod,
           valorAcomodacao: this.valorAcomod,
-          tipoAcomodacao: this.tipoAcomod
+          tipoAcomodacao: this.tipoAcomod,
+          qtMaxPessoas: this.qtMax,
         });
         this.nomeAcomod = "";
         this.descAcomod = "";
         this.valorAcomod = "";
         this.tipoAcomod = "";
-        this.$emit('updateList')
+        this.qtMax="";
+        this.$emit('updateAcomList')
       } catch (err) {
         console.log(err);
       }

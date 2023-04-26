@@ -60,6 +60,9 @@ export default {
     
   created() {
     this.getUsuarios();
+    
+  },
+  beforeMount(){
     this.checkLogin();
   },
     
@@ -77,8 +80,13 @@ export default {
       }
     }, 
     async getUsuarios() {
+      const token = sessionStorage.getItem('token')
+      console.log('pagina usuarioadm',token)
       try {
-        const response = await axios.get("http://localhost:5000/usuario");
+        const response = await axios.get("http://localhost:5000/usuario",{
+        headers: {
+          'Authorization': `Bearer ${token}` 
+      }});
         this.items = response.data;
       } catch (err) {
           console.log(err);
@@ -87,8 +95,12 @@ export default {
     
     // Delete Usuario
     async deleteUsuarios(id) {
+      const token = sessionStorage.getItem('token')
       try {
-        await axios.delete(`http://localhost:5000/usuario/${id}`);
+        await axios.delete(`http://localhost:5000/usuario/${id}`,{
+        headers: {
+          'Authorization': `Bearer ${token}` 
+      }});
           this.getUsuarios();
       } catch (err) {
           console.log(err);

@@ -98,8 +98,12 @@ export default {
   methods: {
     // cria novo consumo
     async saveConsumo() {
+      const token = sessionStorage.getItem('token');
       try {
         await axios.post("http://localhost:5000/Consumo", {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
           Reservas_idReservas: this.quarto,
           localConsumo_idLocalConsumo: parseInt(this.localConsumo),
           produtos_idprodutos: this.idproduto,

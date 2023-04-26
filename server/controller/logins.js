@@ -103,7 +103,7 @@ export const loginValidation = (req, res, next) => {
             });
           }
           if (bResult) {
-            //const token = jwt.sign({id:result[0].idUsuario},'the-super-strong-secrect',{ expiresIn: '1h' });
+            const token = jwt.sign({id:result[0].idUsuario, emailUsuario},'the-super-strong-secrect',{ expiresIn: '2h' });
             sessionUser = req.session;
             userId = result[0].idUsuario;
             console.log(sessionUser);
@@ -127,7 +127,7 @@ export const loginValidation = (req, res, next) => {
   );
 };
 
-export const signupValidation = (req, res) => {
+/*export const signupValidation = (req, res) => {
   sessionUser = req.session;
   console.log("signupValidation", userId);
   if (sessionUser) {
@@ -148,7 +148,7 @@ export const signupValidation = (req, res) => {
       msg: "sessão expirou! Faça login novamente.",
     });
   }
-};
+};*/
 
 export const logOut = (req, res) => {
   req.session.destroy();
@@ -157,13 +157,13 @@ export const logOut = (req, res) => {
   res.json({ data: !sessionUser });
 };
 
-/*Validação com JWT
+
 export const signupValidation = (req,res)=>{
     console.log(req.headers)
     if(
         !req.headers.authorization ||
         !req.headers.authorization.startsWith('Bearer') ||
-        !req.headers.authorization.split(' ')[0]
+        !req.headers.authorization.split(' ')[1]
     ){
         return res.status(422).json({
             message: "Please provide the token",
@@ -171,12 +171,13 @@ export const signupValidation = (req,res)=>{
     }
     const token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, 'the-super-strong-secrect');
-    db.query('SELECT * FROM users where id=?', decoded.id, function (error, results, fields) {
+    db.query('SELECT * FROM usuario where idUsuario=?', decoded.id, function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, data: results[0], message: 'Fetch Successfully.' });
     });
-};*/
+};
 
+/*Validação com JWT
 /* Import das funcs do models
 import { getUsers} from "../models/loginModel.js";
 import bcrypt from "bcrypt"

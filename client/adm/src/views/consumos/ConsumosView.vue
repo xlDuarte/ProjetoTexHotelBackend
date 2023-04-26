@@ -77,8 +77,12 @@ export default {
     },
     // Lista todos os Consumos
     async getConsumo() {
+      const token = sessionStorage.getItem('token');
       try {
-        const response = await axios.get("http://localhost:5000/Consumo");
+        const response = await axios.get("http://localhost:5000/Consumo", {
+          headers:{
+            'Authorization': `Bearer ${token}`
+          }});
         this.items = await Promise.all(response.data.map(async consumo => {
           const localResponse = await axios.get(`http://localhost:5000/localConsumo/${consumo.localConsumo_idLocalConsumo}`);
           const localResponse2 = await axios.get(`http://localhost:5000/produto/${consumo.produtos_idprodutos}`);

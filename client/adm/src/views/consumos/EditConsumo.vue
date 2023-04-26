@@ -74,10 +74,13 @@ export default {
     },
     // lista usuario por id
     async getConsumoById() {
+      const token = sessionStorage.getItem('token');
       try {
         const response = await axios.get(
-          `http://localhost:5000/Consumo/${this.$route.params.id}`
-        );
+          `http://localhost:5000/Consumo/${this.$route.params.id}`, {
+             headers:{
+            'Authorization': `Bearer ${token}`
+        }});
         this.quarto = response.data.Reservas_idReservas;
         this.localConsumo = response.data.localConsumo_idLocalConsumo;
         this.idProduto = response.data.produtos_idprodutos;
