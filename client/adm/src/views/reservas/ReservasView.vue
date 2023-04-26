@@ -918,6 +918,7 @@ export default {
         console.log("Entrei no handleItem...", action);
         this.campoAtivoIdUsuario = true;
         this.getReservasById(idReservas);
+        this.msgAlerta = `Reserva: ${idReservas}`;
         this.itemArrayEdit = true;
         // contorle de edição do user
         this.showSalvarButton = true;

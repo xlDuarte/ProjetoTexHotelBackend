@@ -91,11 +91,11 @@ export class Reservas {
     this.itemArrayEdit = itemArrayEdit;
     // this.arrayServicosBD = arrayServicosBD; // excluir
     this.arrayServicos = arrayServicos;
-    console.log(
-      "Etapa 4 - arrayServicos...",
-      arrayServicos,
-      localStorage.getItem("servicosEscolhidos")
-    );
+    // console.log(
+    //   "Etapa 4 - arrayServicos...",
+    //   arrayServicos,
+    //   localStorage.getItem("servicosEscolhidos")
+    // );
     if (localStorage.getItem("servicosEscolhidos") !== null) {
       this.servicosEscolhidos = JSON.parse(
         localStorage.getItem("servicosEscolhidos")
@@ -103,10 +103,10 @@ export class Reservas {
     } else {
       this.servicosEscolhidos = this.arrayServicos.data;
     }
-    console.log(
-      "Etapa 4.4 - this.servicosEscolhidos ...",
-      this.servicosEscolhidos
-    );
+    // console.log(
+    //   "Etapa 4.4 - this.servicosEscolhidos ...",
+    //   this.servicosEscolhidos
+    // );
     // verifica campos calculados - valorReserva, qtdade diarias, etc
     // rotina para tratar as datas de input
     let dateStartAux, dateEndAux, dateStart, dateEnd;
@@ -123,17 +123,23 @@ export class Reservas {
       parseFloat(this.acomodacaoVlrDiaria);
     let vlrServicos = 0;
     if (this.servicosEscolhidos && Array.isArray(this.servicosEscolhidos)) {
-      console.log(
-        "Calculando total de servicos...",
-        this.servicosEscolhidos,
-        this.servicosEscolhidos.length
-      );
+      // console.log(
+      //   "Calculando total de servicos...",
+      //   this.servicosEscolhidos,
+      //   this.servicosEscolhidos.length
+      // );
       for (let i = 0; i < this.servicosEscolhidos.length; i++) {
-        console.log(
-          "Calculo...",
-          this.servicosEscolhidos[i].nomeServico,this.servicosEscolhidos[i]
-            .isSelected,this.servicosEscolhidos[i].vlrDiariaServico);
-        if (this.servicosEscolhidos[i].isSelected === "true") {
+
+        if (
+          this.servicosEscolhidos[i].isSelected === "true" ||
+          this.servicosEscolhidos[i].isSelected === true
+        ) {
+          // console.log(
+          //   "Calculo...",
+          //   this.servicosEscolhidos[i].nomeServico,
+          //   this.servicosEscolhidos[i].isSelected,
+          //   this.servicosEscolhidos[i].vlrDiariaServico
+          // );
           vlrServicos =
             vlrServicos +
             this.servicosEscolhidos[i].vlrDiariaServico * this.qtDiarias;
