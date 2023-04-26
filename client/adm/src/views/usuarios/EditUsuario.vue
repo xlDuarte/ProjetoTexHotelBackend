@@ -77,10 +77,11 @@ export default {
     methods: {
         // lista usuario por id
         async getUsuarioById() {
+            const token = sessionStorage.getItem('token');
+            const authHeader = {headers: {'Authorization': `Bearer ${token}`}}
             try {
                 const response = await axios.get(
-                    `http://localhost:5000/usuario/${this.$route.params.id}`
-                );
+                  `http://localhost:5000/usuario/${this.$route.params.id}`, authHeader);
                 this.nomeUser = response.data.nomeUsuario;
                 this.emailUser= response.data.emailUsuario;
                 this.cpfUser= response.data.cpfUsuario;
@@ -99,6 +100,8 @@ export default {
   
         // atualiza o usuario
         async updateUsuario() {
+            const token = sessionStorage.getItem('token')
+            const authHeader = {headers: {'Authorization': `Bearer ${token}`}}
             try {
                 await axios.put(
                     `http://localhost:5000/usuario/${this.$route.params.id}`,
@@ -110,7 +113,7 @@ export default {
                         senhaUsuario: this.senhaUser,
                         tipoUsuario: this.tipoUser,
                         telefoneUsuario: this.telefoneUser
-                    }
+                    }, authHeader
                 );
                 this.nomeUser = "";
                 this.cpfUser="";
@@ -119,7 +122,7 @@ export default {
                 this.senhaUser="";
                 this.tipoUser="";
                 this.telefoneUser="";
-                this.$router.push("/Usuarios");
+                this.$router.push("/Usuarios");                
             } catch (err) {
                 console.log(err);
             }

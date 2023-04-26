@@ -230,7 +230,7 @@ export default {
             localStorage.setItem("userId", idUser)
             localStorage.setItem("loged", loged);
             localStorage.setItem("loginStatus", logedOn);
-            alert("Logado com sucesso!");
+            //alert("Logado com sucesso!");
             document.getElementById(
               "user"
             ).innerText = `Olá ${loged}`;
@@ -249,7 +249,7 @@ export default {
               "userdrop"
             ).innerText = `Olá ${loged}`;
             this.logedin = localStorage.getItem("loginStatus");
-            alert("Logado com sucesso como administrador!");
+            //alert("Logado com sucesso como administrador!");
             this.$router.push("HomeAdm")
           }
         } catch (err) {

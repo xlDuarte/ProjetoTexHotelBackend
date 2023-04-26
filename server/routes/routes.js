@@ -101,19 +101,19 @@ router.post('/resetpwd/:token', updatePassword);
 
 //Usuarios
 // rota para listar todos os usuarios
-router.get("/usuario", showUsuario);
+router.get("/usuario", checkTokenAdm, showUsuario);
 
 // rota para listar todos os usuarios tipo cliente
 router.get("/usuario/cliente", showUsuarioCliente);
 
 // rota para listar um usuario
-router.get("/usuario/:id", showUsuarioById);
+router.get("/usuario/:id", checkTokenAdm, showUsuarioById);
 
 // rota para atualizar um usuario
-router.put("/usuario/:id", updateUsuario);
+router.put("/usuario/:id", checkTokenAdm, updateUsuario);
 
 // rota para deletar um usuario
-router.delete("/usuario/:id", deleteUsuario);
+router.delete("/usuario/:id", checkTokenAdm, deleteUsuario);
 
 // Servicos
 // rota para listar todos os servicos
