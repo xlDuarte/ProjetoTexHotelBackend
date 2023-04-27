@@ -71,11 +71,9 @@ export default {
     // Lista todos os usuarios
     async getAcomodacao() {
       const token = sessionStorage.getItem('token');
+      const authHeader = {headers: {'Authorization': `Bearer ${token}`}}
       try {
-        const response = await axios.get("http://localhost:5000/acomodacao", {
-          headers:{
-            'Authorization': `Bearer ${token}`
-          }});
+        const response = await axios.get("http://localhost:5000/acomodacao", authHeader);
         this.items = response.data;
       } catch (err) {
         console.log(err);
@@ -85,11 +83,9 @@ export default {
     // Delete Usuario
     async deleteAcomodacao(id) {
       const token = sessionStorage.getItem('token');
+      const authHeader = {headers: {'Authorization': `Bearer ${token}`}}
       try {
-        await axios.delete(`http://localhost:5000/acomodacao/${id}`, {
-          headers:{
-            'Authorization': `Bearer ${token}`
-          }});
+        await axios.delete(`http://localhost:5000/acomodacao/${id}`, authHeader );
         this.getAcomodacao();
       } catch (err) {
         console.log(err);

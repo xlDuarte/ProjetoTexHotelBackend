@@ -78,7 +78,7 @@
                 "properties": {
                   "emailUsuario": {
                     "type": "object",
-                    "example": "any"
+                    "example": "andersonlimam.al@gmail.com"
                   },
                   "senhaUsuario": {
                     "type": "object",
@@ -123,7 +123,7 @@
     "/register": {
       "post": {
         "tags": [
-          "Autenticação"
+          "Usuario"
         ],
         "requestBody": {
           "content": {
@@ -212,7 +212,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "string",
+                "type": "object",
                 "properties": {
                   "emailUsuario": {
                     "type": "object",

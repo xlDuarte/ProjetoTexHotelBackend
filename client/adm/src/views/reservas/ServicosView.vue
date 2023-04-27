@@ -177,7 +177,7 @@ export default {
       try {
         const response = await axios.get("http://localhost:5000/servicoAdm");
         this.items = response.data;
-        // console.log("getServicos", this.items);
+        console.log("getServicos", this.items);
         return response.data;
       } catch (err) {
         console.log(err);
@@ -202,8 +202,9 @@ export default {
       console.log("Entrei no handleClick");
       if (action == "salvar") {
         console.log("Entrei no handleClick - salvar");
+        this.getServicosAdm();
         const servico = new Servicos();
-        console.log("Entrei no handleClick - salvar - intanciei Servicos...", servico)
+        console.log("Entrei no handleClick - salvar - intanciei Servicos...", servico, this.itemArrayEdit)
         servico.salvar(
           this.idServico,
           this.nome,
@@ -232,6 +233,7 @@ export default {
           let servico = new Servicos();
           servico.excluir(this.idServico);
           // recarrega lista de serviços
+          this.getServicosAdm();
           this.getServicosAdm();
         }
       }

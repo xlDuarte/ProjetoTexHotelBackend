@@ -85,11 +85,9 @@ export default {
         async getAcomodacaoById() {
             try {
                 const token = sessionStorage.getItem('token');
+                const authHeader = {headers: {'Authorization': `Bearer ${token}`}}
                 const response = await axios.get(
-                    `http://localhost:5000/acomodacao/${this.$route.params.id}`, {
-                headers:{
-                  'Authorization': `Bearer ${token}`
-                }});
+                    `http://localhost:5000/acomodacao/${this.$route.params.id}`, authHeader);
                 this.nomeAcomod = response.data.nomeAcomodacao;
                 this.descAcomod = response.data.descricaoAcomodacao;
                 this.valorAcomod = response.data.valorAcomodacao;
@@ -107,19 +105,18 @@ export default {
         // atualiza o usuario
         async updateAcomodacao() {
             const token = sessionStorage.getItem('token');
+            const authHeader = {headers: {'Authorization': `Bearer ${token}`}}
             try {
                 await axios.put(
                     `http://localhost:5000/acomodacao/${this.$route.params.id}`,
                     {   
-                        headers: {
-                        'Authorization': `Bearer ${token}`
-                        },
                         nomeAcomodacao: this.nomeAcomod,
                         descricaoAcomodacao: this.descAcomod,
                         valorAcomodacao: this.valorAcomod,
                         tipoAcomodacao: this.tipoAcomod,
                         qtMaxPessoas: this.qtMax
-                    }
+                    }, 
+                    authHeader
                 );
                 this.nomeAcomod = "";
                 this.descAcomod = "";
