@@ -96,7 +96,8 @@ export default {
     //...mapState(["ReservasUsuario"]),
   },
   mounted() {
-    // funções mounted...
+    // funções mountes...
+
   },
 };
 
@@ -106,7 +107,7 @@ window.$().ready(function () {
     if (localStorage.getItem("loged") === null) {
       alert("Por favor, faça o login em nosso site!");
       window.$("#modalMinhasReservas").modal("hide");
-      return true;
+      return true
     }
     window.$("#modalMinhasReservas").modal("show");
   });

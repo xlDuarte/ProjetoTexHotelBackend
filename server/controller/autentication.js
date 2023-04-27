@@ -258,8 +258,8 @@ export const userLogin = (req, res, next) => {
 export const userSignin = (req, res) => {
   console.log("signupValidation", jwtToken);
   let jToken = jwtToken
-  const decoded = jwt.verify(jToken, 'the-super-strong-secrect');
-  if(decoded) {
+  if(jwtToken) {
+    const decoded = jwt.verify(jToken, 'the-super-strong-secrect');
     db.query(
       "SELECT * FROM usuario where idUsuario=?",
       decoded.id,

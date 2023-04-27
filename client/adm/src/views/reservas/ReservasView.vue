@@ -18,7 +18,12 @@
       />
     </div>
     <div class="modalUsuarios">
-      <ModalUsuarios :msg="msgModalUsuarios" :items="listClientes" />
+      <p>ModalUsuarios Data: {{ parentData }}</p>
+      <ModalUsuarios
+        @selecionado="updateIdUsuario($event)"
+        :msg="msgModalUsuarios"
+        :items="listClientes"
+      />
     </div>
 
     <div class="sec">
@@ -27,7 +32,7 @@
         <p>*Campos de preenchimento obrigatório.</p>
       </div>
 
-      <div class="shadow bg-light rounded-3 p-4 my-5 ">
+      <div class="shadow bg-light rounded-3 p-4 my-5">
         <p
           class="msgAlerta"
           id="msgAlerta"
@@ -166,6 +171,8 @@
               <div class="row my-2 mt-3">
                 <div class="col col-5 me-5">
                   <!-- <label for="idUsuario" class="d-block fw-bold" @click="handleClick('usuarios')">ID Usuario - clique para consulta</label> -->
+                  <!-- @click="handleClick('usuarios')" -->
+                  <!-- @click="openModalUsuarios" -->
                   <span><b>ID Usuario - clique para consulta </b></span
                   ><img
                     src="../../assets/search-persons.png"
@@ -428,6 +435,7 @@ import { Reservas } from "@/../adm/src/types/reservas/Reservas.js";
 import ModalServicos2 from "@/../adm/src/components/reserva/ModalServicos2";
 import ModalResumo2 from "@/../adm/src/components/reserva/ModalResumo2";
 import ModalUsuarios from "@/../adm/src/components/reserva/ModalUsuarios";
+import { ref } from "vue";
 import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
 
 // testar currency via import VueCurrencyInput from 'vue-currency-input';
@@ -435,6 +443,7 @@ import * as mainFunc from "@/../adm/src/types/reservas/MainFunctions.js";
 // import { currencyFormat } from "@/../src/components/reserva/FormReserva.vue";
 // import ModalResumo from "./ModalResumo";
 
+// import { ref } from 'vue';
 import { mapState } from "vuex";
 
 export default {
@@ -518,10 +527,34 @@ export default {
     console.log(this.checkLogin());
   },
   setup() {
-    // setup...
+    // setup para retorno de idUsuario da ModalUsuarios
+    const isModalUsuariosOpen = ref(false);
+    const parentData = ref("");
+
+    const openModalUsuarios = () => {
+      isModalUsuariosOpen.value = true;
+    };
+
+    const handleModalUsuariosData = (data) => {
+      parentData.value = data;
+      isModalUsuariosOpen.value = false;
+    };
+    console.log("Entrei no setup usuarios...", isModalUsuariosOpen);
+    return {
+      isModalUsuariosOpen,
+      parentData,
+      openModalUsuarios,
+      handleModalUsuariosData,
+    };
   },
 
   methods: {
+    updateIdUsuario(idUsuario) {
+      console.log("this.idUsuario",this.usuario);
+      this.idUsuario= " ";
+      this.idUsuario = idUsuario;
+
+    },
     checkLogin() {
       if (localStorage.getItem("loginStatus")) {
         if (localStorage.getItem("loginStatus") == "admin") return true;
@@ -555,13 +588,10 @@ export default {
 
     // verificar usuario pelo id
     async validaUsuariosById(idUsuario) {
-      const token = sessionStorage.getItem('token');
       try {
         const response = await axios.get(
-          `http://localhost:5000/usuario/${idUsuario}`,{
-          headers: {
-          'Authorization': `Bearer ${token}`
-        }});
+          `http://localhost:5000/usuario/${idUsuario}`
+        );
         this.itemUsuario = response.data;
         if (idUsuario === response.data.idUsuario) {
           this.nomeUsuario = response.data.nomeUsuario;
@@ -577,13 +607,10 @@ export default {
 
     // carrega lista de usuarios clientes
     async getUsersCliente() {
-      const token = sessionStorage.getItem('token');
       try {
         const response = await axios.get(
-          "http://localhost:5000/usuario/cliente",{
-          headers: {
-          'Authorization': `Bearer ${token}`
-        }});
+          "http://localhost:5000/usuario/cliente"
+        );
         console.log("getUsersCliente", response);
         this.listClientes = response.data;
         return response;
@@ -594,13 +621,10 @@ export default {
 
     // verificar acomodação  pelo id - ok!
     async validaAcomodacaoById(idAcomodacao) {
-      const token = sessionStorage.getItem('token');
       try {
         const response = await axios.get(
-          `http://localhost:5000/acomodacao/${idAcomodacao}`,{
-          headers: {
-          'Authorization': `Bearer ${token}`
-        }});
+          `http://localhost:5000/acomodacao/${idAcomodacao}`
+        );
         this.itemAcomodacao = response.data;
         if (idAcomodacao === response.data.idAcomodacao) {
           this.acomodacaoTipo = response.data.tipoAcomodacao;
@@ -620,12 +644,8 @@ export default {
     // Lista todas as reservas - ok!
     async getReservas() {
       console.log("ReservasView...getReservas()");
-      const token = sessionStorage.getItem('token');
       try {
-        const response = await axios.get("http://localhost:5000/reserva" ,{
-          headers:{
-            'Authorization': `Bearer ${token}`
-          }});
+        const response = await axios.get("http://localhost:5000/reserva");
         this.items = response.data;
         // console.log("getReservas - atualizando itens da lista", this.items);
         return response.data;
@@ -637,13 +657,10 @@ export default {
     // localiza servico pelo id
     async getReservasById(idReservas) {
       console.log("idReservas = ", idReservas);
-      const token = sessionStorage.getItem('token');
       try {
         const response = await axios.get(
-          `http://localhost:5000/reserva/${idReservas}`,{
-          headers:{
-            'Authorization': `Bearer ${token}`
-          }});
+          `http://localhost:5000/reserva/${idReservas}`
+        );
         this.item = response.data;
         this.idReservas = this.item.idReservas;
         this.dataReserva = new Date(this.item.dataReserva)
@@ -733,13 +750,19 @@ export default {
 
         if (this.itemArrayEdit == true) {
           this.arrayServicos = this.arrayServicosBD;
-          console.log("Etapa 3.1 - this.arrayServicos de arrayServicosBD",this.arrayServicos);
+          console.log(
+            "Etapa 3.1 - this.arrayServicos de arrayServicosBD",
+            this.arrayServicos
+          );
         } else {
           this.arrayServicos = this.Servicos2.data;
-          console.log("Etapa 3.1 - this.arrayServicos de Servicos2.data",this.arrayServicos);
+          console.log(
+            "Etapa 3.1 - this.arrayServicos de Servicos2.data",
+            this.arrayServicos
+          );
         }
 
-        console.log("Etapa 3.2 - arrayServicos",this.arrayServicos);
+        console.log("Etapa 3.2 - arrayServicos", this.arrayServicos);
         let reserva = new Reservas();
 
         reserva.salvar(
@@ -821,6 +844,7 @@ export default {
       if (action == "usuarios") {
         if (this.campoAtivoIdUsuario !== true) {
           this.getUsersCliente();
+          // this.isModalUsuariosOpen = true;
           window.$("#modalUsuarios").modal("show");
           this.campoAtivoIdUsuario = false;
         }

@@ -118,12 +118,8 @@ export default {
   },
 
   async created() {
-    const token = sessionStorage.getItem('token');
     // const response = await fetch('https://example.com/comments.json');
-    const response = await fetch("http://localhost:5000/comentarios/", {
-    headers: {
-        'Authorization': `Bearer ${token}`
-    }});
+    const response = await fetch("http://localhost:5000/comentarios/");
     this.comments = await response.json();
   },
 

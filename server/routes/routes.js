@@ -104,7 +104,7 @@ router.post('/resetpwd/:token', updatePassword);
 router.get("/usuario", checkTokenAdm, showUsuario);
 
 // rota para listar todos os usuarios tipo cliente
-router.get("/usuario/cliente", showUsuarioCliente);
+router.get("/usuario/cliente", checkTokenAdm, showUsuarioCliente);
 
 // rota para listar um usuario
 router.get("/usuario/:id", checkTokenAdm, showUsuarioById);
@@ -155,28 +155,28 @@ router.delete("/servicoReserva/:id", deleteServicoReserva);
 
 // Consumos
 // rota para listar todos os Consumos
-router.get("/Consumo", checkTokenAdm, showConsumo);
+router.get("/Consumo", showConsumo);
 
 // rota para listar um Consumo
-router.get("/Consumo/:id", checkTokenAdm, showConsumoById);
+router.get("/Consumo/:id", showConsumoById);
 
 // rota para listar um local de consumo
-router.get("/localConsumo/:id", checkTokenAdm, showlocalConsumoById);
+router.get("/localConsumo/:id", showlocalConsumoById);
 
 // rota para listar um produto
-router.get("/produto/:id", checkTokenAdm, showProdutoById);
+router.get("/produto/:id", showProdutoById);
 
 // rota para listar um valor do produto
-router.get("/valorProduto/:id", checkTokenAdm, showValorProdutoById);
+router.get("/valorProduto/:id", showValorProdutoById);
 
 // rota para criar um Consumo
-router.post("/Consumo", checkTokenAdm, createConsumo);
+router.post("/Consumo", createConsumo);
 
 // rota para atualizar um Consumo
-router.put("/Consumo/:id", checkTokenAdm, updateConsumo);
+router.put("/Consumo/:id", updateConsumo);
 
 // rota para deletar um Consumo
-router.delete("/Consumo/:id", checkTokenAdm, deleteConsumo);
+router.delete("/Consumo/:id", deleteConsumo);
 
 // Reservas
 // rota para listar todas as reservas
@@ -189,7 +189,7 @@ router.get("/reserva/:id", showReservaById);
 router.get("/reservaUsuario/:id", showReservaByUsuarioId);    
 
 // rota para criar uma reserva
-router.post("/reserva", createReserva);
+router.post("/reserva", checkToken, createReserva);
 
 // rota para obter ultimo idReserva criado, para utilizar na persistencia dos serviços
 router.post("/reserva/ultima",  ultimoIdReserva);
